@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- French ~~ Français -->
+<language>
+  <page id="8888888" voice="no">
+    <!-- JP_SetFleetNameColor -->
+    <t id="61">Réinitialiser le nom de la flotte?</t>
+  </page>
+</language>
+<!-- Thanks to darkslimus / Xchange Guild -->

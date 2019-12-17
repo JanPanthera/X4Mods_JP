@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<content id="JP_SetFleetNameColor" name="JP_SetFleetNameColor" description="Gives your fleets name an color." author="JanPanthera" version="102" date="2019-11-27" save="0" enabled="1">
+  <dependency version="300"/>
+  <dependency id="JP_ScriptLibrary" version="100"/>
+  <text language="7"  name="JP_SetFleetNameColor" description="Название флота  в цвет." author="JanPanthera"/>
+  <text language="33" name="JP_SetFleetNameColor" description="Gives your fleets name an color." author="JanPanthera"/>
+  <text language="34" name="JP_SetFleetNameColor" description="Gives your fleets name an color." author="JanPanthera"/>
+  <text language="39" name="JP_SetFleetNameColor" description="Gives your fleets name an color." author="JanPanthera"/>
+  <text language="44" name="JP_SetFleetNameColor" description="Gives your fleets name an color." author="JanPanthera"/>
+  <text language="49" name="JP_SetFleetNameColor" description="Gibt dem Namen deiner Flotte eine Farbe." author="JanPanthera"/>
+  <text language="55" name="JP_SetFleetNameColor" description="Gives your fleets name an color." author="JanPanthera"/>
+  <text language="81" name="JP_SetFleetNameColor" description="Gives your fleets name an color." author="JanPanthera"/>
+  <text language="82" name="JP_SetFleetNameColor" description="Gives your fleets name an color." author="JanPanthera"/>
+  <text language="86" name="JP_SetFleetNameColor" description="Gives your fleets name an color." author="JanPanthera"/>
+  <text language="88" name="JP_SetFleetNameColor" description="Gives your fleets name an color." author="JanPanthera"/>
+</content>
+
+<!-- Russian ~~ Русский (language=7) translation by alexalsp -->
+<!-- French ~~ Français (language=33) translation by darkslimus / Xchange Guild -->
