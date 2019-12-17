@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<aiscript name="JP_DroneAttack" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd" priority="10">
+
+  <order id="JP_DroneAttack" name="JP DroneAttack" description="Attacks object with drones" category="combat" infinite="true">
+    <params>
+      <param name="TARGET" type="object" text="{1041,10027}" required="true"/>
+      <param name="MAX_DISTANCE" type="number" default="this.ship.maxradarrange" text="max. attack distance">
+        <input_param name="step" value="100"/>
+        <input_param name="min" value="1000"/>
+        <input_param name="max" value="10000000"/>
+      </param> 
+      <param name="CHECK_RELATION" type="bool" default="true" text="Check relation?"/>
+      <param name="DRONE_COUNT" type="number" default="1" text="Drone count">
+        <input_param name="step" value="1"/>
+        <input_param name="min" value="1"/>
+        <input_param name="max" value="this.ship.units.{unitcategory.defence}.count"/>
+      </param>
+    </params>
+    <skill min="0"/>
+    <requires>
+      <match shiptype="shiptype.lasertower" negate="true"/>
+      <match_units_available category="unitcategory.defence" min="1"/>
+    </requires>
+  </order>
+
+  <interrupts>
+    <handler ref="SectorChangeHandler"/>
+    <handler ref="TargetInvalidHandler"/>
+    <handler ref="AttackHandler"/>
+    <handler ref="MissileLockHandler" />
+    <handler ref="ScannedHandler"/>
+    <handler ref="InspectedHandler"/>
+    <handler ref="FoundAbandonedHandler"/>
+    <handler ref="FoundLockboxHandler"/>
+    <handler ref="ResupplyHandler"/>
+    <handler ref="JobRemoveRequestHandler" />
+  </interrupts>
+
+  <init>
+  </init>
+
+  <attention min="unknown">
+    <actions>
+      <label name="START"/>
+
+      <!-- cancel when target is friendly and check relation is true -->
+      <do_if value="(not $TARGET.owner.mayattack.{this.ship.owner}) and $CHECK_RELATION">
+        <resume label="FINISH"/>
+      </do_if>
+      
+      <set_value name="$RUNNING" exact="true"/>
+      <set_value name="$LAUNCH_DRONES" exact="true"/>
+      <set_value name="$ATTACK_ORDER_GIVEN" exact="false"/>
+      <set_value name="$TARGET_OUT_OF_RADAR_RANGE" exact="false"/>
+      <create_list name="$DRONES"/>
+
+      <label name="RESUME"/>
+      <set_value name="$DRONES_READY" exact="true"/>
+
+      <!-- launch drones and escort mothership till all drones undocked -->
+      <do_if value="$LAUNCH_DRONES" exact="true">
+        <do_all exact="$DRONE_COUNT">
+          <launch_drone name="$drone" object="this.ship" exact="1" category="unitcategory.defence"/>
+          <append_to_list name="$DRONES" exact="$drone"/>
+          <do_if value="not $drone.mayattack.{$TARGET} and not this.ship.isplayerowned">
+            <set_relation_boost object="$drone" otherobject="$TARGET" value="this.ship.relationto.{$TARGET}" silent="true" />
+          </do_if>
+          <create_order object="$drone" id="'Escort'">
+            <param name="target" value="this.assignedcontrolled"/>
+            <param name="timeout" value="24h"/>
+          </create_order>
+        </do_all>
+        <set_value name="$LAUNCH_DRONES" exact="false"/>
+      </do_if>
+
+      <wait exact="1s"/>
+
+      <!-- check if all drones are undocked -->
+      <do_if value="$ATTACK_ORDER_GIVEN" exact="false">
+        <do_all exact="$DRONES.count" counter="$_it">
+          <do_if value="$DRONES.{$_it}.order.id != 'Escort'">
+            <set_value name="$DRONES_READY" exact="false"/>
+            <break/>
+          </do_if>
+        </do_all>
+      </do_if>
+
+      <do_if value="$DRONES_READY" exact="true">
+        <!-- give the attack order -->
+        <do_if value="$ATTACK_ORDER_GIVEN == false and $TARGET.isoperational == true and this.ship.distanceto.{$TARGET} lt this.ship.maxradarrange">
+          <do_all exact="$DRONES.count" counter="$_it">
+            <cancel_all_orders object="$DRONES.{$_it}"/>
+            <create_order object="$DRONES.{$_it}" id="'Attack'">
+              <param name="primarytarget" value="$TARGET" />
+              <param name="escort" value="this.ship" />
+              <param name="checkrelation" value="$CHECK_RELATION" />
+            </create_order>
+          </do_all>
+          <set_value name="$ATTACK_ORDER_GIVEN" exact="true"/>
+        </do_if>
+        <!-- short check if the ship is still in mother ship's radar range -->
+        <do_if value="this.ship.distanceto.{$TARGET} gt $MAX_DISTANCE">
+          <set_value name="$TARGET_OUT_OF_RADAR_RANGE" exact="true"/>
+        </do_if>
+        
+        <!-- return to mothership and dock there -->
+        <do_if value="($ATTACK_ORDER_GIVEN == true and $TARGET.isoperational == false) or ($TARGET_OUT_OF_RADAR_RANGE == true)">
+          <wait exact="1s"/>
+          <do_all exact="$DRONES.count" counter="$_it">
+            <cancel_all_orders object="$DRONES.{$_it}"/>
+            <!--fly back to the ship-->
+            <create_order object="$DRONES.{$_it}" id="'MoveToObject'">
+              <param name="destination" value="this.ship"/>
+            </create_order>
+            <!--dock at the ship-->
+            <create_order object="$DRONES.{$_it}" id="'DockAndWait'">
+              <param name="destination" value="this.ship" />
+              <param name="dockfollowers" value="true" />
+            </create_order>
+          </do_all>
+          <set_value name="$RUNNING" exact="false"/>
+        </do_if>
+      </do_if>
+
+      <do_if value="$RUNNING" exact="true">
+        <wait exact="5s"/>
+        <resume label="RESUME"/>
+      </do_if>
+
+      <remove_value name="$DRONES"/>
+      <remove_value name="$RUNNING"/>
+      <remove_value name="$LAUNCH_DRONES"/>
+      <remove_value name="$ATTACK_ORDER_GIVEN"/>
+      <remove_value name="$TARGET_OUT_OF_RADAR_RANGE"/>
+      <remove_value name="$DRONES_READY"/>
+
+      <label name="FINISH"/>
+      <set_order_syncpoint_reached order="this.ship.order"/>
+      <cancel_order order="this.ship.order" />
+      <wait exact="1ms"/>
+
+    </actions>
+  </attention>
+
+  <on_abort>
+    <do_all exact="$DRONES.count" counter="$_it">
+      <cancel_all_orders object="$DRONES.{$_it}"/>
+      <!--fly back to the ship-->
+      <create_order object="$DRONES.{$_it}" id="'MoveToObject'">
+        <param name="destination" value="this.ship"/>
+      </create_order>
+      <!--dock at the ship-->
+      <create_order object="$DRONES.{$_it}" id="'DockAndWait'">
+        <param name="destination" value="this.ship" />
+        <param name="dockfollowers" value="true" />
+      </create_order>
+    </do_all>
+  </on_abort>
+
+</aiscript>
