@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<aiscript name="JP_TeleportShip" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd" version="1">
+
+  <order id="JP_TeleportShip" name="JP TeleportShip" category="navigation" infinite="true">
+    <params>
+      <param name="DESTINATION" type="position" text="{1041, 10027}">
+        <input_param name="class" value="class.sector"/>
+      </param>
+      <param name="WHOLE_FLEET" text="Whole Fleet?" type="bool" default="false"/>
+      <param name="DEBUG" text="Debug" type="bool" default="false" advanced="true"/>
+    </params>
+    <skill min="0"/>
+    <requires>
+      <match shiptype="shiptype.lasertower" negate="true"/>
+    </requires>
+  </order>
+
+  <interrupts>
+    <handler ref="SectorChangeHandler"/>
+    <handler ref="TargetInvalidHandler"/>
+    <handler ref="AttackHandler"/>
+    <handler ref="MissileLockHandler" />
+    <handler ref="ScannedHandler"/>
+    <handler ref="InspectedHandler"/>
+    <handler ref="FoundAbandonedHandler"/>
+    <handler ref="FoundLockboxHandler"/>
+    <handler ref="ResupplyHandler"/>
+    <handler ref="JobRemoveRequestHandler" />
+  </interrupts>
+
+  <init>
+  </init>
+
+  <attention min="unknown">
+    <actions>
+
+      <wait exact="1ms"/>
+      <label name="START"/>
+      <cancel_all_orders object="this.ship"/>
+
+      <set_value name="$Leader" exact="this.ship"/>
+
+      <do_if value="$WHOLE_FLEET">
+        <set_value name="$Subordinates" exact="$Leader.allsubordinates"/>
+        <warp object="this.object" sector="$DESTINATION.{1}">
+          <position x="$DESTINATION.{2}.x" y="$DESTINATION.{2}.y" z="$DESTINATION.{2}.z"/>
+        </warp>
+        <wait exact="1ms"/>
+        <do_all exact="$Subordinates.count" counter="$_it">
+          <warp object="$Subordinates.{$_it}" sector="$DESTINATION.{1}">
+            <position object="$Leader"/>
+          </warp>
+          <wait exact="1ms"/>
+        </do_all>
+        <remove_value name="$Subordinates"/>
+      </do_if>
+      <do_else>
+        <warp object="this.object" sector="$DESTINATION.{1}">
+          <position x="$DESTINATION.{2}.x" y="$DESTINATION.{2}.y" z="$DESTINATION.{2}.z"/>
+        </warp>
+      </do_else>
+
+      <label name="CLEANUP"/>
+      <remove_value name="$Leader"/>
+
+      <label name="FINISH"/>
+      <set_order_syncpoint_reached order="this.ship.order"/>
+      <cancel_order order="this.ship.order" />
+      <wait exact="1ms"/>
+
+    </actions>
+  </attention>
+
+</aiscript>
