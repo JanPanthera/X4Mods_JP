@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Spanish ~~ Español -->
+<language>
+  <page id="8888888" voice="no">
+    <!-- JP_DataVaultExplorer -->
+    <t id="41">Restock navigation beacons?</t>
+    <t id="42">Amount to restock</t>
+    <t id="43">Include enemy sectors?</t>
+    <t id="44">Include unknown sectors?</t>
+  </page>
+</language>

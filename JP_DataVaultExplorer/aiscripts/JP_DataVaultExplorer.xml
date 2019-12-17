@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<aiscript name="JP_DataVaultExplorer" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd">
+
+  <order id="JP_DataVaultExplorer" name="JP DataVaultExplorer" description="Marks all Data Vaults with Navigation Beacons." category="navigation" infinite="true">
+    <params>
+      <!-- Mod Params -->
+      <param name="RESTOCK_NAV_BEACONS" text="{8888888, 41}" comment="Restock navigation beacons?" type="bool" default="true"/>
+      <param name="RESTOCK_AMOUNT" text="{8888888, 42}" comment="Amount to restock" type="number" default="3">
+        <input_param name="step" value="1"/>
+        <input_param name="min" value="1"/>
+        <input_param name="max" value="10"/>
+      </param>
+      <param name="INCLUDE_ENEMY_SECTORS" text="{8888888, 43}" comment="Include enemy sectors?" type="bool" default="false"/>
+      <param name="INCLUDE_UNKNOWN_SECTORS" text="{8888888, 44}" comment="Include unknown sectors?" type="bool" default="false"/>
+      <!-- Debug -->
+      <param name="DEBUG" text="DebugText" type="number" default="0" advanced="1">
+        <input_param name="step" value="50"/>
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="100"/>
+      </param>
+    </params>
+    <skill min="0"/>
+    <requires>
+      <match shiptype="shiptype.lasertower" negate="true"/>
+    </requires>
+  </order>
+
+  <interrupts>
+    <handler ref="SectorChangeHandler"/>
+    <handler ref="TargetInvalidHandler"/>
+    <handler ref="AttackHandler"/>
+    <handler ref="MissileLockHandler"/>
+    <handler ref="ScannedHandler"/>
+    <handler ref="InspectedHandler"/>
+    <handler ref="FoundAbandonedHandler"/>
+    <handler ref="FoundLockboxHandler"/>
+    <handler ref="ResupplyHandler"/>
+    <handler ref="JobRemoveRequestHandler"/>
+  </interrupts>
+
+  <init>
+    <set_value name="$DebugDirectory" exact="'JP_DataVaultExplorer.logs'"/>
+    <set_value name="$DebugFileName" exact="this.ship.idcode + '.JP_DataVaultExplorer' + '.log'"/>
+    <set_value name="$Explorer" exact="this.ship"/>
+    <do_if value="@global.$DataVaultBlackList == null">
+      <create_list name="global.$DataVaultBlackList"/>
+    </do_if>
+    <do_if value="@global.$DataVaultExplorerShips == null">
+      <create_list name="global.$DataVaultExplorerShips"/>
+    </do_if>
+
+    <set_value name="this.$CurrentDataVault" exact="null"/>
+    <append_to_list name="global.$DataVaultExplorerShips" exact="$Explorer"/>
+  </init>
+
+  <attention min="unknown">
+    <actions>
+
+      <wait exact="1ms"/>
+      <label name="INIT"/>
+      <cancel_all_orders object="this.ship"/>
+
+      <do_if value="$DEBUG gt 0">
+        <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ Running JP_DataVaultExplorer with %1 [%2]'.[$Explorer.knownname, $Explorer.idcode] + '\n'"/>
+      </do_if>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <label name="RESUME"/>
+
+      <create_list name="$ExploredDataVaults"/>
+      <create_list name="$UnExploredDataVaults"/>
+
+      <!--  Update global.$UnExploredDataVaults list -->
+      <find_object name="$DataVaults" space="player.galaxy" multiple="true">
+        <match macro="[macro.landmarks_vault_01_macro, macro.landmarks_vault_02_macro, macro.landmarks_vault_03_macro, macro.landmarks_vault_04_macro]"/>
+      </find_object>
+
+      <!-- Check if a nav beacon is near any of the data vaults ~~ add it to the blacklist -->
+      <do_for_each name="$DataVault" in="$DataVaults">
+        <find_object name="$NavBeacon" space="$DataVault.zone">
+          <match owner="$Explorer.owner"/>
+          <match class="class.navbeacon"/>
+        </find_object>
+        <do_if value="$NavBeacon != null">
+          <append_to_list name="$ExploredDataVaults" exact="$DataVault"/>
+        </do_if>
+      </do_for_each>
+      <remove_value name="$NavBeacon"/>
+
+      <!-- Remove all already explored data vaults -->
+      <remove_from_list name="$DataVaults" list="$ExploredDataVaults"/>
+      <remove_value name="$ExploredDataVaults"/>
+
+      <!-- Remove all blacklistet data vaults -->
+      <remove_from_list name="$DataVaults" list="global.$DataVaultBlackList"/>
+
+      <!-- Do we want the ship to fly to enemy sectors? -->
+      <create_list name="$TempDataVaultsToRemove"/>
+      <do_if value="not $INCLUDE_ENEMY_SECTORS">
+        <do_for_each name="$DataVault" in="$DataVaults">
+          <do_if value="$DataVault.sector.owner.mayattack.{$Explorer}">
+            <append_to_list name="$TempDataVaultsToRemove" exact="$DataVault"/>
+          </do_if>
+        </do_for_each>
+        <remove_from_list name="$DataVaults" list="$TempDataVaultsToRemove"/>
+        <remove_value name="$TempDataVaultsToRemove"/>
+      </do_if>
+
+      <!-- Do we want the ship to fly to unknown sectors? -->
+      <create_list name="$TempDataVaultsToRemove"/>
+      <do_if value="not $INCLUDE_UNKNOWN_SECTORS">
+        <do_for_each name="$DataVault" in="$DataVaults">
+          <do_if value="not $DataVault.sector.isknown">
+            <append_to_list name="$TempDataVaultsToRemove" exact="$DataVault"/>
+          </do_if>
+        </do_for_each>
+        <remove_from_list name="$DataVaults" list="$TempDataVaultsToRemove"/>
+        <remove_value name="$TempDataVaultsToRemove"/>
+      </do_if>
+
+      <append_list_elements name="$UnExploredDataVaults" other="$DataVaults"/>
+
+      <!-- Cleaning -->
+      <remove_value name="$DataVaults"/>
+
+      <!-- Are there data vaults that we need to explore and mark? -->
+      <do_if value="$UnExploredDataVaults.count == 0">
+        <do_if value="$DEBUG gt 0">
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'No data vaults found that we need to discover and mark with nav beacons.'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+        </do_if>
+        <resume label="END"/>
+      </do_if>
+
+      <!-- Check if we have nav beacons -->
+      <do_if value="$Explorer.ammostorage.{deployablecategory.navbeacon}.count == 0 and $RESTOCK_NAV_BEACONS">
+        <resume label="RESTOCK_NAV_BEACONS"/>
+      </do_if>
+      <do_elseif value="$Explorer.ammostorage.{deployablecategory.navbeacon}.count == 0 and not $RESTOCK_NAV_BEACONS">
+        <show_help custom="'No nav beacons on board and restocking turned off, cancel all orders...\n%1  [%2]'.[$Explorer.knownname,  $Explorer.idcode]"/>
+        <do_if value="$DEBUG gt 0">
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'No nav beacons on board and restocking turned off, cancel all orders...'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+        </do_if>
+        <resume label="END"/>
+      </do_elseif>
+
+      <!-- Get the nearest data vault that we needs to discover and mark -->
+      <do_if value="$UnExploredDataVaults.count gt 1">
+        <run_script name="'JP_SortListByGateJumpsDistance'">
+          <param name="LIST" value="$UnExploredDataVaults"/>
+          <param name="OBJECT" value="$Explorer"/>
+          <param name="DEBUG" value="$DEBUG"/>
+          <save_retval name="SORTED_LIST" variable="$UnExploredDataVaults"/>
+        </run_script>
+        <set_value name="this.$CurrentDataVault" exact="$UnExploredDataVaults.{1}"/>
+      </do_if>
+      <do_else>
+        <set_value name="this.$CurrentDataVault" exact="$UnExploredDataVaults.{1}"/>
+      </do_else>
+      <!-- Append it to the black list so that other explorer ships don't get it too -->
+      <append_to_list name="global.$DataVaultBlackList" exact="this.$CurrentDataVault"/>
+
+      <!-- Exploring the data vault and deploying an nav beacon there -->
+      <run_script name="'JP_ExploreDataVault'">
+        <param name="EXPLORER" value="$Explorer"/>
+        <param name="DATA_VAULT" value="this.$CurrentDataVault"/>
+        <param name="DEBUG" value="$DEBUG"/>
+      </run_script>
+      <remove_from_list name="global.$DataVaultBlackList" exact="this.$CurrentDataVault"/>
+      <wait min="1s" max="2s"/>
+      <resume label="RESUME"/>
+
+      <!-- Restocking of nav beacons -->
+      <label name="RESTOCK_NAV_BEACONS"/>
+      <set_value name="$AmmoTable" exact="table[]"/>
+      <set_value name="$AmmoTable.{ware.waypointmarker_01}" exact="$RESTOCK_AMOUNT"/>
+      <do_if value="$DEBUG gt 0">
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'We are now going to restock %1 nav beacons'.[$RESTOCK_AMOUNT]"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+      </do_if>
+      <run_script name="'JP_Restock_X_ToShip'">
+        <param name="SHIP" value="$Explorer"/>
+        <param name="AMMO_TABLE" value="$AmmoTable"/>
+        <param name="DEBUG" value="$DEBUG"/>
+        <save_retval name="RESTOCK_FAILED" variable="$FAILED"/>
+      </run_script>
+      <remove_value name="$AmmoTable"/>
+      <do_if value="$FAILED">
+        <wait min="5s" max="10s"/>
+        <resume label="RESUME"/>
+      </do_if>
+      <do_else>
+        <resume label="RESUME"/>
+      </do_else>
+
+      <label name="END"/>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <do_if value="$DEBUG gt 0">
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ Completed JP_DataVaultExplorer with %1 [%2]'.[$Explorer.knownname, $Explorer.idcode]"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+      </do_if>
+
+      <label name="CLEANUP"/>
+      <remove_from_list name="global.$DataVaultExplorerShips" exact="this.ship"/>
+      <remove_from_list name="global.$DataVaultBlackList" exact="this.$CurrentDataVault"/>
+      <do_if value="global.$DataVaultExplorerShips.count == 0">
+        <remove_value name="global.$DataVaultExplorerShips"/>
+        <remove_value name="global.$DataVaultBlackList"/>
+      </do_if>
+      <remove_value name="this.$CurrentDataVault"/>
+      <remove_value name="$Explorer"/>
+      <remove_value name="$DebugFileName"/>
+      <remove_value name="$DebugDirectory"/>
+
+      <set_order_syncpoint_reached order="this.ship.order"/>
+      <cancel_order order="this.ship.order" />
+      <label name="FINISH"/>
+      <wait exact="1ms"/>
+
+    </actions>
+  </attention>
+
+  <on_abort>
+    <remove_from_list name="global.$DataVaultExplorerShips" exact="this.ship"/>
+    <remove_from_list name="global.$DataVaultBlackList" exact="this.$CurrentDataVault"/>
+    <do_if value="global.$DataVaultExplorerShips.count == 0">
+      <remove_value name="global.$DataVaultExplorerShips"/>
+      <remove_value name="global.$DataVaultBlackList"/>
+    </do_if>
+    <remove_value name="this.$CurrentDataVault"/>
+  </on_abort>
+
+</aiscript>

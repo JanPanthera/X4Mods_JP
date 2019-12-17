@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- French ~~ Français -->
+<language>
+  <page id="8888888" voice="no">
+    <!-- JP_DataVaultExplorer -->
+    <t id="41">Faire le plein de balises de navigations?</t>
+    <t id="42">Quantité à restocker</t>
+    <t id="43">Inclure les secteurs ennemis?</t>
+    <t id="44">Inclure les secteurs inconnus?</t>
+  </page>
+</language>
+<!-- Thanks to darkslimus / Xchange Guild -->

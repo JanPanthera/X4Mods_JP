@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- German ~~ Deutsch -->
+<language>
+  <page id="8888888" voice="no">
+    <!-- JP_DataVaultExplorer -->
+    <t id="41">Navigationsbaken aufstocken?</t>
+    <t id="42">Anzahl zum aufstocken</t>
+    <t id="43">Feindliche Sektoren einbeziehen?</t>
+    <t id="44">Unbekannte Sektoren einbeziehen?</t>
+  </page>
+</language>
