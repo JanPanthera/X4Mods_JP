@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Japanese ~~ 日本語 -->
+<language>
+  <page id="8888888" voice="no">
+    <!-- JP_MultiRename -->
+    <t id="101">Naming variant?</t>
+    <t id="102">Add Class tag?</t>
+    <t id="103">Add Model name?</t>
+    <t id="104">Add Type name?</t>
+    <t id="105">Use short Model name?</t>
+    <t id="106">Tag at front?</t>
+    <t id="107">Tag at end?</t>
+    <t id="108">Object with your Tag</t>
+    <t id="109">Use numbering?</t>
+    <t id="110">Sort XL to S?</t>
+    <t id="111">Rename Commander?</t>
+    <t id="112">Rename Fleet?</t>
+    <t id="113">Rename sub. Fleets?</t>
+    <t id="114">Use Tag Coloring?</t>
+    <t id="115">Use Name Coloring?</t>
+    <t id="116">Use Number Coloring?</t>
+    <t id="117">Save names?</t>
+    <t id="118">Load names?</t>
+    <t id="119">Delete saved?</t>
+    <t id="120">Reset</t>
+  </page>
+</language>
