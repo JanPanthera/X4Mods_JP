@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<aiscript name="JP_CollectDroppedCargo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd" version="1">
+
+  <order id="JP_CollectDroppedCargo" name="JP CollectDroppedCargo" description="Collects dropped cargo and inventory items." category="navigation" infinite="true">
+    <params>
+      <param name="SECTOR" text="{20001, 201}" type="object" default="this.sector">
+        <input_param name="class" value="[class.sector]"/>
+      </param>
+      <param name="COLLECT_CARGO" text="{8888888,1}" comment="Collect Cargo items?" type="bool" default="true"/>
+      <param name="COLLECT_INVENTORY" text="{8888888,2}" comment="Collect Inventory items?" type="bool" default="true"/>
+      <param name="SELL_CARGO" text="{8888888,3}" comment="Sell cargo when full?" type="bool" default="true"/>
+      <param name="TO_PLAYER_INV" text="{8888888,6}" comment="Collect to Player inventory?" type="bool" default="false"/>
+      <!-- Cheaty Version ~ collects without flying to the object ~ (/thereshallbewings) -->
+      <param name="INSTANT" text="{8888888,5}" comment="Instant?" type="bool" default="false" advanced="true"/>
+      <!-- DEBUG -->
+      <param name="DEBUG" text="DebugText" type="number" default="0" advanced="1">
+        <input_param name="step" value="50"/>
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="100"/>
+      </param>
+    </params>
+    <skill min="0"/>
+    <requires>
+      <match shiptype="shiptype.lasertower" negate="true"/>
+    </requires>
+  </order>
+
+  <interrupts>
+    <handler ref="SectorChangeHandler"/>
+    <handler ref="TargetInvalidHandler"/>
+    <handler ref="AttackHandler"/>
+    <handler ref="MissileLockHandler" />
+    <handler ref="ScannedHandler"/>
+    <handler ref="InspectedHandler"/>
+    <handler ref="FoundAbandonedHandler"/>
+    <handler ref="FoundLockboxHandler"/>
+    <handler ref="ResupplyHandler"/>
+    <handler ref="JobRemoveRequestHandler" />
+  </interrupts>
+
+  <init>
+    <set_value name="$DebugDirectory" exact="'JP_CollectDroppedCargo.logs'"/>
+    <set_value name="$DebugFileName" exact="this.ship.idcode + '.JP_CollectDroppedCargo' + '.log'"/>
+    <set_value name="$Ship" exact="this.ship"/>
+    <do_if value="@this.$GO_SELLING == null and $SELL_CARGO">
+      <set_value name="this.$GO_SELLING" exact="if ($Ship.cargo.free.container lt ($Ship.cargo.capacity.container * 0.1)) then true else false"/>
+    </do_if>
+    <create_list name="$FoundDrops"/>
+  </init>
+
+  <attention min="unknown">
+    <actions>
+
+      <wait exact="1ms"/>
+      <label name="INIT"/>
+      <cancel_all_orders object="this.ship"/>
+
+      <do_if value="$DEBUG gt 0">
+        <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ Running JP_CollectDroppedCargo with %1 [%2]'.[$Ship.knownname, $Ship.idcode] + '\n'"/>
+      </do_if>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <label name="RESUME"/>
+
+      <do_if value="@$FoundDrops == null">
+        <create_list name="$FoundDrops"/>
+      </do_if>
+
+      <label name="SELLING"/>
+      <!-- Do we allow to sell all collected cargo? -->
+      <do_if value="$SELL_CARGO">
+        <!-- Are we full? then this.$GO_SELLING == true -->
+        <do_if value="$Ship.cargo.free.container lt ($Ship.cargo.capacity.container * 0.1)">
+          <set_value name="this.$GO_SELLING" exact="true"/>
+        </do_if>
+
+        <!-- Check if all wares are selled -->
+        <do_if value="this.$GO_SELLING and ($Ship.cargo.free.container == $Ship.cargo.capacity.container)">
+          <set_value name="this.$GO_SELLING" exact="false"/>
+        </do_if>
+
+        <!-- if this.$GO_SELLING equals true then go selling -->
+        <do_if value="this.$GO_SELLING">
+          <run_script name="'JP_SellLastFromCargoBay'">
+            <param name="SHIP" value="$Ship"/>
+            <param name="DEBUG" value="$DEBUG"/>
+          </run_script>
+          <resume label="SELLING"/>
+        </do_if>
+      </do_if>
+
+      <!-- Are we in the right sector? -->
+      <do_if value="$Ship.sector != $SECTOR">
+        <do_if value="$DEBUG gt 0">
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'Moving to sector: %1 [%2]'.[$SECTOR.knownname, $SECTOR.owner.knownname]"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+        </do_if>
+        <run_script name="'move.generic'">
+          <param name="destination" value="$SECTOR" />
+          <param name="endintargetzone" value="true"/>
+          <param name="recallsubordinates" value="false"/>
+        </run_script>
+      </do_if>
+
+      <!-- Searches for all drops around this sector and add all to $TempFoundDrops for now -->
+      <find_object name="$TempFoundDrops" space="$SECTOR" multiple="true">
+        <match class="class.drop"/>
+      </find_object>
+
+      <!-- Sort for Inv/Cargo -->
+      <create_list name="$InvDrops"/>
+      <create_list name="$CargoDrops"/>
+      <do_all exact="$TempFoundDrops.count" counter="$_it">
+        <do_if value="$TempFoundDrops.{$_it}.wares.list.count gt 0">
+          <do_if value="$TempFoundDrops.{$_it}.wares.list.last.isinventory">
+            <append_to_list name="$InvDrops" exact="$TempFoundDrops.{$_it}"/>
+          </do_if>
+          <do_elseif value="$TempFoundDrops.{$_it}.wares.list.last.iscargo">
+            <append_to_list name="$CargoDrops" exact="$TempFoundDrops.{$_it}"/>
+          </do_elseif>
+        </do_if>
+      </do_all>
+      <remove_value name="$TempFoundDrops"/>
+
+      <!-- Add all inventory items to $FoundDrops (if we allow it) -->
+      <do_if value="$COLLECT_INVENTORY">
+        <append_list_elements name="$FoundDrops" other="$InvDrops"/>
+        <do_if value="$DEBUG gt 0">
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'We have found _%1_ inv drops.'.[$InvDrops.count]"/>
+          <do_if value="$DEBUG gt 50">
+            <do_all exact="$InvDrops.count" counter="$_it">
+              <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'Inventory drop number _%1_ ~~ %2'.[$_it, $InvDrops.{$_it}.wares.list]"/>
+            </do_all>
+          </do_if>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+        </do_if>
+      </do_if>
+      <remove_value name="$InvDrops"/>
+
+      <!-- Add all cargo items to $FoundDrops (if we allow it) -->
+      <do_if value="$COLLECT_CARGO">
+        <append_list_elements name="$FoundDrops" other="$CargoDrops"/>
+        <do_if value="$DEBUG gt 0">
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'We have found _%1_ cargo drops.'.[$CargoDrops.count]"/>
+          <do_if value="$DEBUG gt 50">
+            <do_all exact="$CargoDrops.count" counter="$_it">
+              <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'Cargo drop number _%1_ ~~ %2'.[$_it, $CargoDrops.{$_it}.wares.list]"/>
+            </do_all>
+          </do_if>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+        </do_if>
+      </do_if>
+      <remove_value name="$CargoDrops"/>
+
+      <do_if value="$FoundDrops.count gt 0" negate="true">
+        <do_if value="$DEBUG gt 0">
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'We havent found anything we wait a bit and continue then.'"/>
+        </do_if>
+        <resume label="WAIT_IDLE"/>
+      </do_if>
+
+      <!-- Sort all drop in $FoundDrops by distance to the ship -->
+      <run_script name="'JP_SortListByDistance'">
+        <param name="LIST" value="$FoundDrops"/>
+        <param name="OBJECT" value="$Ship"/>
+        <param name="DEBUG" value="$DEBUG"/>
+        <save_retval name="SORTED_LIST" variable="$FoundDrops"/>
+      </run_script>
+
+      <!-- Is the drop still here?  -->
+      <do_if value="not $FoundDrops.{1}.exists or $FoundDrops.{1}.iswreck">
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'Cancel collecting because drop is now a wreck or dont exists anymore.'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+        <resume label="RESUME"/>
+      </do_if>
+
+      <do_if value="$DEBUG gt 0">
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'We will collect drop %1'.[$FoundDrops.{1}.wares.list]"/>
+      </do_if>
+
+      <!-- Moving to the object -->
+      <do_if value="$DEBUG gt 0">
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'We are moving to the drop.'"/>
+      </do_if>
+      <label name="MOVING"/>
+      <do_if value="$INSTANT" negate="true">
+        <do_if value="$DEBUG gt 50">
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'Moving...'"/>
+        </do_if>
+        <get_safe_pos result="$TempPosition" zone="$SECTOR" object="$FoundDrops.{1}" directionobject="$Ship" radius="$Ship.size" ignored="$Ship"/>
+        <move_to object="$Ship" destination="$SECTOR" finishonapproach="true" forceposition="true" travel="true">
+          <position value="$TempPosition"/>
+          <interrupt_after_time time="2s"/>
+        </move_to>
+        <do_if value="$Ship.distanceto.{$FoundDrops.{1}} gt 200m">
+          <resume label="MOVING"/>
+        </do_if>
+        <remove_value name="$TempPosition"/>
+      </do_if>
+
+      <!-- Is the drop still here?  -->
+      <do_if value="not $FoundDrops.{1}.exists or $FoundDrops.{1}.iswreck">
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'Cancel collecting because drop is now a wreck or dont exists anymore.'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+        <resume label="RESUME"/>
+      </do_if>
+      <!-- Collecting it -->
+      <do_if value="$DEBUG gt 0">
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'Collected drop %1'.[$FoundDrops.{1}.wares.list]"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+      </do_if>
+      <do_if value="$FoundDrops.{1}.wares.list.last.isinventory and $TO_PLAYER_INV">
+        <add_inventory entity="player.entity" ware="$FoundDrops.{1}.wares.list.last" exact="$FoundDrops.{1}.wares.{$FoundDrops.{1}.wares.list.last}.count"/>
+        <wait exact="1ms"/>
+        <destroy_object object="$FoundDrops.{1}" explosion="false"/>
+      </do_if>
+      <do_else>
+        <collect_drop object="$Ship" drop="$FoundDrops.{1}"/>
+      </do_else>
+      <!-- Make sure the game removes the collected drop internal from the galaxy before we continue -->
+      <remove_value name="$FoundDrops"/>
+      <wait exact="1s"/>
+      <resume label="RESUME"/>
+
+      <label name="WAIT_IDLE"/>
+      <set_value name="$Timeout" min="15s" max="30s"/>
+      <do_if value="$DEBUG gt 0">
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'No drops found that we can collect.. idling for %1 seconds'.[$Timeout]"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+      </do_if>
+      <remove_value name="$FoundObjects"/>
+      <run_script name="'move.idle'">
+        <param name="TimeOut" value="$Timeout"/>
+      </run_script>
+      <remove_value name="$Timeout"/>
+      <resume label="RESUME"/>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <do_if value="$DEBUG gt 0">
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~ Completed JP_CollectDroppedCargo with %1 [%2]'.[$Ship.knownname, $Ship.idcode]"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+      </do_if>
+
+      <label name="$CLEANUP"/>
+      <do_if value="$SELL_CARGO">
+        <remove_value name="this.$GO_SELLING"/>
+      </do_if>
+      <remove_value name="$FoundDrops"/>
+      <remove_value name="$Ship"/>
+      <remove_value name="$DebugFileName"/>
+      <remove_value name="$DebugDirectory"/>
+
+      <label name="FINISH"/>
+      <set_order_syncpoint_reached order="this.ship.order"/>
+      <cancel_order order="this.ship.order" />
+      <wait exact="1ms"/>
+
+    </actions>
+  </attention>
+
+  <on_abort>
+    <do_if value="$SELL_CARGO">
+      <remove_value name="this.$GO_SELLING"/>
+    </do_if>
+  </on_abort>
+
+</aiscript>
