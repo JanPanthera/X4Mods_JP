@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<mdscript name="JP_UpdateTradeOrderExplorerFleet" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="md.xsd">
+  <cues>
+
+    <cue name="JP_UPDATE_TRADE_ORDER_EXPLORER_FLEET" instantiate="true" checkinterval="2s">
+      <conditions>
+        <check_value value="@global.$TradeOrderExplorerShips.count gt 1"/>
+      </conditions>
+      <actions>
+        <create_list name="$AutoFleetShips"/>
+        <do_for_each name="$TradeOrderExplorerShip" in="global.$TradeOrderExplorerShips">
+          <do_if value="$TradeOrderExplorerShip.defaultorder.$AUTO_FLEET == true">
+            <append_to_list name="$AutoFleetShips" exact="$TradeOrderExplorerShip"/>
+          </do_if>
+        </do_for_each>
+        <do_if value="@global.$TradeOrderExplorerFleetLeader != null">
+          <do_if value="global.$TradeOrderExplorerFleetLeader.fleet.iscommander == false">
+            <remove_value name="global.$TradeOrderExplorerFleetLeader"/>
+          </do_if>
+        </do_if>
+        <do_if value="$AutoFleetShips.count gt 1">
+          <do_for_each name="$AutoFleetShip" in="$AutoFleetShips" counter="$_it">
+            <do_if value="$_it == 1">
+              <continue/>
+            </do_if>
+            <do_if value="@global.$TradeOrderExplorerFleetLeader == null">
+              <set_value name="global.$TradeOrderExplorerFleetLeader" exact="$AutoFleetShips.{1}"/>
+            </do_if>
+            <do_if value="$AutoFleetShip.fleet.commander == null">
+              <set_object_commander object="$AutoFleetShip" commander="global.$TradeOrderExplorerFleetLeader"/>
+            </do_if>
+          </do_for_each>
+          <set_object_fleet_name object="global.$TradeOrderExplorerFleetLeader" name="'TradeOrderExplorer'"/>
+        </do_if>
+        <remove_value name="$AutoFleetShips"/>
+      </actions>
+    </cue>
+
+    <cue name="JP_TRADEORDEREXPLORER_DEBUG" instantiate="true" checkinterval="1s">
+      <actions>
+        <set_value name="$DEBUG" exact="false"/>
+
+        <do_if value="$DEBUG">
+          <debug_to_file append="false" directory="'JP_TradeOrderExplorer.logs'" name="'JP_TradeOrderExplorer_Debug.log'" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <do_if value="@global.$TradeOrderExplorerSectorBlackList != null">
+            <do_for_each name="$Sector" in="global.$TradeOrderExplorerSectorBlackList">
+              <debug_to_file directory="'JP_TradeOrderExplorer.logs'" name="'JP_TradeOrderExplorer_Debug.log'" text="'~ Sector: %1 [%2].'.[$Sector.knownname, $Sector.owner.knownname]"/>
+            </do_for_each>
+          </do_if>
+          <debug_to_file directory="'JP_TradeOrderExplorer.logs'" name="'JP_TradeOrderExplorer_Debug.log'" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+
+          <debug_to_file directory="'JP_TradeOrderExplorer.logs'" name="'JP_TradeOrderExplorer_Debug.log'" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <do_if value="@global.$TradeOrderExplorerShips != null">
+            <do_for_each name="$Ship" in="global.$TradeOrderExplorerShips">
+              <debug_to_file directory="'JP_TradeOrderExplorer.logs'" name="'JP_TradeOrderExplorer_Debug.log'" text="'~ Ship: %1 [%2].'.[$Ship.knownname, $Ship.owner.knownname]"/>
+            </do_for_each>
+          </do_if>
+          <debug_to_file directory="'JP_TradeOrderExplorer.logs'" name="'JP_TradeOrderExplorer_Debug.log'" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        </do_if>
+
+      </actions>
+    </cue>
+
+  </cues>
+</mdscript>
