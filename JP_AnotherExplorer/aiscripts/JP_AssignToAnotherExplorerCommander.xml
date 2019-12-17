@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<aiscript name="JP_AssignToAnotherExplorerCommander" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd" version="1">
+
+  <order id="JP_AssignToAnotherExplorerCommander" name="JP AssignToAnotherExplorerCommander" category="internal">
+    <params>
+      <param name="COMMANDER" text="{1041, 10076}" type="object" default="null"/>
+    </params>
+    <requires>
+      <match shiptype="shiptype.lasertower" negate="true"/>
+    </requires>
+    <location object="$commander" condition="@$commander.isoperational" />
+  </order>
+  <attention min="unknown">
+    <actions>
+
+      <do_if value="$COMMANDER.isoperational and $COMMANDER.trueowner == this.trueowner">
+        <set_value name="$DefaultOrder" exact="$COMMANDER.defaultorder" />
+        <do_if value="$DefaultOrder.id == 'JP_AnotherExplorer'">
+          <cancel_all_orders object="this.object"/>
+          <set_object_commander object="this.object" commander="$COMMANDER"/>
+          <create_order object="this.object" default="true" immediate="true" id="'JP_AnotherExplorer'">
+            <param name="SECTOR" value="$DefaultOrder.$SECTOR"/>
+            <param name="HOME_SECTOR" value="$DefaultOrder.$HOME_SECTOR"/>
+            <param name="EXPLORE_GATES" value="$DefaultOrder.$EXPLORE_GATES"/>
+            <param name="EXPLORE_STATIONS" value="$DefaultOrder.$EXPLORE_STATIONS"/>
+            <param name="EXPLORE_DATAVAULT" value="$DefaultOrder.$EXPLORE_DATAVAULT"/>
+            <param name="ENTIRE_GALAXY" value="$DefaultOrder.$ENTIRE_GALAXY"/>
+            <param name="EXPLORE_ENEMY_SECTORS" value="$DefaultOrder.$EXPLORE_ENEMY_SECTORS"/>
+            <param name="EXPLORE_ENEMY_STATIONS" value="$DefaultOrder.$EXPLORE_ENEMY_STATIONS"/>
+            <param name="RESUPPLY_NAVBEACON" value="$DefaultOrder.$RESUPPLY_NAVBEACON"/>
+            <param name="RETURN_HOME" value="$DefaultOrder.$RETURN_HOME"/>
+            <param name="DEBUG" value="$DefaultOrder.$DEBUG"/>
+          </create_order>
+          <remove_value name="$DefaultOrder"/>
+        </do_if>
+      </do_if>
+      <do_else>
+        <return value="false"/>
+      </do_else>
+
+      <return value="true"/>
+
+    </actions>
+  </attention>
+</aiscript>

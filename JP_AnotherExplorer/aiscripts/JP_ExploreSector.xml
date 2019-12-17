@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<aiscript name="JP_ExploreSector" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd">
+
+  <order id ="JP_ExploreSector" name="Explores an Sector" category="internal" infinite="false">
+    <params>
+      <param name="SHIP" type="object" text="ShipObject"/>
+      <param name="SECTOR" type="object" text="Sector"/>
+      <param name="EXPLORE_GATES" type="bool" text="ExploreGates"/>
+      <param name="EXPLORE_STATIONS" type="bool" text="ExploreStations"/>
+      <param name="EXPLORE_DATAVAULT" type="bool" text="ExploreStations"/>
+      <param name="EXPLORE_ENEMY_STATIONS" type="bool" text="Explore Enemy Stations?"/>
+      <param name="RESUPPLY_NAVBEACON" type="internal" default="true"/>
+      <param name="DEBUG" type="bool" text="DebugText"/>
+    </params>
+  </order>
+
+  <interrupts>
+    <handler ref="SectorChangeHandler"/>
+    <handler ref="TargetInvalidHandler"/>
+    <handler ref="AttackHandler"/>
+    <handler ref="MissileLockHandler" />
+    <handler ref="ScannedHandler"/>
+    <handler ref="InspectedHandler"/>
+    <handler ref="FoundAbandonedHandler"/>
+    <handler ref="FoundLockboxHandler"/>
+    <handler ref="ResupplyHandler"/>
+    <handler ref="JobRemoveRequestHandler" />
+  </interrupts>
+
+  <init>
+  </init>
+
+  <attention min="unknown">
+    <actions>
+
+      <wait exact="1ms"/>
+
+      <do_if value="$DEBUG">
+        <debug_text text="'Exploring Sector %1 [%2]\n'.[$SECTOR.knownname, $SECTOR.owner.knownname]"/>
+      </do_if>
+
+      <!-- Explore Gates ~~~~~~~~~~~~~~~~~~~~~  -->
+      <label name="RESUME_EXPLORE_GATES"/>
+      <do_if value="$EXPLORE_GATES">
+        <!-- Search for unknown Gates -->
+        <do_if value="$DEBUG">
+          <debug_text text="'Search for unknown Gates...'"/>
+        </do_if>
+        <find_gate name="$Gates" space="$SECTOR" multiple="true">
+          <match knownto="$SHIP.owner" negate="true"/>
+        </find_gate>
+        <do_if value="$DEBUG">
+          <debug_text text="'%1 unknown gates found'.[$Gates.count]"/>
+        </do_if>
+        <do_if value="$Gates.count gt 0">
+          <!-- Sort Gates list to the ship distance -->
+          <run_script name="'JP_SortListByDistance'">
+            <param name="LIST" value="$Gates"/>
+            <param name="OBJECT" value="$SHIP"/>
+            <param name="DEBUG" value="$DEBUG"/>
+            <save_retval name="SORTED_LIST" variable="$SortedList"/>
+          </run_script>
+          <wait exact="1ms"/>
+          <set_value name="$Gates" exact="$SortedList"/>
+          <remove_value name="$SortedList"/>
+          <!-- Explore logic -->
+          <check_object object="$Gates.last" knownto="$SHIP.owner" result="$isKnown"/>
+          <do_if value="not $isKnown">
+            <do_if value="$DEBUG">
+              <debug_text text="'Exploring Gate %1'.[$Gates.last.knownname]"/>
+            </do_if>
+            <set_command command="command.movetozone" param="$Gates.last"/>
+            <set_command_action commandaction ="commandaction.flyingto" param="$Gates.last"/>
+            <run_script name="'move.generic'">
+              <param name="destination" value="$Gates.last" />
+            </run_script>
+            <wait exact="1ms"/>
+          </do_if>
+          <remove_value name="$isKnown"/>
+          <do_if value="$DEBUG">
+            <debug_text text="'RESUME_EXPLORE_GATES\n'"/>
+          </do_if>
+          <resume label="RESUME_EXPLORE_GATES"/>
+        </do_if>
+        <remove_value name="$Gates"/>
+      </do_if>
+      <do_else>
+        <do_if value="$DEBUG">
+          <debug_text text="'Exploring of Gates turned off.'"/>
+        </do_if>
+      </do_else>
+      <do_if value="$DEBUG">
+        <debug_text text="'~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+      </do_if>
+
+      <!-- Explore Stations ~~~~~~~~~~~~~~~~~~~~~  -->
+      <label name="RESUME_EXPLORE_STATIONS"/>
+      <do_if value="$EXPLORE_STATIONS">
+        <!-- Search for unknown Stations -->
+        <do_if value="$DEBUG">
+          <debug_text text="'Search for unknown Stations...'"/>
+        </do_if>
+        <do_if value="$EXPLORE_ENEMY_STATIONS">
+          <find_station name="$Stations" space="$SECTOR" multiple="true">
+            <match knownto="$SHIP" negate="true"/>
+          </find_station>
+        </do_if>
+        <do_else>
+          <find_station name="$Stations" space="$SECTOR" multiple="true">
+            <match knownto="$SHIP.owner" negate="true"/>
+            <match mayattack="$SHIP" negate="true"/>
+          </find_station>
+        </do_else>
+        <do_if value="$DEBUG">
+          <debug_text text="'%1 unknown stations found'.[$Stations.count]"/>
+        </do_if>
+
+        <do_if value="$Stations.count gt 0">
+          <!-- Sort Stations list to the ship distance -->
+          <run_script name="'JP_SortListByDistance'">
+            <param name="LIST" value="$Stations"/>
+            <param name="OBJECT" value="$SHIP"/>
+            <param name="DEBUG" value="$DEBUG"/>
+            <save_retval name="SORTED_LIST" variable="$SortedList"/>
+          </run_script>
+          <wait exact="1ms"/>
+          <set_value name="$Stations" exact="$SortedList"/>
+          <remove_value name="$SortedList"/>
+          <!-- Explore logic -->
+          <check_object object="$Stations.last" knownto="$SHIP.owner" result="$isKnown"/>
+          <do_if value="not $isKnown">
+            <do_if value="$DEBUG">
+              <debug_text text="'Exploring Station %1'.[$Stations.last.knownname]"/>
+            </do_if>
+            <set_command command="command.movetozone" param="$Stations.last"/>
+            <set_command_action commandaction ="commandaction.flyingto" param="$Stations.last"/>
+            <run_script name="'move.generic'">
+              <param name="destination" value="$Stations.last" />
+            </run_script>
+            <wait exact="1ms"/>
+          </do_if>
+          <remove_value name="$isKnown"/>
+          <do_if value="$DEBUG">
+            <debug_text text="'RESUME_EXPLORE_STATIONS\n'"/>
+          </do_if>
+          <resume label="RESUME_EXPLORE_STATIONS"/>
+        </do_if>
+        <remove_value name="$Stations"/>
+      </do_if>
+      <do_else>
+        <do_if value="$DEBUG">
+          <debug_text text="'Exploring of Stations turned off.'"/>
+        </do_if>
+      </do_else>
+      <do_if value="$DEBUG">
+        <debug_text text="'~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+      </do_if>
+
+      <!-- Explore DataVault -->
+      <do_if value="$EXPLORE_DATAVAULT">
+        <do_if value="$DEBUG">
+          <debug_text text="'Search for an unknown DataVault...'"/>
+        </do_if>
+        <run_script name="'JP_IsDataVaultHere'">
+          <param name="SECTOR" value="$SECTOR"/>
+          <param name="DEBUG" value="$DEBUG"/>
+          <save_retval name="DATA_VAULT" variable="$DataVault"/>
+        </run_script>
+        <wait exact="1ms"/>
+        <do_if value="$DataVault != null">
+          <do_if value="$DEBUG">
+            <debug_text text="'Exploring DataVault...'"/>
+          </do_if>
+          <run_script name="'JP_ExploreDataVault'">
+            <param name="SHIP" value="$SHIP"/>
+            <param name="SECTOR" value="$SECTOR"/>
+            <param name="RESUPPLY_NAVBEACON" value="$RESUPPLY_NAVBEACON"/>
+            <param name="DEBUG" value="$DEBUG"/>
+          </run_script>
+          <wait exact="1ms"/>
+        </do_if>
+        <do_else>
+          <do_if value="$DEBUG">
+            <debug_text text="'No DataVault here...\n'"/>
+          </do_if>
+        </do_else>
+      </do_if>
+      <do_else>
+        <do_if value="$DEBUG">
+          <debug_text text="'Exploring of DataVaults turned off.'"/>
+        </do_if>
+      </do_else>
+
+      <wait exact="1ms"/>
+    </actions>
+  </attention>
+
+  <on_abort>
+  </on_abort>
+
+</aiscript>
