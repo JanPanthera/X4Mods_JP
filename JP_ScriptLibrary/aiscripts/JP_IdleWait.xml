@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<aiscript name="JP_IdleWait" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd">
+
+  <order id="JP_IdleWait" name="JP IdleWait" category="internal" infinite="false">
+    <params>
+      <param name="SHIP" text="Ship" type="object" default="null" required="true"/>
+      <param name="TIMEOUT_MIN" text="TimeoutMin" type="number" default="15s" required="false"/>
+      <param name="TIMEOUT_MAX" text="TimeoutMax" type="number" default="60s" required="false"/>
+      <param name="SECTOR" text="Sector" type="object" default="null" required="false" comment="Sector for safe idling"/>
+      <param name="SAFE_SECTOR_IDLING" text="UseIdlingInSafeSector?" type="bool" default="false" required="false" comment="turns above on"/>
+      <param name="DEBUG" text="DebugText" type="number" default="0" advanced="1" required="false"/>
+      <param name="DEBUG_DIRECTORY" text="DebugDirectory" type="internal" default="'JP_ScriptLibrary.logs'"/>
+      <param name="DEBUG_FILE_NAME" text="DebugDirectory" type="internal" default="this.ship.idcode + '.JP_IdleWait' + '.log'"/>
+    </params>
+    <requires>
+      <match shiptype="shiptype.lasertower" negate="true"/>
+    </requires>
+  </order>
+
+  <interrupts>
+  </interrupts>
+
+  <init>
+    <set_value name="$UseOwnFile" exact="if $DEBUG_FILE_NAME == (this.ship.idcode + '.JP_IdleWait' + '.log') then true else false"/>
+    <set_value name="$DebugChance" exact="if $UseOwnFile then 100 else 0"/>
+  </init>
+
+  <attention min="unknown">
+    <actions>
+
+      <wait exact="1ms"/>
+      <label name="INIT"/>
+
+      <do_if value="$DEBUG gt 0">
+        <debug_to_file append="not $UseOwnFile" chance="$DebugChance" directory="$DEBUG_DIRECTORY" name="$DEBUG_FILE_NAME" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <debug_to_file chance="$DebugChance" directory="$DEBUG_DIRECTORY" name="$DEBUG_FILE_NAME" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ Running JP_IdleWait ~~ %1 [%2]'.[$SHIP.knownname, $SHIP.idcode] + '\n'"/>
+      </do_if>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <do_if value="$SHIP.class" list="[class.ship, class.ship_xs, class.ship_s, class.ship_m, class.ship_l, class.ship_xl]" negate="true">
+        <do_if value="$DEBUG gt 0">
+          <debug_to_file directory="$DEBUG_DIRECTORY" name="$DEBUG_FILE_NAME" text="'~ Given parameter SHIP is not of class ship.\n'"/>
+        </do_if>
+        <resume label="END"/>
+      </do_if>
+      <do_if value="$SAFE_SECTOR_IDLING and $SECTOR.class != class.sector">
+        <do_if value="$DEBUG gt 0">
+          <debug_to_file directory="$DEBUG_DIRECTORY" name="$DEBUG_FILE_NAME" text="'~ Given parameter SECTOR is not of class sector.\n'"/>
+        </do_if>
+        <resume label="END"/>
+      </do_if>
+
+      <do_if value="$SAFE_SECTOR_IDLING">
+        <!-- Are we in the right sector? -->
+        <run_script name="'JP_AreWeInTheRightSector'">
+          <param name="SHIP" value="$SHIP"/>
+          <param name="SECTOR" value="$SECTOR"/>
+          <param name="DEBUG" value="$DEBUG"/>
+          <param name="DEBUG_DIRECTORY" value="$DEBUG_DIRECTORY"/>
+          <param name="DEBUG_FILE_NAME" value="$DEBUG_FILE_NAME"/>
+        </run_script>
+      </do_if>
+
+      <set_command_action commandaction="commandaction.calculating"/>
+      <set_value name="$Timeout" min="$TIMEOUT_MIN" max="$TIMEOUT_MAX" profile="increasing"/>
+      <do_if value="$DEBUG gt 0">
+        <debug_to_file directory="$DEBUG_DIRECTORY" name="$DEBUG_FILE_NAME" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <debug_to_file directory="$DEBUG_DIRECTORY" name="$DEBUG_FILE_NAME" text="'Ship %1 [%2] will idling for around %3 seconds.'.[$SHIP.knownname, $SHIP.idcode, $Timeout]"/>
+      </do_if>
+      <run_script name="'move.idle'">
+        <param name="TimeOut" value="$Timeout"/>
+      </run_script>
+      <remove_value name="$Timeout"/>
+      <do_if value="$DEBUG gt 0">
+        <debug_to_file directory="$DEBUG_DIRECTORY" name="$DEBUG_FILE_NAME" text="'Done with idling we will continue.'"/>
+        <debug_to_file directory="$DEBUG_DIRECTORY" name="$DEBUG_FILE_NAME" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+      </do_if>
+      
+      <label name="END"/>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <do_if value="$DEBUG gt 0">
+        <debug_to_file chance="$DebugChance" directory="$DEBUG_DIRECTORY" name="$DEBUG_FILE_NAME" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ Completed JP_IdleWait ~~ %1 [%2]'.[$SHIP.knownname, $SHIP.idcode]"/>
+        <debug_to_file chance="$DebugChance" directory="$DEBUG_DIRECTORY" name="$DEBUG_FILE_NAME" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+      </do_if>
+
+      <label name="CLEANUP"/>
+      <remove_value name="$UseOwnFile"/>
+      <remove_value name="$DebugChance"/>
+
+      <label name="FINISH"/>
+      <wait exact="1ms"/>
+
+    </actions>
+  </attention>
+
+  <on_abort>
+  </on_abort>
+
+</aiscript>

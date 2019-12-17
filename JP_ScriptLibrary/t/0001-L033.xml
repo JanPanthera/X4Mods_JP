@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- French ~~ Français -->
+<language>
+  <page id="8888888" voice="no">
+    <!-- JP_ScriptLibrary -->
+    <t id="1001">Transparence</t>
+    <t id="1002">Rouge</t>
+    <t id="1003">Vert</t>
+    <t id="1004">Bleu</t>
+    <t id="1005">Automatic Fleet?</t>
+    <t id="1006">Idling in safe sector?</t>
+    <t id="1007">Safe sector</t>
+    <t id="1008">Secteurs à explorer</t>
+  </page>
+</language>
+<!-- Thanks to darkslimus / Xchange Guild -->

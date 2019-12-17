@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- ARGB (0-255) to hex number string ('\033#FFFF00FF#') -->
+
+<!-- Return value -->
+<!--<retval name="HEXA_COLOR_CODE" value="$HexaColorCode"/>-->
+
+<aiscript name="JP_ToHexadecimalColorString" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd" version="1">
+
+  <order id="JP_ToHexadecimalColorString" name="JP ToHexadecimalColorString" category="internal" infinite="false">
+    <params>
+      <!-- Params -->
+      <param name="ALPHA" text="Alpha" type="number" default="255"/>
+      <param name="RED" text="Red" type="number" default="3"/>
+      <param name="GREEN" text="Green" type="number" default="161"/>
+      <param name="BLUE" text="Blue" type="number" default="252"/>
+      <!-- DEBUG -->
+      <param name="DEBUG" text="DebugText" type="number" default="100" advanced="1"/>
+      <param name="DEBUG_DIRECTORY" text="DebugDirectory" type="internal" default="'JP_ScriptLibrary.logs'"/>
+    </params>
+    <skill min="0"/>
+    <requires>
+      <match shiptype="shiptype.lasertower" negate="true"/>
+    </requires>
+  </order>
+
+  <interrupts>
+    <handler ref="JobRemoveRequestHandler" />
+  </interrupts>
+
+  <init>
+    <set_value name="$DebugFileName" exact="this.ship.idcode + '.JP_ToHexadecimalColorString' + '.log'"/>
+  </init>
+
+  <attention min="unknown">
+    <actions>
+
+      <wait exact="1ms"/>
+      <label name="INIT"/>
+
+      <do_if value="$DEBUG gt 0">
+        <debug_to_file append="false" directory="$DEBUG_DIRECTORY" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <debug_to_file directory="$DEBUG_DIRECTORY" name="$DebugFileName" text="'~~ Running JP_ToHexadecimalColorString with %1 [%2]'.[this.ship.name, this.ship.idcode] + '\n'"/>
+      </do_if>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <create_list name="$TempDecimalNumbers"/>
+      <append_list_elements name="$TempDecimalNumbers" other="[$ALPHA, $RED, $GREEN, $BLUE]"/>
+      <create_list name="$ConstructedHexNumber"/>
+      <do_all exact="$TempDecimalNumbers.count" counter="$_it">
+        <do_if value="$TempDecimalNumbers.{$_it} != 0">
+          <do_if value="$DEBUG gt 0">
+            <debug_to_file directory="$DEBUG_DIRECTORY" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+            <debug_to_file directory="$DEBUG_DIRECTORY" name="$DebugFileName" text="'Converting %1 to hexadecimal...'.[$TempDecimalNumbers.{$_it}]"/>
+          </do_if>
+          <set_value name="$ActualDecimal" exact="($TempDecimalNumbers.{$_it})i"/>
+          <create_list name="$TempHexNumber"/>
+          <do_while value="$ActualDecimal != 0">
+            <do_if value="$DEBUG gt 50">
+              <debug_to_file directory="$DEBUG_DIRECTORY" name="$DebugFileName" text="'In do while:  ~ ' + $ActualDecimal"/>
+            </do_if>
+            <set_value name="$Remainder" exact="$ActualDecimal % 16"/>
+            <do_if value="$Remainder le 9">
+              <append_to_list name="$TempHexNumber" exact="'%1'.[$Remainder]"/>
+            </do_if>
+            <do_elseif value="$Remainder" exact="10">
+              <append_to_list name="$TempHexNumber" exact="'A'"/>
+            </do_elseif>
+            <do_elseif value="$Remainder" exact="11">
+              <append_to_list name="$TempHexNumber" exact="'B'"/>
+            </do_elseif>
+            <do_elseif value="$Remainder" exact="12">
+              <append_to_list name="$TempHexNumber" exact="'C'"/>
+            </do_elseif>
+            <do_elseif value="$Remainder" exact="13">
+              <append_to_list name="$TempHexNumber" exact="'D'"/>
+            </do_elseif>
+            <do_elseif value="$Remainder" exact="14">
+              <append_to_list name="$TempHexNumber" exact="'E'"/>
+            </do_elseif>
+            <do_elseif value="$Remainder" exact="15">
+              <append_to_list name="$TempHexNumber" exact="'F'"/>
+            </do_elseif>
+            <remove_value name="$Remainder"/>
+            <set_value name="$ActualDecimal" exact="$ActualDecimal / 16"/>
+          </do_while>
+          <do_if value="$DEBUG gt 0">
+            <debug_to_file directory="$DEBUG_DIRECTORY" name="$DebugFileName" text="'Converted to %1'.[$TempHexNumber]"/>
+            <debug_to_file directory="$DEBUG_DIRECTORY" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+          </do_if>
+          <do_if value="$TempHexNumber.count == 0">
+            <append_list_elements name="$TempHexNumber" other="['0', '0']"/>
+          </do_if>
+          <do_elseif value="$TempHexNumber.count == 1">
+            <append_to_list name="$TempHexNumber" exact="'0'"/>
+          </do_elseif>
+          <do_all exact="$TempHexNumber.count" counter="$_jt" reverse="true">
+            <append_to_list name="$ConstructedHexNumber" exact="$TempHexNumber.{$_jt}"/>
+          </do_all>
+          <remove_value name="$TempHexNumber"/>
+          <remove_value name="$ActualDecimal"/>
+        </do_if>
+        <do_else>
+          <append_list_elements name="$ConstructedHexNumber" other="['0', '0']"/>
+        </do_else>
+      </do_all>
+
+      <set_value name="$HexaColorCode" exact="'\033#%1%2%3%4%5%6%7%8#'.[$ConstructedHexNumber.{1}, $ConstructedHexNumber.{2}, $ConstructedHexNumber.{3}, $ConstructedHexNumber.{4}, $ConstructedHexNumber.{5}, $ConstructedHexNumber.{6}, $ConstructedHexNumber.{7}, $ConstructedHexNumber.{8}]"/>
+
+      <do_if value="$DEBUG gt 0">
+        <debug_to_file directory="$DEBUG_DIRECTORY" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <debug_to_file directory="$DEBUG_DIRECTORY" name="$DebugFileName" text="'Created List: %1  ~~ Created ColorCode: %2'.[$ConstructedHexNumber, $HexaColorCode]"/>
+        <debug_to_file directory="$DEBUG_DIRECTORY" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+      </do_if>
+
+      <remove_value name="$ConstructedHexNumber"/>
+      <remove_value name="$TempDecimalNumbers"/>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <do_if value="$DEBUG gt 0">
+        <debug_to_file directory="$DEBUG_DIRECTORY" name="$DebugFileName" text="'~~ Completed JP_ToHexadecimalColorString with %1 [%2]'.[this.ship.name, this.ship.idcode]"/>
+        <debug_to_file directory="$DEBUG_DIRECTORY" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+      </do_if>
+
+      <label name="CLEANUP"/>
+      <remove_value name="$DebugFileName"/>
+
+      <label name="RETURN"/>
+      <return>
+        <retval name="HEXA_COLOR_CODE" value="$HexaColorCode"/>
+      </return>
+
+      <label name="FINISH"/>
+      <wait exact="1ms"/>
+
+    </actions>
+  </attention>
+
+  <on_abort>
+  </on_abort>
+
+</aiscript>

@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<aiscript name="JP_GetSubsSortedForNumbering" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd">
+
+  <order id="JP_GetSubsSortedForNumbering" name="JP GetSubsSortedForNumbering" category="internal" infinite="false">
+    <params>
+      <param name="SUBORDINATES" text="Subordinates" type="list"/>
+      <param name="REVERSED_NUMBERING" text="XL to S" type="bool" default="true"/>
+      <!-- DEBUG -->
+      <param name="DEBUG" text="DebugText" type="number" default="0" advanced="1"/>
+    </params>
+  </order>
+
+  <interrupts>
+    <handler ref="JobRemoveRequestHandler" />
+  </interrupts>
+
+  <init>
+    <set_value name="$DebugDirectory" exact="'JP_GetSubsSortedForNumbering.logs'"/>
+    <set_value name="$DebugFileName" exact="'JP_GetSubsSortedForNumbering' + '.log'"/>
+  </init>
+
+  <attention min="unknown">
+    <actions>
+
+      <wait exact="1ms"/>
+      <label name="INIT"/>
+
+      <do_if value="$DEBUG gt 0">
+        <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ Running JP_GetSubsSortedForNumbering ~~' + '\n'"/>
+      </do_if>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <!-- Make sure we don't get drones -->
+      <create_list name="$Subordinates"/>
+      <do_for_each name="$Subordinate" in="$SUBORDINATES">
+        <do_if value="not $Subordinate.isunit">
+          <append_to_list name="$Subordinates" exact="$Subordinate"/>
+        </do_if>
+      </do_for_each>
+      <remove_value name="$SUBORDINATES"/>
+
+      <!-- Sort by classes -->
+      <create_list name="$Classes"/>
+      <append_list_elements name="$Classes" other="[class.ship_s, class.ship_m, class.ship_l, class.ship_xl]"/>
+      <create_list name="$Groups"/>
+      <set_value name="$_it" exact="1"/>
+      <do_while value="$Subordinates.count gt 0">
+        <create_list name="$Group"/>
+        <do_for_each name="$Subordinate" in="$Subordinates">
+          <do_if value="$Subordinate.class == $Classes.{$_it}">
+            <append_to_list name="$Group" exact="$Subordinate"/>
+          </do_if>
+        </do_for_each>
+        <remove_from_list name="$Subordinates" list="$Group"/>
+        <do_if value="$Group.count gt 0">
+          <append_to_list name="$Groups" exact="$Group"/>
+        </do_if>
+        <remove_value name="$Group"/>
+        <set_value name="$_it" operation="add" exact="1"/>
+        <wait exact="1ms"/>
+      </do_while>
+      <remove_value name="$Classes"/>
+      <remove_value name="$Subordinates"/>
+
+      <!-- Debug log -->
+      <do_if value="$DEBUG gt 0">
+        <do_for_each name="$Group" in="$Groups">
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~ Group $Group.count: %1'.[$Group.count]"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <do_for_each name="$Subordinate" in="$Group">
+            <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~ Ship: %1 [%2]'.[$Subordinate.knownname, $Subordinate.idcode]"/>
+          </do_for_each>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+        </do_for_each>
+      </do_if>
+
+      <create_list name="$SortedSubordinates"/>
+      <do_for_each name="$Group" in="$Groups">
+        <do_while value="$Group.count gt 0">
+          <set_value name="$ModelName" exact="$Group.{1}.macro.rawname"/>
+          <do_for_each name="$Subordinate" in="$Group">
+            <do_if value="$Subordinate.macro.rawname == $ModelName">
+              <append_to_list name="$SortedSubordinates" exact="$Subordinate"/>
+            </do_if>
+          </do_for_each>
+          <remove_from_list name="$Group" list="$SortedSubordinates"/>
+          <wait exact="1ms"/>
+        </do_while>
+      </do_for_each>
+      <remove_value name="$Groups"/>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <do_if value="$DEBUG gt 0">
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ Completed JP_GetSubsSortedForNumbering ~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+      </do_if>
+
+      <label name="CLEANUP"/>
+      <remove_value name="$DebugFileName"/>
+      <remove_value name="$DebugDirectory"/>
+
+      <label name="RETURN"/>
+      <return>
+        <retval name="SORTED_SUBORDINATES" value="$SortedSubordinates"/>
+      </return>
+
+      <label name="FINISH"/>
+      <wait exact="1ms"/>
+
+    </actions>
+  </attention>
+
+  <on_abort>
+  </on_abort>
+
+</aiscript>
