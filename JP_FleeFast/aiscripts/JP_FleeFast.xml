@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<aiscript name="JP_FleeFast" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd">
+
+  <order id="JP_FleeFast" name="JP FleeFast" description="Flee as fast as you can...." category="navigation" infinite="true">
+    <params>
+      <param name="SAFE_POSITION" type="position" text="Safe Position">
+        <input_param name="class" value="class.sector"/>
+      </param>
+    </params>
+    <skill min="0"/>
+    <requires>
+      <match shiptype="shiptype.lasertower" negate="true"/>
+    </requires>
+  </order>
+
+  <interrupts>
+    <handler ref="SectorChangeHandler"/>
+    <handler ref="TargetInvalidHandler"/>
+    <handler ref="AttackHandler"/>
+    <handler ref="MissileLockHandler" />
+    <handler ref="ScannedHandler"/>
+    <handler ref="InspectedHandler"/>
+    <handler ref="FoundAbandonedHandler"/>
+    <handler ref="FoundLockboxHandler"/>
+    <handler ref="ResupplyHandler"/>
+    <handler ref="JobRemoveRequestHandler" />
+  </interrupts>
+
+  <init>
+  </init>
+
+  <attention min="unknown">
+    <actions>
+
+      <run_script name="'order.move.wait'">
+        <param name="destination" value="$SAFE_POSITION"/>
+        <param name="withdraw" value="true"/>
+      </run_script>
+      
+      <wait exact="1ms"/>
+      <set_order_syncpoint_reached order="this.ship.order"/>
+      <cancel_order order="this.ship.order" />
+      
+    </actions>
+  </attention>
+
+  <on_abort>
+  </on_abort>
+
+</aiscript>
