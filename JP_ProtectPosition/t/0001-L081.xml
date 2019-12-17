@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Japanese ~~ 日本語 -->
+<language>
+  <page id="8888888" voice="no">
+    <!-- JP_AddTag -->
+    <t id="81">Tag at front?</t>
+    <t id="82">Tag at end?</t>
+    <t id="83">Commander?</t>
+    <t id="84">Fleet?</t>
+    <t id="85">Subordinate Fleet?</t>
+    <t id="86">Object with your tag</t>
+    <t id="87">Use Tag Coloring?</t>
+    <t id="88">Use Name Coloring?</t>
+    <t id="89">Save names?</t>
+    <t id="90">Load names?</t>
+    <t id="91">Delete saved?</t>
+  </page>
+</language>

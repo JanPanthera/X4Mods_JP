@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- German ~~ Deutsch -->
+<language>
+  <page id="8888888" voice="no">
+    <!-- JP_AddTag -->
+    <t id="81">Tag vorne?</t>
+    <t id="82">Tag am ende?</t>
+    <t id="83">Kommandeur?</t>
+    <t id="84">Ganze Flotte?</t>
+    <t id="85">Unterflotten?</t>
+    <t id="86">Objekt mit dem Tag</t>
+    <t id="87">Färbung des Tags?</t>
+    <t id="88">Färbung des Namens?</t>
+    <t id="89">Namen speichern?</t>
+    <t id="90">Namen laden?</t>
+    <t id="91">Gespeicherte löschen?</t>
+  </page>
+</language>

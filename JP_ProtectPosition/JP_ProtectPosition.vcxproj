@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <ProjectGuid>{BA0D715B-6388-4897-A820-2586E531A803}</ProjectGuid>
+    <RootNamespace>JPVSProtectPosition</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>JP_ProtectPosition</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <Xsd Include="aiscripts\aiscripts.xsd" />
+    <Xsd Include="JP_ProtectPosition\aiscripts\aiscripts.xsd" />
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="aiscripts\GetNearestEnemy.xml" />
+    <Xml Include="aiscripts\JP_Carrier_Fighter_Attacker.xml" />
+    <Xml Include="aiscripts\JP_Carrier_Fighter_Defender.xml" />
+    <Xml Include="aiscripts\JP_Carrier_Fighter_Interceptor.xml" />
+    <Xml Include="aiscripts\JP_CheckShipsForDamage.xml" />
+    <Xml Include="aiscripts\JP_Destroyer_Attacker.xml" />
+    <Xml Include="aiscripts\JP_Destroyer_Defender.xml" />
+    <Xml Include="aiscripts\JP_Go_Attack.xml" />
+    <Xml Include="aiscripts\JP_Go_Defend.xml" />
+    <Xml Include="aiscripts\JP_Go_Intercept.xml" />
+    <Xml Include="aiscripts\JP_ProtectPosition.xml" />
+    <Xml Include="aiscripts\JP_WaitForOrders.xml" />
+    <Xml Include="content.xml" />
+    <Xml Include="JP_ProtectPosition\aiscripts\GetNearestEnemy.xml" />
+    <Xml Include="JP_ProtectPosition\aiscripts\JP_CheckShipsForDamage.xml" />
+    <Xml Include="JP_ProtectPosition\aiscripts\JP_Destroyer_Attacker.xml" />
+    <Xml Include="JP_ProtectPosition\aiscripts\JP_Destroyer_Defender.xml" />
+    <Xml Include="JP_ProtectPosition\aiscripts\JP_Carrier_Fighter_Attacker.xml" />
+    <Xml Include="JP_ProtectPosition\aiscripts\JP_Carrier_Fighter_Defender.xml" />
+    <Xml Include="JP_ProtectPosition\aiscripts\JP_Carrier_Fighter_Interceptor.xml" />
+    <Xml Include="JP_ProtectPosition\aiscripts\JP_Go_Attack.xml" />
+    <Xml Include="JP_ProtectPosition\aiscripts\JP_Go_Defend.xml" />
+    <Xml Include="JP_ProtectPosition\aiscripts\JP_Go_Intercept.xml" />
+    <Xml Include="JP_ProtectPosition\aiscripts\JP_ProtectPosition.xml" />
+    <Xml Include="JP_ProtectPosition\aiscripts\JP_WaitForOrders.xml" />
+    <Xml Include="JP_ProtectPosition\content.xml" />
+    <Xml Include="JP_ProtectPosition\t\0001-L007.xml" />
+    <Xml Include="JP_ProtectPosition\t\0001-L033.xml" />
+    <Xml Include="JP_ProtectPosition\t\0001-L034.xml" />
+    <Xml Include="JP_ProtectPosition\t\0001-L039.xml" />
+    <Xml Include="JP_ProtectPosition\t\0001-L044.xml" />
+    <Xml Include="JP_ProtectPosition\t\0001-L049.xml" />
+    <Xml Include="JP_ProtectPosition\t\0001-L055.xml" />
+    <Xml Include="JP_ProtectPosition\t\0001-L081.xml" />
+    <Xml Include="JP_ProtectPosition\t\0001-L082.xml" />
+    <Xml Include="JP_ProtectPosition\t\0001-L086.xml" />
+    <Xml Include="JP_ProtectPosition\t\0001-L088.xml" />
+    <Xml Include="t\0001-L007.xml" />
+    <Xml Include="t\0001-L033.xml" />
+    <Xml Include="t\0001-L034.xml" />
+    <Xml Include="t\0001-L039.xml" />
+    <Xml Include="t\0001-L044.xml" />
+    <Xml Include="t\0001-L049.xml" />
+    <Xml Include="t\0001-L055.xml" />
+    <Xml Include="t\0001-L081.xml" />
+    <Xml Include="t\0001-L082.xml" />
+    <Xml Include="t\0001-L086.xml" />
+    <Xml Include="t\0001-L088.xml" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
