@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- German ~~ Deutsch -->
+<language>
+  <page id="8888888" voice="no">
+    <!-- JP_AbandonedShipExplorer -->
+    <t id="171">Feindliche Sektoren einbeziehen?</t>
+    <t id="172">Warte am verlassenen Schiff?</t>
+    <t id="173">Wie lange Warten?</t>
+    <t id="174">Navigationsbake aufstellen?</t>
+    <t id="175">Navigationsbaken aufstocken?</t>
+    <t id="176">Anzahl zum aufstocken</t>
+    <t id="177">Verlassenes Schiff</t>
+    <t id="178">Nachricht wenn angekommen?</t>
+    <t id="179">Ich bin am verlassenen Schiff angekommen</t>
+    <t id="180">Wartezeit:</t>
+  </page>
+</language>

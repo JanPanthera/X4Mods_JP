@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- French ~~ Français -->
+<language>
+  <page id="8888888" voice="no">
+    <!-- JP_AbandonedShipExplorer -->
+    <t id="171">Inclure les secteurs ennemis?</t>
+    <t id="172">Wait at the abandoned ship?</t>
+    <t id="173">How long to wait?</t>
+    <t id="174">Place navigation beacons?</t>
+    <t id="175">Faire le plein de balises de navigations?</t>
+    <t id="176">Quantité à restocker</t>
+    <t id="177">Abandoned Ship</t>
+    <t id="178">Message when arrived?</t>
+    <t id="179">I arrived at the abandoned ship</t>
+    <t id="180">Wait time:</t>
+  </page>
+</language>
+<!-- Thanks to darkslimus / Xchange Guild -->

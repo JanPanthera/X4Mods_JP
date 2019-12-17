@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Russian ~~ Русский
+alexalsp
+
+http://apocalypse.moy.su
+ -->
+<language>
+  <page id="8888888" voice="no">
+    <!-- JP_AbandonedShipExplorer -->
+    <t id="171">Вкл. враж. сектора?</t>
+    <t id="172">Ждать у корабля?</t>
+    <t id="173">Сколько ждать?</t>
+    <t id="174">Ставить Нав. Маяки?</t>
+    <t id="175">Пополнять Нав. Маки?</t>
+    <t id="176">Количество Нав. Маяков</t>
+    <t id="177">Брошенный корабль</t>
+    <t id="178">Сообщить по прибытии?</t>
+    <t id="179">Я прибыл на брошенный корабль.</t>
+    <t id="180">Wait time:</t>
+  </page>
+</language>
+<!-- Thanks to alexalsp -->
