@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<aiscript name="JP_DissolveFleet" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd" version="1">
+
+  <order id="JP_DissolveFleet" name="JP DissolveFleet" description="Dissolve an entire Fleet...." category="navigation" infinite="true">
+    <params>
+      <param name="DISSOLVE_ENTIRE_FLEET" type="bool" default="true" text="Dissolve entire fleet?"/>
+      <param name="RESET_DEFAULT_ORDER" type="bool" default="true" text="Reset default order?"/>
+    </params>
+    <skill min="0" />
+    <requires>
+      <match shiptype="shiptype.lasertower" negate="true"/>
+    </requires>
+  </order>
+
+  <interrupts>
+    <handler ref="SectorChangeHandler"/>
+    <handler ref="TargetInvalidHandler"/>
+    <handler ref="AttackHandler"/>
+    <handler ref="MissileLockHandler" />
+    <handler ref="ScannedHandler"/>
+    <handler ref="InspectedHandler"/>
+    <handler ref="FoundAbandonedHandler"/>
+    <handler ref="FoundLockboxHandler"/>
+    <handler ref="ResupplyHandler"/>
+    <handler ref="JobRemoveRequestHandler" />
+  </interrupts>
+
+  <init>
+  </init>
+
+  <attention min="unknown">
+    <actions>
+
+      <wait exact="1ms"/>
+      <label name="START"/>
+
+      <set_value name="$Leader" exact="this.ship"/>
+      <create_list name="$Subs"/>
+
+      <!-- push all subordinates who are not a drone in to the list $Subs -->
+      <do_all exact="if  $DISSOLVE_ENTIRE_FLEET == true then $Leader.allsubordinates.count else $Leader.subordinates.count" counter="$_it">
+        <set_value name="$Sub" exact="if $DISSOLVE_ENTIRE_FLEET == true then $Leader.allsubordinates.{$_it} else $Leader.subordinates.{$_it}"/>
+        <do_if value="$Sub.isunit" negate="true">
+          <append_to_list name="$Subs" exact="$Sub"/>
+        </do_if>
+        <remove_value name="$Sub"/>
+      </do_all>
+
+      <!-- remove subordinates commander -->
+      <do_all exact="$Subs.count" counter="$_it">
+        <set_value name="$Sub" exact="$Subs.{$_it}"/>
+        <do_if value="$RESET_DEFAULT_ORDER">
+          <cancel_all_orders object="$Sub"/>
+          <create_order object="$Sub" default="true" id="'Wait'"/>
+        </do_if>
+        <remove_object_commander object="$Sub"/>
+        <remove_value name="$Sub"/>
+      </do_all>
+
+      <remove_value name="$Subs"/>
+      <remove_value name="$Leader"/>
+
+      <label name="FINISH"/>
+      <set_order_syncpoint_reached order="this.ship.order"/>
+      <cancel_order order="this.ship.order" />
+      <wait exact="1ms"/>
+
+    </actions>
+  </attention>
+
+  <on_abort>
+  </on_abort>
+
+</aiscript>
