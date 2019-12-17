@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- French ~~ Français -->
+<language>
+  <page id="8888888" voice="no">
+    <!-- JP_NumberMyShips -->
+    <t id="191">Subordinate fleets?</t>
+    <t id="192">Utilisé un tag au début?</t>
+    <t id="193">Utilisé un tag à la fin?</t>
+    <t id="194">Classé de XL à S?</t>
+    <t id="195">Colorier le ombre?</t>
+    <t id="196">Colorier le nom?</t>
+  </page>
+</language>
+<!-- Thanks to darkslimus / Xchange Guild -->

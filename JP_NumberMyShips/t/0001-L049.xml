@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- German ~~ Deutsch -->
+<language>
+  <page id="8888888" voice="no">
+    <!-- JP_NumberMyShips -->
+    <t id="191">Untergeordnete Flotten?</t>
+    <t id="192">Numer vorne?</t>
+    <t id="193">Numer am ende?</t>
+    <t id="194">Sortiere XL nach S?</t>
+    <t id="195">Nummer einfärben?</t>
+    <t id="196">Name einfärben?</t>
+  </page>
+</language>

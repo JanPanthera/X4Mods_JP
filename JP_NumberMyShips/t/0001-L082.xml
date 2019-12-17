@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Korean ~~ 한국어 -->
+<language>
+  <page id="8888888" voice="no">
+    <!-- JP_NumberMyShips -->
+    <t id="191">Subordinate fleets?</t>
+    <t id="192">Number at front?</t>
+    <t id="193">Number at end?</t>
+    <t id="194">Sort XL to S?</t>
+    <t id="195">Colorize Number?</t>
+    <t id="196">Colorize Name?</t>
+  </page>
+</language>
