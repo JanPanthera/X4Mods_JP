@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<mdscript name="JP_UpdateAnotherExplorerFleet_MD" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="md.xsd">
+  <cues>
+
+    <cue name="JP_UPDATE_ANOTHER_EXPLORERV2_FLEET" instantiate="true" checkinterval="2s">
+      <conditions>
+        <check_value value="@global.$AnotherExplorerV2Ships.count gt 1"/>
+      </conditions>
+      <actions>
+        <create_list name="$AutoFleetShips"/>
+        <do_for_each name="$AnotherExplorerV2Ship" in="global.$AnotherExplorerV2Ships">
+          <do_if value="$AnotherExplorerV2Ship.defaultorder.$AUTO_FLEET">
+            <append_to_list name="$AutoFleetShips" exact="$AnotherExplorerV2Ship"/>
+          </do_if>
+        </do_for_each>
+        <do_if value="@global.$AnotherExplorerFleetLeader != null">
+          <do_if value="global.$AnotherExplorerFleetLeader.fleet.iscommander == false">
+            <remove_value name="global.$AnotherExplorerFleetLeader"/>
+          </do_if>
+        </do_if>
+        <do_if value="$AutoFleetShips.count gt 1">
+          <do_for_each name="$AutoFleetShip" in="$AutoFleetShips" counter="$_it">
+            <do_if value="$_it == 1">
+              <continue/>
+            </do_if>
+            <do_if value="@global.$AnotherExplorerFleetLeader == null">
+              <set_value name="global.$AnotherExplorerFleetLeader" exact="$AutoFleetShips.{1}"/>
+            </do_if>
+            <do_if value="$AutoFleetShip.fleet.commander == null">
+              <set_object_commander object="$AutoFleetShip" commander="global.$AnotherExplorerFleetLeader"/>
+            </do_if>
+          </do_for_each>
+          <set_object_fleet_name object="global.$AnotherExplorerFleetLeader" name="'AnotherExplorerV2'"/>
+        </do_if>
+        <remove_value name="$AutoFleetShips"/>
+      </actions>
+    </cue>
+
+    <cue name="JP_ANOTHEREXPLORERV2_DEBUG" instantiate="true" checkinterval="2s">
+      <actions>
+        <set_value name="$DEBUG" exact="false"/>
+
+        <do_if value="$DEBUG">
+          <!-- Debug output for $AnotherExplorerV2SectorBlackList -->
+          <debug_to_file append="false" directory="'JP_AnotherExplorerV2.logs'" name="'JP_AnotherExplorerV2_Debug.log'" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <do_if value="@global.$AnotherExplorerV2SectorBlackList != null">
+            <do_for_each name="$Sector" in="@global.$AnotherExplorerV2SectorBlackList">
+              <debug_to_file directory="'JP_AnotherExplorerV2.logs'" name="'JP_AnotherExplorerV2_Debug.log'" text="'~ Sector: %1 [%2].'.[$Sector.knownname, $Sector.owner.knownname]"/>
+            </do_for_each>
+          </do_if>
+          <debug_to_file directory="'JP_AnotherExplorerV2.logs'" name="'JP_AnotherExplorerV2_Debug.log'" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+
+          <!-- Debug output for $AnotherExplorerV2Ships -->
+          <debug_to_file directory="'JP_AnotherExplorerV2.logs'" name="'JP_AnotherExplorerV2_Debug.log'" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <do_if value="@global.$AnotherExplorerV2Ships != null">
+            <do_for_each name="$Ship" in="@global.$AnotherExplorerV2Ships">
+              <debug_to_file directory="'JP_AnotherExplorerV2.logs'" name="'JP_AnotherExplorerV2_Debug.log'" text="'~ Ship: %1 [%2].'.[$Ship.knownname, $Ship.idcode]"/>
+            </do_for_each>
+          </do_if>
+          <debug_to_file directory="'JP_AnotherExplorerV2.logs'" name="'JP_AnotherExplorerV2_Debug.log'" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        </do_if>
+        
+      </actions>
+    </cue>
+
+  </cues>
+</mdscript>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- English ~~ English -->
+<language>
+  <page id="8888888" voice="no">
+    <!--  JP_AnotherExplorerV2 -->
+    <t id="21">Explore gates?</t>
+    <t id="22">Explore stations?</t>
+    <t id="23">Explore enemy Stations?</t>
+    <t id="24">Explore enemy Sectors?</t>
+  </page>
+</language>
