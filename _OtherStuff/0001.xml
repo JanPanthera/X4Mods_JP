@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<language>
+  <page id="8888888" voice="no">
+
+    <!--  JP_CollectDroppedCargo -->
+    <t id="1">Collect Cargo items?</t>
+    <t id="2">Collect Inventory items?</t>
+    <t id="3">Sell cargo when full?</t>
+    <t id="4">Infinite search?</t>
+    <t id="5">Instant?</t>
+    <t id="6">Collect to Player inventory?</t>
+
+    <!--  JP_AnotherExplorerV2 -->
+    <t id="21">Explore gates?</t>
+    <t id="22">Explore stations?</t>
+    <t id="23">Explore enemy stations?</t>
+    <t id="24">Explore enemy sectors?</t>
+
+    <!-- JP_DataVaultExplorer -->
+    <t id="41">Restock navigation beacons?</t>
+    <t id="42">Amount to restock</t>
+    <t id="43">Include enemy sectors?</t>
+    <t id="44">Include unknown sectors?</t>
+
+    <!-- JP_SetFleetNameColor -->
+    <t id="61">Reset fleet name?</t>
+
+    <!-- JP_AddTag -->
+    <t id="81">Tag at front?</t>
+    <t id="82">Tag at end?</t>
+    <t id="83">Commander?</t>
+    <t id="84">Fleet?</t>
+    <t id="85">Subordinate Fleet?</t>
+    <t id="86">Object with your tag</t>
+    <t id="87">Use Tag Coloring?</t>
+    <t id="88">Use Name Coloring?</t>
+    <t id="89">Save names?</t>
+    <t id="90">Load names?</t>
+    <t id="91">Delete saved?</t>
+
+    <!-- JP_MultiRename -->
+    <t id="101">Naming variant?</t>
+    <t id="102">Add Class tag?</t>
+    <t id="103">Add Model name?</t>
+    <t id="104">Add Type name?</t>
+    <t id="105">Use short Model name?</t>
+    <t id="106">Tag at front?</t>
+    <t id="107">Tag at end?</t>
+    <t id="108">Object with your Tag</t>
+    <t id="109">Use numbering?</t>
+    <t id="110">Sort XL to S?</t>
+    <t id="111">Rename Commander?</t>
+    <t id="112">Rename Fleet?</t>
+    <t id="113">Rename sub. Fleets?</t>
+    <t id="114">Use Tag Coloring?</t>
+    <t id="115">Use Name Coloring?</t>
+    <t id="116">Use Number Coloring?</t>
+    <t id="117">Save names?</t>
+    <t id="118">Load names?</t>
+    <t id="119">Delete saved?</t>
+    <t id="120">Reset</t>
+
+    <!-- JP_CollectPlaceables -->
+    <t id="131">Object to collect</t>
+    <t id="132">Collect in whole sector?</t>
+    <t id="133">Collect Mines?</t>
+    <t id="134">Collect Satellites?</t>
+    <t id="135">Collect Navigation Beacons?</t>
+    <t id="136">Collect Resource Probes?</t>
+    <t id="137">Collect Laser Towers?</t>
+    <t id="138">Instant Collect?</t>
+
+    <!-- JP_TradeOrderExplorer -->
+    <!--<t id="151"></t>-->
+
+    <!-- JP_AbandonedShipExplorer -->
+    <t id="171">Include enemy sectors?</t>
+    <t id="172">Wait at the ship?</t>
+    <t id="173">How long to wait?</t>
+    <t id="174">Place navigation beacons?</t>
+    <t id="175">Restock navigation beacons?</t>
+    <t id="176">Amount to restock</t>
+    <t id="177">Abandoned Ship</t>
+    <t id="178">Message when arrived?</t>
+    <t id="179">I arrived at the abandoned ship</t>
+    <t id="180">Wait time:</t>
+
+    <!-- JP_NumberMyShips -->
+    <t id="191">Subordinate fleets?</t>
+    <t id="192">Number at front?</t>
+    <t id="193">Number at end?</t>
+    <t id="194">Sort XL to S?</t>
+    <t id="195">Colorize Number?</t>
+    <t id="196">Colorize Name?</t>
+    
+    <!-- JP_StationAutoCreditTransfer -->
+    <t id="211">Money transferred to</t>
+
+    <!-- JP_ScriptLibrary -->
+    <t id="1001">Transparency</t>
+    <t id="1002">Red</t>
+    <t id="1003">Green</t>
+    <t id="1004">Blue</t>
+    <t id="1005">Automatic Fleet?</t>
+    <t id="1006">Idling in safe sector?</t>
+    <t id="1007">Safe sector</t>
+    <t id="1008">Sector to explore</t>
+
+  </page>
+</language>

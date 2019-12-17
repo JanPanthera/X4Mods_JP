@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<mdscript name="JP_TestMod_MD" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="md.xsd">
+  <cues>
+    
+    <cue name="General">
+      <!-- Factions.xml player color? -->
+    </cue>
+    
+    <cue name="JP_NumberMyShips">
+    </cue>
+    
+    <cue name="JP_AnotherExplorerV2">
+      <!-- More exp gain usage? -->
+    </cue>
+    
+    <cue name="JP_TradeOrderExplorer">
+      <!-- More exp gain usage? -->
+    </cue>
+    
+    <cue name="JP_DataVaultExplorer">
+    </cue>
+    
+    <cue name="JP_AbandonedShipExplorer">
+    </cue>
+    
+    <cue name="JP_CollectDroppedCargo">
+      <!-- Add experience gain -->
+    </cue>
+    
+    <cue name="JP_CollectPlaceables">
+      <!-- Refactoring -->
+      <!-- Add experience gain -->
+    </cue>
+    
+    <cue name="JP_FleetDocking">
+      <!-- Is it still usefull? -->
+      <!-- Complete refactoring -->
+    </cue>
+    
+    <cue name="JP_TeleportShip">
+      <!-- Add use of get_safe_zone -->
+    </cue>
+  
+  </cues>
+</mdscript>
