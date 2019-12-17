@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<aiscript name="JP_AttackObject" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd">
+
+  <order id="JP_AttackObject" name="JP AttackObject" description="Attack object" category="combat" infinite="true">
+    <params>
+      <param name="TARGET" type="object" required="true" text="Target"/>
+      <param name="PURSUETARGET" type="bool" default="false" text="Pursue Target?"/>
+      <param name="ALLOW_OTHER_TARGETS" type="bool" default="false" text="Allow other Targets?"/>
+      <param name="SQUAD_ATTACK" type="bool" default="false" text="Squad attack?"/>
+      <param name="DEBUG" type="bool" default="false" text="Debug"/>
+    </params>
+    <skill min="0"/>
+    <requires>
+      <match shiptype="shiptype.lasertower" negate="true"/>
+    </requires>
+  </order>
+
+  <interrupts>
+    <handler ref="SectorChangeHandler"/>
+    <handler ref="TargetInvalidHandler"/>
+    <handler ref="AttackHandler"/>
+    <handler ref="MissileLockHandler" />
+    <handler ref="ScannedHandler"/>
+    <handler ref="InspectedHandler"/>
+    <handler ref="FoundAbandonedHandler"/>
+    <handler ref="FoundLockboxHandler"/>
+    <handler ref="ResupplyHandler"/>
+    <handler ref="JobRemoveRequestHandler" />
+  </interrupts>
+
+  <init>
+  </init>
+
+  <attention min="unknown">
+    <actions>
+
+      <set_value name="$numberDrones" exact="this.ship.units.{unitcategory.defence}.count"/>
+      <debug_text text="$numberDrones"/>
+
+      <launch_drone name="$drone" object="this.ship" exact="$numberDrones" category="unitcategory.defence"/>
+
+      <do_if value="$drone">
+        <!-- Set them to our relation -->
+        <do_if value="not $drone.mayattack.{$TARGET} and not this.ship.isplayerowned">
+          <set_relation_boost object="$drone" otherobject="$TARGET" value="this.ship.relationto.{$TARGET}" silent="true" />
+        </do_if>
+
+        <!-- Attack the enemy -->
+        <create_order object="$drone" id="'Attack'">
+          <param name="primarytarget" value="$TARGET" />
+          <param name="escort" value="this.ship" />
+          <param name="pursuedistance" value="this.ship.maxradarrange" />
+          <param name="allowothertargets" value="$ALLOW_OTHER_TARGETS"/>
+          <param name="checkrelation" value="true" />
+          <param name="internalorder" value="true"/>
+        </create_order>
+
+        <!-- Fly back to the ship -->
+        <create_order object="$drone" id="'MoveToObject'">
+          <param name="destination" value="this.ship"/>
+        </create_order>
+        
+        <!-- Dock at the ship -->
+        <create_order object="$drone" id="'DockAndWait'">
+          <param name="destination" value="this.ship" />
+          <param name="dockfollowers" value="true" />
+        </create_order>
+      </do_if>
+      <do_else>
+        <debug_text text="'drone is null  ~~  %1'.[$drone]"/>
+      </do_else>
+      
+      <remove_value name="$drone" />
+
+      <wait exact="1ms"/>
+      <set_order_syncpoint_reached order="this.ship.order"/>
+      <cancel_order order="this.ship.order" />
+
+    </actions>
+  </attention>
+
+  <on_abort>
+  </on_abort>
+
+</aiscript>
