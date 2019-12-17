@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<aiscript name="JP_EscortMe" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd" version="1">
+
+  <order id="JP_EscortMe" name="JP EscortMe" category="combat" infinite="true">
+    <params>
+      <param name="DEBUG" text="Debug" type="bool" default="false" advanced="true"/>
+    </params>
+    <skill min="0"/>
+    <requires>
+      <match shiptype="shiptype.lasertower" negate="true"/>
+    </requires>
+  </order>
+
+  <interrupts>
+    <handler ref="SectorChangeHandler"/>
+    <handler ref="TargetInvalidHandler"/>
+    <handler ref="AttackHandler"/>
+    <handler ref="MissileLockHandler" />
+    <handler ref="ScannedHandler"/>
+    <handler ref="InspectedHandler"/>
+    <handler ref="FoundAbandonedHandler"/>
+    <handler ref="FoundLockboxHandler"/>
+    <handler ref="ResupplyHandler"/>
+    <handler ref="JobRemoveRequestHandler" />
+  </interrupts>
+
+  <init>
+  </init>
+
+  <attention min="unknown">
+    <actions>
+
+      <wait exact="1ms"/>
+      <label name="START"/>
+      <set_value name="$RUNNING" exact="true"/>
+      <set_value name="$Leader" exact="this.ship"/>
+      <break_formation object="$Leader"/>
+
+      <label name="RESUME"/>
+      <create_list name="$Subordinates"/>
+      <do_all exact="$Leader.subordinates.count" counter="$_it">
+        <append_to_list name="$Subordinates" exact="$Leader.subordinates.{$_it}"/>
+      </do_all>
+
+      <do_all exact="$Subordinates.count" counter="$_it">
+        <set_value name="$Sub" exact="$Subordinates.{$_it}"/>
+        <do_if value="$Sub.order.id != 'Attack' and $Sub.isformationwingman == false">
+          <debug_text text="'Create/Join formation'"/>
+          <cancel_all_orders object="$Sub"/>
+          <do_if value="$Leader.isformationleader">
+            <join_formation leader="$Leader" object="$Sub"/>
+          </do_if>
+          <do_else>
+            <create_formation leader="$Leader" follower="$Sub" formation="formationshape.pointguard" param="[[$Leader.formationradius, $Sub.defaultformationradius.{$Leader}].max, 5km].min" rollformation="true"/>
+          </do_else>
+        </do_if>
+        <remove_value name="$Sub"/>
+      </do_all>
+
+      <label name="CLEANING"/>
+      <remove_value name="$Subordinates"/>
+
+      <do_if value="$RUNNING" exact="true">
+        <wait exact="5s"/>
+        <resume label="RESUME"/>
+      </do_if>
+
+      <label name="FINISH"/>
+      <remove_value name="$Leader"/>
+      <set_order_syncpoint_reached order="this.ship.order"/>
+      <cancel_order order="this.ship.order" />
+      <wait exact="1ms"/>
+
+    </actions>
+  </attention>
+
+</aiscript>
