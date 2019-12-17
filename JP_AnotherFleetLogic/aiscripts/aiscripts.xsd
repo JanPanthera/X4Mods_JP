@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+  <xs:include schemaLocation="C:\Users\JanPanthera\Desktop\_X4_Modding\_X4_UnpackedCatFiles\libraries\aiscripts.xsd" />
+</xs:schema>

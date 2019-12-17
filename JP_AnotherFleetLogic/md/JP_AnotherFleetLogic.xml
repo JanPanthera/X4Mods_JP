@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<mdscript name="JP_AnotherFleetLogic" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="md.xsd">
+  <cues>
+
+    <!--<cue name="JP_AnotherFleetLogic_Register">
+      <conditions>
+        <event_cue_completed cue="md.Right_click_api.RegisterRight_click_api"/>
+      </conditions>
+      <delay exact="1s"/>
+      <actions>
+        <raise_lua_event name="'RegisterAddon'" param="'extensions.JP_AnotherFleetLogic.JP_AnotherFleetLogic'"/>
+      </actions>
+    </cue>-->
+
+    <!--<cue name="JP_AnotherFleetLogic_Feedback_Wanted">
+      <conditions>
+        <event_cue_completed cue="JP_AnotherFleetLogic_Register"/>
+      </conditions>
+      <actions>
+        <reset_cue cue="JP_AnotherFleetLogic_Register"/>
+        <reset_cue cue="JP_AnotherFleetLogic_Feedback_Wanted"/>
+      </actions>
+    </cue>-->
+
+  </cues>
+</mdscript>
