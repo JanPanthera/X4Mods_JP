@@ -2,15 +2,8 @@
 <!-- French ~~ Français -->
 <language>
   <page id="8888888" voice="no">
-    <!-- JP_ScriptLibrary -->
-    <t id="1001">Transparence</t>
-    <t id="1002">Rouge</t>
-    <t id="1003">Vert</t>
-    <t id="1004">Bleu</t>
-    <t id="1005">Automatic Fleet?</t>
-    <t id="1006">Idling in safe sector?</t>
-    <t id="1007">Safe sector</t>
-    <t id="1008">Secteurs à explorer</t>
+    <!-- JP_StationAutoCreditTransfer -->
+    <t id="211">Money transferred to</t>
+    <t id="212">Buildstorage</t>
   </page>
 </language>
-<!-- Thanks to darkslimus / Xchange Guild -->
