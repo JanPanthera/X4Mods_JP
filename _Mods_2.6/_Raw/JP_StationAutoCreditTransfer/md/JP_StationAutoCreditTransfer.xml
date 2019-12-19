@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<mdscript name="JP_StationAutoCreditsTransfer" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="md.xsd">
+  <cues>
+
+    <cue name="JP_STATION_AUTO_CREDITS_TRANSFER_INIT" instantiate="true">
+      <conditions>
+        <event_game_loaded/>
+      </conditions>
+      <actions>
+        <set_value name="global.$SACT_DebugDirectory" exact="'JP_StationAutoCreditTransfer.logs'"/>
+        <set_value name="global.$SACT_DebugFileName" exact="'JP_StationAutoCreditTransfer.log'"/>
+        <set_value name="global.$SACT_DEBUG" exact="1"/>
+        <!-- 1 on / 0 off-->
+        <set_value name="global.$SACT_WriteToLogBook" exact="1"/>
+        <!-- 1 on / false 0 -->
+        <set_value name="global.$SACT_CreditsCapMultiplier" exact="1.25f"/>
+        <!-- default 1.25f -->
+        <set_value name="global.$SACT_CreditsCapMultiplierZeroProductionCost" exact="25f"/>
+        <!-- default 25f -->
+      </actions>
+    </cue>
+
+    <cue name="JP_STATION_AUTO_CREDITS_TRANSFER" checkinterval="300s" instantiate="true">
+      <conditions>
+      </conditions>
+      <actions>
+
+        <do_if value="global.$SACT_DEBUG">
+          <show_help custom="'Starting JP_STATION_AUTO_CREDITS_TRANSFER...'" duration="3s"/>
+          <debug_to_file append="false" directory="global.$SACT_DebugDirectory" name="global.$SACT_DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="global.$SACT_DebugDirectory" name="global.$SACT_DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ Running JP_StationAutoCreditTransfer ~~' + '\n'"/>
+        </do_if>
+
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+        <find_station name="$Stations" space="player.galaxy" multiple="true">
+          <match owner="faction.player"/>
+          <match checkoperational="true"/>
+        </find_station>
+
+        <do_for_each name="$Station" in="$Stations">
+
+          <set_value name="$StationMoney" exact="($Station.money / 100)f"/>
+          <set_value name="$StationProductionMoney" exact="($Station.productionmoney / 100)f"/>
+          <set_value name="$StationSupplyNeeds" exact="($Station.buildstorage.productionmoney / 100)f"/>
+
+          <set_value name="$StationBudgetCap" exact="if $StationProductionMoney gt 0 then (($StationProductionMoney + $StationSupplyNeeds) * global.$SACT_CreditsCapMultiplier)f 
+                                                     else (($Station.size + $StationSupplyNeeds) * global.$SACT_CreditsCapMultiplierZeroProductionCost)f"/>
+          <set_value name="$AvailableMoney" exact="($StationMoney - $StationBudgetCap)f"/>
+
+          <do_if value="$AvailableMoney gt 0">
+            <set_value name="$BuildStorageMoney" exact="($Station.buildstorage.money / 100)f"/>
+            <set_value name="$BuildstorageNeeds" exact="($Station.buildstorage.wantedmoney / 100)f - $BuildStorageMoney"/>
+            <do_if value="$BuildstorageNeeds gt 0">
+              <do_if value="($AvailableMoney - $BuildstorageNeeds) gt 0">
+                <set_value name="$MoneyToTransfer" exact="($AvailableMoney - $BuildstorageNeeds)"/>
+                <set_value name="$AvailableMoney" exact="($AvailableMoney - $MoneyToTransfer)"/>
+              </do_if>
+              <do_else>
+                <set_value name="$MoneyToTransfer" exact="$AvailableMoney"/>
+              </do_else>
+              <signal_cue_instantly cue="JP_TRANSFER_MONEY_TO_BUILD_STORAGE" param="[$Station, $MoneyToTransfer]"/>
+            </do_if>
+          </do_if>
+
+          <do_if value="$AvailableMoney gt 0">
+            <signal_cue_instantly cue="JP_TRANSFER_MONEY_TO_PLAYER" param="[$Station, $AvailableMoney]"/>
+          </do_if>
+
+          <remove_value name="$MoneyToTransfer"/>
+          <remove_value name="$AvailableMoney"/>
+          <remove_value name="$StationBudgetCap"/>
+          <remove_value name="$StationSupplyNeeds"/>
+          <remove_value name="$StationProductionMoney"/>
+          <remove_value name="$StationMoney"/>
+        </do_for_each>
+
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+        <do_if value="global.$SACT_DEBUG">
+          <debug_to_file directory="global.$SACT_DebugDirectory" name="global.$SACT_DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ Completed JP_StationAutoCreditTransfer ~~'"/>
+          <debug_to_file directory="global.$SACT_DebugDirectory" name="global.$SACT_DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+        </do_if>
+
+      </actions>
+    </cue>
+
+    <cue name="JP_TRANSFER_MONEY_TO_PLAYER" instantiate="true">
+      <conditions>
+        <event_cue_signalled/>
+      </conditions>
+      <actions>
+        <set_value name="$Station" exact="event.param.{1}"/>
+        <set_value name="$MoneyToTransfer" exact="event.param.{2}"/>
+
+        <do_if value="global.$SACT_WriteToLogBook">
+          <write_to_logbook category="tips" title="'\033#6400FF00#%1\033X\033#FF00FF00# [%2]\033X'.[$Station.knownname, $Station.owner.knownname]"
+                            text="'\033#FF00CC66#Transferring\033X \033#B600CCCC#%1\033X\033#FF00CC66# Credits to %2\033X'.[$MoneyToTransfer, player.name]"/>
+        </do_if>
+        <transfer_money from="$Station" to="faction.player" amount="($MoneyToTransfer)Cr"/>
+
+        <remove_value name="$MoneyToTransfer"/>
+        <remove_value name="$Station"/>
+      </actions>
+    </cue>
+
+    <cue name="JP_TRANSFER_MONEY_TO_BUILD_STORAGE" instantiate="true">
+      <conditions>
+        <event_cue_signalled/>
+      </conditions>
+      <actions>
+        <set_value name="$Station" exact="event.param.{1}"/>
+        <set_value name="$MoneyToTransfer" exact="event.param.{2}"/>
+
+        <do_if value="global.$SACT_WriteToLogBook">
+          <write_to_logbook category="tips" title="'\033#6400FF00#%1\033X\033#FF00FF00# [%2]\033X'.[$Station.knownname, $Station.owner.knownname]"
+                          text="'\033#FF00CC66#Transferring\033X \033#B600CCCC#%1\033X\033#FF00CC66# Credits to %2\033X'.[$MoneyToTransfer, $Station.buildstorage.knownname]"/>
+        </do_if>
+        <transfer_money from="$Station" to="$Station.buildstorage" amount="($MoneyToTransfer)Cr"/>
+
+        <remove_value name="$MoneyToTransfer"/>
+        <remove_value name="$Station"/>
+      </actions>
+    </cue>
+
+  </cues>
+</mdscript>

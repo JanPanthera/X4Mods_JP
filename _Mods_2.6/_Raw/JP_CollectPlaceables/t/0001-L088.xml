@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Traditional Chinese ~~ 繁體中文 -->
+<language>
+  <page id="8888888" voice="no">
+    <!-- JP_CollectPlaceables -->
+    <t id="131">Object to collect</t>
+    <t id="132">Collect in whole sector?</t>
+    <t id="133">Collect Mines?</t>
+    <t id="134">Collect Satellites?</t>
+    <t id="135">Collect Navigation Beacons?</t>
+    <t id="136">Collect Resource Probes?</t>
+    <t id="137">Collect Laser Towers?</t>
+    <t id="138">Instant Collect?</t>
+  </page>
+</language>

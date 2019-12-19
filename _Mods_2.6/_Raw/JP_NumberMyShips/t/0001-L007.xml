@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Russian ~~ Русский -->
+<language>
+  <page id="8888888" voice="no">
+    <!-- JP_NumberMyShips -->
+    <t id="191">Subordinate fleets?</t>
+    <t id="192">Тег впереди?</t>
+    <t id="193">Тег в конце</t>
+    <t id="194">Сорт. XL до S?</t>
+    <t id="195">Номера в цвете?</t>
+    <t id="196">Название в цвете?</t>
+  </page>
+</language>
+<!-- Thanks to alexalsp -->

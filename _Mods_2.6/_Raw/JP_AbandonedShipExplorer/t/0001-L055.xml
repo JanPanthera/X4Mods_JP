@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Portuguese (Brazil) ~~ Português (Brasil) -->
+<language>
+  <page id="8888888" voice="no">
+    <!-- JP_AbandonedShipExplorer -->
+    <t id="171">Include enemy sectors?</t>
+    <t id="172">Wait at the ship?</t>
+    <t id="173">How long to wait?</t>
+    <t id="174">Place navigation beacons?</t>
+    <t id="175">Restock navigation beacons?</t>
+    <t id="176">Amount to restock</t>
+    <t id="177">Abandoned Ship</t>
+    <t id="178">Message when arrived?</t>
+    <t id="179">I arrived at the abandoned ship</t>
+    <t id="180">Wait time:</t>
+  </page>
+</language>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- German ~~ Deutsch -->
+<language>
+  <page id="8888888" voice="no">
+    <!-- JP_MultiRename -->
+    <t id="101">Benennungs Variante?</t>
+    <t id="102">Klassen Tag hinzufügen?</t>
+    <t id="103">Modellname hinzufügen?</t>
+    <t id="104">Typname hinzufügen?</t>
+    <t id="105">Kurzer Modellname?</t>
+    <t id="106">Tag Vorne?</t>
+    <t id="107">Tag am Ende?</t>
+    <t id="108">Objekt mit dem Tag</t>
+    <t id="109">Benutze Nummerierung?</t>
+    <t id="110">Sortiere XL nach S?</t>
+    <t id="111">Kommanduer umbenennen?</t>
+    <t id="112">Flotte umbenennen?</t>
+    <t id="113">Unterflotten umbenennen?</t>
+    <t id="114">Färbung des Tags?</t>
+    <t id="115">Färbung des Namens?</t>
+    <t id="116">Färbung der Nummerierung?</t>
+    <t id="117">Namen speichern?</t>
+    <t id="118">Namen laden?</t>
+    <t id="119">Gespeicherte löschen?</t>
+    <t id="120">Zurücksetzen?</t>
+  </page>
+</language>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- French ~~ Français -->
+<language>
+  <page id="8888888" voice="no">
+    <!-- JP_MultiRename -->
+    <t id="101">Nomenclature de désignation?</t>
+    <t id="102">Ajouter tag de classe?</t>
+    <t id="103">Ajouter nom du model?</t>
+    <t id="104">Ajouter nom du type?</t>
+    <t id="105">Utilisé nom de model abrégé?</t>
+    <t id="106">Utilisé un tag au début?</t>
+    <t id="107">Utilisé un tag à la fin?</t>
+    <t id="108">Objet avec votre tag</t>
+    <t id="109">Utilisé la numérotation?</t>
+    <t id="110">Classé de XL à S?</t>
+    <t id="111">Renommer commandant?</t> <!-- google translate -->
+    <t id="112">Renommer flotte?</t> <!-- google translate -->
+    <t id="113">Renommer le sous. Des flottes?</t> <!-- google translate -->
+    <t id="114">Colorier le tag?</t>
+    <t id="115">Colorier le nom?</t>
+    <t id="116">Colorier le ombre?</t>
+    <t id="117">Enregistrer les noms?</t> <!-- google translate -->
+    <t id="118">Charger les noms?</t> <!-- google translate -->
+    <t id="119">Supprimer enregistré?</t> <!-- google translate -->
+    <t id="120">Réinitialiser?</t> <!-- google translate -->
+  </page>
+</language>
+<!-- Thanks to darkslimus / Xchange Guild -->

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<aiscript name="JP_SetNewName" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd">
+
+  <order id="JP_SetNewName" name="JP SetNewName" category="internal" infinite="false">
+    <params>
+      <!-- Params -->
+      <param name="SHIP" text="Ship" type="object" default="null" required="true"/>
+      <param name="NUMBER_TO_ADD" text="Number" type="number" default="0" required="false"/>
+      <param name="NUMBER_AT_FRONT" text="NumberAtFront" type="bool" default="true" required="false"/>
+      <param name="NUMBER_AT_END" text="NumberAtEnd" type="bool" default="false" required="false"/>
+      <!-- Coloring of the numbers -->
+      <param name="COLORIZE_NUMBER" text="ColorizeNumber" type="bool" default="true"/>
+      <param name="NUMBER_ALPHA" text="Transparency" type="number" default="255"/>
+      <param name="NUMBER_RED" text="Red" type="number" default="3"/>
+      <param name="NUMBER_GREEN" text="Green" type="number" default="161"/>
+      <param name="NUMBER_BLUE" text="Blue" type="number" default="252"/>
+      <!-- Coloring of the name -->
+      <param name="COLORIZE_NAME" text="ColorizeName" comment="Use Name Coloring?" type="bool" default="true"/>
+      <param name="NAME_ALPHA" text="Transparency" type="number" default="255"/>
+      <param name="NAME_RED" text="Red" type="number" default="3"/>
+      <param name="NAME_GREEN" text="Green" type="number" default="161"/>
+      <param name="NAME_BLUE" text="Blue" type="number" default="252"/>
+      <!-- DEBUG -->
+      <param name="DEBUG" text="DebugText" type="number" default="100" advanced="1"/>
+    </params>
+    <requires>
+      <match shiptype="shiptype.lasertower" negate="true"/>
+    </requires>
+  </order>
+
+  <interrupts>
+    <handler ref="SectorChangeHandler"/>
+    <handler ref="TargetInvalidHandler"/>
+    <handler ref="AttackHandler"/>
+    <handler ref="MissileLockHandler" />
+    <handler ref="ScannedHandler"/>
+    <handler ref="InspectedHandler"/>
+    <handler ref="FoundAbandonedHandler"/>
+    <handler ref="FoundLockboxHandler"/>
+    <handler ref="ResupplyHandler"/>
+    <handler ref="JobRemoveRequestHandler" />
+  </interrupts>
+
+  <init>
+    <set_value name="$DebugDirectory" exact="'JP_NumberMyShips.logs'"/>
+    <set_value name="$DebugFileName" exact="this.ship.fleet.commander.idcode + '.JP_CreateName' + '.log'"/>
+    <set_value name="$Name" exact="$SHIP.knownname"/>
+  </init>
+
+  <attention min="unknown">
+    <actions>
+
+      <wait exact="1ms"/>
+      <label name="INIT"/>
+
+      <do_if value="$DEBUG gt 0">
+        <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ Running JP_NumberMyShips ~~ %1 [%2]'.[$SHIP.knownname, $SHIP.idcode] + '\n'"/>
+      </do_if>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <do_if value="$NUMBER_AT_FRONT or $NUMBER_AT_END">
+        <do_if value="$NUMBER_TO_ADD lt 10">
+          <set_value name="$NUMBER_TO_ADD" exact="'00' + $NUMBER_TO_ADD"/>
+        </do_if>
+        <do_elseif value="$NUMBER_TO_ADD ge 10 and $NUMBER_TO_ADD lt 100">
+          <set_value name="$NUMBER_TO_ADD" exact="'0' + $NUMBER_TO_ADD"/>
+        </do_elseif>
+        <do_else>
+          <set_value name="$NUMBER_TO_ADD" exact="'%1'.[$NUMBER_TO_ADD]"/>
+        </do_else>
+      </do_if>
+
+      <do_if value="$COLORIZE_NUMBER">
+        <run_script name="'JP_ToHexadecimalColorString'">
+          <param name="ALPHA" value="$NUMBER_ALPHA"/>
+          <param name="RED" value="$NUMBER_RED"/>
+          <param name="GREEN" value="$NUMBER_GREEN"/>
+          <param name="BLUE" value="$NUMBER_BLUE"/>
+          <param name="DEBUG" value="$DEBUG"/>
+          <save_retval name="HEXA_COLOR_CODE" variable="$NumberColorStartTag"/>
+        </run_script>
+        <set_value name="$FrontNumberString" exact="if $NUMBER_AT_FRONT then ($NumberColorStartTag + $NUMBER_TO_ADD + ' - ' + '\033X') else ''"/>
+        <set_value name="$EndNumberString" exact="if $NUMBER_AT_END then ($NumberColorStartTag + ' - ' + $NUMBER_TO_ADD + '\033X') else ''"/>
+        <remove_value name="$NumberColorStartTag"/>
+      </do_if>
+
+      <do_if value="$COLORIZE_NAME">
+        <run_script name="'JP_ToHexadecimalColorString'">
+          <param name="ALPHA" value="$NAME_ALPHA"/>
+          <param name="RED" value="$NAME_RED"/>
+          <param name="GREEN" value="$NAME_GREEN"/>
+          <param name="BLUE" value="$NAME_BLUE"/>
+          <param name="DEBUG" value="$DEBUG"/>
+          <save_retval name="HEXA_COLOR_CODE" variable="$NameColorStartTag"/>
+        </run_script>
+        <set_value name="$Name" exact="$NameColorStartTag + $Name + '\033X'"/>
+        <remove_value name="$NameColorStartTag"/>
+      </do_if>
+
+      <set_object_name object="$SHIP" name="$FrontNumberString + $Name + $EndNumberString"/>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <do_if value="$DEBUG gt 0">
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ Completed JP_NumberMyShips ~~ %1 [%2]'.[$SHIP.knownname, $SHIP.idcode]"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+      </do_if>
+
+      <label name="CLEANUP"/>
+      <remove_value name="$Name"/>
+      <remove_value name="$EndNumberString"/>
+      <remove_value name="$FrontNumberString"/>
+      <remove_value name="$DebugFileName"/>
+      <remove_value name="$DebugDirectory"/>
+
+      <label name="FINISH"/>
+      <wait exact="1ms"/>
+
+    </actions>
+  </attention>
+
+  <on_abort>
+  </on_abort>
+
+</aiscript>

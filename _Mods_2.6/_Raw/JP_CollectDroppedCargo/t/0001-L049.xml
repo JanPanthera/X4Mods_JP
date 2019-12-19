@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- German ~~ Deutsch -->
+<language>
+  <page id="8888888" voice="no">
+    <!--  JP_CollectDroppedCargo -->
+    <t id="1">Frachtgut sammeln?</t>
+    <t id="2">Inventargegenstände sammeln?</t>
+    <t id="3">Ladung verkaufen, wenn voll?</t>
+    <t id="4">Unendliche Suche?</t>
+    <t id="5">Instantan aufsammeln?</t>
+    <t id="6">Ins Spielerinventar einsammeln?</t>
+  </page>
+</language>

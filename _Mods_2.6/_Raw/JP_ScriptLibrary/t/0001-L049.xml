@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- German ~~ Deutsch -->
+<language>
+  <page id="8888888" voice="no">
+    <!-- JP_ScriptLibrary -->
+    <t id="1001">Transparenz</t>
+    <t id="1002">Rot</t>
+    <t id="1003">Grün</t>
+    <t id="1004">Blau</t>
+    <t id="1005">Automatische Flotte?</t>
+    <t id="1006">Leerlauf im sicheren Sektor?</t>
+    <t id="1007">Sicherer Sektor</t>
+    <t id="1008">Zu erkundenter Sektor</t>
+  </page>
+</language>

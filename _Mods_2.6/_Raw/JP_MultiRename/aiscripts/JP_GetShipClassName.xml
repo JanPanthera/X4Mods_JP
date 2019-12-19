@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<aiscript name="JP_GetShipClassName" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd">
+
+  <order id="JP_GetShipClassName" name="JP GetShipClassName" category="internal" infinite="false">
+    <params>
+      <param name="SHIP" type="object" text="ShipObject" required="true"/>
+    </params>
+  </order>
+
+  <interrupts>
+    <handler ref="JobRemoveRequestHandler" />
+  </interrupts>
+
+  <init>
+  </init>
+
+  <attention min="unknown">
+    <actions>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      
+      <do_if value="$SHIP.class" exact="class.ship_s">
+        <set_value name="$ShipClass" exact="'~S~'"/>
+      </do_if>
+      <do_if value="$SHIP.class" exact="class.ship_m">
+        <set_value name="$ShipClass" exact="'~M~'"/>
+      </do_if>
+      <do_if value="$SHIP.class" exact="class.ship_l">
+        <set_value name="$ShipClass" exact="'~L~'"/>
+      </do_if>
+      <do_if value="$SHIP.class" exact="class.ship_xl">
+        <set_value name="$ShipClass" exact="'~XL~'"/>
+      </do_if>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <wait exact="1ms"/>
+      <return>
+        <retval name="SHIP_CLASS" value="$ShipClass" />
+      </return>
+      
+    </actions>
+  </attention>
+
+</aiscript>

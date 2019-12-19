@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Russian ~~ Русский 
+alexalsp
+
+http://apocalypse.moy.su/
+-->
+<language>
+  <page id="8888888" voice="no">
+    <!-- JP_SetFleetNameColor -->
+    <t id="61">Сброс имени флота?</t>
+  </page>
+</language>

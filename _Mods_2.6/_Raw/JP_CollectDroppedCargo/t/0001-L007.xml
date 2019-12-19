@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Russian ~~ Русский 
+
+alexalsp
+
+http://apocalypse.moy.su
+-->
+<language>
+  <page id="8888888" voice="no">
+    <!--  JP_CollectDroppedCargo -->
+    <t id="1">Собирать груз?</t>
+    <t id="2">Собирать инвентарь?</t>
+    <t id="3">Полный - продать груз?</t>
+    <t id="4">Постоянно искать?</t>
+    <t id="5">Мгновенный сбор?</t>
+    <t id="6">Инвентарь к игроку?</t>
+  </page>
+</language>

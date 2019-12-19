@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Korean ~~ 한국어 -->
+<language>
+  <page id="8888888" voice="no">
+    <!-- JP_ScriptLibrary -->
+    <t id="1001">Transparency</t>
+    <t id="1002">Red</t>
+    <t id="1003">Green</t>
+    <t id="1004">Blue</t>
+    <t id="1005">Automatic Fleet?</t>
+    <t id="1006">Idling in safe sector?</t>
+    <t id="1007">Safe sector</t>
+    <t id="1008">Sector to explore</t>
+  </page>
+</language>

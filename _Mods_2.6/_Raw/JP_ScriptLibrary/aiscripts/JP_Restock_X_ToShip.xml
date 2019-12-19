@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<aiscript name="JP_Restock_X_ToShip" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd">
+
+  <order id="JP_Restock_X_ToShip" name="JP Restock_X_ToShip" description="Restocks X to SHIP" category="internal" infinite="false">
+    <params>
+      <param name="SHIP" text="Ship" type="object" required="true"/>
+      <param name="AMMO_TABLE" text="AmmoTable" type="internal" required="false" default="table[]"/>
+      <param name="UNITS_TABLE" text="UnitsTable" type="internal" required="false" default="table[]"/>
+      <param name="DEBUG" text="DebugText" type="number" default="0" advanced="1"/>
+      <param name="DEBUG_DIRECTORY" text="DebugDirectory" type="internal" default="'JP_Restock_X_ToShip.logs'"/>
+      <param name="DEBUG_FILE_NAME" text="DebugDirectory" type="internal" default="this.ship.idcode + '.JP_Restock_X_ToShip' + '.log'"/>
+    </params>
+    <skill min="0"/>
+    <requires>
+      <match shiptype="shiptype.lasertower" negate="true"/>
+    </requires>
+  </order>
+
+  <interrupts>
+    <handler ref="SectorChangeHandler"/>
+    <handler ref="TargetInvalidHandler"/>
+    <handler ref="AttackHandler"/>
+    <handler ref="MissileLockHandler"/>
+    <handler ref="ScannedHandler"/>
+    <handler ref="InspectedHandler"/>
+    <handler ref="FoundAbandonedHandler"/>
+    <handler ref="FoundLockboxHandler"/>
+    <handler ref="ResupplyHandler"/>
+    <handler ref="JobRemoveRequestHandler"/>
+  </interrupts>
+
+  <init>
+    <set_value name="$UseOwnFile" exact="if $DEBUG_FILE_NAME == (this.ship.idcode + '.JP_SortListByDistance' + '.log') then true else false"/>
+    <set_value name="$DebugChance" exact="if $UseOwnFile then 100 else 0"/>
+  </init>
+
+  <attention min="unknown">
+    <actions>
+
+      <wait exact="1ms"/>
+      <label name="INIT"/>
+
+      <do_if value="$DEBUG gt 0">
+        <debug_to_file append="not $UseOwnFile" chance="$DebugChance" directory="$DEBUG_DIRECTORY" name="$DEBUG_FILE_NAME" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <debug_to_file chance="$DebugChance" directory="$DEBUG_DIRECTORY" name="$DEBUG_FILE_NAME" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ Running JP_Restock_X_ToShip ~~ %1 [%2]'.[$SHIP.knownname, $SHIP.idcode] + '\n'"/>
+      </do_if>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <!-- Find a station where we can restock our ship -->
+      <find_station name="$Stations" space="player.galaxy" multiple="true">
+        <match checkoperational="true"/>
+        <match mayattack="$SHIP" negate="true"/>
+        <match cansupplyclass="$SHIP.class"/>
+        <match knownto="$SHIP.owner"/>
+      </find_station>
+
+      <!-- Restocking failed ~~ no stations found where we can restock -->
+      <do_if value="$Stations.count == 0">
+        <do_if value="$DEBUG gt 0">
+          <debug_to_file directory="$DEBUG_DIRECTORY" name="$DEBUG_FILE_NAME" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DEBUG_DIRECTORY" name="$DEBUG_FILE_NAME" text="'Could not restock because no station found.'"/>
+          <debug_to_file directory="$DEBUG_DIRECTORY" name="$DEBUG_FILE_NAME" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+        </do_if>
+        <remove_value name="$Stations"/>
+        <resume label="RESTOCK_FAILED"/>
+      </do_if>
+
+      <!-- Sort it by distance -->
+      <run_script name="'JP_SortListByGateJumpsDistance'">
+        <param name="LIST" value="$Stations" />
+        <param name="OBJECT" value="$SHIP"/>
+        <param name="DEBUG_DIRECTORY" value="$DEBUG_DIRECTORY"/>
+        <param name="DEBUG_FILE_NAME" value="$DEBUG_FILE_NAME"/>
+        <param name="DEBUG" value="$DEBUG"/>
+        <save_retval name="SORTED_LIST" variable="$Stations"/>
+      </run_script>
+
+      <!-- Restocking -->
+      <add_build_to_modify_ship buildobject="$SHIP" object="$Stations.{1}" ammo="$AMMO_TABLE" units="$UNITS_TABLE" immediate="true" internal="true"/>
+      <resume label="END"/>
+
+      <!-- Return if failed -->
+      <label name="RESTOCK_FAILED"/>
+      <remove_value name="$DebugFileName"/>
+      <return>
+        <retval name="RESTOCK_FAILED" value="true"/>
+      </return>
+
+      <label name="END"/>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <do_if value="$DEBUG gt 0">
+        <debug_to_file chance="$DebugChance" directory="$DEBUG_DIRECTORY" name="$DEBUG_FILE_NAME" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ Completed JP_Restock_X_ToShip ~~ %1 [%2]'.[$SHIP.knownname, $SHIP.idcode]"/>
+        <debug_to_file chance="$DebugChance" directory="$DEBUG_DIRECTORY" name="$DEBUG_FILE_NAME" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+      </do_if>
+
+      <label name="CLEANUP"/>
+      <remove_value name="$Stations"/>
+
+      <label name="FINISH"/>
+      <wait exact="1ms"/>
+
+    </actions>
+  </attention>
+
+  <on_abort>
+  </on_abort>
+
+</aiscript>

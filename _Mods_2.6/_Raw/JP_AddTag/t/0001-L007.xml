@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Russian ~~ Русский 
+alexalsp
+
+http://apocalypse.moy.su/
+-->
+<language>
+  <page id="8888888" voice="no">
+    <!-- JP_AddTag -->
+    <t id="81">Тэг впереди?</t>
+    <t id="82">Тэг  в конце?</t>
+    <t id="83">Commander?</t>
+    <t id="84">Fleet?</t>
+    <t id="85">Subordinate Fleets?</t>
+    <t id="86">Опции тэга</t>
+    <t id="87">Тэг в цвете?</t>
+    <t id="88">Имя в цвете?</t>
+    <t id="89">Save names?</t>
+    <t id="90">Load names?</t>
+    <t id="91">Delete saved?</t>
+  </page>
+</language>

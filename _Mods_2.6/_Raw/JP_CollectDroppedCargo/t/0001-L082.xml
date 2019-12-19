@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Korean ~~ 한국어 -->
+<language>
+  <page id="8888888" voice="no">
+    <!--  JP_CollectDroppedCargo -->
+    <t id="1">Collect Cargo items?</t>
+    <t id="2">Collect Inventory items?</t>
+    <t id="3">Sell cargo when full?</t>
+    <t id="4">Infinite search?</t>
+    <t id="5">Instant?</t>
+    <t id="6">Collect to Player inventory?</t>
+  </page>
+</language>

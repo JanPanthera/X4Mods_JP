@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<aiscript name="JP_NumberMyShips" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd">
+
+  <order id="JP_NumberMyShips" name="NumberMyShips JP" description="Numerates your ships." category="navigation" infinite="true">
+    <params>
+      <!-- Mod Params -->
+      <param name="SUB_FLEETS" text="{8888888, 191}" comment="Subordinate fleets?" type="bool" default="true"/>
+      <param name="NUMBER_AT_FRONT" text="{8888888, 192}" comment="Number at front?" type="bool" default="true"/>
+      <param name="NUMBER_AT_END" text="{8888888, 193}" comment="Number at end?" type="bool" default="false"/>
+      <param name="REVERSE_SORTING" text="{8888888, 194}" comment="Sort XL to S?" type="bool" default="false"/>
+      <!-- Coloring of the numbers -->
+      <param name="COLORIZE_NUMBER" text="{8888888, 195}" comment="Colorize Number?" type="bool" default="true"/>
+      <param name="NUMBER_ALPHA" text="{8888888, 1001}" comment="Transparency" type="number" default="162">
+        <input_param name="step" value="1"/>
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="255"/>
+      </param>
+      <param name="NUMBER_RED" text="{8888888, 1002}" comment="Red" type="number" default="0">
+        <input_param name="step" value="1"/>
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="255"/>
+      </param>
+      <param name="NUMBER_GREEN" text="{8888888, 1003}" comment="Green" type="number" default="0">
+        <input_param name="step" value="1"/>
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="255"/>
+      </param>
+      <param name="NUMBER_BLUE" text="{8888888, 1004}" comment="Blue" type="number" default="255">
+        <input_param name="step" value="1"/>
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="255"/>
+      </param>
+      <!-- Coloring of the name -->
+      <param name="COLORIZE_NAME" text="{8888888, 196}" comment="Colorize Name?" type="bool" default="true"/>
+      <param name="NAME_ALPHA" text="{8888888, 1001}" comment="Transparency" type="number" default="182">
+        <input_param name="step" value="1"/>
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="255"/>
+      </param>
+      <param name="NAME_RED" text="{8888888, 1002}" comment="Red" type="number" default="0">
+        <input_param name="step" value="1"/>
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="255"/>
+      </param>
+      <param name="NAME_GREEN" text="{8888888, 1003}" comment="Green" type="number" default="204">
+        <input_param name="step" value="1"/>
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="255"/>
+      </param>
+      <param name="NAME_BLUE" text="{8888888, 1004}" comment="Blue" type="number" default="204">
+        <input_param name="step" value="1"/>
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="255"/>
+      </param>
+      <!-- DEBUG -->
+      <param name="DEBUG" text="DebugText" type="number" default="0" advanced="1">
+        <input_param name="step" value="50"/>
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="100"/>
+      </param>
+    </params>
+    <skill min="0"/>
+    <requires>
+      <match shiptype="shiptype.lasertower" negate="true"/>
+    </requires>
+  </order>
+
+  <interrupts>
+    <handler ref="SectorChangeHandler"/>
+    <handler ref="TargetInvalidHandler"/>
+    <handler ref="AttackHandler"/>
+    <handler ref="MissileLockHandler" />
+    <handler ref="ScannedHandler"/>
+    <handler ref="InspectedHandler"/>
+    <handler ref="FoundAbandonedHandler"/>
+    <handler ref="FoundLockboxHandler"/>
+    <handler ref="ResupplyHandler"/>
+    <handler ref="JobRemoveRequestHandler" />
+  </interrupts>
+
+  <init>
+    <set_value name="$DebugDirectory" exact="'JP_NumberMyShips.logs'"/>
+    <set_value name="$DebugFileName" exact="this.ship.idcode + '.JP_NumberMyShips' + '.log'"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <set_value name="$Commander" exact="this.assignedcontrolled"/>
+    <create_list name="$SubCommanders"/>
+  </init>
+
+  <attention min="unknown">
+    <actions>
+
+      <wait exact="1ms"/>
+      <label name="INIT"/>
+      <cancel_all_orders object="$Commander"/>
+
+      <do_if value="$DEBUG gt 0">
+        <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ Running JP_NumberMyShips ~~ %1 [%2]'.[$Commander.knownname, $Commander.idcode] + '\n'"/>
+      </do_if>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <!-- Add sub fleets -->
+      <do_if value="$SUB_FLEETS">
+        <do_for_each name="$Subordinate" in="$Commander.allsubordinates">
+          <do_if value="not $Subordinate.isunit and $Subordinate.subordinates.count gt 0">
+            <append_to_list name="$SubCommanders" exact="$Subordinate"/>
+          </do_if>
+        </do_for_each>
+      </do_if>
+
+      <!-- Sub Fleets -->
+      <do_for_each name="$SubCommander" in="$SubCommanders" reverse="true">
+        <create_list name="$SubCommanderSubordinates"/>
+        <do_for_each name="$Subordinate" in="$SubCommander.subordinates">
+          <do_if value="not $Subordinate.isunit">
+            <append_to_list name="$SubCommanderSubordinates" exact="$Subordinate"/>
+          </do_if>
+        </do_for_each>
+        
+        <create_list name="$Groups"/>
+        <set_value name="$GroupID" exact="1"/>
+        <do_while value="$SubCommanderSubordinates.count gt 0">
+          <create_list name="$Group"/>
+          <do_for_each name="$Subordinate" in="$SubCommanderSubordinates">
+            <do_if value="$Subordinate.subordinategroupid == $GroupID">
+              <append_to_list name="$Group" exact="$Subordinate"/>
+            </do_if>
+          </do_for_each>
+          <do_if value="$Group.count gt 0">
+            <append_to_list name="$Groups" exact="$Group"/>
+            <remove_from_list name="$SubCommanderSubordinates" list="$Group"/>
+          </do_if>
+          <remove_value name="$Group"/>
+          <set_value name="$GroupID" operation="add" exact="1"/>
+          <wait exact="1ms"/>
+        </do_while>
+        
+        <remove_value name="$SubCommanderSubordinates"/>
+        <do_for_each name="$Group" in="$Groups">
+          <create_list name="$SortedGroup"/>
+          <run_script name="'JP_GetSubsSortedForNumbering'">
+            <param name="SUBORDINATES" value="$Group"/>
+            <param name="REVERSED_NUMBERING" value="$REVERSE_SORTING"/>
+            <param name="DEBUG" value="$DEBUG"/>
+            <save_retval name="SORTED_SUBORDINATES" variable="$SortedGroup"/>
+          </run_script>
+          <do_for_each name="$Ship" in="$SortedGroup" counter="$_it">
+            <run_script name="'JP_SetNewName'">
+              <param name="SHIP" value="$Ship"/>
+              <param name="NUMBER_TO_ADD" value="$_it"/>
+              <param name="NUMBER_AT_FRONT" value="$NUMBER_AT_FRONT"/>
+              <param name="NUMBER_AT_END" value="$NUMBER_AT_END"/>
+              <param name="COLORIZE_NUMBER" value="$COLORIZE_NUMBER"/>
+              <param name="NUMBER_ALPHA" value="$NUMBER_ALPHA"/>
+              <param name="NUMBER_RED" value="$NUMBER_RED"/>
+              <param name="NUMBER_GREEN" value="$NUMBER_GREEN"/>
+              <param name="NUMBER_BLUE" value="$NUMBER_BLUE"/>
+              <param name="COLORIZE_NAME" value="$COLORIZE_NAME"/>
+              <param name="NAME_ALPHA" value="$NAME_ALPHA"/>
+              <param name="NAME_RED" value="$NAME_RED"/>
+              <param name="NAME_GREEN" value="$NAME_GREEN"/>
+              <param name="NAME_BLUE" value="$NAME_BLUE"/>
+              <param name="DEBUG" value="$DEBUG"/>
+            </run_script>
+          </do_for_each>
+          <remove_value name="$SortedGroup"/>
+        </do_for_each>
+        <remove_value name="$Groups"/>
+      </do_for_each>
+
+      <!-- Fleet -->
+      <create_list name="$CommanderSubordinates"/>
+      <do_for_each name="$Subordinate" in="$Commander.subordinates">
+        <do_if value="not $Subordinate.isunit">
+          <append_to_list name="$CommanderSubordinates" exact="$Subordinate"/>
+        </do_if>
+      </do_for_each>
+
+      <create_list name="$Groups"/>
+      <set_value name="$GroupID" exact="1"/>
+      <do_while value="$CommanderSubordinates.count gt 0">
+        <create_list name="$Group"/>
+        <do_for_each name="$Subordinate" in="$CommanderSubordinates">
+          <do_if value="$Subordinate.subordinategroupid == $GroupID">
+            <append_to_list name="$Group" exact="$Subordinate"/>
+          </do_if>
+        </do_for_each>
+        <do_if value="$Group.count gt 0">
+          <append_to_list name="$Groups" exact="$Group"/>
+          <remove_from_list name="$CommanderSubordinates" list="$Group"/>
+        </do_if>
+        <remove_value name="$Group"/>
+        <set_value name="$GroupID" operation="add" exact="1"/>
+        <wait exact="1ms"/>
+      </do_while>
+      <remove_value name="$CommanderSubordinates"/>
+
+      <do_for_each name="$Group" in="$Groups">
+        <create_list name="$SortedGroup"/>
+        <run_script name="'JP_GetSubsSortedForNumbering'">
+          <param name="SUBORDINATES" value="$Group"/>
+          <param name="REVERSED_NUMBERING" value="$REVERSE_SORTING"/>
+          <param name="DEBUG" value="$DEBUG"/>
+          <save_retval name="SORTED_SUBORDINATES" variable="$SortedGroup"/>
+        </run_script>
+        <do_for_each name="$Ship" in="$SortedGroup" counter="$_it">
+          <run_script name="'JP_SetNewName'">
+            <param name="SHIP" value="$Ship"/>
+            <param name="NUMBER_TO_ADD" value="$_it"/>
+            <param name="NUMBER_AT_FRONT" value="$NUMBER_AT_FRONT"/>
+            <param name="NUMBER_AT_END" value="$NUMBER_AT_END"/>
+            <param name="COLORIZE_NUMBER" value="$COLORIZE_NUMBER"/>
+            <param name="NUMBER_ALPHA" value="$NUMBER_ALPHA"/>
+            <param name="NUMBER_RED" value="$NUMBER_RED"/>
+            <param name="NUMBER_GREEN" value="$NUMBER_GREEN"/>
+            <param name="NUMBER_BLUE" value="$NUMBER_BLUE"/>
+            <param name="COLORIZE_NAME" value="$COLORIZE_NAME"/>
+            <param name="NAME_ALPHA" value="$NAME_ALPHA"/>
+            <param name="NAME_RED" value="$NAME_RED"/>
+            <param name="NAME_GREEN" value="$NAME_GREEN"/>
+            <param name="NAME_BLUE" value="$NAME_BLUE"/>
+            <param name="DEBUG" value="$DEBUG"/>
+          </run_script>
+        </do_for_each>
+        <remove_value name="$SortedGroup"/>
+      </do_for_each>
+      <remove_value name="$Groups"/>
+
+      <!-- Commander -->
+      <run_script name="'JP_SetNewName'">
+        <param name="SHIP" value="$Commander"/>
+        <param name="NUMBER_TO_ADD" value="0"/>
+        <param name="NUMBER_AT_FRONT" value="false"/>
+        <param name="NUMBER_AT_END" value="false"/>
+        <param name="COLORIZE_NUMBER" value="$COLORIZE_NUMBER"/>
+        <param name="NUMBER_ALPHA" value="$NUMBER_ALPHA"/>
+        <param name="NUMBER_RED" value="$NUMBER_RED"/>
+        <param name="NUMBER_GREEN" value="$NUMBER_GREEN"/>
+        <param name="NUMBER_BLUE" value="$NUMBER_BLUE"/>
+        <param name="COLORIZE_NAME" value="$COLORIZE_NAME"/>
+        <param name="NAME_ALPHA" value="$NAME_ALPHA"/>
+        <param name="NAME_RED" value="$NAME_RED"/>
+        <param name="NAME_GREEN" value="$NAME_GREEN"/>
+        <param name="NAME_BLUE" value="$NAME_BLUE"/>
+        <param name="DEBUG" value="$DEBUG"/>
+      </run_script>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <do_if value="$DEBUG gt 0">
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ Completed JP_NumberMyShips ~~ %1 [%2]'.[$Commander.knownname, $Commander.idcode]"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+      </do_if>
+
+      <label name="CLEANUP"/>
+      <remove_value name="$SubCommanders"/>
+      <remove_value name="$Commander"/>
+      <remove_value name="$DebugFileName"/>
+      <remove_value name="$DebugDirectory"/>
+
+      <label name="FINISH"/>
+      <set_order_syncpoint_reached order="this.ship.order"/>
+      <cancel_order order="this.ship.order" />
+      <wait exact="1ms"/>
+
+    </actions>
+  </attention>
+
+  <on_abort>
+  </on_abort>
+
+</aiscript>
