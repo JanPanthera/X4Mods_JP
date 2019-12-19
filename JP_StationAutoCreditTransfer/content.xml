@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<content id="JP_StationAutoCreditTransfer" name="JP_StationAutoCreditTransfer" description="Transfers automaticly money from a station to the player when over production budget." author="JanPanthera" version="105" date="2019-12-17" save="0" enabled="1">
+<content id="JP_StationAutoCreditTransfer" name="JP_StationAutoCreditTransfer" description="Transfers automaticly money from a station to the player when over production budget." author="JanPanthera" version="105" date="2019-12-18" save="0" enabled="1">
   <dependency version="300"/>
   <text language="7"  name="JP_StationAutoCreditTransfer" description="Transfers automaticly money from a station to the player when over production budget." author="JanPanthera"/>
   <text language="33" name="JP_StationAutoCreditTransfer" description="Transfers automaticly money from a station to the player when over production budget." author="JanPanthera"/>

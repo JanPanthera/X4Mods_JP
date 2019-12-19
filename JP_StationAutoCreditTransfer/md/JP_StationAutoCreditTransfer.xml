@@ -55,8 +55,8 @@
             <signal_cue_instantly cue="JP_CALCULATE_NEEDS"/>
 
             <!-- Check if we can send some money from the Station to the Buildstorage if needed -->
-            <do_if value="$BuildstorageNeededMoney gt 0">
-              <do_if value="$AvailableMoney gt 0">
+            <do_if value="$BuildstorageNeededMoney gt 10Cr">
+              <do_if value="$AvailableMoney gt 10Cr">
                 <do_if value="$AvailableMoney gt $BuildstorageNeededMoney">
                   <set_value name="$MoneyToTransfer" exact="$BuildstorageNeededMoney"/>
                 </do_if>
@@ -64,16 +64,20 @@
                   <set_value name="$MoneyToTransfer" exact="$AvailableMoney"/>
                 </do_else>
                 <set_value name="$AvailableMoney" operation="subtract" exact="$MoneyToTransfer"/>
-                <signal_cue_instantly cue="JP_TRANSFER_MONEY" param="[$Station, $Station.buildstorage, $MoneyToTransfer]"/>
+                <do_if value="$MoneyToTransfer gt 100Cr">
+                  <signal_cue_instantly cue="JP_TRANSFER_MONEY" param="[$Station, $Station.buildstorage, $MoneyToTransfer]"/>
+                </do_if>
               </do_if>
             </do_if>
-            <do_elseif value="$BuildstorageNeededMoney lt 0">
+            <do_elseif value="$BuildstorageNeededMoney lt 10Cr">
               <set_value name="$MoneyToTransfer" exact="-($BuildstorageNeededMoney)"/>
-              <signal_cue_instantly cue="JP_TRANSFER_MONEY" param="[$Station.buildstorage, faction.player, $MoneyToTransfer]"/>
+              <do_if value="$MoneyToTransfer gt 100Cr">
+                <signal_cue_instantly cue="JP_TRANSFER_MONEY" param="[$Station.buildstorage, faction.player, $MoneyToTransfer]"/>
+              </do_if>
             </do_elseif>
 
             <!-- Check if we can send some money from the Player to the Station if needed -->
-            <do_if value="$AvailableMoney gt 0">
+            <do_if value="$AvailableMoney gt 100Cr">
               <signal_cue_instantly cue="JP_TRANSFER_MONEY" param="[$Station, faction.player, $AvailableMoney]"/>
             </do_if>
 
@@ -81,7 +85,7 @@
             <signal_cue_instantly cue="JP_CALCULATE_NEEDS"/>
 
             <!-- Check if we can send some money from the Player to the Station if needed -->
-            <do_if value="$PlayerAvailableMoney gt 0">
+            <do_if value="$PlayerAvailableMoney gt 10Cr">
               <do_if value="$StationNeededMoney gt 0">
                 <do_if value="$PlayerAvailableMoney gt $StationNeededMoney">
                   <set_value name="$MoneyToTransfer" exact="$StationNeededMoney"/>
@@ -90,12 +94,14 @@
                   <set_value name="$MoneyToTransfer" exact="$PlayerAvailableMoney"/>
                 </do_else>
                 <set_value name="$PlayerAvailableMoney" operation="subtract" exact="$MoneyToTransfer"/>
-                <signal_cue_instantly cue="JP_TRANSFER_MONEY" param="[faction.player, $Station, $MoneyToTransfer]"/>
+                <do_if value="$MoneyToTransfer gt 100Cr">
+                  <signal_cue_instantly cue="JP_TRANSFER_MONEY" param="[faction.player, $Station, $MoneyToTransfer]"/>
+                </do_if>
               </do_if>
             </do_if>
 
             <!-- Check if we can send some money from the Player to the Buildstorage if needed -->
-            <do_if value="$PlayerAvailableMoney gt 0">
+            <do_if value="$PlayerAvailableMoney gt 10Cr">
               <do_if value="$BuildstorageNeededMoney gt 0">
                 <do_if value="$PlayerAvailableMoney gt $BuildstorageNeededMoney">
                   <set_value name="$MoneyToTransfer" exact="$BuildstorageNeededMoney"/>
@@ -104,7 +110,9 @@
                   <set_value name="$MoneyToTransfer" exact="$PlayerAvailableMoney"/>
                 </do_else>
                 <set_value name="$PlayerAvailableMoney" operation="subtract" exact="$MoneyToTransfer"/>
-                <signal_cue_instantly cue="JP_TRANSFER_MONEY" param="[faction.player, $Station.buildstorage, $MoneyToTransfer]"/>
+                <do_if value="$MoneyToTransfer gt 100Cr">
+                  <signal_cue_instantly cue="JP_TRANSFER_MONEY" param="[faction.player, $Station.buildstorage, $MoneyToTransfer]"/>
+                </do_if>
               </do_if>
             </do_if>
 
@@ -260,7 +268,7 @@
             <set_value name="$AccountName" exact="event.param.{1}.knownname"/>
           </do_elseif>
           <do_else>
-            <set_value name="$AccountName" exact="{8888888, 212}"/>
+            <set_value name="$AccountName" exact="'[%1]'.[JP_STATION_AUTO_CREDITS_TRANSFER.$Station.knownname] + {8888888, 212}"/>
           </do_else>
 
           <do_if value="event.param.{2} == faction.player">
