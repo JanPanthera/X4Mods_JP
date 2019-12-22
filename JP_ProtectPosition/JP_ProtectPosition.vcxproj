@@ -143,18 +143,7 @@
     <Xsd Include="JP_ProtectPosition\aiscripts\aiscripts.xsd" />
   </ItemGroup>
   <ItemGroup>
-    <Xml Include="aiscripts\GetNearestEnemy.xml" />
-    <Xml Include="aiscripts\JP_Carrier_Fighter_Attacker.xml" />
-    <Xml Include="aiscripts\JP_Carrier_Fighter_Defender.xml" />
-    <Xml Include="aiscripts\JP_Carrier_Fighter_Interceptor.xml" />
-    <Xml Include="aiscripts\JP_CheckShipsForDamage.xml" />
-    <Xml Include="aiscripts\JP_Destroyer_Attacker.xml" />
-    <Xml Include="aiscripts\JP_Destroyer_Defender.xml" />
-    <Xml Include="aiscripts\JP_Go_Attack.xml" />
-    <Xml Include="aiscripts\JP_Go_Defend.xml" />
-    <Xml Include="aiscripts\JP_Go_Intercept.xml" />
     <Xml Include="aiscripts\JP_ProtectPosition.xml" />
-    <Xml Include="aiscripts\JP_WaitForOrders.xml" />
     <Xml Include="content.xml" />
     <Xml Include="JP_ProtectPosition\aiscripts\GetNearestEnemy.xml" />
     <Xml Include="JP_ProtectPosition\aiscripts\JP_CheckShipsForDamage.xml" />
