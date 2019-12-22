@@ -11,9 +11,9 @@ http://apocalypse.moy.su/
     <t id="1002">Красный</t>
     <t id="1003">Зеленый</t>
     <t id="1004">Синий</t>
-    <t id="1005">Automatic Fleet?</t>
-    <t id="1006">Idling in safe sector?</t>
-    <t id="1007">Safe sector.</t>
+    <t id="1005">Авто.Флот?</t>
+    <t id="1006">В безоп. секторе?</t>
+    <t id="1007">Безоп. сектор.</t>
     <t id="1008">Сектор</t>
   </page>
 </language>

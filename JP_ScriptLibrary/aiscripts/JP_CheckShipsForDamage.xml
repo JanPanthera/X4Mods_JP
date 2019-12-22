@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<aiscript name="JP_CheckShipsForDamage" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd" version="1">
+
+  <order id="JP_CheckShipsForDamage" name="CheckShipsForDamage JP" description="Checks if there is any ship with lesser then given hull percentage." category="internal" infinite="false">
+    <params>
+      <!-- Mod Params -->
+      <param name="RESUPPLY_SHIP" text="ResupplyShip" type="object" default="null"/>
+      <param name="HULL_PERCENTAGE" text="HullPercentage" type="number" default="100"/>
+      <param name="ONLY_RESUPPLY_SHIP" text="OnlyResupplyShip" type="bool" default="false"/>
+      <!-- DEBUG -->
+      <param name="DEBUG" text="DebugText" type="number" default="0" advanced="1">
+        <input_param name="step" value="50"/>
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="100"/>
+      </param>
+    </params>
+    <skill min="0"/>
+    <requires>
+      <match shiptype="shiptype.lasertower" negate="true"/>
+    </requires>
+  </order>
+
+  <interrupts>
+    <handler ref="ScannedHandler"/>
+    <handler ref="SectorChangeHandler"/>
+    <handler ref="TargetInvalidHandler"/>
+    <handler ref="AttackHandler"/>
+    <handler ref="MissileLockHandler"/>
+    <handler ref="ScannedHandler"/>
+    <handler ref="InspectedHandler"/>
+    <handler ref="FoundAbandonedHandler"/>
+    <handler ref="FoundLockboxHandler"/>
+    <handler ref="ResupplyHandler"/>
+    <handler ref="JobRemoveRequestHandler"/>
+  </interrupts>
+
+  <init>
+    <set_value name="$DebugDirectory" exact="'JP_CheckShipsForDamage.logs'"/>
+    <set_value name="$DebugFileName" exact="this.ship.idcode + '.JP_CheckShipsForDamage' + '.log'"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <set_value name="$FleetCommander" exact="this.ship.fleet.commander"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  </init>
+
+  <attention min="unknown">
+    <actions>
+
+      <wait exact="1ms"/>
+      <label name="INIT"/>
+
+      <do_if value="$DEBUG gt 0">
+        <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ Running JP_CheckShipsForDamage ~~ %1 [%2]'.[$FleetCommander.knownname, $FleetCommander.idcode] + '\n'"/>
+      </do_if>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <do_for_each name="$Ship" in="$FleetCommander.subordinates">
+        <do_if value="$Ship.isunit or $Ship == $RESUPPLY_SHIP">
+          <continue/>
+        </do_if>
+        <set_value name="$HasRepairOrder" exact="false"/>
+        <do_for_each name="$Order" in="$Ship.orders">
+          <do_if value="$Order.id" exact="'Repair'">
+            <set_value name="$HasRepairOrder" exact="true"/>
+            <break/>
+          </do_if>
+        </do_for_each>
+        <do_if value="$HasRepairOrder == false and $Ship.hullpercentage lt $HULL_PERCENTAGE">
+          <do_if value="$Ship.class" list="[class.ship_s, class.ship_m]">
+            <create_order object="$Ship" id="'Repair'" immediate="true">
+              <param name="destination" value="$FleetCommander"/>
+              <param name="hullpercent" value="100"/>
+              <param name="repairall" value="true"/>
+            </create_order>
+          </do_if>
+          <do_elseif value="$Ship" list="[class.ship_l, class.ship_xl]">
+            <do_if value="$RESUPPLY_SHIP != null">
+              <create_order object="$Ship" id="'Repair'" immediate="true">
+                <param name="destination" value="$RESUPPLY_SHIP"/>
+                <param name="hullpercent" value="100"/>
+                <param name="repairall" value="true"/>
+              </create_order>
+            </do_if>
+          </do_elseif>
+        </do_if>
+      </do_for_each>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <do_if value="$DEBUG gt 0">
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ Completed JP_CheckShipsForDamage ~~ %1 [%2]'.[$FleetCommander.knownname, $FleetCommander.idcode]"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+      </do_if>
+
+      <label name="CLEANUP"/>
+      <remove_value name="$FleetCommander"/>
+      <remove_value name="$DebugFileName"/>
+      <remove_value name="$DebugDirectory"/>
+
+      <label name="FINISH"/>
+      <wait exact="1ms"/>
+
+    </actions>
+  </attention>
+
+  <on_abort>
+  </on_abort>
+
+</aiscript>
