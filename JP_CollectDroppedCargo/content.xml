@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<content id="JP_CollectDroppedCargo" name="JP_CollectDroppedCargo" description="Collects dropped cargo and inventory items." author="JanPanthera" version="111" date="2019-11-27" save="0" enabled="1">
+<content id="JP_CollectDroppedCargo" name="JP_CollectDroppedCargo" description="Collects dropped cargo and inventory items." author="JanPanthera" version="112" date="2019-12-22" save="0" enabled="1">
   <dependency version="300"/>
   <dependency id="JP_ScriptLibrary" version="100"/>
   <text language="7"  name="JP_CollectDroppedCargo" description="Мод добавляет опции кораблям для сбора сброшенного груза и инвентаря." author="JanPanthera"/>
