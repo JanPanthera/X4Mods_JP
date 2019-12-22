@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<aiscript name="JP_AnotherFleetBehavior" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd" version="1">
+
+  <order id="JP_AnotherFleetBehavior" name="AnotherFleetBehavior JP" description="Another fleet behavior than default." category="combat" infinite="true">
+    <params>
+      <!-- Mod Params -->
+      <param name="TARGED" text="Targed" type="object" default="null">
+        <editable/>
+      </param>
+      <!-- DEBUG -->
+      <param name="DEBUG" text="DebugText" type="number" default="1.0" advanced="1">
+        <input_param name="step" value="0.1"/>
+        <input_param name="min" value="0.0"/>
+        <input_param name="max" value="1.0"/>
+      </param>
+    </params>
+    <skill min="0"/>
+    <requires>
+      <match shiptype="shiptype.lasertower" negate="true"/>
+    </requires>
+  </order>
+
+  <interrupts>
+    <handler ref="ScannedHandler"/>
+    <handler ref="SectorChangeHandler"/>
+    <handler ref="TargetInvalidHandler"/>
+    <handler ref="AttackHandler"/>
+    <handler ref="MissileLockHandler"/>
+    <handler ref="ScannedHandler"/>
+    <handler ref="InspectedHandler"/>
+    <handler ref="FoundAbandonedHandler"/>
+    <handler ref="FoundLockboxHandler"/>
+    <handler ref="ResupplyHandler"/>
+    <handler ref="JobRemoveRequestHandler"/>
+  </interrupts>
+
+  <init>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <set_value name="$DebugDirectory" exact="'JP_AnotherFleetBehavior.logs'"/>
+    <set_value name="$DebugFileName" exact="'JP_AnotherFleetBehavior' + '.log'"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <set_value name="$FleetCommander" exact="this.assignedcontrolled"/>
+    <set_value name="$ResupplyShip" exact="null"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <set_value name="$SendInterceptorSmall" exact="false"/>
+    <set_value name="$SendInterceptorLarge" exact="false"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <!-- ~~~ Initialize Fleet -->
+    <do_for_each name="$Subordinate" in="$FleetCommander.subordinates">
+      <do_if value="$Subordinate.isunit or $Subordinate.type == shiptype.carrier">
+        <continue/>
+      </do_if>
+      <cancel_all_orders object="$Subordinate"/>
+      <!-- Resupplyer -->
+      <do_if value="$Subordinate.type == shiptype.resupplier">
+        <do_if value="$ResupplyShip == null">
+          <set_value name="$ResupplyShip" exact="$Subordinate"/>
+        </do_if>
+        <create_order object="$Subordinate" id="'SupplyFleet'" immediate="true" default="true">
+          <param name="target" value="$FleetCommander"/>
+        </create_order>
+      </do_if>
+      <do_else>
+        <create_order object="$Subordinate" id="'JP_Go_WaitForOrders'" immediate="true" default="true">
+          <param name="OBJECT_TO_DOCK" value="$FleetCommander"/>
+        </create_order>
+      </do_else>
+    </do_for_each>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  </init>
+
+  <attention min="unknown">
+    <actions>
+      <wait exact="1ms"/>
+      <label name="INIT"/>
+      <cancel_all_orders object="$FleetCommander"/>
+
+      <do_if value="$DEBUG gt 0.0">
+        <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ Running JP_AnotherFleetBehavior ~~' + '\n'"/>
+      </do_if>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <label name="RESUME"/>
+
+      <!-- Small enemys here who are attacking us? -->
+      <create_list name="$FoundEnemysSmall"/>
+      <set_value name="$SendInterceptorSmall" exact="false"/>
+      <find_ship name="$FoundEnemysSmall" space="$FleetCommander.sector" multiple="true">
+        <match knownto="$FleetCommander.owner"/>
+        <match mayattack="$FleetCommander"/>
+        <match checkoperational="true"/>
+        <match class="[class.ship_s, class.ship_m]"/>
+      </find_ship>
+
+      <do_if value="$FoundEnemysSmall.count gt 0">
+        <do_for_each name="$Enemy" in="$FoundEnemysSmall">
+          <do_if value="$SendInterceptorSmall">
+            <break/>
+          </do_if>
+          <do_for_each name="$Order" in="$Enemy.orders">
+            <do_if value="$Order.id == 'Attack'">
+              <do_if value="$Order.$primarytarget.owner == $FleetCommander.owner">
+                <set_value name="$SendInterceptorSmall" exact="true"/>
+                <break/>
+              </do_if>
+            </do_if>
+          </do_for_each>
+        </do_for_each>
+      </do_if>
+
+      <!-- Large enemys here who are attacking us? -->
+      <create_list name="$FoundEnemysLarge"/>
+      <set_value name="$SendInterceptorLarge" exact="false"/>
+      <find_ship name="$FoundEnemysLarge" space="$FleetCommander.sector" multiple="true">
+        <match knownto="$FleetCommander.owner"/>
+        <match mayattack="$FleetCommander"/>
+        <match checkoperational="true"/>
+        <match class="[class.ship_l, class.ship_xl]"/>
+      </find_ship>
+
+      <do_if value="$FoundEnemysLarge.count gt 0">
+        <do_for_each name="$Enemy" in="$FoundEnemysLarge">
+          <do_if value="$SendInterceptorLarge">
+            <break/>
+          </do_if>
+          <do_for_each name="$Order" in="$Enemy.orders">
+            <do_if value="$Order.id == 'Attack'">
+              <do_if value="$Order.$primarytarget.owner == $FleetCommander.owner">
+                <set_value name="$SendInterceptorLarge" exact="true"/>
+                <break/>
+              </do_if>
+            </do_if>
+          </do_for_each>
+        </do_for_each>
+      </do_if>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <!-- Are any of our ships damaged heavily? repair it.. -->
+      <run_script name="'JP_CheckShipsForDamage'">
+        <param name="RESUPPLY_SHIP" value="$ResupplyShip"/>
+        <param name="HULL_PERCENTAGE" value="90"/>
+        <param name="ONLY_RESUPPLY_SHIP" value="false"/>
+      </run_script>
+
+      <do_if value="not $FoundEnemysSmall and not $SendInterceptorLarge">
+        <!-- Are any of our ships damaged heavily? repair it.. -->
+        <run_script name="'JP_CheckShipsForDamage'">
+          <param name="RESUPPLY_SHIP" value="$ResupplyShip"/>
+          <param name="HULL_PERCENTAGE" value="100"/>
+          <param name="ONLY_RESUPPLY_SHIP" value="false"/>
+        </run_script>
+      </do_if>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <do_for_each name="$Subordinate" in="$FleetCommander.subordinates">
+        <do_if value="$Subordinate.isunit or $Subordinate.type == shiptype.resupplier or $Subordinate.type == shiptype.carrier">
+          <continue/>
+        </do_if>
+        <set_value name="$HasRepairOrder" exact="false"/>
+        <do_for_each name="$Order" in="$Subordinate.orders">
+          <do_if value="$Order.id == 'Repair'">
+            <set_value name="$HasRepairOrder" exact="true"/>
+            <break/>
+          </do_if>
+        </do_for_each>
+        <do_if value="not $HasRepairOrder">
+
+          <!-- Attacker -->
+          <do_if value="$Subordinate.assignment == assignment.attack and @$TARGED != null">
+            <do_if value="$Subordinate.defaultorder.id != 'JP_Go_Attack'">
+              <cancel_all_orders object="$Subordinate"/>
+              <create_order object="$Subordinate" id="'JP_Go_Attack'" immediate="true" default="true">
+                <param name="TARGED" value="$TARGED"/>
+                <param name="DEBUG" value="$DEBUG"/>
+              </create_order>
+            </do_if>
+          </do_if>
+
+          <!-- Defender -->
+          <do_if value="$Subordinate.assignment == assignment.defence and $Subordinate.defaultorder.id != 'JP_Go_Defend' and $FleetCommander.shieldpercentage lt 30">
+            <cancel_all_orders object="$Subordinate"/>
+            <create_order object="$Subordinate" id="'JP_Go_Defend'" immediate="true" default="true">
+              <param name="DEBUG" value="$DEBUG"/>
+            </create_order>
+          </do_if>
+
+          <!-- Intercepter -->
+          <do_if value="$Subordinate.assignment == assignment.interception and $Subordinate.defaultorder.id != 'JP_Go_Intercept'">
+            <set_value name="$SendInterceptor" exact="false"/>
+            <do_if value="($Subordinate.class == class.ship_s or $Subordinate.class == class.ship_m) and $SendInterceptorSmall">
+              <set_value name="$SendInterceptor" exact="true"/>
+            </do_if>
+            <do_if value="($Subordinate.class == class.ship_l or $Subordinate.class == class.ship_xl) and $SendInterceptorLarge">
+              <set_value name="$SendInterceptor" exact="true"/>
+            </do_if>
+            <do_if value="$SendInterceptor">
+              <cancel_all_orders object="$Subordinate"/>
+              <create_order object="$Subordinate" id="'JP_Go_Intercept'" immediate="true" default="true">
+                <param name="DEBUG" value="$DEBUG"/>
+              </create_order>
+            </do_if>
+          </do_if>
+
+        </do_if>
+      </do_for_each>
+
+      <wait exact="1s"/>
+      <resume label="RESUME"/>
+
+      <label name="END"/>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <do_if value="$DEBUG gt 0.0">
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ Completed JP_AnotherFleetBehavior ~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+      </do_if>
+
+      <label name="CLEANUP"/>
+      <remove_value name="$ResupplyShip"/>
+      <remove_value name="$FleetCommander"/>
+      <remove_value name="$DebugFileName"/>
+      <remove_value name="$DebugDirectory"/>
+
+      <label name="FINISH"/>
+      <set_order_syncpoint_reached order="this.ship.order"/>
+      <cancel_order order="this.ship.order" />
+      <wait exact="1ms"/>
+
+    </actions>
+  </attention>
+
+  <on_abort>
+  </on_abort>
+
+</aiscript>
