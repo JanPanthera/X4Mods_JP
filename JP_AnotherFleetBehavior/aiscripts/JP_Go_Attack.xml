@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<aiscript name="JP_Go_Attack" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd" version="1">
+
+  <order id="JP_Go_Attack" name="Go_Attack JP" category="internal" infinite="true">
+    <params>
+      <!-- PARAMS -->
+      <param name="TARGED" text="Targed" type="object" default="null"/>
+      <param name="INTERCEPTION_RANGE" text="InterceptionRange" type="length" default="20km">
+        <input_param name="step" value="1km"/>
+        <input_param name="min" value="1km"/>
+        <input_param name="max" value="this.ship.fleet.commander.maxradarrange"/>
+      </param>
+      <!-- DEBUG -->
+      <param name="DEBUG" text="DebugText" type="number" default="0.0" advanced="1">
+        <input_param name="step" value="0.1"/>
+        <input_param name="min" value="0.0"/>
+        <input_param name="max" value="1.0"/>
+      </param>
+    </params>
+    <skill min="0"/>
+    <requires>
+      <match shiptype="shiptype.lasertower" negate="true"/>
+    </requires>
+  </order>
+
+  <interrupts>
+    <handler ref="ScannedHandler"/>
+    <handler ref="SectorChangeHandler"/>
+    <handler ref="TargetInvalidHandler"/>
+    <handler ref="AttackHandler"/>
+    <handler ref="MissileLockHandler"/>
+    <handler ref="ScannedHandler"/>
+    <handler ref="InspectedHandler"/>
+    <handler ref="FoundAbandonedHandler"/>
+    <handler ref="FoundLockboxHandler"/>
+    <handler ref="ResupplyHandler"/>
+    <handler ref="JobRemoveRequestHandler"/>
+  </interrupts>
+
+  <init>
+    <set_value name="$DebugDirectory" exact="'JP_Go_Attack.logs'"/>
+    <set_value name="$DebugFileName" exact="'JP_Go_Attack' + '.log'"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <set_value name="$Ship" exact="this.ship"/>
+    <set_value name="$FleetCommander" exact="this.ship.fleet.commander"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  </init>
+
+  <attention min="unknown">
+    <actions>
+
+      <wait exact="1ms"/>
+      <label name="INIT"/>
+
+      <do_if value="$DEBUG gt 0.0">
+        <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ Running JP_Go_Attack ~~' + '\n'"/>
+      </do_if>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <label name="RESUME"/>
+
+      <check_object object="@$TARGED" result="$IsTargedGood">
+        <match checkoperational="true"/>
+      </check_object>
+
+      <do_if value="$Ship.assignment != assignment.attack or not $IsTargedGood">
+        <resume label="END"/>
+      </do_if>
+
+      <run_script name="'JP_HasShipOrder'">
+        <param name="SHIP" value="$Ship"/>
+        <param name="ORDER" value="'JP_Fighter_Attack'"/>
+        <save_retval name="HAS_ORDER" variable="$Has_JP_Fighter_Attack"/>
+      </run_script>
+
+      <run_script name="'JP_HasShipOrder'">
+        <param name="SHIP" value="$Ship"/>
+        <param name="ORDER" value="'JP_Destroyer_Attack'"/>
+        <save_retval name="HAS_ORDER" variable="$Has_JP_Destroyer_Attack"/>
+      </run_script>
+
+      <do_if value="$Has_JP_Fighter_Attack or $Has_JP_Destroyer_Attack">
+        <resume label="NEXT_ITERATION"/>
+      </do_if>
+
+      <do_if value="$Ship.class" list="[class.ship_s, class.ship_m]">
+
+        <cancel_all_orders object="$Ship"/>
+        <create_order object="$Ship" id="'JP_Fighter_Attack'" immediate="true" default="false">
+          <param name="TARGED" value="$TARGED"/>
+          <param name="INTERCEPTION_RANGE" value="$INTERCEPTION_RANGE"/>
+          <param name="DEBUG" value="$DEBUG"/>
+        </create_order>
+
+      </do_if>
+      <do_elseif value="$Ship.class" list="[class.ship_l, class.ship_xl]">
+
+        <cancel_all_orders object="$Ship"/>
+        <create_order object="$Ship" id="'JP_Destroyer_Attack'" immediate="true" default="false">
+          <param name="TARGED" value="$TARGED"/>
+          <param name="INTERCEPTION_RANGE" value="$INTERCEPTION_RANGE"/>
+          <param name="DEBUG" value="$DEBUG"/>
+        </create_order>
+
+      </do_elseif>
+
+      <label name="NEXT_ITERATION"/>
+
+      <wait exact="1s"/>
+      <resume label="RESUME"/>
+
+      <label name="END"/>
+      <create_order object="$Ship" id="'JP_Go_WaitForOrders'" immediate="true" default="true">
+        <param name="OBJECT_TO_DOCK" value="$FleetCommander"/>
+      </create_order>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <do_if value="$DEBUG gt 0.0">
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ Completed JP_Go_Attack ~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+      </do_if>
+
+      <label name="CLEANUP"/>
+      <remove_value name="$Ship"/>
+      <remove_value name="$FleetCommander"/>
+      <remove_value name="$DebugFileName"/>
+      <remove_value name="$DebugDirectory"/>
+
+      <label name="FINISH"/>
+      <set_order_syncpoint_reached order="this.ship.order"/>
+      <cancel_order order="this.ship.order" />
+      <wait exact="1ms"/>
+
+    </actions>
+  </attention>
+
+  <on_abort>
+  </on_abort>
+
+</aiscript>

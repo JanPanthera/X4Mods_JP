@@ -142,6 +142,16 @@
   </ItemGroup>
   <ItemGroup>
     <Xml Include="aiscripts\JP_AnotherFleetBehavior.xml" />
+    <Xml Include="aiscripts\JP_Destroyer_Attack.xml" />
+    <Xml Include="aiscripts\JP_Destroyer_Defend.xml" />
+    <Xml Include="aiscripts\JP_Destroyer_Intercept.xml" />
+    <Xml Include="aiscripts\JP_Fighter_Attack.xml" />
+    <Xml Include="aiscripts\JP_Fighter_Defend.xml" />
+    <Xml Include="aiscripts\JP_Fighter_Intercept.xml" />
+    <Xml Include="aiscripts\JP_Go_Attack.xml" />
+    <Xml Include="aiscripts\JP_Go_Defend.xml" />
+    <Xml Include="aiscripts\JP_Go_Intercept.xml" />
+    <Xml Include="aiscripts\JP_Go_WaitForOrders.xml" />
     <Xml Include="content.xml" />
     <Xml Include="t\0001-L007.xml" />
     <Xml Include="t\0001-L033.xml" />

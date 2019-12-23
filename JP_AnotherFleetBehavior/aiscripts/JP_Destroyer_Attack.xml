@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<aiscript name="JP_Destroyer_Attack" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd" version="1">
+
+  <order id="JP_Destroyer_Attack" name="Destroyer_Attack JP" category="internal" infinite="false">
+    <params>
+      <!-- PARAMS -->
+      <param name="TARGED" text="Targed" type="object" default="null"/>
+      <param name="INTERCEPTION_RANGE" text="InterceptionRange" type="length" default="20km">
+        <input_param name="step" value="1km"/>
+        <input_param name="min" value="1km"/>
+        <input_param name="max" value="this.ship.fleet.commander.maxradarrange"/>
+      </param>
+      <!-- DEBUG -->
+      <param name="DEBUG" text="DebugText" type="number" default="0.0" advanced="1">
+        <input_param name="step" value="0.1"/>
+        <input_param name="min" value="0.0"/>
+        <input_param name="max" value="1.0"/>
+      </param>
+    </params>
+    <skill min="0"/>
+    <requires>
+      <match shiptype="shiptype.lasertower" negate="true"/>
+    </requires>
+  </order>
+
+  <interrupts>
+    <handler ref="ScannedHandler"/>
+    <handler ref="SectorChangeHandler"/>
+    <handler ref="TargetInvalidHandler"/>
+    <handler ref="AttackHandler"/>
+    <handler ref="MissileLockHandler"/>
+    <handler ref="ScannedHandler"/>
+    <handler ref="InspectedHandler"/>
+    <handler ref="FoundAbandonedHandler"/>
+    <handler ref="FoundLockboxHandler"/>
+    <handler ref="ResupplyHandler"/>
+    <handler ref="JobRemoveRequestHandler"/>
+  </interrupts>
+
+  <init>
+    <set_value name="$DebugDirectory" exact="'JP_Destroyer_Attack.logs'"/>
+    <set_value name="$DebugFileName" exact="'JP_Destroyer_Attack' + '.log'"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <set_value name="$Ship" exact="this.ship"/>
+    <set_value name="$FleetCommander" exact="this.ship.fleet.commander"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  </init>
+
+  <attention min="unknown">
+    <actions>
+
+      <wait exact="1ms"/>
+      <label name="INIT"/>
+
+      <do_if value="$DEBUG gt 0.0">
+        <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ Running JP_Destroyer_Attack ~~' + '\n'"/>
+      </do_if>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <label name="RESUME"/>
+
+      <do_if value="@$TARGED == null">
+        <resume label="END"/>
+      </do_if>
+
+      <check_object object="$TARGED" result="$IsTargedGood">
+        <match checkoperational="true"/>
+      </check_object>
+
+      <do_if value="$IsTargedGood">
+        <do_if value="$TARGED.distanceto.{$FleetCommander} gt $INTERCEPTION_RANGE">
+          <resume label="END"/>
+        </do_if>
+      </do_if>
+      <do_else>
+        <resume label="END"/>
+      </do_else>
+
+      <run_script name="'JP_HasShipOrder'">
+        <param name="SHIP" value="$Ship"/>
+        <param name="ORDER" value="'Attack'"/>
+        <save_retval name="HAS_ORDER" variable="$HasOrder"/>
+      </run_script>
+
+      <do_if value="not $HasOrder">
+        <create_order object="$Ship" id="'Attack'" immediate="true" default="false">
+          <param name="primarytarget" value="$TARGED"/>
+          <param name="pursuetargets" value="false"/>
+          <param name="pursuedistance" value="$INTERCEPTION_RANGE"/>
+        </create_order>
+      </do_if>
+
+      <wait exact="1ms"/>
+      <resume label="RESUME"/>
+
+      <label name="END"/>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <do_if value="$DEBUG gt 0.0">
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ Completed JP_Destroyer_Attack ~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+      </do_if>
+
+      <label name="CLEANUP"/>
+      <remove_value name="$Ship"/>
+      <remove_value name="$DebugFileName"/>
+      <remove_value name="$DebugDirectory"/>
+
+      <label name="FINISH"/>
+      <set_order_syncpoint_reached order="this.ship.order"/>
+      <cancel_order order="this.ship.order" />
+      <wait exact="1ms"/>
+
+    </actions>
+  </attention>
+
+  <on_abort>
+  </on_abort>
+
+</aiscript>
