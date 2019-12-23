@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<aiscript name="JP_IsEnemyNearAndIsAttackingUs" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd" version="1">
+
+  <order id="JP_IsEnemyNearAndIsAttackingUs" name="IsEnemyNearAndIsAttackingUs JP" category="internal" infinite="false">
+    <params>
+      <!-- PARAMS -->
+      <param name="ENEMY_CLASSES" text="EnemyClasses" type="list" default="null"/>
+      <param name="LOOKING_RADIUS" text="LookingRange" type="length" default="20km"/>
+      <!-- DEBUG -->
+      <param name="DEBUG" text="DebugText" type="number" default="0.0" advanced="1">
+        <input_param name="step" value="0.1"/>
+        <input_param name="min" value="0.0"/>
+        <input_param name="max" value="1.0"/>
+      </param>
+    </params>
+    <skill min="0"/>
+    <requires>
+      <match shiptype="shiptype.lasertower" negate="true"/>
+    </requires>
+  </order>
+
+  <interrupts>
+    <handler ref="ScannedHandler"/>
+    <handler ref="SectorChangeHandler"/>
+    <handler ref="TargetInvalidHandler"/>
+    <handler ref="AttackHandler"/>
+    <handler ref="MissileLockHandler"/>
+    <handler ref="ScannedHandler"/>
+    <handler ref="InspectedHandler"/>
+    <handler ref="FoundAbandonedHandler"/>
+    <handler ref="FoundLockboxHandler"/>
+    <handler ref="ResupplyHandler"/>
+    <handler ref="JobRemoveRequestHandler"/>
+  </interrupts>
+
+  <init>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <set_value name="$DebugDirectory" exact="'JP_IsEnemyNearAndIsAttackingUs.logs'"/>
+    <set_value name="$DebugFileName" exact="'JP_IsEnemyNearAndIsAttackingUs' + '.log'"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <set_value name="$FleetCommander" exact="this.assignedcontrolled"/>
+    <set_value name="$IsEnemyNearAndIsAttackingUs" exact="false"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  </init>
+
+  <attention min="unknown">
+    <actions>
+
+      <wait exact="1ms"/>
+      <label name="INIT"/>
+
+
+      <do_if value="$DEBUG gt 0.0">
+        <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ Running JP_IsEnemyNearAndIsAttackingUs ~~' + '\n'"/>
+      </do_if>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <do_if value="@$ENEMY_CLASSES == null">
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'@$ENEMY_CLASSES == null'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+        <resume label="END"/>
+      </do_if>
+
+      <create_list name="$FoundEnemys"/>
+      <find_ship name="$FoundEnemys" space="$FleetCommander.sector" multiple="true">
+        <match knownto="$FleetCommander.owner"/>
+        <match mayattack="$FleetCommander"/>
+        <match checkoperational="true"/>
+        <match class="$ENEMY_CLASSES"/>
+      </find_ship>
+
+      <do_if value="$FoundEnemys.count gt 0">
+        <do_for_each name="$Enemy" in="$FoundEnemys">
+          <do_if value="$Enemy.distanceto.{$FleetCommander} lt $LOOKING_RADIUS">
+            <run_script name="'JP_IsShipAttackingUs'">
+              <param name="SHIP" value="$Enemy"/>
+              <save_retval name="IS_ATTACKING_US" variable="$IsAttackingUs"/>
+            </run_script>
+            <do_if value="$IsAttackingUs">
+              <set_value name="$IsEnemyNearAndIsAttackingUs" exact="true"/>
+              <break/>
+            </do_if>
+          </do_if>
+        </do_for_each>
+      </do_if>
+      <remove_value name="$FoundEnemys"/>
+
+      <label name="END"/>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <do_if value="$DEBUG gt 0.0">
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ Completed JP_IsEnemyNearAndIsAttackingUs ~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+      </do_if>
+
+      <label name="CLEANUP"/>
+      <remove_value name="$FleetCommander"/>
+      <remove_value name="$DebugFileName"/>
+      <remove_value name="$DebugDirectory"/>
+
+      <label name="FINISH"/>
+      <wait exact="1ms"/>
+
+      <return>
+        <retval name="IS_ENEMY_NEAR_AND_IS_ATTACKING_US" value="$IsEnemyNearAndIsAttackingUs"/>
+      </return>
+
+
+    </actions>
+  </attention>
+
+  <on_abort>
+  </on_abort>
+
+</aiscript>

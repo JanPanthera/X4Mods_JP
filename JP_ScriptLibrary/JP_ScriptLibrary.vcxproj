@@ -128,25 +128,18 @@
     <Xsd Include="JP_ScriptLibrary\aiscripts\aiscripts.xsd" />
   </ItemGroup>
   <ItemGroup>
-    <Xml Include="aiscripts\GetNearestEnemy.xml" />
+    <Xml Include="aiscripts\JP_GetNearestEnemy.xml" />
     <Xml Include="aiscripts\JP_AreWeInTheRightSector.xml" />
     <Xml Include="aiscripts\JP_CheckShipsForDamage.xml" />
-    <Xml Include="aiscripts\JP_Destroyer_Attack.xml" />
-    <Xml Include="aiscripts\JP_Destroyer_Defend.xml" />
-    <Xml Include="aiscripts\JP_Destroyer_Intercept.xml" />
-    <Xml Include="aiscripts\JP_Fighter_Attack.xml" />
-    <Xml Include="aiscripts\JP_Fighter_Defend.xml" />
-    <Xml Include="aiscripts\JP_Fighter_Intercept.xml" />
     <Xml Include="aiscripts\JP_GetSubsSortedForNumbering.xml" />
-    <Xml Include="aiscripts\JP_Go_Attack.xml" />
-    <Xml Include="aiscripts\JP_Go_Defend.xml" />
-    <Xml Include="aiscripts\JP_Go_Intercept.xml" />
+    <Xml Include="aiscripts\JP_HasShipOrder.xml" />
     <Xml Include="aiscripts\JP_IdleWait.xml" />
+    <Xml Include="aiscripts\JP_IsEnemyNearAndIsAttackingUs.xml" />
+    <Xml Include="aiscripts\JP_IsShipAttackingUs.xml" />
     <Xml Include="aiscripts\JP_Restock_X_ToShip.xml" />
     <Xml Include="aiscripts\JP_SortListByDistance.xml" />
     <Xml Include="aiscripts\JP_SortListByGateJumpsDistance.xml" />
     <Xml Include="aiscripts\JP_ToHexadecimalColorString.xml" />
-    <Xml Include="aiscripts\JP_Go_WaitForOrders.xml" />
     <Xml Include="content.xml" />
     <Xml Include="JP_ScriptLibrary\aiscripts\JP_AreWeInTheRightSector.xml" />
     <Xml Include="JP_ScriptLibrary\aiscripts\JP_GetSubsSortedForNumbering.xml" />
