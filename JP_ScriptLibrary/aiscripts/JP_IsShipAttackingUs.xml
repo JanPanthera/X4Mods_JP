@@ -56,7 +56,7 @@
       <set_value name="$IsAttackingUs" exact="false"/>
       <do_for_each name="$Order" in="$SHIP.orders">
         <do_if value="$Order.id == 'Attack'">
-          <do_if value="$Order.$primarytarget.owner == faction.player">
+          <do_if value="$Order.$primarytarget.isplayerowned">
             <set_value name="$IsAttackingUs" exact="true"/>
             <break/>
           </do_if>

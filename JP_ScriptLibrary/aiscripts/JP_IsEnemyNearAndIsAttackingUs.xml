@@ -73,6 +73,8 @@
         <match class="$ENEMY_CLASSES"/>
       </find_ship>
 
+      <set_value name="$EnemyCount" exact="$FoundEnemys.count"/>
+
       <do_if value="$FoundEnemys.count gt 0">
         <do_for_each name="$Enemy" in="$FoundEnemys">
           <do_if value="$Enemy.distanceto.{$FleetCommander} lt $LOOKING_RADIUS">
@@ -108,6 +110,7 @@
 
       <return>
         <retval name="IS_ENEMY_NEAR_AND_IS_ATTACKING_US" value="$IsEnemyNearAndIsAttackingUs"/>
+        <retval name="ENEMY_COUNT" value="$EnemyCount"/>
       </return>
 
 
