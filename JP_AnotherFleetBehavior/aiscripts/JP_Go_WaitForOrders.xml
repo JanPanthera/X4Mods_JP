@@ -63,7 +63,11 @@
           <param name="ORDER" value="'DockAndWait'"/>
           <save_retval name="HAS_ORDER" variable="$HasDockOrder"/>
         </run_script>
-        <do_if value="not $HasDockOrder">
+        <check_object object="$Ship" result="$Docked">
+          <match docked="true"/>
+        </check_object>
+        <do_if value="not $Docked and not $HasDockOrder">
+          <cancel_all_orders object="$Ship"/>
           <create_order object="$Ship" id="'DockAndWait'" immediate="true">
             <param name="destination" value="$FleetCommander"/>
           </create_order>
@@ -71,12 +75,16 @@
       </do_if>
 
       <do_if value="$Ship.class" list="[class.ship_l, class.ship_xl]">
+        <cancel_all_orders object="$Ship"/>
         <run_script name="'JP_HasShipOrder'">
           <param name="SHIP" value="$Ship"/>
           <param name="ORDER" value="'Follow'"/>
           <save_retval name="HAS_ORDER" variable="$HasFollowOrder"/>
         </run_script>
         <do_if value="not $HasFollowOrder">
+          <create_order object="$Ship" id="'Follow'" immediate="true" default="true">
+            <param name="target" value="$FleetCommander"/>
+          </create_order>
           <do_if value="not $Ship.isformationwingman">
             <do_if value="$FleetCommander.isformationleader">
               <join_formation object="$Ship" leader="$FleetCommander"/>
@@ -85,9 +93,6 @@
               <create_formation leader="$FleetCommander" follower="$Ship" formation="formationshape.pointguard" param="$FleetCommander.formationradius * 2"/>
             </do_else>
           </do_if>
-          <create_order object="$Ship" id="'Follow'" immediate="true" default="true">
-            <param name="target" value="$FleetCommander"/>
-          </create_order>
         </do_if>
       </do_if>
 

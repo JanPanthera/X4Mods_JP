@@ -42,8 +42,8 @@
     <set_value name="$DebugDirectory" exact="'JP_Fighter_Intercept.logs'"/>
     <set_value name="$DebugFileName" exact="'JP_Fighter_Intercept' + '.log'"/>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-    <set_value name="$Ship" exact="this.ship"/>
     <set_value name="$FleetCommander" exact="this.ship.fleet.commander"/>
+    <set_value name="$Ship" exact="this.ship"/>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
   </init>
 
@@ -62,38 +62,36 @@
 
       <label name="RESUME"/>
 
-      <do_if value="@$TARGED == null">
+      <do_if value="$Ship.defaultorder.id != 'JP_Go_Intercept'">
         <resume label="END"/>
       </do_if>
-
-      <check_object object="$TARGED" result="$IsTargedGood">
-        <match checkoperational="true"/>
-      </check_object>
-
-      <do_if value="$IsTargedGood">
-        <do_if value="$TARGED.distanceto.{$FleetCommander} gt $INTERCEPTION_RANGE">
-          <resume label="END"/>
-        </do_if>
-      </do_if>
-      <do_else>
-        <resume label="END"/>
-      </do_else>
-
+      
       <run_script name="'JP_HasShipOrder'">
         <param name="SHIP" value="$Ship"/>
         <param name="ORDER" value="'Attack'"/>
-        <save_retval name="HAS_ORDER" variable="$HasOrder"/>
+        <save_retval name="HAS_ORDER" variable="$HasAttackOrder"/>
       </run_script>
 
-      <do_if value="not $HasOrder">
+      <do_if value="not $HasAttackOrder">
+
+        <run_script name="'JP_GetNearestEnemy'">
+          <param name="RANGE" value="$INTERCEPTION_RANGE"/>
+          <param name="CLASSES" value="[class.ship_xs, class.ship_s, class.ship_m]"/>
+          <save_retval name="NEAREST_ENEMY" variable="$NearestEnemySmall"/>
+        </run_script>
+
+        <do_if value="$NearestEnemySmall == null">
+          <resume label="END"/>
+        </do_if>
+
         <create_order object="$Ship" id="'Attack'" immediate="true" default="false">
-          <param name="primarytarget" value="$TARGED"/>
+          <param name="primarytarget" value="$NearestEnemySmall"/>
           <param name="pursuetargets" value="false"/>
-          <param name="pursuedistance" value="$INTERCEPTION_RANGE"/>
         </create_order>
+
       </do_if>
 
-      <wait exact="1ms"/>
+      <wait min="1s" max="3s"/>
       <resume label="RESUME"/>
 
       <label name="END"/>
@@ -106,13 +104,13 @@
       </do_if>
 
       <label name="CLEANUP"/>
+      <remove_value name="$NearestEnemySmall"/>
+      <remove_value name="$FleetCommander"/>
       <remove_value name="$Ship"/>
       <remove_value name="$DebugFileName"/>
       <remove_value name="$DebugDirectory"/>
 
       <label name="FINISH"/>
-      <set_order_syncpoint_reached order="this.ship.order"/>
-      <cancel_order order="this.ship.order" />
       <wait exact="1ms"/>
 
     </actions>
