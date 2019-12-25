@@ -128,14 +128,13 @@
     <Xsd Include="JP_ScriptLibrary\aiscripts\aiscripts.xsd" />
   </ItemGroup>
   <ItemGroup>
-    <Xml Include="aiscripts\JP_GetNearestEnemy.xml" />
     <Xml Include="aiscripts\JP_AreWeInTheRightSector.xml" />
     <Xml Include="aiscripts\JP_CheckShipsForDamage.xml" />
     <Xml Include="aiscripts\JP_GetSubsSortedForNumbering.xml" />
     <Xml Include="aiscripts\JP_HasShipOrder.xml" />
     <Xml Include="aiscripts\JP_IdleWait.xml" />
-    <Xml Include="aiscripts\JP_IsEnemyNearAndIsAttackingUs.xml" />
-    <Xml Include="aiscripts\JP_IsShipAttackingUs.xml" />
+    <Xml Include="aiscripts\JP_MoveThroughGate.xml" />
+    <Xml Include="aiscripts\JP_MoveToPosition.xml" />
     <Xml Include="aiscripts\JP_Restock_X_ToShip.xml" />
     <Xml Include="aiscripts\JP_SortListByDistance.xml" />
     <Xml Include="aiscripts\JP_SortListByGateJumpsDistance.xml" />

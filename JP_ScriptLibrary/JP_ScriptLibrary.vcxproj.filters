@@ -65,8 +65,7 @@
     <Xml Include="t\0001-L088.xml" />
     <Xml Include="aiscripts\JP_CheckShipsForDamage.xml" />
     <Xml Include="aiscripts\JP_HasShipOrder.xml" />
-    <Xml Include="aiscripts\JP_GetNearestEnemy.xml" />
-    <Xml Include="aiscripts\JP_IsShipAttackingUs.xml" />
-    <Xml Include="aiscripts\JP_IsEnemyNearAndIsAttackingUs.xml" />
+    <Xml Include="aiscripts\JP_MoveToPosition.xml" />
+    <Xml Include="aiscripts\JP_MoveThroughGate.xml" />
   </ItemGroup>
 </Project>
