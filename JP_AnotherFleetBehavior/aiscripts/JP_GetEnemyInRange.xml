@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<aiscript name="JP_GetEnemyInRange" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd" version="1">
+
+  <order id="JP_GetEnemyInRange" name="GetEnemyInRange JP" category="internal" infinite="false">
+    <params>
+      <!-- Mod Params -->
+      <param name="RANGE" text="Range" type="length" default="20km"/>
+      <param name="CLASSES" text="Classes" type="list" default="[class.ship_xs, class.ship_s, class.ship_m, class.ship_l, class.ship_xl, class.station]"/>
+      <param name="SECTOR" text="Sector" type="object" default="this.ship.sector"/>
+      <param name="CENTER_POSITION" text="CenterPosition" type="position" default="this.ship.position"/>
+      <param name="SORT_TO_POSITION" text="SortToPosition" type="position" default="this.ship.position"/>
+      <param name="RANDOMIZING" text="Randomizing" type="number" default="11"/>
+      <param name="CHECK_FOR_IS_ATTACKING_US" text="CheckForIsAttackingUs" type="bool" default="false"/>
+      <!-- DEBUG -->
+      <param name="DEBUG" text="DebugText" type="number" default="0.0" advanced="1">
+        <input_param name="step" value="0.1"/>
+        <input_param name="min" value="0.0"/>
+        <input_param name="max" value="1.0"/>
+      </param>
+    </params>
+    <skill min="0"/>
+    <requires>
+      <match shiptype="shiptype.lasertower" negate="true"/>
+    </requires>
+  </order>
+
+  <interrupts>
+    <handler ref="ScannedHandler"/>
+    <handler ref="SectorChangeHandler"/>
+    <handler ref="TargetInvalidHandler"/>
+    <handler ref="AttackHandler"/>
+    <handler ref="MissileLockHandler"/>
+    <handler ref="ScannedHandler"/>
+    <handler ref="InspectedHandler"/>
+    <handler ref="FoundAbandonedHandler"/>
+    <handler ref="FoundLockboxHandler"/>
+    <handler ref="ResupplyHandler"/>
+    <handler ref="JobRemoveRequestHandler"/>
+  </interrupts>
+
+  <init>
+    <set_value name="$DebugDirectory" exact="'JP_GetEnemyInRange.logs'"/>
+    <set_value name="$DebugFileName" exact="'JP_GetEnemyInRange' + '.log'"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <set_value name="$Ship" exact="this.ship"/>
+    <set_value name="$NearestEnemy" exact="null"/>
+    <set_value name="$FleetCommander" exact="this.ship.fleet.commander"/>
+    <set_value name="$FoundEnemyCount" exact="0"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  </init>
+
+  <attention min="unknown">
+    <actions>
+
+      <wait exact="1ms"/>
+      <label name="INIT"/>
+
+
+      <do_if value="$DEBUG gt 0.0">
+        <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ Running JP_GetEnemyInRange ~~' + '\n'"/>
+      </do_if>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <!-- Find enemys by given class -->
+      <create_list name="$TempFoundEnemyObjects"/>
+      <find_object name="$TempFoundEnemyObjects" space="$SECTOR" multiple="true">
+        <match class="$CLASSES"/>
+        <match knownto="$Ship.owner"/>
+        <match mayattack="$Ship"/>
+        <match functional="true"/>
+        <match checkoperational="true"/>
+      </find_object>
+
+      <!-- Get all enemys who are attacking us -->
+      <do_if value="$CHECK_FOR_IS_ATTACKING_US and $TempFoundEnemyObjects.count gt 0">
+        <create_list name="$Enemys"/>
+        <do_for_each name="$Enemy" in="$TempFoundEnemyObjects">
+          <do_for_each name="$Order" in="$Enemy.orders">
+            <do_if value="$Order.id == 'Attack'">
+              <do_if value="$Order.$primarytarget.owner == $Ship.owner">
+                <append_to_list name="$Enemys" exact="$Enemy"/>
+                <break/>
+              </do_if>
+            </do_if>
+          </do_for_each>
+        </do_for_each>
+        <remove_value name="$TempFoundEnemyObjects"/>
+        <create_list name="$TempFoundEnemyObjects"/>
+        <append_list_elements name="$TempFoundEnemyObjects" other="$Enemys"/>
+        <remove_value name="$Enemys"/>
+      </do_if>
+
+      <!-- Get all enemys in range -->
+      <do_if value="$TempFoundEnemyObjects.count gt 0">
+        <create_list name="$EnemysInRange"/>
+        <do_for_each name="$Enemy" in="$TempFoundEnemyObjects">
+          <do_if value="$Enemy.distanceto.{$CENTER_POSITION} lt $RANGE">
+            <append_to_list name="$EnemysInRange" exact="$Enemy"/>
+          </do_if>
+        </do_for_each>
+        <remove_value name="$TempFoundEnemyObjects"/>
+        <create_list name="$TempFoundEnemyObjects"/>
+        <append_list_elements name="$TempFoundEnemyObjects" other="$EnemysInRange"/>
+        <remove_value name="$EnemysInRange"/>
+      </do_if>
+
+      <do_if value="$TempFoundEnemyObjects.count gt 0">
+
+        <set_value name="$FoundEnemyCount" exact="$TempFoundEnemyObjects.count"/>
+
+        <do_if value="$TempFoundEnemyObjects.count gt 1">
+          <sort_list list="$TempFoundEnemyObjects" sortbyvalue="loop.element.distanceto.{$SORT_TO_POSITION}"/>
+        </do_if>
+
+        <do_if value="$TempFoundEnemyObjects.count gt 11 and $RANDOMIZING ge 11">
+          <do_any>
+            <set_value name="$NearestEnemy" exact="$TempFoundEnemyObjects.{1}" weight="9.0"/>
+            <set_value name="$NearestEnemy" exact="$TempFoundEnemyObjects.{2}" weight="9.0"/>
+            <set_value name="$NearestEnemy" exact="$TempFoundEnemyObjects.{3}" weight="9.0"/>
+            <set_value name="$NearestEnemy" exact="$TempFoundEnemyObjects.{4}" weight="9.0"/>
+            <set_value name="$NearestEnemy" exact="$TempFoundEnemyObjects.{5}" weight="9.0"/>
+            <set_value name="$NearestEnemy" exact="$TempFoundEnemyObjects.{6}" weight="9.0"/>
+            <set_value name="$NearestEnemy" exact="$TempFoundEnemyObjects.{7}" weight="9.0"/>
+            <set_value name="$NearestEnemy" exact="$TempFoundEnemyObjects.{8}" weight="9.0"/>
+            <set_value name="$NearestEnemy" exact="$TempFoundEnemyObjects.{9}" weight="9.0"/>
+            <set_value name="$NearestEnemy" exact="$TempFoundEnemyObjects.{10}" weight="9.0"/>
+            <set_value name="$NearestEnemy" exact="$TempFoundEnemyObjects.{11}" weight="9.0"/>
+          </do_any>
+        </do_if>
+        <do_elseif value="$TempFoundEnemyObjects.count gt 10 and $RANDOMIZING ge 10">
+          <do_any>
+            <set_value name="$NearestEnemy" exact="$TempFoundEnemyObjects.{1}" weight="10"/>
+            <set_value name="$NearestEnemy" exact="$TempFoundEnemyObjects.{2}" weight="10"/>
+            <set_value name="$NearestEnemy" exact="$TempFoundEnemyObjects.{3}" weight="10"/>
+            <set_value name="$NearestEnemy" exact="$TempFoundEnemyObjects.{4}" weight="10"/>
+            <set_value name="$NearestEnemy" exact="$TempFoundEnemyObjects.{5}" weight="10"/>
+            <set_value name="$NearestEnemy" exact="$TempFoundEnemyObjects.{6}" weight="10"/>
+            <set_value name="$NearestEnemy" exact="$TempFoundEnemyObjects.{7}" weight="10"/>
+            <set_value name="$NearestEnemy" exact="$TempFoundEnemyObjects.{8}" weight="10"/>
+            <set_value name="$NearestEnemy" exact="$TempFoundEnemyObjects.{9}" weight="10"/>
+            <set_value name="$NearestEnemy" exact="$TempFoundEnemyObjects.{10}" weight="10"/>
+          </do_any>
+        </do_elseif>
+        <do_elseif value="$TempFoundEnemyObjects.count gt 9 and $RANDOMIZING ge 9">
+          <do_any>
+            <set_value name="$NearestEnemy" exact="$TempFoundEnemyObjects.{1}" weight="11.1"/>
+            <set_value name="$NearestEnemy" exact="$TempFoundEnemyObjects.{2}" weight="11.1"/>
+            <set_value name="$NearestEnemy" exact="$TempFoundEnemyObjects.{3}" weight="11.1"/>
+            <set_value name="$NearestEnemy" exact="$TempFoundEnemyObjects.{4}" weight="11.1"/>
+            <set_value name="$NearestEnemy" exact="$TempFoundEnemyObjects.{5}" weight="11.1"/>
+            <set_value name="$NearestEnemy" exact="$TempFoundEnemyObjects.{6}" weight="11.1"/>
+            <set_value name="$NearestEnemy" exact="$TempFoundEnemyObjects.{7}" weight="11.1"/>
+            <set_value name="$NearestEnemy" exact="$TempFoundEnemyObjects.{8}" weight="11.1"/>
+            <set_value name="$NearestEnemy" exact="$TempFoundEnemyObjects.{9}" weight="11.1"/>
+          </do_any>
+        </do_elseif>
+        <do_elseif value="$TempFoundEnemyObjects.count gt 8 and $RANDOMIZING ge 8">
+          <do_any>
+            <set_value name="$NearestEnemy" exact="$TempFoundEnemyObjects.{1}" weight="12.5"/>
+            <set_value name="$NearestEnemy" exact="$TempFoundEnemyObjects.{2}" weight="12.5"/>
+            <set_value name="$NearestEnemy" exact="$TempFoundEnemyObjects.{3}" weight="12.5"/>
+            <set_value name="$NearestEnemy" exact="$TempFoundEnemyObjects.{4}" weight="12.5"/>
+            <set_value name="$NearestEnemy" exact="$TempFoundEnemyObjects.{5}" weight="12.5"/>
+            <set_value name="$NearestEnemy" exact="$TempFoundEnemyObjects.{6}" weight="12.5"/>
+            <set_value name="$NearestEnemy" exact="$TempFoundEnemyObjects.{7}" weight="12.5"/>
+            <set_value name="$NearestEnemy" exact="$TempFoundEnemyObjects.{8}" weight="12.5"/>
+          </do_any>
+        </do_elseif>
+        <do_elseif value="$TempFoundEnemyObjects.count gt 7 and $RANDOMIZING ge 7">
+          <do_any>
+            <set_value name="$NearestEnemy" exact="$TempFoundEnemyObjects.{1}" weight="14.2"/>
+            <set_value name="$NearestEnemy" exact="$TempFoundEnemyObjects.{2}" weight="14.2"/>
+            <set_value name="$NearestEnemy" exact="$TempFoundEnemyObjects.{3}" weight="14.2"/>
+            <set_value name="$NearestEnemy" exact="$TempFoundEnemyObjects.{4}" weight="14.2"/>
+            <set_value name="$NearestEnemy" exact="$TempFoundEnemyObjects.{5}" weight="14.2"/>
+            <set_value name="$NearestEnemy" exact="$TempFoundEnemyObjects.{6}" weight="14.2"/>
+            <set_value name="$NearestEnemy" exact="$TempFoundEnemyObjects.{7}" weight="14.2"/>
+          </do_any>
+        </do_elseif>
+        <do_elseif value="$TempFoundEnemyObjects.count gt 6 and $RANDOMIZING ge 6">
+          <do_any>
+            <set_value name="$NearestEnemy" exact="$TempFoundEnemyObjects.{1}" weight="16.6"/>
+            <set_value name="$NearestEnemy" exact="$TempFoundEnemyObjects.{2}" weight="16.6"/>
+            <set_value name="$NearestEnemy" exact="$TempFoundEnemyObjects.{3}" weight="16.6"/>
+            <set_value name="$NearestEnemy" exact="$TempFoundEnemyObjects.{4}" weight="16.6"/>
+            <set_value name="$NearestEnemy" exact="$TempFoundEnemyObjects.{5}" weight="16.6"/>
+            <set_value name="$NearestEnemy" exact="$TempFoundEnemyObjects.{6}" weight="16.6"/>
+          </do_any>
+        </do_elseif>
+        <do_elseif value="$TempFoundEnemyObjects.count gt 5 and $RANDOMIZING ge 5">
+          <do_any>
+            <set_value name="$NearestEnemy" exact="$TempFoundEnemyObjects.{1}" weight="20"/>
+            <set_value name="$NearestEnemy" exact="$TempFoundEnemyObjects.{2}" weight="20"/>
+            <set_value name="$NearestEnemy" exact="$TempFoundEnemyObjects.{3}" weight="20"/>
+            <set_value name="$NearestEnemy" exact="$TempFoundEnemyObjects.{4}" weight="20"/>
+            <set_value name="$NearestEnemy" exact="$TempFoundEnemyObjects.{5}" weight="20"/>
+          </do_any>
+        </do_elseif>
+        <do_elseif value="$TempFoundEnemyObjects.count gt 4 and $RANDOMIZING ge 4">
+          <do_any>
+            <set_value name="$NearestEnemy" exact="$TempFoundEnemyObjects.{1}" weight="25"/>
+            <set_value name="$NearestEnemy" exact="$TempFoundEnemyObjects.{2}" weight="25"/>
+            <set_value name="$NearestEnemy" exact="$TempFoundEnemyObjects.{3}" weight="25"/>
+            <set_value name="$NearestEnemy" exact="$TempFoundEnemyObjects.{4}" weight="25"/>
+          </do_any>
+        </do_elseif>
+        <do_elseif value="$TempFoundEnemyObjects.count gt 3 and $RANDOMIZING ge 3">
+          <do_any>
+            <set_value name="$NearestEnemy" exact="$TempFoundEnemyObjects.{1}" weight="33"/>
+            <set_value name="$NearestEnemy" exact="$TempFoundEnemyObjects.{2}" weight="33"/>
+            <set_value name="$NearestEnemy" exact="$TempFoundEnemyObjects.{3}" weight="33"/>
+          </do_any>
+        </do_elseif>
+        <do_elseif value="$TempFoundEnemyObjects.count gt 2 and $RANDOMIZING ge 2">
+          <do_any>
+            <set_value name="$NearestEnemy" exact="$TempFoundEnemyObjects.{1}" weight="50"/>
+            <set_value name="$NearestEnemy" exact="$TempFoundEnemyObjects.{2}" weight="50"/>
+          </do_any>
+        </do_elseif>
+        <do_else>
+          <set_value name="$NearestEnemy" exact="$TempFoundEnemyObjects.{1}"/>
+        </do_else>
+
+      </do_if>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <do_if value="$DEBUG gt 0.0">
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ Completed JP_GetEnemyInRange ~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+      </do_if>
+
+      <label name="CLEANUP"/>
+      <remove_value name="$Ship"/>
+      <remove_value name="$FleetCommander"/>
+      <remove_value name="$DebugFileName"/>
+      <remove_value name="$DebugDirectory"/>
+
+      <label name="FINISH"/>
+      <wait exact="1ms"/>
+
+      <return>
+        <retval name="NEAREST_ENEMY" value="$NearestEnemy"/>
+        <retval name="FOUND_ENEMY_COUNT" value="$FoundEnemyCount"/>
+      </return>
+
+
+    </actions>
+  </attention>
+
+  <on_abort>
+  </on_abort>
+
+</aiscript>

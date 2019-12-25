@@ -38,6 +38,8 @@
     <Xml Include="aiscripts\JP_Destroyer_Intercept.xml" />
     <Xml Include="aiscripts\JP_Fighter_Attack.xml" />
     <Xml Include="aiscripts\JP_Fighter_Defend.xml" />
+    <Xml Include="aiscripts\JP_GetEnemyInRange.xml" />
+    <Xml Include="aiscripts\JP_UpdateFleetOrders.xml" />
   </ItemGroup>
   <ItemGroup>
     <Xsd Include="aiscripts\aiscripts.xsd">

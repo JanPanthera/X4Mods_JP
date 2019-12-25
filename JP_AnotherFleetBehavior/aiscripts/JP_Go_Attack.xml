@@ -5,8 +5,8 @@
   <order id="JP_Go_Attack" name="Go_Attack JP" category="internal" infinite="true">
     <params>
       <!-- PARAMS -->
-      <param name="TARGED" text="Targed" type="object" default="null"/>
-      <param name="INTERCEPTION_RANGE" text="InterceptionRange" type="length" default="20km">
+      <param name="ATTACKER_TARGED" text="AttackerTarged" type="object" default="null"/>
+      <param name="ATTACKER_RANGE" text="AttackerRange" type="length" default="20km">
         <input_param name="step" value="1km"/>
         <input_param name="min" value="1km"/>
         <input_param name="max" value="this.ship.fleet.commander.maxradarrange"/>
@@ -75,27 +75,14 @@
           <save_retval name="HAS_ORDER" variable="$Has_JP_Fighter_Attack"/>
         </run_script>
 
-        <do_if value="$Has_JP_Fighter_Attack">
-          <resume label="NEXT_ITERATION"/>
+        <do_if value="not $Has_JP_Fighter_Attack">
+          <cancel_all_orders object="$Ship"/>
+          <create_order object="$Ship" id="'JP_Fighter_Attack'" immediate="true">
+            <param name="TARGED" value="$ATTACKER_TARGED"/>
+            <param name="ATTACKER_RANGE" value="$ATTACKER_RANGE"/>
+            <param name="DEBUG" value="$DEBUG"/>
+          </create_order>
         </do_if>
-
-        <remove_value name="$Has_JP_Fighter_Attack"/>
-
-        <do_if value="@$TARGED == null">
-          <check_object object="$TARGED" result="$Operational">
-            <match checkoperational="true"/>
-          </check_object>
-
-          <do_if value="not $Operational or ($TARGED.distanceto.{$FleetCommander} gt $INTERCEPTION_RANGE)">
-            <resume label="END"/>
-          </do_if>
-        </do_if>
-
-        <create_order object="$Ship" id="'JP_Fighter_Attack'" immediate="true">
-          <param name="TARGED" value="$TARGED"/>
-          <param name="INTERCEPTION_RANGE" value="$INTERCEPTION_RANGE"/>
-          <param name="DEBUG" value="$DEBUG"/>
-        </create_order>
 
       </do_if>
 
@@ -108,31 +95,16 @@
           <save_retval name="HAS_ORDER" variable="$Has_JP_Destroyer_Attack"/>
         </run_script>
 
-        <do_if value="$Has_JP_Destroyer_Attack">
-          <resume label="NEXT_ITERATION"/>
+        <do_if value="not $Has_JP_Destroyer_Attack">
+          <cancel_all_orders object="$Ship"/>
+          <create_order object="$Ship" id="'JP_Destroyer_Attack'" immediate="true">
+            <param name="TARGED" value="$ATTACKER_TARGED"/>
+            <param name="ATTACKER_RANGE" value="$ATTACKER_RANGE"/>
+            <param name="DEBUG" value="$DEBUG"/>
+          </create_order>
         </do_if>
-
-        <remove_value name="$Has_JP_Destroyer_Attack"/>
-
-        <do_if value="@$TARGED == null">
-          <check_object object="$TARGED" result="$Operational">
-            <match checkoperational="true"/>
-          </check_object>
-
-          <do_if value="not $Operational or ($TARGED.distanceto.{$FleetCommander} gt $INTERCEPTION_RANGE)">
-            <resume label="END"/>
-          </do_if>
-        </do_if>
-
-        <create_order object="$Ship" id="'JP_Destroyer_Attack'" immediate="true">
-          <param name="TARGED" value="$TARGED"/>
-          <param name="INTERCEPTION_RANGE" value="$INTERCEPTION_RANGE"/>
-          <param name="DEBUG" value="$DEBUG"/>
-        </create_order>
 
       </do_if>
-
-      <label name="NEXT_ITERATION"/>
 
       <wait min="1s" max="3s"/>
       <resume label="RESUME"/>
@@ -142,7 +114,7 @@
       <create_order object="$Ship" id="'JP_Go_WaitForOrders'" immediate="true" default="true">
         <param name="OBJECT_TO_DOCK" value="$FleetCommander"/>
       </create_order>
-      
+
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
       <do_if value="$DEBUG gt 0.0">
@@ -151,6 +123,8 @@
       </do_if>
 
       <label name="CLEANUP"/>
+      <remove_value name="$Has_JP_Fighter_Attack"/>
+      <remove_value name="$Has_JP_Destroyer_Attack"/>
       <remove_value name="$Ship"/>
       <remove_value name="$FleetCommander"/>
       <remove_value name="$DebugFileName"/>

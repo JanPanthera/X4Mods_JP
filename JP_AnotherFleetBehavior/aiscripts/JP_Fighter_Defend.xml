@@ -6,7 +6,7 @@
     <params>
       <!-- PARAMS -->
       <param name="TARGED" text="Targed" type="object" default="null"/>
-      <param name="INTERCEPTION_RANGE" text="InterceptionRange" type="length" default="20km">
+      <param name="DEFENDER_RANGE" text="DefenderRange" type="length" default="20km">
         <input_param name="step" value="1km"/>
         <input_param name="min" value="1km"/>
         <input_param name="max" value="this.ship.fleet.commander.maxradarrange"/>
@@ -74,9 +74,15 @@
 
       <do_if value="not $HasAttackOrder">
 
-        <run_script name="'JP_GetNearestEnemy'">
-          <param name="RANGE" value="$INTERCEPTION_RANGE"/>
+        <run_script name="'JP_GetEnemyInRange'">
+          <param name="RANGE" value="$DEFENDER_RANGE"/>
           <param name="CLASSES" value="[class.ship_xs, class.ship_s, class.ship_m]"/>
+          <param name="SECTOR" value="$FleetCommander.sector"/>
+          <param name="CENTER_POSITION" value="$FleetCommander.position"/>
+          <param name="SORT_TO_POSITION" value="$Ship"/>
+          <param name="RANDOMIZING" value="11"/>
+          <param name="CHECK_FOR_IS_ATTACKING_US" value="false"/>
+          <param name="DEBUG" value="$DEBUG"/>
           <save_retval name="NEAREST_ENEMY" variable="$NearestEnemySmall"/>
         </run_script>
 
@@ -95,6 +101,10 @@
       <resume label="RESUME"/>
 
       <label name="END"/>
+      <cancel_all_orders object="$Ship"/>
+      <create_order object="$Ship" id="'JP_Go_WaitForOrders'" immediate="true" default="true">
+        <param name="OBJECT_TO_DOCK" value="$FleetCommander"/>
+      </create_order>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 

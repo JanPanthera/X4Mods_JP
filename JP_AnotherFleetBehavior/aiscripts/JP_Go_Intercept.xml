@@ -5,7 +5,7 @@
   <order id="JP_Go_Intercept" name="Go_Intercept JP" category="internal" infinite="true">
     <params>
       <!-- PARAMS -->
-      <param name="INTERCEPTION_RANGE" text="InterceptionRange" type="length" default="20km">
+      <param name="INTERCEPTOR_RANGE" text="InterceptorRange" type="length" default="20km">
         <input_param name="step" value="1km"/>
         <input_param name="min" value="1km"/>
         <input_param name="max" value="this.ship.fleet.commander.maxradarrange"/>
@@ -74,29 +74,13 @@
           <save_retval name="HAS_ORDER" variable="$Has_JP_Fighter_Intercept"/>
         </run_script>
 
-        <do_if value="$Has_JP_Fighter_Intercept">
-          <resume label="NEXT_ITERATION"/>
+        <do_if value="not $Has_JP_Fighter_Intercept">
+          <cancel_all_orders object="$Ship"/>
+          <create_order object="$Ship" id="'JP_Fighter_Intercept'" immediate="true">
+            <param name="INTERCEPTOR_RANGE" value="$INTERCEPTOR_RANGE"/>
+            <param name="DEBUG" value="$DEBUG"/>
+          </create_order>
         </do_if>
-
-        <remove_value name="$Has_JP_Fighter_Intercept"/>
-
-        
-        <run_script name="'JP_GetNearestEnemy'">
-          <param name="RANGE" value="$INTERCEPTION_RANGE"/>
-          <param name="CLASSES" value="[class.ship_xs, class.ship_s, class.ship_m]"/>
-          <save_retval name="NEAREST_ENEMY" variable="$NearestEnemySmall"/>
-        </run_script>
-
-        <do_if value="$NearestEnemySmall == null">
-          <resume label="END"/>
-        </do_if>
-
-        <remove_value name="$NearestEnemySmall"/>
-
-        <create_order object="$Ship" id="'JP_Fighter_Intercept'" immediate="true">
-          <param name="INTERCEPTION_RANGE" value="$INTERCEPTION_RANGE"/>
-          <param name="DEBUG" value="$DEBUG"/>
-        </create_order>
 
       </do_if>
 
@@ -109,32 +93,15 @@
           <save_retval name="HAS_ORDER" variable="$Has_JP_Destroyer_Intercept"/>
         </run_script>
 
-        <do_if value="$Has_JP_Destroyer_Intercept">
-          <resume label="NEXT_ITERATION"/>
+        <do_if value="not $Has_JP_Destroyer_Intercept">
+          <cancel_all_orders object="$Ship"/>
+          <create_order object="$Ship" id="'JP_Destroyer_Intercept'" immediate="true">
+            <param name="INTERCEPTOR_RANGE" value="$INTERCEPTOR_RANGE"/>
+            <param name="DEBUG" value="$DEBUG"/>
+          </create_order>
         </do_if>
-
-        <remove_value name="$Has_JP_Destroyer_Intercept"/>
-
-        <run_script name="'JP_GetNearestEnemy'">
-          <param name="RANGE" value="$INTERCEPTION_RANGE"/>
-          <param name="CLASSES" value="[class.ship_l, class.ship_xl]"/>
-          <save_retval name="NEAREST_ENEMY" variable="$NearestEnemyLarge"/>
-        </run_script>
-
-        <do_if value="$NearestEnemyLarge == null">
-          <resume label="END"/>
-        </do_if>
-
-        <remove_value name="$NearestEnemyLarge"/>
-
-        <create_order object="$Ship" id="'JP_Destroyer_Intercept'" immediate="true">
-          <param name="INTERCEPTION_RANGE" value="$INTERCEPTION_RANGE"/>
-          <param name="DEBUG" value="$DEBUG"/>
-        </create_order>
 
       </do_if>
-
-      <label name="NEXT_ITERATION"/>
 
       <wait min="1s" max="3s"/>
       <resume label="RESUME"/>
@@ -153,6 +120,8 @@
       </do_if>
 
       <label name="CLEANUP"/>
+      <remove_value name="$Has_JP_Fighter_Intercept"/>
+      <remove_value name="$Has_JP_Destroyer_Intercept"/>
       <remove_value name="$FleetCommander"/>
       <remove_value name="$Ship"/>
       <remove_value name="$DebugFileName"/>
