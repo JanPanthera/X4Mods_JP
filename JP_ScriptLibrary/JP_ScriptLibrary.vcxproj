@@ -134,7 +134,9 @@
     <Xml Include="aiscripts\JP_HasShipOrder.xml" />
     <Xml Include="aiscripts\JP_IdleWait.xml" />
     <Xml Include="aiscripts\JP_MoveThroughGate.xml" />
+    <Xml Include="aiscripts\JP_MoveToObject.xml" />
     <Xml Include="aiscripts\JP_MoveToPosition.xml" />
+    <Xml Include="aiscripts\JP_MoveToSector.xml" />
     <Xml Include="aiscripts\JP_Restock_X_ToShip.xml" />
     <Xml Include="aiscripts\JP_SortListByDistance.xml" />
     <Xml Include="aiscripts\JP_SortListByGateJumpsDistance.xml" />

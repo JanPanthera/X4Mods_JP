@@ -67,5 +67,7 @@
     <Xml Include="aiscripts\JP_HasShipOrder.xml" />
     <Xml Include="aiscripts\JP_MoveToPosition.xml" />
     <Xml Include="aiscripts\JP_MoveThroughGate.xml" />
+    <Xml Include="aiscripts\JP_MoveToObject.xml" />
+    <Xml Include="aiscripts\JP_MoveToSector.xml" />
   </ItemGroup>
 </Project>
