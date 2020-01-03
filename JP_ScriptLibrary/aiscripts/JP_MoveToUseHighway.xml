@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<aiscript name="JP_MoveToUseHighway" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd" version="1">
+
+  <order id="JP_MoveToUseHighway" name="MoveToUseHighway JP" category="internal" infinite="false">
+    <params>
+      <!-- PARAMS -->
+      <param name="TARGED_SECTOR" text="TargedSector" type="object" required="true"/>
+      <param name="TARGED_POSITION" text="TargedPosition" type="position" required="true"/>
+      <!-- DEBUG -->
+      <param name="DEBUG" text="DebugText" type="number" default="0.0" advanced="1">
+        <input_param name="step" value="0.1"/>
+        <input_param name="min" value="0.0"/>
+        <input_param name="max" value="1.0"/>
+      </param>
+    </params>
+    <skill min="0"/>
+    <requires>
+      <match shiptype="shiptype.lasertower" negate="true"/>
+    </requires>
+  </order>
+
+  <interrupts>
+    <handler ref="ScannedHandler"/>
+    <handler ref="SectorChangeHandler"/>
+    <handler ref="TargetInvalidHandler"/>
+    <handler ref="AttackHandler"/>
+    <handler ref="MissileLockHandler"/>
+    <handler ref="ScannedHandler"/>
+    <handler ref="InspectedHandler"/>
+    <handler ref="FoundAbandonedHandler"/>
+    <handler ref="FoundLockboxHandler"/>
+    <handler ref="ResupplyHandler"/>
+    <handler ref="JobRemoveRequestHandler"/>
+  </interrupts>
+
+  <init>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <set_value name="$DebugDirectory" exact="'JP_ScriptLibrary.logs'"/>
+    <set_value name="$DebugFileName" exact="'JP_MoveToUseHighway' + '.log'"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <set_value name="$Ship" exact="this.ship"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  </init>
+
+  <attention min="unknown">
+    <actions>
+      <wait exact="1ms"/>
+      <label name="INIT"/>
+
+      <do_if value="$DEBUG gt 0.0">
+        <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ Running JP_MoveToUseHighway ~~' + '\n'"/>
+      </do_if>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <do_if value="$Ship.class" list="[class.ship_xs, class.ship_s, class.ship_m]" negate="true">
+        <resume label="END"/>
+      </do_if>
+
+      <label name="RESUME"/>
+      <do_if value="$Ship.sector != $TARGED_SECTOR">
+
+        <get_global_path component="$WayPoints" multiple="true" uselocalhighways="true">
+          <start object="$Ship.sector"/>
+          <end object="$TARGED_SECTOR"/>
+        </get_global_path>
+
+        <do_if value="$DEBUG gt 0.0">
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        </do_if>
+
+        <do_for_each name="$WayPoint" in="$WayPoints" counter="$_it">
+          <do_if value="$_it == 1 or $WayPoint.class == class.highway">
+            <continue/>
+          </do_if>
+          <do_if value="$DEBUG gt 0.0">
+            <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="' ~ ' + $WayPoint.class"/>
+          </do_if>
+          <do_if value="$WayPoint.class == class.gate">
+            <run_script name="'JP_MoveThroughGate'">
+              <param name="GATE" value="$WayPoint"/>
+              <param name="DEBUG" value="$DEBUG"/>
+            </run_script>
+          </do_if>
+          <do_else>
+            <move_to object="$Ship" destination="$WayPoint" forceposition="false" travel="true" uselocalhighways="true" forcesteering="true">
+              <interrupt_after_time time="5s"/>
+            </move_to>
+          </do_else>
+          <remove_value name="$WayPoints"/>
+          <wait exact="1ms"/>
+          <resume label="RESUME"/>
+        </do_for_each>
+
+        <do_if value="$DEBUG gt 0.0">
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+        </do_if>
+
+      </do_if>
+      <do_else>
+
+        <do_if value="$DEBUG gt 0.0">
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="' ~ $Ship.distanceto.[$TARGED_SECTOR, $TARGED_POSITION]: ' + $Ship.distanceto.[$TARGED_SECTOR, $TARGED_POSITION]"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+        </do_if>
+
+        <do_if value="$Ship.distanceto.[$TARGED_SECTOR, $TARGED_POSITION] gt 1m">
+          <move_to object="$Ship" destination="$TARGED_SECTOR" forceposition="true" travel="true" uselocalhighways="true">
+            <position value="$TARGED_POSITION"/>
+            <interrupt_after_time time="5s"/>
+          </move_to>
+
+          <wait exact="1ms"/>
+          <resume label="RESUME"/>
+        </do_if>
+
+      </do_else>
+
+      <label name="END"/>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <do_if value="$DEBUG gt 0.0">
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ Completed JP_MoveToUseHighway ~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+      </do_if>
+
+      <label name="CLEANUP"/>
+      <remove_value name="$WayPoints"/>
+      <remove_value name="$Ship"/>
+      <remove_value name="$DebugFileName"/>
+      <remove_value name="$DebugDirectory"/>
+
+      <label name="FINISH"/>
+      <wait exact="1ms"/>
+
+    </actions>
+  </attention>
+
+  <on_abort>
+  </on_abort>
+
+</aiscript>

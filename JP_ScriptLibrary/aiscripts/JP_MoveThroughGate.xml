@@ -6,7 +6,6 @@
     <params>
       <!-- PARAMS -->
       <param name="GATE" text="Gate" type="object" default="null"/>
-      <param name="SECTOR" text="Sector" type="object" default="null"/>
       <!-- DEBUG -->
       <param name="DEBUG" text="DebugText" type="number" default="0.0" advanced="1">
         <input_param name="step" value="0.1"/>
@@ -36,7 +35,7 @@
 
   <init>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-    <set_value name="$DebugDirectory" exact="'JP_MoveThroughGate.logs'"/>
+    <set_value name="$DebugDirectory" exact="'JP_ScriptLibrary.logs'"/>
     <set_value name="$DebugFileName" exact="'JP_MoveThroughGate' + '.log'"/>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <set_value name="$Ship" exact="this.ship"/>
@@ -54,7 +53,7 @@
       </do_if>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-
+      
       <do_if value="$DEBUG gt 0.0">
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'$GatePosition: ' + $GATE.position"/>
@@ -62,20 +61,21 @@
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
       </do_if>
 
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <!-- Move near the gate -->
+
       <do_if value="$GATE.isaccelerator or $Ship.class == class.ship_l or $Ship.class == class.ship_xl">
         <set_command command="command.move" param="$GATE"/>
         <do_if value="$DEBUG gt 0.0">
           <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
           <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'Move near the gate...'"/>
         </do_if>
-        <get_safe_pos result="$SafePosition" object="$GATE" zone="$GATE.zone" value="position.[0km, 0km, -5km + ($Ship.size / 2)]" directionobject="$GATE" direction="quadrant.front" allowyaxis="false" ignored="$Ship"/>
+        <get_safe_pos result="$SafePosition" zone="$GATE.zone" object="$GATE" directionobject="$GATE" direction="quadrant.front" value="position.[0km, 0km, -5km - ($Ship.size / 2)]"/>
         <run_script name="'JP_MoveToPosition'">
           <param name="TARGED_ZONE" value="$GATE.zone"/>
           <param name="TARGED_SECTOR" value="$GATE.sector"/>
           <param name="TARGED_POSITION" value="$SafePosition"/>
-          <param name="TARGED_ROTATION" value="$Ship.rotation"/>
-          <param name="FORCE_ROTATION" value="false"/>
-          <param name="TOLERANCE" value="100m"/>
+          <param name="FORCE_POSITION" value="false"/>
           <param name="DEBUG" value="$DEBUG"/>
         </run_script>
         <do_if value="$DEBUG gt 0.0">
@@ -83,46 +83,50 @@
         </do_if>
       </do_if>
 
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <!-- Move through the gate -->
+
+      <set_avoid_collisions object="$Ship" smallobjects="false" bigobjects="false"/>
+
       <set_command command="command.move" param="$GATE.exit.sector"/>
       <do_if value="$DEBUG gt 0.0">
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'Move through the gate...'"/>
       </do_if>
-      <get_safe_pos result="$SafePosition" object="$GATE" zone="$GATE.zone" value="position.[0km, 0km, 5km]" directionobject="$GATE" direction="quadrant.front" allowyaxis="false" ignored="$Ship"/>
+      <get_safe_pos result="$SafePosition" zone="$GATE.zone" object="$GATE" directionobject="$GATE" direction="quadrant.front" value="position.[0km, 0km, -1km]" ignored="$GATE"/>
       <run_script name="'JP_MoveToPosition'">
         <param name="TARGED_ZONE" value="$GATE.zone"/>
         <param name="TARGED_SECTOR" value="$GATE.sector"/>
         <param name="TARGED_POSITION" value="$SafePosition"/>
-        <param name="TARGED_ROTATION" value="$Ship.rotation"/>
-        <param name="FORCE_ROTATION" value="false"/>
-        <param name="TOLERANCE" value="100m"/>
+        <param name="FORCE_POSITION" value="false"/>
         <param name="DEBUG" value="$DEBUG"/>
       </run_script>
       <do_if value="$DEBUG gt 0.0">
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
       </do_if>
+
+      <set_avoid_collisions object="$Ship" smallobjects="true" bigobjects="true"/>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <!-- Move out of the way at thew destination gate -->
 
       <set_command command="command.movetozone" param="$GATE.exit.zone"/>
       <do_if value="$DEBUG gt 0.0">
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'Move out of the way...'"/>
       </do_if>
-      <get_safe_pos result="$SafePosition" object="$GATE.exit" zone="$GATE.exit.zone" value="position.[0km, 0km, 5km + ($Ship.size / 2)]" directionobject="$GATE.exit" direction="quadrant.front" allowyaxis="false" ignored="$Ship"/>
+      <get_safe_pos result="$SafePosition" zone="$GATE.exit.zone" object="$GATE.exit" directionobject="$GATE.exit" direction="quadrant.front" value="position.[0km, 0km, 5km + ($Ship.size / 2)]"/>
       <run_script name="'JP_MoveToPosition'">
         <param name="TARGED_ZONE" value="$GATE.exit.zone"/>
         <param name="TARGED_SECTOR" value="$GATE.exit.sector"/>
         <param name="TARGED_POSITION" value="$SafePosition"/>
-        <param name="TARGED_ROTATION" value="$Ship.rotation"/>
-        <param name="FORCE_ROTATION" value="false"/>
-        <param name="TOLERANCE" value="100m"/>
+        <param name="FORCE_POSITION" value="false"/>
         <param name="DEBUG" value="$DEBUG"/>
       </run_script>
       <do_if value="$DEBUG gt 0.0">
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
       </do_if>
 
-      <remove_value name="$GateApproachPosition"/>
-      <remove_value name="$GateApproachRotation"/>
       <remove_value name="$SafePosition"/>
 
       <label name="END"/>

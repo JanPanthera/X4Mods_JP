@@ -69,5 +69,7 @@
     <Xml Include="aiscripts\JP_MoveThroughGate.xml" />
     <Xml Include="aiscripts\JP_MoveToObject.xml" />
     <Xml Include="aiscripts\JP_MoveToSector.xml" />
+    <Xml Include="aiscripts\JP_MoveToUseHighway.xml" />
+    <Xml Include="aiscripts\MoveToNoHighway.xml" />
   </ItemGroup>
 </Project>

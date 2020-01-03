@@ -137,10 +137,12 @@
     <Xml Include="aiscripts\JP_MoveToObject.xml" />
     <Xml Include="aiscripts\JP_MoveToPosition.xml" />
     <Xml Include="aiscripts\JP_MoveToSector.xml" />
+    <Xml Include="aiscripts\JP_MoveToUseHighway.xml" />
     <Xml Include="aiscripts\JP_Restock_X_ToShip.xml" />
     <Xml Include="aiscripts\JP_SortListByDistance.xml" />
     <Xml Include="aiscripts\JP_SortListByGateJumpsDistance.xml" />
     <Xml Include="aiscripts\JP_ToHexadecimalColorString.xml" />
+    <Xml Include="aiscripts\MoveToNoHighway.xml" />
     <Xml Include="content.xml" />
     <Xml Include="JP_ScriptLibrary\aiscripts\JP_AreWeInTheRightSector.xml" />
     <Xml Include="JP_ScriptLibrary\aiscripts\JP_GetSubsSortedForNumbering.xml" />

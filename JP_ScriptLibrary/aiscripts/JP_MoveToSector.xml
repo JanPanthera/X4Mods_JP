@@ -35,10 +35,16 @@
 
   <init>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-    <set_value name="$DebugDirectory" exact="'JP_MoveToSector.logs'"/>
+    <set_value name="$DebugDirectory" exact="'JP_ScriptLibrary.logs'"/>
     <set_value name="$DebugFileName" exact="'JP_MoveToSector' + '.log'"/>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <set_value name="$Ship" exact="this.ship"/>
+    <do_if value="this.ship.class" list="[class.ship_xs, class.ship_s, class.ship_m]">
+      <set_value name="$UseHighways" exact="true"/>
+    </do_if>
+    <do_else>
+      <set_value name="$UseHighways" exact="false"/>
+    </do_else>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
   </init>
 
@@ -54,52 +60,60 @@
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-      <do_if value="@$TARGED_SECTOR == null or $TARGED_SECTOR.class != class.sector">
+      <do_if value="$Ship.sector == $TARGED_SECTOR">
         <do_if value="$DEBUG gt 0.0">
           <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'$TARGED_SECTOR param was null or not of class sector.'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="' ~ Already in targed sector'"/>
           <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
         </do_if>
         <resume label="END"/>
       </do_if>
 
-      <label name="RESUME"/>
-
-      <do_if value="$Ship.sector != $TARGED_SECTOR">
-
-        <create_list name="$JumpPath"/>
-        <get_jump_path start="$Ship.sector" end="$TARGED_SECTOR" component="$JumpPath" multiple="1"/>
-        <do_if value="$JumpPath.count gt 0">
-          <do_for_each name="$_it" in="$JumpPath">
-            <do_if value="$_it.class == class.gate">
-              <set_value name="$FoundGate" exact="$_it"/>
-              <break/>
-            </do_if>
-          </do_for_each>
-        </do_if>
-        <remove_value name="$JumpPath"/>
-        <do_if value="$DEBUG gt 0.0">
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'$FoundGate: ' + $FoundGate.exit.sector.knownname + ' ~ ' + $FoundGate.class"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
-        </do_if>
-
-        <run_script name="'JP_MoveThroughGate'">
-          <param name="GATE" value="$FoundGate"/>
-          <param name="DEBUG" value="$DEBUG"/>
-        </run_script>
-
-        <do_if value="$Ship.sector != $TARGED_SECTOR">
-          <do_if value="$DEBUG gt 0.0">
-            <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-            <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'$Ship.sector is not $TARGED_SECTOR resume to move to it.'"/>
-            <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
-          </do_if>
-          <wait exact="1s"/>
-          <resume label="RESUME"/>
-        </do_if>
-
+      <do_if value="$UseHighways">
+        <get_global_path component="$WayPoints" multiple="true" uselocalhighways="true">
+          <start object="$Ship.sector"/>
+          <end object="$TARGED_SECTOR"/>
+        </get_global_path>
       </do_if>
+      <do_else>
+        <get_global_path component="$WayPoints" multiple="true" uselocalhighways="false">
+          <start object="$Ship.sector"/>
+          <end object="$TARGED_SECTOR"/>
+        </get_global_path>
+      </do_else>
+
+      <do_if value="$DEBUG gt 0.0">
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <do_for_each name="$WayPoint" in="$WayPoints">
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="' ~ ' + $WayPoint.knownname + ' ~ ' + $WayPoint.class"/>
+        </do_for_each>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+      </do_if>
+
+      <do_for_each name="$WayPoint" in="$WayPoints">
+        <do_if value="$Ship.sector == $TARGED_SECTOR">
+          <break/>
+        </do_if>
+        <do_if value="$WayPoint == $Ship.sector">
+          <continue/>
+        </do_if>
+        <do_if value="$Ship.class" list="[class.ship_l, class.ship_xl]">
+          <do_if value="$WayPoint.class == class.gate">
+            <run_script name="'JP_MoveThroughGate'">
+              <param name="GATE" value="$WayPoint"/>
+              <param name="DEBUG" value="$DEBUG"/>
+            </run_script>
+          </do_if>
+        </do_if>
+        <do_else>
+          <do_if value="$WayPoint.class == class.sector">
+            <set_command command="command.move" param="$WayPoint"/>
+            <move_to object="$Ship" destination="$WayPoint" travel="true" forceposition="false" forcerotation="false" finishonapproach="true" uselocalhighways="$UseHighways">
+            </move_to>
+          </do_if>
+        </do_else>
+        <stop_moving object="$Ship" immediate="true"/>
+      </do_for_each>
 
       <label name="END"/>
 
@@ -111,6 +125,8 @@
       </do_if>
 
       <label name="CLEANUP"/>
+      <remove_value name="$UseHighways"/>
+      <remove_value name="$WayPoints"/>
       <remove_value name="$Ship"/>
       <remove_value name="$DebugFileName"/>
       <remove_value name="$DebugDirectory"/>
