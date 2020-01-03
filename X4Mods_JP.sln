@@ -4,6 +4,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 16.0.29609.76
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_OtherStuff", "_OtherStuff", "{2CB18865-9C1C-44A9-A1DF-BD112DB91F2D}"
+	ProjectSection(SolutionItems) = preProject
+		_OtherStuff\0001.xml = _OtherStuff\0001.xml
+		_OtherStuff\StuffGoodToKnow.xml = _OtherStuff\StuffGoodToKnow.xml
+		_OtherStuff\TODO.xml = _OtherStuff\TODO.xml
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "JP_TradeOrderExplorer", "JP_TradeOrderExplorer\JP_TradeOrderExplorer.vcxproj", "{5C91C12B-A737-4653-9557-D0FFF5F3A9B2}"
 EndProject
@@ -54,6 +59,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "JP_AddTag", "JP_AddTag\JP_AddTag.vcxproj", "{71D022DA-C902-430F-9B39-509C3C7AA96D}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "JP_AbandonedShipExplorer", "JP_AbandonedShipExplorer\JP_AbandonedShipExplorer.vcxproj", "{C937904B-3E6F-4797-B012-7A44127DB8C3}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "JP_AnotherFleetBehavior", "JP_AnotherFleetBehavior\JP_AnotherFleetBehavior.vcxproj", "{BCBFA96A-5473-48B4-AA34-A7325311B3A7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -263,6 +270,14 @@ Global
 		{C937904B-3E6F-4797-B012-7A44127DB8C3}.Release|x64.Build.0 = Release|x64
 		{C937904B-3E6F-4797-B012-7A44127DB8C3}.Release|x86.ActiveCfg = Release|Win32
 		{C937904B-3E6F-4797-B012-7A44127DB8C3}.Release|x86.Build.0 = Release|Win32
+		{BCBFA96A-5473-48B4-AA34-A7325311B3A7}.Debug|x64.ActiveCfg = Debug|x64
+		{BCBFA96A-5473-48B4-AA34-A7325311B3A7}.Debug|x64.Build.0 = Debug|x64
+		{BCBFA96A-5473-48B4-AA34-A7325311B3A7}.Debug|x86.ActiveCfg = Debug|Win32
+		{BCBFA96A-5473-48B4-AA34-A7325311B3A7}.Debug|x86.Build.0 = Debug|Win32
+		{BCBFA96A-5473-48B4-AA34-A7325311B3A7}.Release|x64.ActiveCfg = Release|x64
+		{BCBFA96A-5473-48B4-AA34-A7325311B3A7}.Release|x64.Build.0 = Release|x64
+		{BCBFA96A-5473-48B4-AA34-A7325311B3A7}.Release|x86.ActiveCfg = Release|Win32
+		{BCBFA96A-5473-48B4-AA34-A7325311B3A7}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
