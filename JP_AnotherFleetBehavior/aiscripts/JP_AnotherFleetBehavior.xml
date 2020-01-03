@@ -5,6 +5,7 @@
   <order id="JP_AnotherFleetBehavior" name="AnotherFleetBehavior JP" description="Another fleet behavior than default." category="combat" infinite="true">
     <params>
       <!-- MOD PARAMS -->
+      <param name="MOVE_TO_POSITION" text="MoveToPosition" type="bool" default="false"/>
       <param name="DESTINATION" text="MoveTo" type="position" default="[this.ship.sector, this.ship.position]">
         <input_param name="class" value="class.sector"/>
       </param>
@@ -104,20 +105,14 @@
 
       <label name="RESUME"/>
 
-      <!-- Are we in the right sector? -->
-      <run_script name="'JP_AreWeInTheRightSector'">
-        <param name="SHIP" value="$FleetCommander"/>
-        <param name="SECTOR" value="$DESTINATION.{1}"/>
-        <param name="DEBUG" value="false"/>
-      </run_script>
-
-      <!-- Move to destination (Blocking) -->
-      <run_script name="'JP_MoveToPosition'">
-        <param name="SECTOR" value="$DESTINATION.{1}"/>
-        <param name="POSITION" value="$DESTINATION.{2}"/>
-        <param name="TOLERANCE" value="10m"/>
-        <param name="DEBUG" value="$DEBUG"/>
-      </run_script>
+      <do_if value="$MOVE_TO_POSITION and $Ship.sector != $DESTINATION.{1}">
+        <run_script name="'JP_MoveToPosition'">
+          <param name="TARGED_ZONE" value="$DESTINATION.{1}"/>
+          <param name="TARGED_SECTOR" value="$DESTINATION.{1}"/>
+          <param name="TARGED_POSITION" value="$DESTINATION.{2}"/>
+          <param name="DEBUG" value="$DEBUG"/>
+        </run_script>
+      </do_if>
 
       <!-- Update orders of subordinates (Attack, Defend, Intercept) -->
       <run_script name="'JP_UpdateFleetOrders'">
@@ -126,7 +121,8 @@
         <param name="ATTACKER_RANGE" value="$ATTACKER_RANGE"/>
         <param name="DEFENDER_RANGE" value="$DEFENDER_RANGE"/>
         <param name="INTERCEPTOR_RANGE" value="$INTERCEPTOR_RANGE"/>
-        <param name="RESUPPLY_SHIP" value="$RESUPPLY_SHIP"/>
+        <param name="RESUPPLY_SHIP" value="$ResupplyShip"/>
+        <param name="COMBAT_REPAIR_THRESHOLD" value="$COMBAT_REPAIR_THRESHOLD"/>
         <param name="DEBUG" value="$DEBUG"/>
       </run_script>
 

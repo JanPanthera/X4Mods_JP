@@ -6,6 +6,11 @@
     <params>
       <!-- PARAMS -->
       <param name="SEND_SHIPS_TO_REPAIR" text="SendShipsToRepair" type="bool" default="true"/>
+      <param name="COMBAT_REPAIR_THRESHOLD" text="CombatHullThreshold" type="number" default="90">
+        <input_param name="step" value="1"/>
+        <input_param name="min" value="1"/>
+        <input_param name="max" value="100"/>
+      </param>
       <param name="ATTACKER_RANGE" text="AttackerRange" type="length" default="this.ship.maxradarrange">
         <input_param name="step" value="1km"/>
         <input_param name="min" value="1km"/>
