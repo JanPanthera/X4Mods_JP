@@ -13,23 +13,31 @@
         <input_param name="step" value="1"/>
       </param>
       <!-- How should the generated name look like -->
-      <param name="USE_CLASS_NAME" text="{8888888, 102}" comment="Add Class tag?" type="bool" default="true"/>
-      <param name="USE_MODEL_NAME" text="{8888888, 103}" comment="Add Model name?" type="bool" default="true"/>
-      <param name="USE_TYPE_NAME" text="{8888888, 104}" comment="Add Type name?" type="bool"  default="true"/>
-      <param name="USE_SHORT_MODEL_NAME" text="{8888888, 105}" comment="Use short Model name?" type="bool" default="true"/>
-      <!-- Where should the Tag be.. and how is the tag -->
-      <param name="TAG_AT_FRONT" text="{8888888, 106}" comment="Tag at front?" type="bool" default="true"/>
-      <param name="TAG_AT_END" text="{8888888, 107}" comment="Tag at end?" type="bool" default="false"/>
-      <param name="TAG_OBJECT" text="{8888888, 108}" comment="Object with your Tag" type="object" default="this.ship"/>
+      <param name="USE_CLASS_TAG" text="{8888888, 102}" comment="Add Class tag?" type="bool" default="true"/>
+      <param name="USE_TYPE_NAME" text="{8888888, 103}" comment="Add Type name?" type="bool"  default="true"/>
+      <param name="USE_MODEL_NAME" text="{8888888, 104}" comment="Add Model name?" type="bool" default="true"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="REMOVE_SENTINEL_TAG" text="{8888888, 105}" comment="Remove Sentinel Tag?" type="bool" default="false"/>
+      <param name="REMOVE_VANGUARD_TAG" text="{8888888, 106}" comment="Remove Vanguard Tag?" type="bool" default="false"/>
+      <param name="SHORTEN_SENTINEL" text="{8888888, 107}" comment="Short Sentinel Tag" type="bool" default="true"/>
+      <param name="SHORTEN_VANGUARD" text="{8888888, 108}" comment="Short Vanguard Tag" type="bool" default="true"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <!-- Players own Tag -->
+      <param name="TAG_AT_FRONT" text="{8888888, 109}" comment="Tag at front?" type="bool" default="true"/>
+      <param name="TAG_AT_END" text="{8888888, 110}" comment="Tag at end?" type="bool" default="false"/>
+      <param name="TAG_OBJECT" text="{8888888, 111}" comment="Object with your Tag" type="object" default="this.ship"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <!-- Numbering -->
-      <param name="USE_NUMBERING" text="{8888888, 109}" comment="Use numbering?" type="bool" default="true"/>
-      <param name="REVERSED_NUMBERING" text="{8888888, 110}" comment="Sort XL to S?" type="bool" default="false"/>
+      <param name="USE_NUMBERING" text="{8888888, 112}" comment="Use numbering?" type="bool" default="true"/>
+      <param name="REVERSED_NUMBERING" text="{8888888, 113}" comment="Sort XL to S?" type="bool" default="false"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <!-- Renaming On/Off switch-->
-      <param name="RENAME_COMMANDER" text="{8888888, 111}" comment="Rename Commander?" type="bool" default="true"/>
-      <param name="RENAME_SUBORDINATES" text="{8888888, 112}" comment="Rename Fleet?" type="bool" default="true"/>
-      <param name="RENAME_SUBORDINATE_FLEETS" text="{8888888, 113}" comment="Renam sub. Fleets?" type="bool" default="true"/>
+      <param name="RENAME_COMMANDER" text="{8888888, 114}" comment="Rename Commander?" type="bool" default="true"/>
+      <param name="RENAME_SUBORDINATES" text="{8888888, 115}" comment="Rename Fleet?" type="bool" default="true"/>
+      <param name="RENAME_SUBORDINATE_FLEETS" text="{8888888, 116}" comment="Renam sub. Fleets?" type="bool" default="true"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <!-- Coloring of the tag -->
-      <param name="USE_TAG_COLORING" text="{8888888, 114}" comment="Use Tag Coloring?" type="bool" default="true"/>
+      <param name="USE_TAG_COLORING" text="{8888888, 117}" comment="Use Tag Coloring?" type="bool" default="true"/>
       <param name="TAG_ALPHA" text="{8888888, 1001}" comment="Transparency" type="number" default="255">
         <input_param name="step" value="1"/>
         <input_param name="min" value="0"/>
@@ -51,7 +59,7 @@
         <input_param name="max" value="255"/>
       </param>
       <!-- Coloring of the name -->
-      <param name="USE_NAME_COLORING" text="{8888888, 115}" comment="Use Name Coloring?" type="bool" default="true"/>
+      <param name="USE_NAME_COLORING" text="{8888888, 118}" comment="Use Name Coloring?" type="bool" default="true"/>
       <param name="NAME_ALPHA" text="{8888888, 1001}" comment="Transparency" type="number" default="182">
         <input_param name="step" value="1"/>
         <input_param name="min" value="0"/>
@@ -73,7 +81,7 @@
         <input_param name="max" value="255"/>
       </param>
       <!-- Coloring of the generated number of numbering -->
-      <param name="USE_NUMBER_COLORING" text="{8888888, 116}" comment="Use Number Coloring?" type="bool" default="true"/>
+      <param name="USE_NUMBER_COLORING" text="{8888888, 119}" comment="Use Number Coloring?" type="bool" default="true"/>
       <param name="NUMBER_ALPHA" text="{8888888, 1001}" comment="Transparency" type="number" default="162">
         <input_param name="step" value="1"/>
         <input_param name="min" value="0"/>
@@ -95,18 +103,18 @@
         <input_param name="max" value="255"/>
       </param>
       <!-- Save or load the names of all ships -->
-      <param name="SAVE_NAMES" text="{8888888, 117}" comment="Save names?" type="bool" default="false"/>
-      <param name="LOAD_NAMES" text="{8888888, 118}" comment="Load names?" type="bool" default="false"/>
-      <param name="DELETE_SAVED" text="{8888888, 119}" comment="Delete saved?" type="bool" default="false"/>
+      <param name="SAVE_NAMES" text="{8888888, 120}" comment="Save names?" type="bool" default="false"/>
+      <param name="LOAD_NAMES" text="{8888888, 121}" comment="Load names?" type="bool" default="false"/>
+      <param name="DELETE_SAVED" text="{8888888, 122}" comment="Delete saved?" type="bool" default="false"/>
       <!-- Reset all ship names to game default -->
-      <param name="RESET" text="{8888888, 120}" comment="Reset" type="bool" default="false"/>
+      <param name="RESET" text="{8888888, 123}" comment="Reset" type="bool" default="false"/>
+      <!-- ADVANCED -->
+      <param name="JP_SWITCH" text="JPSwitch" type="bool" advanced="true" default="false"/>
       <!-- DEBUG -->
-      <!-- TODO Turn off before release !!!! -->
-      <param name="JP_SWITCH" text="JPSwitch" type="bool" default="true" advanced="true"/>
-      <param name="DEBUG" text="DebugText" type="number" default="0" advanced="true">
-        <input_param name="step" value="50"/>
-        <input_param name="min" value="0"/>
-        <input_param name="max" value="100"/>
+      <param name="DEBUG" text="DebugText" type="number" default="0.0" advanced="1">
+        <input_param name="min" value="0.0"/>
+        <input_param name="max" value="1.0"/>
+        <input_param name="step" value="0.1"/>
       </param>
     </params>
     <skill min="0"/>
@@ -120,8 +128,10 @@
   </interrupts>
 
   <init>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <set_value name="$DebugDirectory" exact="'JP_MultiRename.logs'"/>
-    <set_value name="$DebugFileName" exact="'JP_MultiRename' + '.log'"/>
+    <set_value name="$DebugFileName" exact="'JP_MultiRename.xml.log'"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <set_value name="$Commander" exact="this.assignedcontrolled"/>
     <set_value name="$NumberColorStartTag" exact="''"/>
     <set_value name="$NameColorStartTag" exact="''"/>
@@ -133,6 +143,7 @@
     <do_if value="@global.$MultiRenameSavedNames == null and $SAVE_NAMES">
       <create_list name="global.$MultiRenameSavedNames"/>
     </do_if>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
   </init>
 
   <attention min="unknown">
@@ -142,9 +153,9 @@
       <label name="INIT"/>
       <cancel_all_orders object="$Commander"/>
 
-      <do_if value="$DEBUG gt 0">
+      <do_if value="$DEBUG gt 0.0">
         <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~ Running JP_MultiRename ~~' + '\n'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~ JP_MultiRename.xml ~ Started ~~' + '\n'"/>
       </do_if>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -255,7 +266,7 @@
       </do_if>
 
       <!-- debug log -->
-      <do_if value="$DEBUG gt 0">
+      <do_if value="$DEBUG gt 0.0">
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'$Subordinates.count: %1'.[$Subordinates.count]"/>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
@@ -266,7 +277,7 @@
       </do_if>
 
       <!-- debug log -->
-      <do_if value="$DEBUG gt 0">
+      <do_if value="$DEBUG gt 0.0">
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'$SubLeaders.count: %1'.[$SubLeaders.count]"/>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
@@ -335,22 +346,22 @@
           <run_script name="'JP_RenameFleet'">
             <param name="COMMANDER" value="$Leader"/>
             <param name="NAMING_VARINAT" value="$NAMING_VARINAT"/>
-            <param name="USE_NAME_COLORING" value="$USE_NAME_COLORING"/>
-            <param name="NAME_COLOR_STRING" value="$NameColorStartTag"/>
-            <!-- Name creation -->
-            <param name="USE_CLASS_NAME" value="$USE_CLASS_NAME"/>
-            <param name="USE_MODEL_NAME" value="$USE_MODEL_NAME"/>
+            <param name="USE_CLASS_TAG" value="$USE_CLASS_TAG"/>
             <param name="USE_TYPE_NAME" value="$USE_TYPE_NAME"/>
-            <param name="USE_SHORT_MODEL_NAME" value="$USE_SHORT_MODEL_NAME"/>
-            <!-- Tag -->
+            <param name="USE_MODEL_NAME" value="$USE_MODEL_NAME"/>
+            <param name="REMOVE_SENTINEL_TAG" value="$REMOVE_SENTINEL_TAG"/>
+            <param name="REMOVE_VANGUARD_TAG" value="$REMOVE_VANGUARD_TAG"/>
+            <param name="SHORTEN_SENTINEL" value="$SHORTEN_SENTINEL"/>
+            <param name="SHORTEN_VANGUARD" value="$SHORTEN_VANGUARD"/>
             <param name="TAG_TO_ADD" value="$Tag"/>
             <param name="TAG_AT_END" value="$TAG_AT_END"/>
             <param name="TAG_AT_FRONT" value="$TAG_AT_FRONT"/>
-            <!-- Numbering -->
             <param name="USE_NUMBERING" value="$USE_NUMBERING"/>
+            <param name="REVERSED_NUMBERING" value="$REVERSED_NUMBERING"/>
+            <param name="USE_NAME_COLORING" value="$USE_NAME_COLORING"/>
+            <param name="NAME_COLOR_STRING" value="$NameColorStartTag"/>
             <param name="USE_NUMBER_COLORING" value="$USE_NUMBER_COLORING"/>
             <param name="NUMBER_COLOR_STRING" value="$NumberColorStartTag"/>
-            <param name="REVERSED_NUMBERING" value="$REVERSED_NUMBERING"/>
             <param name="DEBUG" value="$DEBUG"/>
           </run_script>
         </do_for_each>
@@ -361,22 +372,22 @@
         <run_script name="'JP_RenameFleet'">
           <param name="COMMANDER" value="$Commander"/>
           <param name="NAMING_VARINAT" value="$NAMING_VARINAT"/>
-          <param name="USE_NAME_COLORING" value="$USE_NAME_COLORING"/>
-          <param name="NAME_COLOR_STRING" value="$NameColorStartTag"/>
-          <!-- Name creation -->
-          <param name="USE_CLASS_NAME" value="$USE_CLASS_NAME"/>
-          <param name="USE_MODEL_NAME" value="$USE_MODEL_NAME"/>
+          <param name="USE_CLASS_TAG" value="$USE_CLASS_TAG"/>
           <param name="USE_TYPE_NAME" value="$USE_TYPE_NAME"/>
-          <param name="USE_SHORT_MODEL_NAME" value="$USE_SHORT_MODEL_NAME"/>
-          <!-- Tag -->
+          <param name="USE_MODEL_NAME" value="$USE_MODEL_NAME"/>
+          <param name="REMOVE_SENTINEL_TAG" value="$REMOVE_SENTINEL_TAG"/>
+          <param name="REMOVE_VANGUARD_TAG" value="$REMOVE_VANGUARD_TAG"/>
+          <param name="SHORTEN_SENTINEL" value="$SHORTEN_SENTINEL"/>
+          <param name="SHORTEN_VANGUARD" value="$SHORTEN_VANGUARD"/>
           <param name="TAG_TO_ADD" value="$Tag"/>
           <param name="TAG_AT_END" value="$TAG_AT_END"/>
           <param name="TAG_AT_FRONT" value="$TAG_AT_FRONT"/>
-          <!-- Numbering -->
           <param name="USE_NUMBERING" value="$USE_NUMBERING"/>
+          <param name="REVERSED_NUMBERING" value="$REVERSED_NUMBERING"/>
+          <param name="USE_NAME_COLORING" value="$USE_NAME_COLORING"/>
+          <param name="NAME_COLOR_STRING" value="$NameColorStartTag"/>
           <param name="USE_NUMBER_COLORING" value="$USE_NUMBER_COLORING"/>
           <param name="NUMBER_COLOR_STRING" value="$NumberColorStartTag"/>
-          <param name="REVERSED_NUMBERING" value="$REVERSED_NUMBERING"/>
           <param name="DEBUG" value="$DEBUG"/>
         </run_script>
       </do_if>
@@ -386,20 +397,21 @@
         <run_script name="'JP_RenameShip'">
           <param name="SHIP" value="$Commander"/>
           <param name="NAMING_VARINAT" value="$NAMING_VARINAT"/>
-          <param name="NAME_COLOR_STRING" value="$NameColorStartTag"/>
-          <!-- Name creation -->
-          <param name="USE_CLASS_NAME" value="$USE_CLASS_NAME"/>
-          <param name="USE_MODEL_NAME" value="$USE_MODEL_NAME"/>
+          <param name="USE_CLASS_TAG" value="$USE_CLASS_TAG"/>
           <param name="USE_TYPE_NAME" value="$USE_TYPE_NAME"/>
-          <param name="USE_SHORT_MODEL_NAME" value="$USE_SHORT_MODEL_NAME"/>
-          <!-- Tag -->
+          <param name="USE_MODEL_NAME" value="$USE_MODEL_NAME"/>
+          <param name="REMOVE_SENTINEL_TAG" value="$REMOVE_SENTINEL_TAG"/>
+          <param name="REMOVE_VANGUARD_TAG" value="$REMOVE_VANGUARD_TAG"/>
+          <param name="SHORTEN_SENTINEL" value="$SHORTEN_SENTINEL"/>
+          <param name="SHORTEN_VANGUARD" value="$SHORTEN_VANGUARD"/>
           <param name="TAG_TO_ADD" value="$Tag"/>
           <param name="TAG_AT_END" value="$TAG_AT_END"/>
           <param name="TAG_AT_FRONT" value="$TAG_AT_FRONT"/>
-          <!-- Numbering -->
           <param name="USE_NUMBERING" value="false"/>
-          <param name="USE_NUMBER_COLORING" value="$USE_NUMBER_COLORING"/>
           <param name="NUMBER_TO_ADD" value="0"/>
+          <param name="USE_NAME_COLORING" value="$USE_NAME_COLORING"/>
+          <param name="NAME_COLOR_STRING" value="$NameColorStartTag"/>
+          <param name="USE_NUMBER_COLORING" value="$USE_NUMBER_COLORING"/>
           <param name="NUMBER_COLOR_STRING" value="$NumberColorStartTag"/>
           <param name="DEBUG" value="$DEBUG"/>
         </run_script>
@@ -409,8 +421,8 @@
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-      <do_if value="$DEBUG gt 0">
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~ Completed JP_MultiRename ~~'"/>
+      <do_if value="$DEBUG gt 0.0">
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~ JP_MultiRename.xml ~ Finished ~~'"/>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
       </do_if>
 
