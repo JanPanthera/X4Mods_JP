@@ -2,13 +2,13 @@
 
 <aiscript name="JP_TestMod" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd" version="1">
 
-  <order id="JP_TestMod" name="JP TestScript" category="navigation" infinite="false">
+  <order id="JP_TestMod" name="JP TestScript" category="navigation" infinite="true">
     <params>
       <!-- DEBUG -->
-      <param name="DEBUG" text="DebugText" type="number" default="0" advanced="1">
-        <input_param name="step" value="50"/>
-        <input_param name="min" value="0"/>
-        <input_param name="max" value="100"/>
+      <param name="DEBUG" text="DebugText" type="number" default="1.0" advanced="1">
+        <input_param name="min" value="0.0"/>
+        <input_param name="max" value="1.0"/>
+        <input_param name="step" value="0.1"/>
       </param>
     </params>
     <skill min="0"/>
@@ -31,6 +31,10 @@
   </interrupts>
 
   <init>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <set_value name="$DebugDirectory" exact="'JP_TestMod.logs'"/>
+    <set_value name="$DebugFileName" exact="'JP_TestMod.xml.log'"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
   </init>
 
   <attention min="unknown">
@@ -40,9 +44,21 @@
       <label name="START"/>
       <cancel_all_orders object="this.ship"/>
 
+      <do_if value="$DEBUG gt 0">
+        <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ Running JP_TestMod.xml ~~' + '\n'"/>
+      </do_if>
+
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-     
+
+      <set_object_name object="this.ship" name="this.ship.macro.name"/>
+
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <do_if value="$DEBUG gt 0">
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ Completed JP_TestMod.xml ~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+      </do_if>
 
       <label name="FINISH"/>
       <set_order_syncpoint_reached order="this.ship.order"/>

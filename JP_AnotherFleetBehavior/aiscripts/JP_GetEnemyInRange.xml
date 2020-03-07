@@ -40,8 +40,8 @@
   </interrupts>
 
   <init>
-    <set_value name="$DebugDirectory" exact="'JP_GetEnemyInRange.logs'"/>
-    <set_value name="$DebugFileName" exact="'JP_GetEnemyInRange' + '.log'"/>
+    <set_value name="$DebugDirectory" exact="'JP_AnotherFleetBehavior.logs'"/>
+    <set_value name="$DebugFileName" exact="'JP_GetEnemyInRange.log'"/>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <set_value name="$Ship" exact="this.ship"/>
     <set_value name="$NearestEnemy" exact="null"/>

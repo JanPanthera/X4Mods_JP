@@ -4,12 +4,17 @@
 
   <order id="JP_AiScriptTest" name="AiScriptTest JP" description="AI Script Testing" category="combat" infinite="true">
     <params>
-      <!-- Mod Params -->
+      <!-- PARAMS -->
+      <param name="DESTINATION" text="MoveTo" type="position" default="[this.ship.sector, this.ship.position]">
+        <input_param name="class" value="class.sector"/>
+      </param>
+      <param name="TARGED_OBJECT" text="TargedObject" type="object" default="null">
+      </param>
       <!-- DEBUG -->
-      <param name="DEBUG" text="DebugText" type="number" default="100" advanced="true">
-        <input_param name="step" value="50"/>
-        <input_param name="min" value="0"/>
-        <input_param name="max" value="100"/>
+      <param name="DEBUG" text="DebugText" type="number" default="1.0" advanced="1">
+        <input_param name="step" value="0.1"/>
+        <input_param name="min" value="0.0"/>
+        <input_param name="max" value="1.0"/>
       </param>
     </params>
     <skill min="0"/>
@@ -26,8 +31,8 @@
     <set_value name="$DebugDirectory" exact="'JP_AiScriptTest.logs'"/>
     <set_value name="$DebugFileName" exact="'JP_AiScriptTest' + '.log'"/>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-    <set_value name="$Commander" exact="this.assignedcontrolled"/>
-    <create_list name="this.$EnemyShipsBlackList"/>
+    <set_value name="$Ship" exact="this.ship"/>
+    <set_value name="this.$MyName" exact="this.ship.knownname"/>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
   </init>
 
@@ -36,7 +41,7 @@
 
       <wait exact="1ms"/>
       <label name="INIT"/>
-      <cancel_all_orders object="$Commander"/>
+      <cancel_all_orders object="$Ship"/>
 
       <do_if value="$DEBUG gt 0">
         <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
@@ -45,7 +50,40 @@
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-      
+      <set_object_name object="$Ship" name="$Ship.knownname + ' (JP_AiScriptTest)'"/>
+
+      <label name="RESUME"/>
+
+      <run_script name="'JP_MoveToPosition'">
+        <param name="TARGED_ZONE" value="$DESTINATION.{1}"/>
+        <param name="TARGED_SECTOR" value="$DESTINATION.{1}"/>
+        <param name="TARGED_POSITION" value="$DESTINATION.{2}"/>
+        <param name="DEBUG" value="$DEBUG"/>
+      </run_script>
+
+      <!--<run_script name="'JP_MoveToUseHighway'">
+        <param name="TARGED_SECTOR" value="$DESTINATION.{1}"/>
+        <param name="TARGED_POSITION" value="$DESTINATION.{2}"/>
+        <param name="DEBUG" value="$DEBUG"/>
+      </run_script>-->
+
+      <!--<do_if value="@$TARGED_OBJECT != null">
+        <run_script name="'JP_MoveToObject'">
+          <param name="TARGED_OBJECT" value="$TARGED_OBJECT"/>
+          <param name="END_DISTANCE" value="250m"/>
+          <param name="DEBUG" value="$DEBUG"/>
+        </run_script>
+      </do_if>-->
+
+      <!--<run_script name="'JP_MoveToSector'">
+        <param name="TARGED_SECTOR" value="$DESTINATION.{1}"/>
+        <param name="DEBUG" value="$DEBUG"/>
+      </run_script>-->
+
+      <wait exact="1ms"/>
+      <resume label="RESUME"/>
+
+      <set_object_name object="$Ship" name="this.$MyName"/>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
@@ -55,6 +93,8 @@
       </do_if>
 
       <label name="CLEANUP"/>
+      <!--<remove_value name="this.$MyName"/>-->
+      <remove_value name="$Ship"/>
       <remove_value name="$DebugFileName"/>
       <remove_value name="$DebugDirectory"/>
 
@@ -67,6 +107,7 @@
   </attention>
 
   <on_abort>
+    <set_object_name object="this.ship" name="this.$MyName"/>
   </on_abort>
 
 </aiscript>

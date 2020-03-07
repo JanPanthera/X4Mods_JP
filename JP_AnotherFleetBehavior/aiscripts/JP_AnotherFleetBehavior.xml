@@ -6,12 +6,12 @@
     <params>
       <!-- MOD PARAMS -->
       <param name="MOVE_TO_POSITION" text="MoveToPosition" type="bool" default="false"/>
-      <param name="DESTINATION" text="MoveTo" type="position" default="[this.ship.sector, this.ship.position]">
+      <param name="POSITION" text="Position" type="position" default="[this.ship.sector, this.ship.position]">
         <input_param name="class" value="class.sector"/>
       </param>
-      <param name="ATTACKER_TARGED" text="Attacker Targed" type="object" default="null"/>
-      <param name="SEND_SHIPS_TO_REPAIR" text="SendShipsToRepair" type="bool" default="true"/>
-      <param name="COMBAT_REPAIR_THRESHOLD" text="CombatHullThreshold" type="number" default="90">
+      <param name="ATTACKER_PRIMARY_TARGED" text="AttackerPrimaryTarged" type="object" default="null"/>
+      <param name="ALLOW_SHIPS_GO_TO_REPAIR" text="AllowShipsGoToRepair" type="bool" default="true"/>
+      <param name="COMBAT_REPAIR_HULL_THRESHOLD" text="CombatRepairHullThreshold" type="number" default="90">
         <input_param name="step" value="1"/>
         <input_param name="min" value="1"/>
         <input_param name="max" value="100"/>
@@ -32,7 +32,7 @@
         <input_param name="max" value="this.ship.maxradarrange"/>
       </param>
       <!-- DEBUG -->
-      <param name="DEBUG" text="DebugText" type="number" default="1.0" advanced="1">
+      <param name="DEBUG" text="Debug" type="number" default="0.0" advanced="true">
         <input_param name="step" value="0.1"/>
         <input_param name="min" value="0.0"/>
         <input_param name="max" value="1.0"/>
@@ -61,7 +61,7 @@
   <init>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <set_value name="$DebugDirectory" exact="'JP_AnotherFleetBehavior.logs'"/>
-    <set_value name="$DebugFileName" exact="'JP_AnotherFleetBehavior' + '.log'"/>
+    <set_value name="$DebugFileName" exact="'JP_AnotherFleetBehavior.log'"/>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <set_value name="$FleetCommander" exact="this.assignedcontrolled"/>
     <set_value name="$ResupplyShip" exact="null"/>
@@ -77,15 +77,17 @@
         <do_if value="$ResupplyShip == null">
           <set_value name="$ResupplyShip" exact="$Subordinate"/>
         </do_if>
-        <create_order object="$Subordinate" id="'SupplyFleet'" immediate="true" default="true">
+        <create_order object="$Subordinate" id="'SupplyFleet'" default="true">
           <param name="target" value="$FleetCommander"/>
         </create_order>
         <continue/>
       </do_if>
-      <!-- Any other Subordinate -->
-      <create_order object="$Subordinate" id="'JP_Go_WaitForOrders'" immediate="true" default="true">
-        <param name="OBJECT_TO_DOCK" value="$FleetCommander"/>
-      </create_order>
+      <do_else>
+        <!-- Any other Subordinate -->
+        <create_order object="$Subordinate" id="'JP_Go_WaitForOrders'" default="true">
+          <param name="OBJECT_TO_DOCK" value="$FleetCommander"/>
+        </create_order>
+      </do_else>
     </do_for_each>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
   </init>
@@ -98,31 +100,32 @@
 
       <do_if value="$DEBUG gt 0.0">
         <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ Running JP_AnotherFleetBehavior ~~' + '\n'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_AnotherFleetBehavior ~~' + '\n'"/>
       </do_if>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
       <label name="RESUME"/>
 
-      <do_if value="$MOVE_TO_POSITION and $Ship.sector != $DESTINATION.{1}">
+      <!-- Move to user given position (Blocking) -->
+      <do_if value="$MOVE_TO_POSITION and $Ship.sector != $POSITION.{1}">
         <run_script name="'JP_MoveToPosition'">
-          <param name="TARGED_ZONE" value="$DESTINATION.{1}"/>
-          <param name="TARGED_SECTOR" value="$DESTINATION.{1}"/>
-          <param name="TARGED_POSITION" value="$DESTINATION.{2}"/>
+          <param name="TARGED_ZONE" value="$POSITION.{1}"/>
+          <param name="TARGED_SECTOR" value="$POSITION.{1}"/>
+          <param name="TARGED_POSITION" value="$POSITION.{2}"/>
           <param name="DEBUG" value="$DEBUG"/>
         </run_script>
       </do_if>
 
-      <!-- Update orders of subordinates (Attack, Defend, Intercept) -->
+      <!-- Update orders of subordinates (Attack, Defend, Intercept, Repair) -->
       <run_script name="'JP_UpdateFleetOrders'">
-        <param name="SEND_SHIPS_TO_REPAIR" value="$SEND_SHIPS_TO_REPAIR"/>
-        <param name="ATTACKER_TARGED" value="$ATTACKER_TARGED"/>
+        <param name="ATTACKER_PRIMARY_TARGED" value="$ATTACKER_PRIMARY_TARGED"/>
         <param name="ATTACKER_RANGE" value="$ATTACKER_RANGE"/>
         <param name="DEFENDER_RANGE" value="$DEFENDER_RANGE"/>
         <param name="INTERCEPTOR_RANGE" value="$INTERCEPTOR_RANGE"/>
+        <param name="ALLOW_SHIPS_GO_TO_REPAIR" value="$ALLOW_SHIPS_GO_TO_REPAIR"/>
+        <param name="COMBAT_REPAIR_HULL_THRESHOLD" value="$COMBAT_REPAIR_HULL_THRESHOLD"/>
         <param name="RESUPPLY_SHIP" value="$ResupplyShip"/>
-        <param name="COMBAT_REPAIR_THRESHOLD" value="$COMBAT_REPAIR_THRESHOLD"/>
         <param name="DEBUG" value="$DEBUG"/>
       </run_script>
 
@@ -134,7 +137,7 @@
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
       <do_if value="$DEBUG gt 0.0">
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ Completed JP_AnotherFleetBehavior ~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_AnotherFleetBehavior ~~'"/>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
       </do_if>
 

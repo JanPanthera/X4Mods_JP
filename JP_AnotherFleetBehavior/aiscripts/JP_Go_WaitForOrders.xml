@@ -34,8 +34,8 @@
   </interrupts>
 
   <init>
-    <set_value name="$DebugDirectory" exact="'JP_Go_WaitForOrders.logs'"/>
-    <set_value name="$DebugFileName" exact="'JP_Go_WaitForOrders' + '.log'"/>
+    <set_value name="$DebugDirectory" exact="'JP_AnotherFleetBehavior.logs'"/>
+    <set_value name="$DebugFileName" exact="'JP_Go_WaitForOrders.log'"/>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <set_value name="$FleetCommander" exact="this.ship.fleet.commander"/>
     <set_value name="$Ship" exact="this.ship"/>
@@ -82,7 +82,7 @@
           <save_retval name="HAS_ORDER" variable="$HasFollowOrder"/>
         </run_script>
         <do_if value="not $HasFollowOrder">
-          <create_order object="$Ship" id="'Follow'" immediate="true" default="true">
+          <create_order object="$Ship" id="'Follow'" default="true">
             <param name="target" value="$FleetCommander"/>
           </create_order>
           <do_if value="not $Ship.isformationwingman">

@@ -39,8 +39,8 @@
   </interrupts>
 
   <init>
-    <set_value name="$DebugDirectory" exact="'JP_Destroyer_Defend.logs'"/>
-    <set_value name="$DebugFileName" exact="'JP_Destroyer_Defend' + '.log'"/>
+    <set_value name="$DebugDirectory" exact="'JP_AnotherFleetBehavior.logs'"/>
+    <set_value name="$DebugFileName" exact="'JP_Destroyer_Defend.log'"/>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <set_value name="$Ship" exact="this.ship"/>
     <set_value name="$FleetCommander" exact="this.ship.fleet.commander"/>
@@ -90,7 +90,7 @@
           <resume label="END"/>
         </do_if>
 
-        <create_order object="$Ship" id="'Attack'" immediate="true" default="false">
+        <create_order object="$Ship" id="'Attack'" default="false">
           <param name="primarytarget" value="$NearestEnemyLarge"/>
           <param name="pursuetargets" value="false"/>
         </create_order>
@@ -102,7 +102,7 @@
 
       <label name="END"/>
       <cancel_all_orders object="$Ship"/>
-      <create_order object="$Ship" id="'JP_Go_WaitForOrders'" immediate="true" default="true">
+      <create_order object="$Ship" id="'JP_Go_WaitForOrders'" default="true">
         <param name="OBJECT_TO_DOCK" value="$FleetCommander"/>
       </create_order>
 

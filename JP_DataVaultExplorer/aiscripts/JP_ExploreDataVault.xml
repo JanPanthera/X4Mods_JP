@@ -89,7 +89,7 @@
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'Deploying an nav beacon at the data vault.'"/>
       </do_if>
       <launch_navbeacon object="$EXPLORER" category="deployablecategory.navbeacon" name="$NavBeacon"/>
-      <set_object_name object="$NavBeacon" name="'%1  ~~  [%2]'.[{20109,8901}, $NavBeacon.sector.knownname]"/>
+      <set_object_name object="$NavBeacon" name="'{20109,8901}  ~~  [' + $NavBeacon.sector.knownname + ']'"/>
       <do_if value="$DEBUG gt 0">
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'%1 [%2] deployed in sector: %3 [%4]'.[{20109,8901}, $NavBeacon.idcode, $NavBeacon.sector.knownname, $NavBeacon.sector.owner.knownname]"/>
       </do_if>

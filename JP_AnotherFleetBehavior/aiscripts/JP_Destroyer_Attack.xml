@@ -39,8 +39,8 @@
   </interrupts>
 
   <init>
-    <set_value name="$DebugDirectory" exact="'JP_Destroyer_Attack.logs'"/>
-    <set_value name="$DebugFileName" exact="'JP_Destroyer_Attack' + '.log'"/>
+    <set_value name="$DebugDirectory" exact="'JP_AnotherFleetBehavior.logs'"/>
+    <set_value name="$DebugFileName" exact="'JP_Destroyer_Attack.log'"/>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <set_value name="$Ship" exact="this.ship"/>
     <set_value name="$FleetCommander" exact="this.ship.fleet.commander"/>
@@ -66,13 +66,17 @@
         <resume label="END"/>
       </do_if>
 
-      <do_if value="@$TARGED == null">
-        <check_object object="$TARGED" result="$Operational">
-          <match checkoperational="true"/>
-        </check_object>
-
-        <do_if value="not $Operational or ($TARGED.distanceto.{$FleetCommander} gt $ATTACKER_RANGE)">
-          <resume label="END"/>
+      <set_value name="$NearestEnemyLarge" exact="null"/>
+      <do_if value="@$TARGED != null">
+        <do_if value="not $TARGED.iswreck">
+          <set_value name="$NearestEnemyLarge" exact="$TARGED"/>
+          <do_for_each name="$Order" in="$Ship.orders">
+            <do_if value="$Order.id == 'Attack'">
+              <do_if value="$Order.$primarytarget != $TARGED">
+                <cancel_all_orders object="$Ship"/>
+              </do_if>
+            </do_if>
+          </do_for_each>
         </do_if>
       </do_if>
 
@@ -84,8 +88,26 @@
 
       <do_if value="not $HasAttackOrder">
 
-        <create_order object="$Ship" id="'Attack'" immediate="true" default="false">
-          <param name="primarytarget" value="$TARGED"/>
+        <do_if value="$NearestEnemyLarge == null">
+          <run_script name="'JP_GetEnemyInRange'">
+            <param name="RANGE" value="$ATTACKER_RANGE"/>
+            <param name="CLASSES" value="[class.ship_l, class.ship_xl]"/>
+            <param name="SECTOR" value="$FleetCommander.sector"/>
+            <param name="CENTER_POSITION" value="$FleetCommander.position"/>
+            <param name="SORT_TO_POSITION" value="$Ship"/>
+            <param name="RANDOMIZING" value="11"/>
+            <param name="CHECK_FOR_IS_ATTACKING_US" value="false"/>
+            <param name="DEBUG" value="$DEBUG"/>
+            <save_retval name="NEAREST_ENEMY" variable="$NearestEnemyLarge"/>
+          </run_script>
+
+          <do_if value="$NearestEnemyLarge == null">
+            <resume label="END"/>
+          </do_if>
+        </do_if>
+
+        <create_order object="$Ship" id="'Attack'" default="false">
+          <param name="primarytarget" value="$NearestEnemyLarge"/>
           <param name="pursuetargets" value="false"/>
         </create_order>
 
@@ -96,7 +118,7 @@
 
       <label name="END"/>
       <cancel_all_orders object="$Ship"/>
-      <create_order object="$Ship" id="'JP_Go_WaitForOrders'" immediate="true" default="true">
+      <create_order object="$Ship" id="'JP_Go_WaitForOrders'" default="true">
         <param name="OBJECT_TO_DOCK" value="$FleetCommander"/>
       </create_order>
 

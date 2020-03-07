@@ -63,13 +63,11 @@
     <Xml Include="t\0001-L082.xml" />
     <Xml Include="t\0001-L086.xml" />
     <Xml Include="t\0001-L088.xml" />
-    <Xml Include="aiscripts\JP_CheckShipsForDamage.xml" />
     <Xml Include="aiscripts\JP_HasShipOrder.xml" />
     <Xml Include="aiscripts\JP_MoveToPosition.xml" />
     <Xml Include="aiscripts\JP_MoveThroughGate.xml" />
     <Xml Include="aiscripts\JP_MoveToObject.xml" />
     <Xml Include="aiscripts\JP_MoveToSector.xml" />
     <Xml Include="aiscripts\JP_MoveToUseHighway.xml" />
-    <Xml Include="aiscripts\MoveToNoHighway.xml" />
   </ItemGroup>
 </Project>

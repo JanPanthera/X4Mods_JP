@@ -129,7 +129,6 @@
   </ItemGroup>
   <ItemGroup>
     <Xml Include="aiscripts\JP_AreWeInTheRightSector.xml" />
-    <Xml Include="aiscripts\JP_CheckShipsForDamage.xml" />
     <Xml Include="aiscripts\JP_GetSubsSortedForNumbering.xml" />
     <Xml Include="aiscripts\JP_HasShipOrder.xml" />
     <Xml Include="aiscripts\JP_IdleWait.xml" />
@@ -142,7 +141,6 @@
     <Xml Include="aiscripts\JP_SortListByDistance.xml" />
     <Xml Include="aiscripts\JP_SortListByGateJumpsDistance.xml" />
     <Xml Include="aiscripts\JP_ToHexadecimalColorString.xml" />
-    <Xml Include="aiscripts\MoveToNoHighway.xml" />
     <Xml Include="content.xml" />
     <Xml Include="JP_ScriptLibrary\aiscripts\JP_AreWeInTheRightSector.xml" />
     <Xml Include="JP_ScriptLibrary\aiscripts\JP_GetSubsSortedForNumbering.xml" />

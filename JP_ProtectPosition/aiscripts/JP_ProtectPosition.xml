@@ -62,10 +62,10 @@
     <set_value name="$SendInterceptor" exact="false"/>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <!-- ~~~ Initialize Fleet -->
-    <do_for_each name="$Ship" in="$FleetCommander.subordinates">
+    <!--<do_for_each name="$Ship" in="$FleetCommander.subordinates">
       <do_if value="$Ship.isunit == false">
         <cancel_all_orders object="$Ship"/>
-        <!-- Resupplyer -->
+        --><!-- Resupplyer --><!--
         <do_if value="$Ship.type == shiptype.resupplier">
           <do_if value="$ResupplyShip == null">
             <set_value name="$ResupplyShip" exact="$Ship"/>
@@ -80,7 +80,7 @@
           </create_order>
         </do_else>
       </do_if>
-    </do_for_each>
+    </do_for_each>-->
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
   </init>
 

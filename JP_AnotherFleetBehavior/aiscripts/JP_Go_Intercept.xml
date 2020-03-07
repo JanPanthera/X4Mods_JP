@@ -38,8 +38,8 @@
   </interrupts>
 
   <init>
-    <set_value name="$DebugDirectory" exact="'JP_Go_Intercept.logs'"/>
-    <set_value name="$DebugFileName" exact="'JP_Go_Intercept' + '.log'"/>
+    <set_value name="$DebugDirectory" exact="'JP_AnotherFleetBehavior.logs'"/>
+    <set_value name="$DebugFileName" exact="'JP_Go_Intercept.log'"/>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <set_value name="$Ship" exact="this.ship"/>
     <set_value name="$FleetCommander" exact="this.ship.fleet.commander"/>
@@ -108,7 +108,7 @@
 
       <label name="END"/>
       <cancel_all_orders object="$Ship"/>
-      <create_order object="$Ship" id="'JP_Go_WaitForOrders'" immediate="true" default="true">
+      <create_order object="$Ship" id="'JP_Go_WaitForOrders'" default="true">
         <param name="OBJECT_TO_DOCK" value="$FleetCommander"/>
       </create_order>
 

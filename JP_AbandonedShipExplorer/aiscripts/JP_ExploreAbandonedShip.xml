@@ -2,21 +2,17 @@
 
 <aiscript name="JP_ExploreAbandonedShip" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd">
 
-  <order id="JP_ExploreAbandonedShip" name="JP ExploreAbandonedShip" description="Flys to an abandoned ship and puts a nav beacon besides him." category="internal" infinite="false">
+  <order id="JP_ExploreAbandonedShip" name="JP ExploreAbandonedShip" category="internal" infinite="false">
     <params>
-      <param name="EXPLORER" text="Explorer" type="object" required="true"/>
+      <!-- PARAM -->
+      <param name="ABANDONED_SHIP" text="AbandonedShip" type="object" required="true"/>
       <param name="WAIT_AT_SHIP" text="Wait at the ship?" type="bool" default="true"/>
       <param name="WAIT_AMOUNT" text="How long to wait?" type="time" default="60s"/>
       <param name="PLACE_NAVBEACON" text="Place navigation beacons" type="bool" default="true"/>
-      <param name="ABANDONED_SHIP" text="AbandonedShip" type="object" required="true"/>
       <param name="SHOW_MESSAGE" text="'Message when arrived?'" type="bool" default="true"/>
-      <!-- Debug -->
-      <param name="DEBUG" text="DebugText" type="number" default="0" advanced="1"/>
+      <!-- DEBUG -->
+      <param name="DEBUG" text="Debug" type="number" default="0.0" advanced="true"/>
     </params>
-    <skill min="0"/>
-    <requires>
-      <match shiptype="shiptype.lasertower" negate="true"/>
-    </requires>
   </order>
 
   <interrupts>
@@ -33,8 +29,12 @@
   </interrupts>
 
   <init>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <set_value name="$DebugDirectory" exact="'JP_AbandonedShipExplorer.logs'"/>
-    <set_value name="$DebugFileName" exact="$EXPLORER.idcode + '.JP_AbandonedShipExplorer' + '.log'"/>
+    <set_value name="$DebugFileName" exact="'JP_ExploreAbandonedShip.log'"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <set_value name="$Explorer" exact="this.ship"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
   </init>
 
   <attention min="unknown">
@@ -43,28 +43,45 @@
       <wait exact="1ms"/>
       <label name="INIT"/>
 
-      <do_if value="$DEBUG gt 0">
+      <do_if value="$DEBUG gt 0.0">
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ Running JP_ExploreAbandonedShip with %1 [%2]'.[$EXPLORER.knownname, $EXPLORER.idcode] + '\n'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_AbandonedShipExplorer ~ JP_ExploreAbandonedShip ~~' + '\n'"/>
       </do_if>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
       <!-- Are we in the right sector? -->
+      <!-- ~~ TODO ~~ -->
       <run_script name="'JP_AreWeInTheRightSector'">
-        <param name="SHIP" value="$EXPLORER"/>
+        <param name="SHIP" value="$Explorer"/>
         <param name="SECTOR" value="$ABANDONED_SHIP.sector"/>
-        <param name="DEBUG" value="$DEBUG"/>
         <param name="DEBUG_DIRECTORY" value="$DebugDirectory"/>
         <param name="DEBUG_FILE_NAME" value="$DebugFileName"/>
+        <param name="DEBUG" value="$DEBUG"/>
       </run_script>
 
-      <!-- Moving to the abandoned ship -->
-      <do_if value="$DEBUG gt 0">
+      <do_if value="@$ABANDONED_SHIP == null">
+        <do_if value="$DEBUG gt 0.0">
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="' ~ $ABANDONED_SHIP was null'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+        </do_if>
+        <resume label="END"/>
+      </do_if>
+
+      <do_if value="$DEBUG gt 0.0">
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'Moving to the abandoned ship..'"/>
       </do_if>
-      <label name="MOVING"/>
+
+      <!-- Moving to the abandoned ship -->
+      <run_script name="'JP_MoveToObject'">
+        <param name="TARGED_OBJECT" value="$ABANDONED_SHIP"/>
+        <param name="END_DISTANCE" value="$Explorer.size + 200m"/>
+        <param name="DEBUG" value="$DEBUG"/>
+      </run_script>
+
+      <!--<label name="MOVING"/>
       <do_if value="$DEBUG gt 50">
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'Moving...'"/>
       </do_if>
@@ -78,23 +95,24 @@
         <resume label="MOVING"/>
       </do_if>
       <remove_value name="$TempPosition"/>
-      <stop_moving object="$EXPLORER"/>
+      <stop_moving object="$EXPLORER"/>-->
+
       <!-- Wait here a bit that the ship stops completely first... -->
       <wait min="3s" max="6s"/>
-      <do_if value="$DEBUG gt 0">
+      <do_if value="$DEBUG gt 0.0">
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'Arrived at the abandoned ship.'"/>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
       </do_if>
 
       <!-- Deploying a nav beacon besides the data vault -->
       <do_if value="$PLACE_NAVBEACON">
-        <do_if value="$DEBUG gt 0">
+        <do_if value="$DEBUG gt 0.0">
           <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
           <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'Deploying an nav beacon at the abandoned ship.'"/>
         </do_if>
-        <launch_navbeacon object="$EXPLORER" category="deployablecategory.navbeacon" name="$NavBeacon"/>
-        <set_object_name object="$NavBeacon" name="'%1  ~~  [%2]'.[{8888888, 177}, $NavBeacon.sector.knownname]"/>
-        <do_if value="$DEBUG gt 0">
+        <launch_navbeacon object="$Explorer" category="deployablecategory.navbeacon" name="$NavBeacon"/>
+        <set_object_name object="$NavBeacon" name="'{8888888, 177}  ~~  [' + $NavBeacon.sector.knownname + ']'"/>
+        <do_if value="$DEBUG gt 0.0">
           <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'%1 [%2] deployed in sector: %3 [%4]'.[{20201, 20801}, $NavBeacon.idcode, $NavBeacon.sector.knownname, $NavBeacon.sector.owner.knownname]"/>
           <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
         </do_if>
@@ -103,7 +121,7 @@
       </do_if>
 
       <do_if value="$SHOW_MESSAGE">
-        <show_help custom="'%1 [%2]\n'.[$EXPLORER.knownname, $EXPLORER.idcode] +
+        <show_help custom="'%1 [%2]\n'.[$Explorer.knownname, $EXPLORER.idcode] +
                            {8888888, 179} + ':\n' +
                            '%1 [%2]\n'.[$ABANDONED_SHIP.knownname, $ABANDONED_SHIP.idcode] +
                            {20001, 201} + ' %1 ~ %2\n'.[$ABANDONED_SHIP.sector.knownname, $ABANDONED_SHIP.sector.owner.knownname] + 
@@ -114,20 +132,25 @@
       <!-- Wait there.. so the player can teleport there and can occupie it.. -->
       <!-- But the player has to wait exact that amount.. so he can't continue if he was to fast... -->
       <do_if value="$WAIT_AT_SHIP">
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'I will wait %1s'.[$WAIT_AMOUNT]"/>
+        <do_if value="$DEBUG gt 0.0">
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'I will wait %1s'.[$WAIT_AMOUNT]"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+        </do_if>
         <wait exact="$WAIT_AMOUNT"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
       </do_if>
+
+      <label name="END"/>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-      <do_if value="$DEBUG gt 0">
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ Completed JP_ExploreAbandonedShip with %1 [%2]'.[$EXPLORER.knownname, $EXPLORER.idcode]"/>
+      <do_if value="$DEBUG gt 0.0">
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_AbandonedShipExplorer ~ JP_ExploreAbandonedShip ~~'"/>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
       </do_if>
 
       <label name="CLEANUP"/>
+      <remove_value name="$Explorer"/>
       <remove_value name="$DebugFileName"/>
       <remove_value name="$DebugDirectory"/>
 

@@ -14,7 +14,7 @@
         <input_param name="class" value="[class.sector]"/>
       </param>
       <!-- ~~~~~~~~~~~~~~~ -->
-      <param name="DEBUG" text="DebugText" type="number" default="0" advanced="1">
+      <param name="DEBUG" text="DebugText" type="number" default="100" advanced="1">
         <input_param name="step" value="50"/>
         <input_param name="min" value="0"/>
         <input_param name="max" value="100"/>
