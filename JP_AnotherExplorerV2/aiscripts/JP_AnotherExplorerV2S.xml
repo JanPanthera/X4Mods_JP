@@ -2,7 +2,7 @@
 
 <aiscript name="JP_AnotherExplorerV2S" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd">
 
-  <order id="JP_AnotherExplorerV2S" name="JP AnotherExplorerV2 {20001, 201}" description="Finds unknown stations and jump gates in given sector." category="navigation" infinite="true">
+  <order id="JP_AnotherExplorerV2S" name="AnotherExplorerV2 {20001, 201} JP" description="Finds unknown stations and jump gates in given sector." category="navigation" infinite="true">
     <params>
       <param name="SECTOR" text="{8888888, 1008}" type="object" default="this.sector">
         <input_param name="class" value="[class.sector]"/>
@@ -17,7 +17,7 @@
         <input_param name="class" value="[class.sector]"/>
       </param>
       <!-- ~~~~~~~~~~~~~~~ -->
-      <param name="DEBUG" text="DebugText" type="number" default="100" advanced="1">
+      <param name="DEBUG" text="DebugText" type="number" default="0" advanced="1">
         <input_param name="step" value="50"/>
         <input_param name="min" value="0"/>
         <input_param name="max" value="100"/>
