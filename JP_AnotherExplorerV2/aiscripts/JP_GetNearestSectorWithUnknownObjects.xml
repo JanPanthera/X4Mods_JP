@@ -9,7 +9,12 @@
       <param name="FIND_STATIONS" text="Find Stations?" type="bool" default="true"/>
       <param name="FIND_STATIONS_FROM_ENEMYS" text="Find Stations from enemys?" type="bool" default="false"/>
       <param name="EXPLORE_ENEMY_SECTORS" text="Explore Enemy Sectors?" type="bool" default="false"/>
-      <param name="DEBUG" text="DebugText" type="number" default="0" advanced="1"/>
+      <!-- DEBUG -->
+      <param name="DEBUG" text="DebugText" type="number" default="0.0" advanced="1">
+        <input_param name="min" value="0.0"/>
+        <input_param name="max" value="1.0"/>
+        <input_param name="step" value="0.1"/>
+      </param>
     </params>
     <skill min="0"/>
     <requires>
@@ -21,10 +26,13 @@
   </interrupts>
 
   <init>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <set_value name="$DebugDirectory" exact="'JP_AnotherExplorerV2.logs'"/>
-    <set_value name="$DebugFileName" exact="$EXPLORER.idcode + '.JP_GetNearestSectorWithUnknownObjects' + '.log'"/>
+    <set_value name="$DebugFileName" exact="$EXPLORER.idcode + '.JP_GetNearestSectorWithUnknownObjects.log'"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <set_value name="$NearestSector" exact="null"/>
-    <create_list name="$_tempSectors"/>
+    <create_list name="$Sectors_List"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
   </init>
 
   <attention min="unknown">
@@ -33,42 +41,29 @@
       <wait exact="1ms"/>
       <label name="INIT"/>
 
-      <do_if value="$DEBUG gt 0">
+      <do_if value="$DEBUG gt 0.0">
         <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~ Running JP_GetNearestSectorWithUnknownObjects with %1 [%2]'.[$EXPLORER.knownname, $EXPLORER.idcode] + '\n'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_GetNearestSectorWithUnknownObjects.xml ~ Started ~~' + '\n'"/>
       </do_if>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-      <!-- Filling $_tempSectors with all available Sectors -->
+      <!-- Filling $Sectors_List with all available Sectors in the galaxy -->
       <do_if value="$EXPLORE_ENEMY_SECTORS">
-        <find_sector name="$_tempSectors" multiple="true" space="player.galaxy"/>
+        <find_sector name="$Sectors_List" multiple="true" space="player.galaxy"/>
       </do_if>
       <do_else>
-        <find_sector name="$_tempSectors" multiple="true" space="player.galaxy">
+        <find_sector name="$Sectors_List" multiple="true" space="player.galaxy">
           <match mayattack="$EXPLORER" negate="true"/>
         </find_sector>
       </do_else>
 
       <!-- Remove all sectors who already are being explored -->
-      <remove_from_list name="$_tempSectors" list="global.$AnotherExplorerV2SectorBlackList"/>
-
-      <do_if value="$DEBUG gt 0">
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'Found sectors in galaxy who are not enemy with us: %1'.[$_tempSectors.count]" chance="if $EXPLORE_ENEMY_SECTORS then 0 else 100"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'Found sectors in galaxy: %1'.[$_tempSectors.count]" chance="if $EXPLORE_ENEMY_SECTORS then 100 else 0"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-        <do_if value="$DEBUG gt 50">
-          <do_for_each name="$_tempSector" in="$_tempSectors">
-            <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~ Sector: %1 [%2]'.[$_tempSector.knownname, $_tempSector.owner.knownname]"/>
-          </do_for_each>
-        </do_if>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
-      </do_if>
+      <remove_from_list name="$Sectors_List" list="global.$AnotherExplorerV2SectorBlackList"/>
 
       <!-- Remove Sectors where all objects are known -->
-      <create_list name="$_tempSectorsToRemove"/>
-      <do_for_each name="$_tempSector" in="$_tempSectors">
+      <create_list name="$_tempSectorsToRemove_List"/>
+      <do_for_each name="$_tempSector" in="$Sectors_List">
         <create_list name="$UnknownObjects"/>
         <run_script name="'JP_GetUnknownObjectsFromSector'">
           <param name="SECTOR" value="$_tempSector"/>
@@ -77,23 +72,23 @@
           <param name="FIND_STATIONS" value="$FIND_STATIONS"/>
           <param name="FIND_STATIONS_FROM_ENEMYS" value="$FIND_STATIONS_FROM_ENEMYS"/>
           <param name="SORT" value="false"/>
-          <param name="DEBUG" value="0"/>
+          <param name="DEBUG" value="0.0"/>
           <save_retval name="UNKNOWN_OBJECTS" variable="$UnknownObjects"/>
         </run_script>
         <do_if value="$UnknownObjects.count == 0">
-          <append_to_list name="$_tempSectorsToRemove" exact="$_tempSector"/>
+          <append_to_list name="$_tempSectorsToRemove_List" exact="$_tempSector"/>
         </do_if>
         <remove_value name="$UnknownObjects"/>
       </do_for_each>
-      <remove_from_list name="$_tempSectors" list="$_tempSectorsToRemove"/>
-      <remove_value name="$_tempSectorsToRemove"/>
+      <remove_from_list name="$Sectors_List" list="$_tempSectorsToRemove_List"/>
+      <remove_value name="$_tempSectorsToRemove_List"/>
 
-      <do_if value="$DEBUG gt 0">
+      <do_if value="$DEBUG gt 0.0">
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'Found sectors we dont know from or/and where are objects they are unknown to us: %1'.[$_tempSectors.count]"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'Found sectors we dont know from or/and where are objects they are unknown to us: %1'.[$Sectors_List.count]"/>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-        <do_if value="$DEBUG gt 50">
-          <do_for_each name="$_tempSector" in="$_tempSectors">
+        <do_if value="$DEBUG gt 0.5">
+          <do_for_each name="$_tempSector" in="$Sectors_List">
             <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~ Sector: %1 [%2]'.[$_tempSector.knownname, $_tempSector.owner.knownname]"/>
           </do_for_each>
         </do_if>
@@ -101,26 +96,39 @@
       </do_if>
 
       <!-- Sort all $FoundSectors by distance to $Ship if more than one -->
-      <do_if value="$_tempSectors.count gt 1">
-        <run_script name="'JP_SortListByGateJumpsDistance'">
-          <param name="LIST" value="$_tempSectors"/>
-          <param name="OBJECT" value="$EXPLORER"/>
-          <param name="DEBUG" value="$DEBUG"/>
-          <param name="DEBUG_DIRECTORY" value="$DebugDirectory"/>
-          <param name="DEBUG_FILE_NAME" value="$DebugFileName"/>
-          <save_retval name="SORTED_LIST" variable="$_tempSectors"/>
-        </run_script>
+      <do_if value="$Sectors_List.count gt 1">
+        <sort_list list="$Sectors_List" sortbyvalue="$EXPLORER.gatedistance.{loop.element}"/>
       </do_if>
 
-      <do_if value="$_tempSectors.count gt 0">
-        <set_value name="$NearestSector" exact="$_tempSectors.{1}"/>
-      </do_if>
-      <do_else>
-        <resume label="END"/>
-      </do_else>
-      <remove_value name="$_tempSectors"/>
+      <do_for_each name="$Sector" in="$Sectors_List">
+        <do_if value="$Sector.gatedistance.{$EXPLORER} gt 0">
+          <set_value name="$NearestSector" exact="$Sector"/>
+          <break/>
+        </do_if>
+      </do_for_each>
 
-      <do_if value="$DEBUG gt 0">
+      <!-- Debug -->
+      <do_if value="$DEBUG gt 0.0">
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'List with %1 elements sorted by jump distance to %2 [%3]'.[$Sectors_List.count, $EXPLORER.knownname, $EXPLORER.idcode]"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <do_if value="$DEBUG gt 0.5">
+          <do_for_each name="$Element" in="$Sectors_List" counter="$_it">
+            <do_if value="$Sectors_List.{1}.class == class.sector">
+              <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~ %1 jumps to element [%2] %3 [%4]'.[$EXPLORER.gatedistance.{$Element}, $_it, $Element.knownname, $Element.owner.knownname]"/>
+            </do_if>
+            <do_elseif value="$Sectors_List.{1}.class" list="[class.station, class.ship, class.ship_xs, class.ship_s, class.ship_m, class.ship_l, class.ship_xl]">
+              <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~ %1 jumps to element [%2] %3 [%4]'.[$EXPLORER.gatedistance.{$Element}, $_it, $Element.knownname, $Element.idcode]"/>
+            </do_elseif>
+            <do_else>
+              <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~ %1 jumps to element [%2] %3'.[$EXPLORER.gatedistance.{$Element}, $_it, $Element.knownname]"/>
+            </do_else>
+          </do_for_each>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+        </do_if>
+      </do_if>
+
+      <do_if value="$DEBUG gt 0.0">
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'Nearest Sector is %1 [%2]'.[$NearestSector.knownname, $NearestSector.owner.knownname]"/>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
@@ -130,14 +138,15 @@
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-      <do_if value="$DEBUG gt 0">
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~ Completed JP_GetNearestSectorWithUnknownObjects with %1 [%2]'.[$EXPLORER.knownname, $EXPLORER.idcode]"/>
+      <do_if value="$DEBUG gt 0.0">
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_GetNearestSectorWithUnknownObjects.xml ~ Finished ~~'"/>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
       </do_if>
 
       <label name="CLEANUP"/>
       <remove_value name="$DebugFileName"/>
       <remove_value name="$DebugDirectory"/>
+      <remove_value name="$Sectors_List"/>
 
       <label name="RETURN"/>
       <return>

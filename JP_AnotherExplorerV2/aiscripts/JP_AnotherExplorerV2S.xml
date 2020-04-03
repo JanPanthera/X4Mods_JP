@@ -16,11 +16,11 @@
       <param name="SAFE_SECTOR" text="{8888888, 1007}" comment="Safe sector." type="object" default="this.sector">
         <input_param name="class" value="[class.sector]"/>
       </param>
-      <!-- ~~~~~~~~~~~~~~~ -->
-      <param name="DEBUG" text="DebugText" type="number" default="0" advanced="1">
-        <input_param name="step" value="50"/>
-        <input_param name="min" value="0"/>
-        <input_param name="max" value="100"/>
+      <!-- DEBUG -->
+      <param name="DEBUG" text="DebugText" type="number" default="0.0" advanced="1">
+        <input_param name="min" value="0.0"/>
+        <input_param name="max" value="1.0"/>
+        <input_param name="step" value="0.1"/>
       </param>
     </params>
     <skill min="0"/>
@@ -43,8 +43,10 @@
   </interrupts>
 
   <init>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <set_value name="$DebugDirectory" exact="'JP_AnotherExplorerV2.logs'"/>
-    <set_value name="$DebugFileName" exact="this.ship.idcode + '.JP_AnotherExplorerV2S' + '.log'"/>
+    <set_value name="$DebugFileName" exact="this.ship.idcode + '.JP_AnotherExplorerV2S.log'"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <set_value name="$Explorer" exact="this.ship"/>
     <do_if value="@global.$AnotherExplorerV2SectorBlackList == null">
       <create_list name="global.$AnotherExplorerV2SectorBlackList"/>
@@ -55,6 +57,7 @@
     <append_to_list name="global.$AnotherExplorerV2Ships" exact="this.ship"/>
     <set_value name="this.$CurrentSector" exact="$SECTOR"/>
     <set_value name="$ExpTotalMultiplier" exact="0.88"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
   </init>
 
   <attention min="unknown">
@@ -64,16 +67,16 @@
       <label name="INIT"/>
       <cancel_all_orders object="this.ship"/>
 
-      <do_if value="$DEBUG gt 0">
+      <do_if value="$DEBUG gt 0.0">
         <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ Running JP_AnotherExplorerV2S ~~ %1 [%2]'.[$Explorer.knownname, $Explorer.idcode] + '\n'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_AnotherExplorerV2S.xml ~ Started ~~' + '\n'"/>
       </do_if>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
       <do_if value="this.$CurrentSector == null">
         <show_help custom="'JP_AnotherExplorerV2S: Sector explorer used but sector not specified.'" duration="8s"/>
-        <do_if value="$DEBUG gt 0">
+        <do_if value="$DEBUG gt 0.0">
           <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
           <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'JP_AnotherExplorerV2S: Sector explorer used but sector not specified.'"/>
           <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
@@ -99,7 +102,7 @@
         <set_value name="$ExpGainFactor" exact="(1.00 * $ExpTotalMultiplier)"/>
       </do_elseif>
 
-      <do_if value="$DEBUG gt 0">
+      <do_if value="$DEBUG gt 0.0">
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'Exploring sector %1 [%2]'.[this.$CurrentSector.knownname, this.$CurrentSector.owner.knownname]"/>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
@@ -119,7 +122,7 @@
 
       <!-- Are there object we need to explore? -->
       <do_if value="$UnknownObjects.count == 0">
-        <do_if value="$DEBUG gt 0">
+        <do_if value="$DEBUG gt 0.0">
           <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
           <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'No objects found that we can explore.. start idling..'"/>
           <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
@@ -156,7 +159,7 @@
             <save_retval name="SORTED_LIST" variable="$UnknownObjects"/>
           </run_script>
         </do_if>
-        <do_if value="$DEBUG gt 0">
+        <do_if value="$DEBUG gt 0.0">
           <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
           <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'Exploring unknown object %1 [%2]  ~~  %3'.[$UnknownObjects.{1}.knownname, $UnknownObjects.{1}.idcode, $UnknownObjects.{1}.owner.knownname]"/>
         </do_if>
@@ -170,7 +173,7 @@
         <apply_experience entity="$Explorer.pilot" experience="'JP_SHIP_OBJECT_DISCOVERD'" factor="$ExpGainFactor"/>
         <apply_experience object="$Explorer" role="entityrole.service" experience="'JP_SHIP_OBJECT_DISCOVERD'" factor="$ExpGainFactor"/>
         <!-- EXP gain -->
-        <do_if value="$DEBUG gt 0">
+        <do_if value="$DEBUG gt 0.0">
           <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'Object %1 [%2] explored.  ~~  %3'.[$UnknownObjects.{1}.knownname, $UnknownObjects.{1}.idcode, $UnknownObjects.{1}.owner.knownname]"/>
           <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
         </do_if>
@@ -184,8 +187,8 @@
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-      <do_if value="$DEBUG gt 0">
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ Completed JP_AnotherExplorerV2S ~~ %1 [%2]'.[$Explorer.knownname, $Explorer.idcode]"/>
+      <do_if value="$DEBUG gt 0.0">
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_AnotherExplorerV2S.xml ~ Finished ~~'"/>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
       </do_if>
 
