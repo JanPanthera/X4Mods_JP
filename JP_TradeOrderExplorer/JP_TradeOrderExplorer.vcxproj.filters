@@ -61,9 +61,9 @@
     <Xml Include="content.xml" />
     <Xml Include="aiscripts\JP_ExploreTradeSubscription.xml" />
     <Xml Include="aiscripts\JP_GetNearestSectorWithExpiredTradeSubscriptions.xml" />
-    <Xml Include="aiscripts\JP_GetStationsWithExpiredTradeSubscriptions.xml" />
     <Xml Include="aiscripts\JP_TradeOrderExplorerG.xml" />
     <Xml Include="aiscripts\JP_TradeOrderExplorerS.xml" />
     <Xml Include="md\JP_UpdateTradeOrderExplorerFleet.xml" />
+    <Xml Include="libraries\icons.xml" />
   </ItemGroup>
 </Project>

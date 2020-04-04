@@ -132,7 +132,6 @@
   <ItemGroup>
     <Xml Include="aiscripts\JP_ExploreTradeSubscription.xml" />
     <Xml Include="aiscripts\JP_GetNearestSectorWithExpiredTradeSubscriptions.xml" />
-    <Xml Include="aiscripts\JP_GetStationsWithExpiredTradeSubscriptions.xml" />
     <Xml Include="aiscripts\JP_TradeOrderExplorerG.xml" />
     <Xml Include="aiscripts\JP_TradeOrderExplorerS.xml" />
     <Xml Include="content.xml" />
@@ -154,6 +153,7 @@
     <Xml Include="JP_TradeOrderExplorer\t\0001-L082.xml" />
     <Xml Include="JP_TradeOrderExplorer\t\0001-L086.xml" />
     <Xml Include="JP_TradeOrderExplorer\t\0001-L088.xml" />
+    <Xml Include="libraries\icons.xml" />
     <Xml Include="md\JP_UpdateTradeOrderExplorerFleet.xml" />
     <Xml Include="t\0001-L007.xml" />
     <Xml Include="t\0001-L033.xml" />
