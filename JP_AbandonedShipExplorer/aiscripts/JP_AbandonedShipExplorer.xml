@@ -23,7 +23,7 @@
       </param>
       <param name="SHOW_MESSAGE" text="{8888888, 178}" comment="Message when arrived?" type="bool" default="true"/>
       <!-- DEBUG -->
-      <param name="DEBUG" text="Debug" type="number" default="1.0" advanced="true">
+      <param name="DEBUG" text="Debug" type="number" default="0.0" advanced="true">
         <input_param name="step" value="0.0"/>
         <input_param name="min" value="0.0"/>
         <input_param name="max" value="1.0"/>
@@ -64,7 +64,7 @@
 
       <do_if value="$DEBUG gt 0.0">
         <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_AbandonedShipExplorer ~~ ' + '\n'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_AbandonedShipExplorer ~ Started ~~' + '\n'"/>
       </do_if>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -176,28 +176,34 @@
         </do_elseif>
       </do_if>
 
-      <!-- Explorer the nearest abandoned ship -->
+      <!-- Explore the nearest abandoned ship -->
       <label name="EXPLORE_ABANDONED_SHIP"/>
-      <do_if value="$AbandonedShips.count gt 0">
-        <do_if value="$AbandonedShips.count gt 1">
-          <run_script name="'JP_SortListByGateJumpsDistance'">
-            <param name="LIST" value="$AbandonedShips"/>
-            <param name="OBJECT" value="$Explorer"/>
-            <param name="DEBUG" value="$DEBUG"/>
-            <param name="DEBUG_DIRECTORY" value="$DebugDirectory"/>
-            <param name="DEBUG_FILE_NAME" value="$DebugFileName"/>
-            <save_retval name="SORTED_LIST" variable="$AbandonedShips"/>
-          </run_script>
+
+      <!-- Sort all $AbandonedShips by gate jump distance to $Explorer if more than one -->
+      <do_if value="$AbandonedShips.count gt 1">
+        <sort_list list="$AbandonedShips" sortbyvalue="$Explorer.gatedistance.{loop.element}"/>
+      </do_if>
+
+      <set_value name="$NearestAbandonedShip" exact="null"/>
+      <do_for_each name="$AbandonedShip" in="$AbandonedShips">
+        <do_if value="$Explorer.gatedistance.{$AbandonedShip} gt 0">
+          <set_value name="$NearestAbandonedShip" exact="$AbandonedShip"/>
+          <break/>
         </do_if>
+      </do_for_each>
+
+      <do_if value="@$NearestAbandonedShip != null">
         <run_script name="'JP_ExploreAbandonedShip'">
           <param name="WAIT_AT_SHIP" value="$WAIT_AT_SHIP"/>
           <param name="WAIT_AMOUNT" value="$WAIT_AMOUNT"/>
           <param name="PLACE_NAVBEACON" value="$PLACE_NAVBEACON"/>
-          <param name="ABANDONED_SHIP" value="$AbandonedShips.{1}"/>
+          <param name="ABANDONED_SHIP" value="$NearestAbandonedShip"/>
           <param name="DEBUG" value="$DEBUG"/>
         </run_script>
       </do_if>
+
       <remove_value name="$AbandonedShips"/>
+      <remove_value name="$NearestAbandonedShip"/>
       <wait min="1s" max="3s"/>
       <resume label="RESUME"/>
 
@@ -217,8 +223,8 @@
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-      <do_if value="$DEBUG gt 0">
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_AbandonedShipExplorer ~~'"/>
+      <do_if value="$DEBUG gt 0.0">
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_AbandonedShipExplorer ~ Finished ~~'"/>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
       </do_if>
 

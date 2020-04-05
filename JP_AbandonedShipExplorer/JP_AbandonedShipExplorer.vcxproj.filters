@@ -43,6 +43,7 @@
     <Xml Include="t\0001-L082.xml" />
     <Xml Include="t\0001-L086.xml" />
     <Xml Include="t\0001-L088.xml" />
+    <Xml Include="libraries\icons.xml" />
   </ItemGroup>
   <ItemGroup>
     <Xsd Include="JP_AbandonedShipExplorer\aiscripts\aiscripts.xsd">
