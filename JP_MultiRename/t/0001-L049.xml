@@ -3,48 +3,32 @@
 <language>
   <page id="8888888" voice="no">
     <!-- JP_MultiRename -->
-    <!--<t id="101">Benennungs Variante?</t>
+    <t id="101">Benennungs Variante?</t>
     <t id="102">Klassen Tag hinzufügen?</t>
-    <t id="103">Modellname hinzufügen?</t>
-    <t id="104">Typname hinzufügen?</t>
-    <t id="105">Kurzer Modellname?</t>
-    <t id="106">Tag Vorne?</t>
-    <t id="107">Tag am Ende?</t>
-    <t id="108">Objekt mit dem Tag</t>
-    <t id="109">Benutze Nummerierung?</t>
-    <t id="110">Sortiere XL nach S?</t>
-    <t id="111">Kommanduer umbenennen?</t>
-    <t id="112">Flotte umbenennen?</t>
-    <t id="113">Unterflotten umbenennen?</t>
-    <t id="114">Färbung des Tags?</t>
-    <t id="115">Färbung des Namens?</t>
-    <t id="116">Färbung der Nummerierung?</t>
-    <t id="117">Namen speichern?</t>
-    <t id="118">Namen laden?</t>
-    <t id="119">Gespeicherte löschen?</t>
-    <t id="120">Zurücksetzen?</t>-->
-    <t id="101">Naming variant?</t>
-    <t id="102">Add Class tag?</t>
-    <t id="103">Add Type name?</t>
-    <t id="104">Add Model name?</t>
-    <t id="105">Remove Sentinel Tag?</t>
-    <t id="106">Remove Vanguard Tag?</t>
-    <t id="107">Short Sentinel Tag?</t>
-    <t id="108">Short Vanguard Tag?</t>
-    <t id="109">Tag at front?</t>
-    <t id="110">Tag at end?</t>
-    <t id="111">Object with your Tag</t>
-    <t id="112">Use numbering?</t>
-    <t id="113">Sort XL to S?</t>
-    <t id="114">Rename Commander?</t>
-    <t id="115">Rename Fleet?</t>
-    <t id="116">Rename sub. Fleets?</t>
-    <t id="117">Use Tag Coloring?</t>
-    <t id="118">Use Name Coloring?</t>
-    <t id="119">Use Number Coloring?</t>
-    <t id="120">Save names?</t>
-    <t id="121">Load names?</t>
-    <t id="122">Delete saved?</t>
-    <t id="123">Reset</t>
+    <t id="103">Typname hinzufügen?</t>
+    <t id="104">Modellname hinzufügen?</t>
+    <t id="105">Entferne Verteidiger Tag?</t>
+    <t id="106">Entferne Angreifer Tag?</t>
+    <t id="107">Kurzes Verteidiger Tag?</t>
+    <t id="108">Kurzes Angreifer Tag?</t>
+    <t id="109">Tag Vorne?</t>
+    <t id="110">Tag am Ende?</t>
+    <t id="111">Objekt mit dem Tag</t>
+    <t id="112">Benutze Nummerierung?</t>
+    <t id="113">Sortiere XL nach S?</t>
+    <t id="114">Kommanduer umbenennen?</t>
+    <t id="115">Flotte umbenennen?</t>
+    <t id="116">Unterflotten umbenennen?</t>
+    <t id="117">Färbung des Tags?</t>
+    <t id="118">Färbung des Namens?</t>
+    <t id="119">Färbung der Nummerierung?</t>
+    <t id="120">Namen speichern?</t>
+    <t id="121">Namen laden?</t>
+    <t id="122">Gespeicherte löschen?</t>
+    <t id="123">Zurücksetzen?</t>
+    <!-- Vanguard -->
+    <t id="125">A*</t>
+    <!-- Sentinel -->
+    <t id="126">V*</t>
   </page>
 </language>

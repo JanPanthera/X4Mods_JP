@@ -3,49 +3,33 @@
 <language>
   <page id="8888888" voice="no">
     <!-- JP_MultiRename -->
-    <!--<t id="101">Опции именования?</t>
+    <t id="101">Опции именования?</t>
     <t id="102">Тег класса?</t>
-    <t id="103">Название корабля?</t>
-    <t id="104">Тип корабля?</t>
-    <t id="105">Сокр. назв. корабля?</t>
-    <t id="106">Тег впереди?</t>
-    <t id="107">Тег в конце?</t>
-    <t id="108">Тег для объектов</t>
-    <t id="109">Нумерация?</t>
-    <t id="110">Сорт. XL до S?</t>
-    <t id="111">Переименовать коммандера?</t> --><!-- google translate --><!--
-    <t id="112">Переименовать флот?</t> --><!-- google translate --><!--
-    <t id="113">Переим. флоты?</t> 
-    <t id="114">Тег в цвете?</t>
-    <t id="115">Название в цвете?</t>
-    <t id="116">Номера в цвете?</t>
-    <t id="117">Сохранить имена?</t> --><!-- google translate --><!--
-    <t id="118">Загрузить имена?</t> --><!-- google translate --><!--
-    <t id="119">Удалить сохранено?</t> --><!-- google translate --><!--
-    <t id="120">Сброс?</t> --><!-- google translate -->
-    <t id="101">Naming variant?</t>
-    <t id="102">Add Class tag?</t>
-    <t id="103">Add Type name?</t>
-    <t id="104">Add Model name?</t>
+    <t id="103">Тип корабля?</t>
+    <t id="104">Название корабля?</t>
     <t id="105">Remove Sentinel Tag?</t>
     <t id="106">Remove Vanguard Tag?</t>
     <t id="107">Short Sentinel Tag?</t>
     <t id="108">Short Vanguard Tag?</t>
-    <t id="109">Tag at front?</t>
-    <t id="110">Tag at end?</t>
-    <t id="111">Object with your Tag</t>
-    <t id="112">Use numbering?</t>
-    <t id="113">Sort XL to S?</t>
-    <t id="114">Rename Commander?</t>
-    <t id="115">Rename Fleet?</t>
-    <t id="116">Rename sub. Fleets?</t>
-    <t id="117">Use Tag Coloring?</t>
-    <t id="118">Use Name Coloring?</t>
-    <t id="119">Use Number Coloring?</t>
-    <t id="120">Save names?</t>
-    <t id="121">Load names?</t>
-    <t id="122">Delete saved?</t>
-    <t id="123">Reset</t>
+    <t id="109">Тег впереди?</t>
+    <t id="110">Тег в конце?</t>
+    <t id="111">Тег для объектов</t>
+    <t id="112">Нумерация?</t>
+    <t id="113">Сорт. XL до S?</t>
+    <t id="114">Переименовать коммандера?</t>
+    <t id="115">Переименовать флот?</t>
+    <t id="116">Переим. флоты?</t>
+    <t id="117">Тег в цвете?</t>
+    <t id="118">Название в цвете?</t>
+    <t id="119">Номера в цвете?</t>
+    <t id="120">Сохранить имена?</t>
+    <t id="121">Загрузить имена?</t>
+    <t id="122">Удалить сохранено?</t>
+    <t id="123">Сброс?</t>
+    <!-- Vanguard -->
+    <t id="125">V*</t>
+    <!-- Sentinel -->
+    <t id="126">S*</t>
   </page>
 </language>
 <!-- Thanks to alexalsp -->

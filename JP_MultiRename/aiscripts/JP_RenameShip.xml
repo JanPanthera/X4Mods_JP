@@ -118,13 +118,13 @@
         <!-- Replace Sentinel with S* ? -->
         <do_if value="not $REMOVE_SENTINEL_TAG and $SHORTEN_SENTINEL">
           <substitute_text source="$ModelName" text="$ModelName">
-            <replace string="{20111,1201}" with="'S*'"/>
+            <replace string="{20111,1201}" with="{8888888, 126}"/>
           </substitute_text>
         </do_if>
         <!-- Replace Vanguard with V* ? -->
         <do_if value="not $REMOVE_VANGUARD_TAG and $SHORTEN_VANGUARD">
           <substitute_text source="$ModelName" text="$ModelName">
-            <replace string="{20111,1101}" with="'V*'"/>
+            <replace string="{20111,1101}" with="{8888888, 125}"/>
           </substitute_text>
         </do_if>
         <do_if value="$DEBUG gt 0.0">

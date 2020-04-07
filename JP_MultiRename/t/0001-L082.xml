@@ -26,5 +26,9 @@
     <t id="121">Load names?</t>
     <t id="122">Delete saved?</t>
     <t id="123">Reset</t>
+    <!-- Vanguard -->
+    <t id="125">V*</t>
+    <!-- Sentinel -->
+    <t id="126">S*</t>
   </page>
 </language>
