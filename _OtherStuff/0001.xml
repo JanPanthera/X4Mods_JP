@@ -37,6 +37,10 @@
     <t id="89">Save names?</t>
     <t id="90">Load names?</t>
     <t id="91">Delete saved?</t>
+    <t id="97">Transparency</t>
+    <t id="98">Red</t>
+    <t id="99">Green</t>
+    <t id="100">Blue</t>
 
     <!-- JP_MultiRename -->
     <t id="101">Naming variant?</t>
@@ -59,6 +63,8 @@
     <t id="118">Load names?</t>
     <t id="119">Delete saved?</t>
     <t id="120">Reset</t>
+    <t id="125">V*</t> <!-- Vanguard -->
+    <t id="126">S*</t> <!-- Sentinel -->
 
     <!-- JP_CollectPlaceables -->
     <t id="131">Object to collect</t>
