@@ -11,8 +11,12 @@
       <param name="TAG_AT_END" text="TagAtEnd" type="bool" default="false"/>
       <param name="COLOR_NAME" text="ColorTheName?" type="bool" default="true"/>
       <param name="NAME_COLOR_STRING" text="ColorString" type="internal" default="'\033#B600CCCC#'"/>
-      <!-- Debug -->
-      <param name="DEBUG" text="DebugText" type="number" default="0" advanced="1"/>
+      <!-- DEBUG -->
+      <param name="DEBUG" text="DebugText" type="number" default="0.0" advanced="1">
+        <input_param name="step" value="0.1"/>
+        <input_param name="min" value="0.0"/>
+        <input_param name="max" value="1.0"/>
+      </param>
     </params>
     <skill min="0"/>
     <requires>
@@ -35,7 +39,7 @@
 
   <init>
     <set_value name="$DebugDirectory" exact="'JP_AddTag.logs'"/>
-    <set_value name="$DebugFileName" exact="'JP_SetNewNameAT' + '.log'"/>
+    <set_value name="$DebugFileName" exact="'JP_SetNewNameAT.log'"/>
   </init>
 
   <attention min="unknown">
@@ -44,9 +48,9 @@
       <wait exact="1ms"/>
       <label name="INIT"/>
 
-      <do_if value="$DEBUG gt 0">
+      <do_if value="$DEBUG gt 0.0">
         <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ Running JP_ExploreAbandonedShip with %1 [%2]'.[$SHIP.knownname, $SHIP.idcode] + '\n'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_ExploreAbandonedShip.xml ~ Started ~~' + '\n'"/>
       </do_if>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -63,8 +67,8 @@
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-      <do_if value="$DEBUG gt 0">
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ Completed JP_ExploreAbandonedShip with %1 [%2]'.[$SHIP.knownname, $SHIP.idcode]"/>
+      <do_if value="$DEBUG gt 0.0">
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_ExploreAbandonedShip.xml ~ Finished ~~'"/>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
       </do_if>
 
