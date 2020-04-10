@@ -105,7 +105,7 @@
       <do_if value="$SectorsWithOutdatedTradesubscriptions.count gt 0">
         <sort_list list="$SectorsWithOutdatedTradesubscriptions" sortbyvalue="$EXPLORER.gatedistance.{loop.element}"/>
         <do_for_each name="$Sector" in="$SectorsWithOutdatedTradesubscriptions">
-          <do_if value="$EXPLORER.gatedistance.{$Sector} gt 0">
+          <do_if value="$EXPLORER.gatedistance.{$Sector} ge 0">
             <set_value name="$NearestSector" exact="$Sector"/>
             <break/>
           </do_if>

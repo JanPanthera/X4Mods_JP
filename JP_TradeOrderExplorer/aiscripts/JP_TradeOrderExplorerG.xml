@@ -73,13 +73,13 @@
       <set_command command="command.explore"/>
       <set_command_action commandaction="commandaction.calculating"/>
 
-      <do_if value="$Ship.pilot.combinedskill gt 50">
+      <do_if value="$Ship.pilot.combinedskill ge 50">
         <set_value name="$ExpGainFactor" exact="(0.83 * $ExpTotalMultiplier)"/>
       </do_if>
       <do_elseif value="$Ship.pilot.combinedskill gt 30 and $Ship.pilot.combinedskill lt 50">
         <set_value name="$ExpGainFactor" exact="(0.92 * $ExpTotalMultiplier)"/>
       </do_elseif>
-      <do_elseif value="$Ship.pilot.combinedskill lt 30">
+      <do_elseif value="$Ship.pilot.combinedskill le 30">
         <set_value name="$ExpGainFactor" exact="(1.00 * $ExpTotalMultiplier)"/>
       </do_elseif>
 
