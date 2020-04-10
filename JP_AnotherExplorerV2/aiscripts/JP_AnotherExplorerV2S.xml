@@ -92,13 +92,13 @@
       <set_command command="command.explore"/>
       <set_command_action commandaction="commandaction.calculating"/>
 
-      <do_if value="$Explorer.pilot.combinedskill gt 50">
+      <do_if value="$Explorer.pilot.combinedskill ge 50">
         <set_value name="$ExpGainFactor" exact="(0.86 * $ExpTotalMultiplier)"/>
       </do_if>
       <do_elseif value="$Explorer.pilot.combinedskill gt 30 and $Explorer.pilot.combinedskill lt 50">
         <set_value name="$ExpGainFactor" exact="(0.94 * $ExpTotalMultiplier)"/>
       </do_elseif>
-      <do_elseif value="$Explorer.pilot.combinedskill lt 30">
+      <do_elseif value="$Explorer.pilot.combinedskill le 30">
         <set_value name="$ExpGainFactor" exact="(1.00 * $ExpTotalMultiplier)"/>
       </do_elseif>
 
