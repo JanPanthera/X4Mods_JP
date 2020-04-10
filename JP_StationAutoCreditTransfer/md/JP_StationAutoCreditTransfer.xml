@@ -1,220 +1,208 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
 
 <mdscript name="JP_StationAutoCreditsTransfer" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="md.xsd">
   <cues>
 
-    <cue name="JP_STATION_AUTO_CREDITS_TRANSFER_INIT" instantiate="true">
+    <cue name="JP_StationAutoCreditsTransfer_INIT" instantiate="true">
       <conditions>
         <event_game_loaded/>
       </conditions>
       <actions>
-        <set_value name="global.$SACT_DebugDirectory" exact="'JP_StationAutoCreditTransfer.logs'"/>
-        <set_value name="global.$SACT_DebugFileName" exact="'JP_StationAutoCreditTransfer.log'"/>
-        <set_value name="global.$SACT_DEBUG" exact="0"/>
-        <!-- 1 on / 0 off-->
-        <set_value name="global.$SACT_WriteToLogBook" exact="1"/>
-        <!-- 1 on / false 0 -->
-        <set_value name="global.$SACT_StationPlayerAccountCap" exact="1000000000ct"/>
-        <!-- In cents ~ 5000000000ct = 50.000.000Cr / 100ct = 1Cr-->
-        <set_value name="global.$SACT_StationBudgetFixedCap" exact="50000000ct"/>
-        <!-- In cents -->
-        <set_value name="global.$SACT_StationBudgetMultiplier" exact="1.0"/>
-        <set_value name="global.$SACT_ConstructionBudgetMultiplier" exact="1.0"/>
+        <set_value name="$DEBUG" exact="0.0"/>
+        <!-- $PlayerBudgetCap ~ Default 1.000.000 Cr ~ Only money above amount X will be transferred automatically -->
+        <set_value name="$PlayerBudgetCap" exact="1000000"/>
+        <!-- $AdditionalStationMoneyCap ~ Default 1.000.000Cr ~ Money which will be added to the Stations account limit -->
+        <set_value name="$AdditionalStationMoneyCap" exact="1000000"/>
       </actions>
     </cue>
 
-    <cue name="JP_STATION_AUTO_CREDITS_TRANSFER" checkinterval="300s" instantiate="true">
-      <conditions>
-      </conditions>
+    <cue name="JP_StationAutoCreditsTransfer_LOOP" checkinterval="60s" instantiate="true">
       <actions>
 
-        <do_if value="global.$SACT_DEBUG">
-          <show_help custom="'Starting JP_STATION_AUTO_CREDITS_TRANSFER...'" duration="1s"/>
-          <debug_to_file append="false" directory="global.$SACT_DebugDirectory" name="global.$SACT_DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-          <debug_to_file directory="global.$SACT_DebugDirectory" name="global.$SACT_DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ Running JP_StationAutoCreditTransfer ~~' + '\n'"/>
+        <set_value name="$DebugDirectory" exact="'JP_StationAutoCreditTransfer.logs'"/>
+        <set_value name="$DebugFileName" exact="'JP_StationAutoCreditTransfer.xml.log'"/>
+
+        <do_if value="JP_StationAutoCreditsTransfer_INIT.$DEBUG gt 0.0">
+          <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_StationAutoCreditTransfer_LOOP ~ Started ~~' + '\n'"/>
+          <show_help custom="'JP_StationAutoCreditsTransfer_LOOP ~~ Started'" duration="1s"/>
         </do_if>
 
         <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-        <find_station name="$Stations" space="player.galaxy" multiple="true">
-          <match owner="faction.player"/>
-          <match checkoperational="true"/>
-        </find_station>
+        <find_station space="player.galaxy" owner="faction.player" name="$Station"/>
+        <do_if value="@$Station != null">
 
-        <do_if value="$Stations.count gt 0">
+          <find_station space="player.galaxy" owner="faction.player" name="$Stations" checkoperational="true" multiple="true"/>
           <do_for_each name="$Station" in="$Stations">
 
-            <set_value name="$AvailablePlayerMoney" exact="0ct"/>
-            <set_value name="$AvailableStationAccountMoney" exact="0ct"/>
-            <set_value name="$AvailableBuildstorageAccountMoney" exact="0ct"/>
-            <signal_cue_instantly cue="JP_CALCULATE_NEEDS"/>
+            <set_value name="$StationNeeds" exact="0Cr"/>
+            <set_value name="$StationAvailableMoney" exact="0Cr"/>
+            <set_value name="$BuildstorageNeeds" exact="0Cr"/>
+            <set_value name="$BuildstorageAvailableMoney" exact="0Cr"/>
+            <set_value name="$PlayerAvailableMoney" exact="0Cr"/>
 
-            <do_if value="global.$SACT_DEBUG">
-              <debug_to_file directory="global.$SACT_DebugDirectory" name="global.$SACT_DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-              <debug_to_file directory="global.$SACT_DebugDirectory" name="global.$SACT_DebugFileName" text="'$Station.knownname: ' + $Station.knownname"/>
-              <debug_to_file directory="global.$SACT_DebugDirectory" name="global.$SACT_DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-              <debug_to_file directory="global.$SACT_DebugDirectory" name="global.$SACT_DebugFileName" text="'$AvailablePlayerMoney: ' + $AvailablePlayerMoney.formatted.{'%6cs %Cr'}"/>
-              <debug_to_file directory="global.$SACT_DebugDirectory" name="global.$SACT_DebugFileName" text="'$AvailableStationAccountMoney: ' + $AvailableStationAccountMoney.formatted.{'%6cs %Cr'}"/>
-              <debug_to_file directory="global.$SACT_DebugDirectory" name="global.$SACT_DebugFileName" text="'$AvailableBuildstorageAccountMoney: ' + $AvailableBuildstorageAccountMoney.formatted.{'%6cs %Cr'}"/>
-              <debug_to_file directory="global.$SACT_DebugDirectory" name="global.$SACT_DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+            <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+            <!-- Transfer money from Station to Buildstorage? -->
+            <signal_cue_instantly cue="JP_StationAutoCreditsTransfer_CalculateNeeds"/>
+            <do_if value="$StationAvailableMoney gt 10Cr and $BuildstorageNeeds gt 10Cr">
+              <write_to_logbook category="tips" title="'\033#6400FF00#' + $Station.knownname + '\033X\033#FF00FF00# [' + faction.player + ']\033X'"
+                                text="'\033#FF00CC66#' + {8888888, 211} + ':\033X \033#B600CCCC#' + $Station.buildstorage.knownname + '\033X'"
+                                money="(if $StationAvailableMoney gt $BuildstorageNeeds then $BuildstorageNeeds else $StationAvailableMoney)Cr"/>
+              <transfer_money from="$Station" to="$Station.buildstorage" amount="(if $StationAvailableMoney gt $BuildstorageNeeds then $BuildstorageNeeds else $StationAvailableMoney)Cr"/>
             </do_if>
 
-            <do_if value="$AvailableStationAccountMoney lt -10Cr">
-              <set_value name="$StationNeededMoney" exact="-($AvailableStationAccountMoney)"/>
-            </do_if>
-            <do_else>
-              <set_value name="$StationNeededMoney" exact="0ct"/>
-            </do_else>
-
-            <do_if value="$AvailableBuildstorageAccountMoney lt -10Cr">
-              <set_value name="$BuildstorageNeededMoney" exact="-($AvailableBuildstorageAccountMoney)"/>
-            </do_if>
-            <do_else>
-              <set_value name="$BuildstorageNeededMoney" exact="0ct"/>
-            </do_else>
-
-            <!-- Transfer from stations to player -->
-            <do_if value="$AvailableStationAccountMoney gt 10Cr">
-              <signal_cue_instantly cue="JP_TRANSFER_MONEY" param="[$Station, faction.player, $AvailableStationAccountMoney]"/>
-              <set_value name="$AvailableStationAccountMoney" exact="0ct"/>
-              <set_value name="$AvailablePlayerMoney" operation="add" exact="$AvailableStationAccountMoney"/>
+            <!-- Transfer money from Buildstorage to Station? -->
+            <signal_cue_instantly cue="JP_StationAutoCreditsTransfer_CalculateNeeds"/>
+            <do_if value="$BuildstorageAvailableMoney gt 10Cr and $StationNeeds gt 10Cr">
+              <write_to_logbook category="tips" title="'\033#6400FF00#' + $Station.buildstorage.knownname + '\033X\033#FF00FF00# [' + faction.player + ']\033X'"
+                                text="'\033#FF00CC66#' + {8888888, 211} + ':\033X \033#B600CCCC#' + $Station.knownname + '\033X'"
+                                money="(if $BuildstorageAvailableMoney gt $StationNeeds then $StationNeeds else $BuildstorageAvailableMoney)Cr"/>
+              <transfer_money from="$Station.buildstorage" to="$Station" amount="(if $BuildstorageAvailableMoney gt $StationNeeds then $StationNeeds else $BuildstorageAvailableMoney)Cr"/>
             </do_if>
 
-            <!-- Transfer from buildstorage to player -->
-            <do_if value="$AvailableBuildstorageAccountMoney gt 10Cr">
-              <signal_cue_instantly cue="JP_TRANSFER_MONEY" param="[$Station.buildstorage, faction.player, $AvailableBuildstorageAccountMoney]"/>
-              <set_value name="$AvailableBuildstorageAccountMoney" exact="0ct"/>
-              <set_value name="$AvailablePlayerMoney" operation="add" exact="$AvailableBuildstorageAccountMoney"/>
+            <!-- Transfer money from Player to Buildstorage? -->
+            <signal_cue_instantly cue="JP_StationAutoCreditsTransfer_CalculateNeeds"/>
+            <do_if value="$PlayerAvailableMoney gt 10Cr and $BuildstorageNeeds gt 10Cr">
+              <write_to_logbook category="tips" title="'\033#6400FF00#' + player.name + '\033X\033#FF00FF00# [' + faction.player + ']\033X'"
+                                text="'\033#FF00CC66#' + {8888888, 211} + ':\033X \033#B600CCCC#' + $Station.buildstorage.knownname + '\033X'"
+                                money="-(if $PlayerAvailableMoney gt $BuildstorageNeeds then $BuildstorageNeeds else $PlayerAvailableMoney)Cr"/>
+              <transfer_money from="faction.player" to="$Station.buildstorage" amount="(if $PlayerAvailableMoney gt $BuildstorageNeeds then $BuildstorageNeeds else $PlayerAvailableMoney)Cr"/>
             </do_if>
 
-            <!-- Transfer money from player to station -->
-            <do_if value="$StationNeededMoney gt 10Cr">
-              <do_if value="$AvailablePlayerMoney gt $StationNeededMoney">
-                <set_value name="$MoneyToTransfer" exact="$StationNeededMoney"/>
-              </do_if>
-              <do_else>
-                <set_value name="$MoneyToTransfer" exact="$AvailablePlayerMoney"/>
-              </do_else>
-              <do_if value="$MoneyToTransfer gt 10Cr">
-                <set_value name="$AvailablePlayerMoney" operation="subtract" exact="$MoneyToTransfer"/>
-                <signal_cue_instantly cue="JP_TRANSFER_MONEY" param="[faction.player, $Station, $MoneyToTransfer]"/>
-              </do_if>
+            <!-- Transfer money from Player to Station? -->
+            <signal_cue_instantly cue="JP_StationAutoCreditsTransfer_CalculateNeeds"/>
+            <do_if value="$PlayerAvailableMoney gt 10Cr and $StationNeeds gt 10Cr">
+              <write_to_logbook category="tips" title="'\033#6400FF00#' + player.name + '\033X\033#FF00FF00# [' + faction.player + ']\033X'"
+                                text="'\033#FF00CC66#' + {8888888, 211} + ':\033X \033#B600CCCC#' + $Station.knownname + '\033X'"
+                                money="-(if $PlayerAvailableMoney gt $StationNeeds then $StationNeeds else $PlayerAvailableMoney)Cr"/>
+              <transfer_money from="faction.player" to="$Station" amount="(if $PlayerAvailableMoney gt $StationNeeds then $StationNeeds else $PlayerAvailableMoney)Cr"/>
             </do_if>
 
-            <!-- Transfer money from player to buildstorage -->
-            <do_if value="$BuildstorageNeededMoney gt 10Cr">
-              <do_if value="$AvailablePlayerMoney gt $BuildstorageNeededMoney">
-                <set_value name="$MoneyToTransfer" exact="$BuildstorageNeededMoney"/>
-              </do_if>
-              <do_else>
-                <set_value name="$MoneyToTransfer" exact="$AvailablePlayerMoney"/>
-              </do_else>
-              <do_if value="$MoneyToTransfer gt 10Cr">
-                <set_value name="$AvailablePlayerMoney" operation="subtract" exact="$MoneyToTransfer"/>
-                <signal_cue_instantly cue="JP_TRANSFER_MONEY" param="[faction.player, $Station.buildstorage, $MoneyToTransfer]"/>
-              </do_if>
+            <!-- Transfer money from Station to Player? -->
+            <signal_cue_instantly cue="JP_StationAutoCreditsTransfer_CalculateNeeds"/>
+            <do_if value="$StationAvailableMoney gt 10 Cr and true">
+              <write_to_logbook category="tips" title="'\033#6400FF00#' + $Station.knownname + '\033X\033#FF00FF00# [' + faction.player + ']\033X'"
+                                text="'\033#FF00CC66#' + {8888888, 211} + ':\033X \033#B600CCCC#' + player.name + '\033X'"
+                                money="($StationAvailableMoney)Cr"/>
+              <transfer_money from="$Station" to="faction.player" amount="($StationAvailableMoney)Cr"/>
             </do_if>
+
+            <!-- Transfer money from Buildstorage to Player? -->
+            <signal_cue_instantly cue="JP_StationAutoCreditsTransfer_CalculateNeeds"/>
+            <do_if value="$BuildstorageAvailableMoney gt 10 Cr and true">
+              <write_to_logbook category="tips" title="'\033#6400FF00#' + $Station.buildstorage.knownname + '\033X\033#FF00FF00# [' + faction.player + ']\033X'"
+                                text="'\033#FF00CC66#' + {8888888, 211} + ':\033X \033#B600CCCC#' + player.name + '\033X'"
+                                money="($BuildstorageAvailableMoney)Cr"/>
+              <transfer_money from="$Station.buildstorage" to="faction.player" amount="($BuildstorageAvailableMoney)Cr"/>
+            </do_if>
+
+            <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+            <remove_value name="$PlayerAvailableMoney"/>
+            <remove_value name="$BuildstorageAvailableMoney"/>
+            <remove_value name="$BuildstorageNeeds"/>
+            <remove_value name="$StationAvailableMoney"/>
+            <remove_value name="$StationNeeds"/>
 
           </do_for_each>
+
         </do_if>
+        <do_else>
+          <do_if value="JP_StationAutoCreditsTransfer_INIT.$DEBUG gt 0.0">
+            <show_help custom="'JP_StationAutoCreditsTransfer_LOOP ~~ No Player owned Stations found.'" duration="2s"/>
+          </do_if>
+        </do_else>
+
+        <remove_value name="$Station"/>
 
         <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-        <do_if value="global.$SACT_DEBUG">
-          <debug_to_file directory="global.$SACT_DebugDirectory" name="global.$SACT_DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ Completed JP_StationAutoCreditTransfer ~~'"/>
-          <debug_to_file directory="global.$SACT_DebugDirectory" name="global.$SACT_DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+        <do_if value="JP_StationAutoCreditsTransfer_INIT.$DEBUG">
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_StationAutoCreditTransfer_LOOP ~ Finished ~~'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <show_help custom="'JP_StationAutoCreditsTransfer_LOOP ~~ Finished'" duration="1s"/>
         </do_if>
+
+        <remove_value name="$DebugFileName"/>
+        <remove_value name="$DebugDirectory"/>
 
       </actions>
     </cue>
 
-    <cue name="JP_CALCULATE_NEEDS" instantiate="true">
+    <cue name="JP_StationAutoCreditsTransfer_CalculateNeeds" instantiate="true">
       <conditions>
         <event_cue_signalled/>
       </conditions>
       <actions>
-        <set_value name="$Station" exact="JP_STATION_AUTO_CREDITS_TRANSFER.$Station"/>
 
-        <!-- Station -->
-        <set_value name="$NeededRepairAndShipBuildMoney" exact="$Station.wantedmoney"/>
-        <set_value name="$NeededProductionMoney" exact="$Station.productionmoney"/>
-        <set_value name="$NeededReSupplyMoney" exact="0ct"/>
-        <do_for_each name="$Ware" in="$Station.supplyorders.list" counter="$_it">
-          <set_value name="$WareAmount" exact="$Station.supplyorders.{$Ware}.count - $Station.ammostorage.{$Ware.objectmacro}.count"/>
-          <do_for_each name="$Resource" in="$Station.supplyorders.{$_it}.resources.list" counter="$_jt">
-            <set_value name="$NeededReSupplyMoney" operation="add" exact="($Station.buyprice.{$Resource} * $Station.supplyorders.{$_it}.resources.{$Resource}.count) * $WareAmount"/>
+        <set_value name="$DebugDirectory" exact="'JP_StationAutoCreditTransfer.logs'"/>
+        <set_value name="$DebugFileName" exact="'JP_StationAutoCreditTransfer.xml.log'"/>
+
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+        <set_value name="$Station" exact="JP_StationAutoCreditsTransfer_LOOP.$Station"/>
+        <set_value name="JP_StationAutoCreditsTransfer_LOOP.$StationNeeds" exact="0Cr"/>
+        <set_value name="JP_StationAutoCreditsTransfer_LOOP.$StationAvailableMoney" exact="0Cr"/>
+        <set_value name="JP_StationAutoCreditsTransfer_LOOP.$BuildstorageNeeds" exact="0Cr"/>
+        <set_value name="JP_StationAutoCreditsTransfer_LOOP.$BuildstorageAvailableMoney" exact="0Cr"/>
+        <set_value name="JP_StationAutoCreditsTransfer_LOOP.$PlayerAvailableMoney" exact="0Cr"/>
+
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+        <do_if value="$Station.supplyorders.list.count gt 0">
+          <do_for_each name="$Ware" in="$Station.supplyorders.list" counter="$_it">
+            <set_value name="$WareAmount" exact="$Station.supplyorders.{$Ware}.count - $Station.ammostorage.{$Ware.objectmacro}.count"/>
+            <do_for_each name="$Ressource" in="$Ware.resources.list" counter="$_jt">
+              <set_value name="JP_StationAutoCreditsTransfer_LOOP.$StationNeeds" operation="add" exact="(($Ressource.averageprice / 100) * $Ware.resources.{$Ressource}.count) * $WareAmount"/>
+            </do_for_each>
+            <set_value name="$WareAmount" exact="0"/>
           </do_for_each>
           <remove_value name="$WareAmount"/>
-        </do_for_each>
-        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~ -->
-
-        <!-- Budget Cap ~ Station -->
-        <set_value name="$StationBudgetCap" exact="($NeededRepairAndShipBuildMoney + $NeededProductionMoney + $NeededReSupplyMoney) * global.$SACT_StationBudgetMultiplier"/>
-        <do_if value="$StationBudgetCap le 0ct">
-          <set_value name="$StationBudgetCap" exact="global.$SACT_StationBudgetFixedCap * global.$SACT_StationBudgetMultiplier"/>
         </do_if>
-        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-
-        <!-- negative means we don't have money available -->
-        <set_value name="JP_STATION_AUTO_CREDITS_TRANSFER.$AvailablePlayerMoney" exact="player.money - global.$SACT_StationPlayerAccountCap"/>
-        <!-- negative if the station needs some money -->
-        <set_value name="JP_STATION_AUTO_CREDITS_TRANSFER.$AvailableStationAccountMoney" exact="$Station.money - $StationBudgetCap"/>
-        <!-- negative if the buildstorage needs some money -->
-        <set_value name="JP_STATION_AUTO_CREDITS_TRANSFER.$AvailableBuildstorageAccountMoney" exact="$Station.buildstorage.money - ($Station.buildstorage.wantedmoney *  global.$SACT_ConstructionBudgetMultiplier)"/>
-
-        <!-- Cleanup -->
-        <remove_value name="$StationBudgetCap"/>
-        <remove_value name="$NeededReSupplyMoney"/>
-        <remove_value name="$NeededProductionMoney"/>
-        <remove_value name="$NeededRepairAndShipBuildMoney"/>
-      </actions>
-    </cue>
-
-    <cue name="JP_TRANSFER_MONEY" instantiate="true">
-      <conditions>
-        <event_cue_signalled/>
-      </conditions>
-      <actions>
-        <!-- Transfers event.param.{3} money from event.param.{1} to event.param.{2} -->
-        <do_if value="@event.param.{1} != null and @event.param.{2} != null and @event.param.{3} != null">
-
-          <set_value name="$Account" exact="event.param.{1}"/>
-          <set_value name="$TargedAccount" exact="event.param.{2}"/>
-          <set_value name="$Money" exact="event.param.{3}"/>
-
-          <do_if value="$Account == faction.player">
-            <set_value name="$AccountName" exact="player.name"/>
-          </do_if>
-          <do_elseif value="$Account.class == class.station">
-            <set_value name="$AccountName" exact="$Account.knownname"/>
-          </do_elseif>
-          <do_else>
-            <set_value name="$AccountName" exact="{8888888, 212} + ' [' + JP_STATION_AUTO_CREDITS_TRANSFER.$Station.knownname + ']'"/>
-          </do_else>
-
-          <do_if value="$TargedAccount == faction.player">
-            <set_value name="$TargedAccountName" exact="player.name"/>
-          </do_if>
-          <do_elseif value="$TargedAccount.class == class.station">
-            <set_value name="$TargedAccountName" exact="$TargedAccount.knownname"/>
-          </do_elseif>
-          <do_else>
-            <set_value name="$TargedAccountName" exact="{8888888, 212} + ' [' + JP_STATION_AUTO_CREDITS_TRANSFER.$Station.knownname + ']'"/>
-          </do_else>
-
-          <do_if value="global.$SACT_WriteToLogBook">
-            <write_to_logbook category="tips" title="'\033#6400FF00#' + $AccountName + '\033X\033#FF00FF00# [' + faction.player + ']\033X'"
-                              text="'\033#FF00CC66#' + {8888888, 211} + ':\033X \033#B600CCCC#' + $TargedAccountName + '\033X'"
-                              money="$Money"/>
-          </do_if>
-          <transfer_money from="$Account" to="$TargedAccount" amount="$Money"/>
-
-          <remove_value name="$TargedAccountName"/>
-          <remove_value name="$AccountName"/>
-          <remove_value name="$Money"/>
-          <remove_value name="$TargedAccount"/>
-          <remove_value name="$Account"/>
+        <do_if value="JP_StationAutoCreditsTransfer_INIT.$DEBUG gt 0.0">
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'$StationName: ' + $Station.knownname"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'$StationNeededResupplyMoney: ' + JP_StationAutoCreditsTransfer_LOOP.$StationNeeds + ' Cr'"/>
         </do_if>
+
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+        <set_value name="JP_StationAutoCreditsTransfer_LOOP.$StationNeeds" exact="(JP_StationAutoCreditsTransfer_LOOP.$StationNeeds + ($Station.productionmoney / 100) + JP_StationAutoCreditsTransfer_INIT.$AdditionalStationMoneyCap) - ($Station.money / 100)"/>
+        <set_value name="JP_StationAutoCreditsTransfer_LOOP.$StationAvailableMoney" exact="-(JP_StationAutoCreditsTransfer_LOOP.$StationNeeds)"/>
+        <set_value name="JP_StationAutoCreditsTransfer_LOOP.$BuildstorageNeeds" exact="($Station.buildstorage.wantedmoney / 100) - ($Station.buildstorage.money / 100)"/>
+        <set_value name="JP_StationAutoCreditsTransfer_LOOP.$BuildstorageAvailableMoney" exact="-(JP_StationAutoCreditsTransfer_LOOP.$BuildstorageNeeds)"/>
+        <set_value name="JP_StationAutoCreditsTransfer_LOOP.$PlayerAvailableMoney" exact="(player.money / 100) - JP_StationAutoCreditsTransfer_INIT.$PlayerBudgetCap"/>
+
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+        <!-- Debug output -->
+        <do_if value="JP_StationAutoCreditsTransfer_INIT.$DEBUG gt 0.0">
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'$StationProductionMoney: ' + ($Station.productionmoney / 100) + ' Cr'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'$AdditionalStationMoneyCap: ' + JP_StationAutoCreditsTransfer_INIT.$AdditionalStationMoneyCap + ' Cr'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'$StationNeeds: ' + JP_StationAutoCreditsTransfer_LOOP.$StationNeeds + ' Cr'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'$StationMoney: ' + ($Station.money / 100) + ' Cr'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'$StationAvailableMoney: ' + JP_StationAutoCreditsTransfer_LOOP.$StationAvailableMoney + ' Cr'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'$BuildstorageNeeds: ' + JP_StationAutoCreditsTransfer_LOOP.$BuildstorageNeeds + ' Cr'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'$BuildstorageMoney: ' + ($Station.buildstorage.money / 100) + ' Cr'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'$BuildstorageAvailableMoney: ' + JP_StationAutoCreditsTransfer_LOOP.$BuildstorageAvailableMoney + ' Cr'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'$PlayerMoney: ' + (player.money / 100) + ' Cr'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'$PlayerAvailableMoney: ' + JP_StationAutoCreditsTransfer_LOOP.$PlayerAvailableMoney + ' Cr'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+        </do_if>
+
+        <remove_value name="$Station"/>
+
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+        <remove_value name="$DebugFileName"/>
+        <remove_value name="$DebugDirectory"/>
+
       </actions>
     </cue>
 
