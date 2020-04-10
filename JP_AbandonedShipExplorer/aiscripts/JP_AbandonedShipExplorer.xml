@@ -186,7 +186,7 @@
 
       <set_value name="$NearestAbandonedShip" exact="null"/>
       <do_for_each name="$AbandonedShip" in="$AbandonedShips">
-        <do_if value="$Explorer.gatedistance.{$AbandonedShip} gt 0">
+        <do_if value="$Explorer.gatedistance.{$AbandonedShip} ge 0">
           <set_value name="$NearestAbandonedShip" exact="$AbandonedShip"/>
           <break/>
         </do_if>
