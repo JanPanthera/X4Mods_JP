@@ -39,7 +39,6 @@
     <Xml Include="JP_CollectDroppedCargo\t\0001-L086.xml" />
     <Xml Include="content.xml" />
     <Xml Include="aiscripts\JP_CollectDroppedCargo.xml" />
-    <Xml Include="aiscripts\JP_SellLastFromCargoBay.xml" />
     <Xml Include="t\0001-L007.xml" />
     <Xml Include="t\0001-L033.xml" />
     <Xml Include="t\0001-L034.xml" />
@@ -51,5 +50,7 @@
     <Xml Include="t\0001-L082.xml" />
     <Xml Include="t\0001-L086.xml" />
     <Xml Include="t\0001-L088.xml" />
+    <Xml Include="libraries\icons.xml" />
+    <Xml Include="aiscripts\JP_EmptyCargoBay.xml" />
   </ItemGroup>
 </Project>

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<aiscript name="JP_EmptyCargoBay" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd" version="1">
+
+  <order id="JP_EmptyCargoBay" name="EmptyCargoBay JP" category="internal" infinite="false">
+    <params>
+      <param name="SECTOR" text="{20001, 201}" type="object" default="this.sector">
+        <input_param name="class" value="[class.sector]"/>
+      </param>
+      <param name="COLLECT_CARGO" text="{8888888,1}" comment="Collect Cargo items?" type="bool" default="true"/>
+      <param name="SELL_CARGO" text="{8888888,3}" comment="Sell cargo when full?" type="bool" default="true"/>
+      <param name="COLLECT_INVENTORY" text="{8888888,2}" comment="Collect Inventory items?" type="bool" default="true"/>
+      <param name="TO_PLAYER_INV" text="{8888888,6}" comment="Collect to Player inventory?" type="bool" default="false"/>
+      <!-- Cheaty Version ~ collects without flying to the object ~ (/thereshallbewings) -->
+      <param name="INSTANT" text="{8888888,5}" comment="Instant?" type="bool" default="false" advanced="true"/>
+      <!-- DEBUG -->
+      <param name="DEBUG" text="DebugText" type="number" default="0.0" advanced="1">
+        <input_param name="min" value="0.0"/>
+        <input_param name="max" value="1.0"/>
+        <input_param name="step" value="0.1"/>
+      </param>
+    </params>
+    <skill min="0"/>
+    <requires>
+      <match shiptype="shiptype.lasertower" negate="true"/>
+    </requires>
+  </order>
+
+  <interrupts>
+    <handler ref="SectorChangeHandler"/>
+    <handler ref="TargetInvalidHandler"/>
+    <handler ref="AttackHandler"/>
+    <handler ref="MissileLockHandler" />
+    <handler ref="ScannedHandler"/>
+    <handler ref="InspectedHandler"/>
+    <handler ref="FoundAbandonedHandler"/>
+    <handler ref="FoundLockboxHandler"/>
+    <handler ref="ResupplyHandler"/>
+    <handler ref="JobRemoveRequestHandler" />
+  </interrupts>
+
+  <init>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <set_value name="$DebugDirectory" exact="'JP_EmptyCargoBay.logs'"/>
+    <set_value name="$DebugFileName" exact="'JP_EmptyCargoBay.xml.log'"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <set_value name="$Ship" exact="this.ship"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  </init>
+
+  <attention min="unknown">
+    <actions>
+
+      <wait exact="1ms"/>
+      <label name="INIT"/>
+      <cancel_all_orders object="this.ship"/>
+
+      <do_if value="$DEBUG gt 0.0">
+        <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_EmptyCargoBay.xml ~ Started ~~' + '\n'"/>
+      </do_if>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <label name="RESUME"/>
+      
+      <!-- When all wares are sold we will create the CollectDroppedCargo order again.. with the user specified settings -->
+      <do_if value="$Ship.cargo.free.container == $Ship.cargo.capacity.container">
+        <create_order default="true" id="'JP_CollectDroppedCargo'" object="$Ship">
+          <param name="SECTOR" value="$SECTOR"/>
+          <param name="COLLECT_CARGO" value="$COLLECT_CARGO"/>
+          <param name="SELL_CARGO" value="$SELL_CARGO"/>
+          <param name="COLLECT_INVENTORY" value="$COLLECT_INVENTORY"/>
+          <param name="TO_PLAYER_INV" value="$TO_PLAYER_INV"/>
+          <param name="INSTANT" value="$INSTANT"/>
+        </create_order>
+      </do_if>
+
+      <find_sector name="$Locations" multiple="true">
+        <match mayattack="$Ship" negate="true"/>
+        <match knownto="$Ship"/>
+      </find_sector>
+
+      <run_script name="'order.trade.single.sell'">
+        <param name="ware" value="$Ship.cargo.list.last"/>
+        <param name="locations" value="$Locations"/>
+        <param name="minamount" value="$Ship.cargo.{$Ship.cargo.list.last}.count"/>
+        <param name="internalorder" value="true"/>
+      </run_script>
+
+      <wait exact="1s"/>
+      <resume label="RESUME"/>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <do_if value="$DEBUG gt 0.0">
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_EmptyCargoBay.xml ~ Finished ~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+      </do_if>
+
+      <label name="$CLEANUP"/>
+      <remove_value name="$Ship"/>
+      <remove_value name="$DebugFileName"/>
+      <remove_value name="$DebugDirectory"/>
+
+      <label name="FINISH"/>
+      <set_order_syncpoint_reached order="this.ship.order"/>
+      <cancel_order order="this.ship.order" />
+      <wait exact="1ms"/>
+
+    </actions>
+  </attention>
+
+  <on_abort>
+  </on_abort>
+
+</aiscript>
