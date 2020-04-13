@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<aiscript name="JP_SatelliteDropper" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd">
+
+  <order id="JP_SatelliteDropper" name="SatelliteDropper JP" category="navigation" infinite="true">
+    <params>
+      <param name="ADD_ORDER_TAG" text="AddOrderTag" type="bool" default="true"/>
+      <param name="MK2_INSTEAD" text="Mk2Instead" type="bool" default="false"/>
+      <param name="RESTOCK_AMOUNT" text="RestockAmount" type="number">
+        <input_param name="min" value="1"/>
+        <input_param name="max" value="50"/>
+        <input_param name="step" value="1"/>
+        <input_param name="startvalue" value="1"/>
+      </param>
+      <!-- DEBUG -->
+      <param name="DEBUG" text="DebugText" type="number" default="1.0" advanced="1">
+        <input_param name="min" value="0.0"/>
+        <input_param name="max" value="1.0"/>
+        <input_param name="step" value="0.1"/>
+      </param>
+    </params>
+    <skill min="0"/>
+    <requires>
+      <match shiptype="shiptype.lasertower" negate="true"/>
+    </requires>
+  </order>
+
+  <interrupts>
+    <handler ref="SectorChangeHandler"/>
+    <handler ref="TargetInvalidHandler"/>
+    <handler ref="AttackHandler"/>
+    <handler ref="MissileLockHandler"/>
+    <handler ref="ScannedHandler"/>
+    <handler ref="InspectedHandler"/>
+    <handler ref="FoundAbandonedHandler"/>
+    <handler ref="FoundLockboxHandler"/>
+    <handler ref="ResupplyHandler"/>
+    <handler ref="JobRemoveRequestHandler"/>
+  </interrupts>
+
+  <init>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <set_value name="$DebugDirectory" exact="'JP_SatelliteDropper.logs'"/>
+    <set_value name="$DebugFileName" exact="this.ship.idcode + '.JP_SatelliteDropper.log'"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <set_value name="this.$OldName" exact="this.ship.name"/>
+    <set_value name="$Ship" exact="this.ship"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <do_if value="$ADD_ORDER_TAG">
+      <set_object_name object="this.ship" name="this.ship.name + ' #SD'"/>
+    </do_if>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  </init>
+
+  <attention min="unknown">
+    <actions>
+
+      <wait exact="1ms"/>
+      <label name="INIT"/>
+      <cancel_all_orders object="this.ship"/>
+
+      <do_if value="$DEBUG gt 0.0">
+        <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_SatelliteDropper.xml ~ Started ~~' + '\n'"/>
+      </do_if>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <label name="RESUME"/>
+
+      <do_if value="$Ship.cargo.{if $MK2_INSTEAD then ware.satellite_mk2 else ware.satellite_mk1}.count == 0">
+        <!-- Resupply satellites -->
+      </do_if>
+
+      <!-- Get nearest Sector with an Gate withount an satellite -->
+      <find_gate space="player.galaxy" name="$Gates" multiple="true">
+        <match knownto="$Ship.owner"/>
+      </find_gate>
+      <create_list name="$GatesWithoutSatellite"/>
+      <do_for_each name="$Gate" in="$Gates">
+        <find_object space="$Gate.zone" name="$Satellite">
+          <match owner="$Ship.owner"/>
+        </find_object>
+        <do_if value="@$Satellite == null">
+          <append_to_list name="$GatesWithoutSatellite" exact="$Gate"/>
+        </do_if>
+        <remove_value name="$Satellite"/>
+      </do_for_each>
+      <do_if value="$GatesWithoutSatellite.count gt 1">
+        <sort_list list="$GatesWithoutSatellite" sortbyvalue="$Ship.gatedistance.{loop.element}"/>
+      </do_if>
+      <do_if value="$GatesWithoutSatellite.count gt 0">
+        <set_value name="$NearestGate" exact="$GatesWithoutSatellite.{1}"/>
+        <do_if value="$DEBUG gt 0.0">
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'$NearestGate: ' + $NearestGate.name + ' ~ ' + '$NearestGate.sector: ' + $NearestGate.sector.name + ' ~ ' + '$NearestGate.exit.sector: ' + $NearestGate.exit.sector.name"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+        </do_if>
+      </do_if>
+      <do_else>
+        <!-- No Gates without an placed satellite found -->
+        <!-- TODO: IDLE_WAIT -->
+      </do_else>
+      <remove_value name="$GatesWithoutSatellite"/>
+
+      <!-- Fly to the sector of the nearest gate -->
+      <do_if value="$Ship.sector != $NearestGate.sector">
+        <run_script name="'move.generic'">
+          <param name="destination" value="$NearestGate.sector"/>
+          <param name="endintargetzone" value="true"/>
+          <param name="recallsubordinates" value="true"/>
+        </run_script>
+      </do_if>
+
+      <!-- Fly to the gate -->
+      <label name="MOVING"/>
+      <set_command command="command.move" param="$NearestGate"/>
+      <get_safe_pos result="$TempPosition" zone="$NearestGate.sector" object="$NearestGate" directionobject="$Ship" radius="$Ship.size" ignored="$Ship"/>
+      <move_to object="$Ship" destination="$NearestGate.sector" finishonapproach="false" forceposition="true" travel="true">
+        <position value="$TempPosition"/>
+        <interrupt_after_time time="2s"/>
+      </move_to>
+      <do_if value="$Ship.distanceto.{$NearestGate} gt 4000m">
+        <resume label="MOVING"/>
+      </do_if>
+      <remove_value name="$TempPosition"/>
+      <stop_moving object="$Ship"/>
+      <wait exact="2s"/>
+
+      <!-- Place satellite -->
+      <launch_satellite object="$Ship" macro="if $MK2_INSTEAD then ware.satellite_mk2.objectmacro else ware.satellite_mk1.objectmacro" name="$Satellite"/>
+      <set_object_name object="$Satellite" name="'{20001, 701} ~ ' + $NearestGate.sector.name + ' --> ' + $NearestGate.exit.sector.name"/>
+      <remove_value name="$Satellite"/>
+
+      <remove_value name="$NearestGate"/>
+
+      <wait exact="1s"/>
+      <resume label="RESUME"/>
+
+      <do_if value="$ADD_ORDER_TAG">
+        <set_object_name object="this.ship" name="this.$OldName"/>
+      </do_if>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <do_if value="$DEBUG gt 0.0">
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_SatelliteDropper.xml ~ Finished ~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+      </do_if>
+
+      <label name="CLEANUP"/>
+      <remove_value name="$Ship"/>
+      <remove_value name="this.$OldName"/>
+      <remove_value name="$DebugFileName"/>
+      <remove_value name="$DebugDirectory"/>
+
+      <set_order_syncpoint_reached order="this.ship.order"/>
+      <cancel_order order="this.ship.order" />
+      <label name="FINISH"/>
+      <wait exact="1ms"/>
+
+    </actions>
+  </attention>
+
+  <on_abort>
+    <do_if value="$ADD_ORDER_TAG">
+      <set_object_name object="this.ship" name="this.$OldName"/>
+      <remove_value name="this.$OldName"/>
+    </do_if>
+  </on_abort>
+
+</aiscript>
