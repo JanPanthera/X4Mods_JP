@@ -3,5 +3,10 @@
 <language>
   <page id="8888888" voice="no">
     <!-- JP_SatelliteDropper -->
+    <t id="1030">Add order tag?</t>
+    <t id="1031">Enemy sectors?</t>
+    <t id="1032">Advanced satellites?</t>
+    <t id="1033">Restock satellites?</t>
+    <t id="1034">Restock amount?</t>
   </page>
 </language>
