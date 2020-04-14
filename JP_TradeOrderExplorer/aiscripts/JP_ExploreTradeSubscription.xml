@@ -4,7 +4,6 @@
 
   <order id="JP_ExploreTradeSubscription" name="JP ExploreTradeSubscription" category="internal" infinite="false">
     <params>
-      <param name="EXPLORER" text="ExplorerShip" type="object" default="null"/>
       <param name="STATION" text="Station" type="object" default="null"/>
       <!-- DEBUG -->
       <param name="DEBUG" text="DebugText" type="number" default="0.0" advanced="1">
@@ -24,7 +23,9 @@
   <init>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <set_value name="$DebugDirectory" exact="'JP_TradeOrderExplorer.logs'"/>
-    <set_value name="$DebugFileName" exact="this.ship.idcode + 'JP_ExploreTradeSubscription.log'"/>
+    <set_value name="$DebugFileName" exact="this.ship.idcode + 'JP_ExploreTradeSubscription.xml.log'"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <set_value name="$Ship" exact="this.ship"/>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
   </init>
 
@@ -47,6 +48,15 @@
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
       </do_if>
 
+      <do_if value="@$STATION == null">
+        <do_if value="$DEBUG gt 0.0">
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'$STATION == null'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+        </do_if>
+        <resume label="END"/>
+      </do_if>
+      
       <do_if value="$STATION.hastradesubscription">
         <do_if value="$DEBUG gt 0.0">
           <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~ Trade Subscription already active.\n'"/>
@@ -58,24 +68,21 @@
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'Moving to station %1 [%2]...'.[$STATION.knownname, $STATION.idcode]"/>
       </do_if>
 
-      <set_command_action commandaction="commandaction.flyingto" param="$STATION"/>
-      <label name="MOVE"/>
-      <set_value name="$TempPosition" exact="null"/>
-      <get_safe_pos result="$TempPosition" zone="$STATION.sector" object="$STATION" directionobject="$EXPLORER"/>
-      <move_to object="$EXPLORER" destination="$STATION.sector" travel="true" forceposition="false" finishonapproach="false" commandaction="false">
+      <label name="MOVING"/>
+      <set_command command="command.move" param="$STATION"/>
+      <get_safe_pos result="$TempPosition" zone="$STATION.sector" object="$STATION" directionobject="$Ship" radius="$Ship.size / 2" ignored="$Ship"/>
+      <move_to object="$Ship" destination="$STATION.sector" finishonapproach="false" forceposition="true" travel="true">
         <position value="$TempPosition"/>
-        <interrupt_after_time time="3s"/>
+        <interrupt_after_time time="2s"/>
       </move_to>
       <wait exact="1ms"/>
       <do_if value="$STATION.hastradesubscription" negate="true">
-        <do_if value="$DEBUG gt 0.5">
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'Moving...'"/>
-        </do_if>
-        <resume label="MOVE"/>
+        <resume label="MOVING"/>
       </do_if>
-      <do_if value="$DEBUG gt 0.0">
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'Trade Subscription updated.\n'"/>
-      </do_if>
+      <remove_value name="$TempPosition"/>
+      <stop_moving object="$Ship"/>
+      <wait exact="2s"/>
+
       <label name="END"/>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -86,6 +93,7 @@
       </do_if>
 
       <label name="CLEANUP"/>
+      <remove_value name="$Ship"/>
       <remove_value name="$DebugFileName"/>
       <remove_value name="$DebugDirectory"/>
 

@@ -65,5 +65,6 @@
     <Xml Include="aiscripts\JP_TradeOrderExplorerS.xml" />
     <Xml Include="md\JP_UpdateTradeOrderExplorerFleet.xml" />
     <Xml Include="libraries\icons.xml" />
+    <Xml Include="libraries\experiences.xml" />
   </ItemGroup>
 </Project>

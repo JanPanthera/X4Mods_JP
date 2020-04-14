@@ -39,7 +39,7 @@
 
     <cue name="JP_TRADEORDEREXPLORER_DEBUG" instantiate="true" checkinterval="1s">
       <actions>
-        <set_value name="$DEBUG" exact="false"/>
+        <set_value name="$DEBUG" exact="true"/>
 
         <do_if value="$DEBUG">
           <debug_to_file append="false" directory="'JP_TradeOrderExplorer.logs'" name="'JP_TradeOrderExplorer_Debug.log'" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>

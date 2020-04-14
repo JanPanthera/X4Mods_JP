@@ -3,6 +3,8 @@
 <language>
   <page id="8888888" voice="no">
     <!-- JP_TradeOrderExplorer -->
-    <t id="151">Ganze Galaxie durchsuchen?</t>
+    <t id="151">Add order tag?</t>
+    <t id="152">Enemy sectors?</t>
+    <t id="153">Automatic Fleet?</t>
   </page>
 </language>

@@ -2,10 +2,9 @@
 
 <aiscript name="JP_GetNearestSectorWithExpiredTradeSubscriptions" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd">
 
-  <!-- Nearest sector (jump count) -->
-  <order id ="JP_GetNearestSectorWithExpiredTradeSubscriptions" name="JP GetNearestSectorWithExpiredTradeSubscriptions" category="internal" infinite="false">
+  <order id ="JP_GetNearestSectorWithExpiredTradeSubscriptions" name="GetNearestSectorWithExpiredTradeSubscriptions JP" category="internal" infinite="false">
     <params>
-      <param name="EXPLORER" text="Explorer" type="object" default="null" required="true"/>
+      <param name="ENEMY_SECTORS" text="{8888888, 152}" type="bool" default="false"/>
       <!-- DEBUG -->
       <param name="DEBUG" text="DebugText" type="number" default="0.0" advanced="1">
         <input_param name="min" value="0.0"/>
@@ -18,10 +17,10 @@
   <init>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <set_value name="$DebugDirectory" exact="'JP_TradeOrderExplorer.logs'"/>
-    <set_value name="$DebugFileName" exact="this.ship.idcode + '.JP_GetNearestSectorWithExpiredTradeSubscriptions.log'"/>
+    <set_value name="$DebugFileName" exact="this.ship.idcode + '.JP_GetNearestSectorWithExpiredTradeSubscriptions.xml.log'"/>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <set_value name="$Ship" exact="this.ship"/>
     <set_value name="$NearestSector" exact="null"/>
-    <create_list name="$SectorsWithOutdatedTradesubscriptions"/>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
   </init>
 
@@ -38,86 +37,89 @@
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-      <!-- Critical Error Checks ... -->
-
-      <!-- Is given EXPLORER object a ship? -->
-      <do_if value="@$EXPLORER.class" list="[class.ship, class.ship_xs, class.ship_s, class.ship_m, class.ship_l, class.ship_xl]" negate="true">
-        <do_if value="$DEBUG ge 0.0">
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~ Given parameter $EXPLORER is not a ship?\n'"/>
-        </do_if>
-        <resume label="END"/>
+      <!-- Find sectors -->
+      <create_list name="$Sectors"/>
+      <do_if value="$ENEMY_SECTORS">
+        <find_sector name="$Sectors" space="player.galaxy" multiple="true">
+          <match knownto="$Ship.owner"/>
+        </find_sector>
       </do_if>
+      <do_else>
+        <find_sector name="$Sectors" space="player.galaxy" multiple="true">
+          <match knownto="$Ship.owner"/>
+          <match mayattack="$Ship" negate="true"/>
+        </find_sector>
+      </do_else>
 
-      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-
-      <!-- Populate the list $AvailableSectors with all available sectors from the galaxy who are known to $EXPLORER -->
-      <create_list name="$AvailableSectors"/>
-      <find_sector name="$AvailableSectors" space="player.galaxy" multiple="true">
-        <match knownto="$EXPLORER.owner"/>
-        <match mayattack="$EXPLORER" negate="true"/>
-      </find_sector>
+      <!-- Remove from $SectorsWithOutdatedTradesubscriptions all black listed sectors so each TradeOrderExplorer gets a unique sector -->
+      <remove_from_list name="$Sectors" list="global.$TradeOrderExplorerSectorBlackList"/>
 
       <do_if value="$DEBUG gt 0.0">
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'Found sectors we know and are not enemy with us: %1'.[$AvailableSectors.count]"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'$Sectors'"/>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-        <do_if value="$DEBUG gt 0.5">
-          <do_for_each name="$Sector" in="$AvailableSectors">
-            <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~ Sector: [%1] ~~ Owner: [%2]'.[$Sector.knownname, $Sector.owner.knownname]"/>
-          </do_for_each>
-        </do_if>
+        <do_for_each name="$Sector" in="$Sectors">
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~ Sector: [' + $Sector.knownname + '] ~~ Owner: [' + $Sector.owner.knownname + ']'"/>
+        </do_for_each>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
       </do_if>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-      <!-- Populate $SectorsWithOutdatedTradesubscriptions with Sectors with stations with outdated tradesubscriptions -->
-      <do_for_each name="$Sector" in="$AvailableSectors">
+      <!-- Populate $SectorsWithOutdatedTradesubscriptions -->
+      <create_list name="$SectorsWithOutdatedTradesubscriptions"/>
+      <do_for_each name="$Sector" in="$Sectors">
         <find_station name="$Station" space="$Sector">
           <match checkoperational="true"/>
-          <match mayattack="$EXPLORER" negate="true"/>
-          <match tradesknownto="$EXPLORER.owner" negate="true"/>
+          <match mayattack="$Ship" negate="true"/>
+          <match tradesknownto="$Ship.owner" negate="true"/>
+          <match knownto="$Ship.owner"/>
         </find_station>
         <do_if value="@$Station != null">
           <append_to_list name="$SectorsWithOutdatedTradesubscriptions" exact="$Sector"/>
         </do_if>
+        <remove_value name="$Station"/>
       </do_for_each>
-      <remove_value name="$AvailableSectors"/>
+      <remove_value name="$Sectors"/>
 
       <do_if value="$DEBUG gt 0.0">
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'Sectors with stations where we need to update the trade subscription: %1'.[$SectorsWithOutdatedTradesubscriptions.count]"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'$SectorsWithOutdatedTradesubscriptions'"/>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-        <do_if value="$DEBUG gt 0.5">
-          <do_for_each name="$Sector" in="$SectorsWithOutdatedTradesubscriptions">
-            <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~ Sector: %1 [%2]'.[$Sector.knownname, $Sector.owner.knownname]"/>
-          </do_for_each>
-        </do_if>
+        <do_for_each name="$Sector" in="$SectorsWithOutdatedTradesubscriptions">
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~ Sector: ' + $Sector.knownname + ' [' + $Sector.owner.knownname + ']'"/>
+        </do_for_each>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
       </do_if>
-      
+
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-      <!-- Remove all black listed sectors from $FoundSectors so each explorer gets a unique sectors -->
-      <remove_from_list name="$SectorsWithOutdatedTradesubscriptions" list="global.$TradeOrderExplorerSectorBlackList"/>
-
-      <!-- Sort the list $SectorsWithOutdatedTradesubscriptions by gate jump distance to the Explorer if needed and set the variable $NearestSector -->
+      <!-- Sort and get the nearest sector -->
       <do_if value="$SectorsWithOutdatedTradesubscriptions.count gt 0">
-        <sort_list list="$SectorsWithOutdatedTradesubscriptions" sortbyvalue="$EXPLORER.gatedistance.{loop.element}"/>
+        <do_if value="$SectorsWithOutdatedTradesubscriptions.count gt 1">
+          <sort_list list="$SectorsWithOutdatedTradesubscriptions" sortbyvalue="$Ship.gatedistance.{loop.element}"/>
+        </do_if>
+        <!-- To prevent the -1 case (no way to sector found) -->
         <do_for_each name="$Sector" in="$SectorsWithOutdatedTradesubscriptions">
-          <do_if value="$EXPLORER.gatedistance.{$Sector} ge 0">
+          <do_if value="$Ship.gatedistance.{$Sector} ge 0">
             <set_value name="$NearestSector" exact="$Sector"/>
+            <!-- Append it to the global black list -->
+            <append_to_list name="global.$TradeOrderExplorerSectorBlackList" exact="$NearestSector"/>
             <break/>
           </do_if>
         </do_for_each>
       </do_if>
       <do_else>
+        <!-- No suitable sector found -->
+        <set_value name="$NearestSector" exact="'NoSuitableSectorFound'"/>
         <resume label="END"/>
       </do_else>
-      
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
       <do_if value="$DEBUG gt 0.0">
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'Nearest Sector is %1 [%2]'.[$NearestSector.knownname, $NearestSector.owner.knownname]"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'$NearestSector: ' + $NearestSector.knownname + ' [' + $NearestSector.owner.knownname + ']'"/>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
       </do_if>
 
@@ -131,6 +133,7 @@
       </do_if>
 
       <label name="CLEANUP"/>
+      <remove_value name="$Ship"/>
       <remove_value name="$SectorsWithOutdatedTradesubscriptions"/>
       <remove_value name="$DebugFileName"/>
       <remove_value name="$DebugDirectory"/>
