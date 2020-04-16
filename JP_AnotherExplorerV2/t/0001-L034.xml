@@ -3,9 +3,12 @@
 <language>
   <page id="8888888" voice="no">
     <!--  JP_AnotherExplorerV2 -->
-    <t id="21">Explore gates?</t>
-    <t id="22">Explore stations?</t>
-    <t id="23">Explore enemy Stations?</t>
-    <t id="24">Explore enemy Sectors?</t>
+    <t id="20">Add order tag?</t>
+    <t id="21">Explorar puertas?</t>
+    <t id="22">Explorar estaciones?</t>
+    <t id="23">Explorar estaciones enemigas?</t>
+    <t id="24">Explorar sectores enemigos?</t>
+    <t id="25">Automatic Fleet?</t>
   </page>
 </language>
+<!-- Thanks ~ orekpolar -->

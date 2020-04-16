@@ -3,14 +3,12 @@
 <language>
   <page id="8888888" voice="no">
     <!--  JP_AnotherExplorerV2 -->
+    <t id="20">Add order tag?</t>
     <t id="21">Explorer portails?</t>
     <t id="22">Explorer stations?</t>
     <t id="23">Explorer stations ennemies?</t>
     <t id="24">Explorer secteurs ennemis?</t>
-    <!--<t id="25">Rentrer à la base?</t>
-    <t id="26">Secteur de la base</t>
-    <t id="27">Explorateur de secteur?</t>
-    <t id="28">Secteurs à explorer</t>-->
+    <t id="25">Automatic Fleet?</t>
   </page>
 </language>
 <!-- Thanks to darkslimus / Xchange Guild -->

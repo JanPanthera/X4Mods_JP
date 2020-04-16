@@ -3,9 +3,11 @@
 <language>
   <page id="8888888" voice="no">
     <!--  JP_AnotherExplorerV2 -->
+    <t id="20">Befehlskürzel hinzufügen?</t>
     <t id="21">Erkunde Sprungtore?</t>
     <t id="22">Erkunde Stationen?</t>
     <t id="23">Erkunde feindliche Stationen?</t>
     <t id="24">Erkunde feindliche Sektoren?</t>
+    <t id="25">Automatische Flotte?</t>
   </page>
 </language>

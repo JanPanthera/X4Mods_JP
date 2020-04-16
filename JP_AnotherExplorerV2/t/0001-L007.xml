@@ -1,21 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Russian ~~ Русский 
-
-alexalsp
-
-http://apocalypse.moy.su
--->
+<!-- Russian ~~ Русский -->
 <language>
   <page id="8888888" voice="no">
     <!--  JP_AnotherExplorerV2 -->
+    <t id="20">Add order tag?</t>
     <t id="21">Исследовать Врата?</t>
     <t id="22">Станции?</t>
     <t id="23">Вражеские станции?</t>
     <t id="24">Вражеские сектора?</t>
-    <!--<t id="25">Вернуться домой?</t>
-    <t id="26">Домашний сектор</t>
-    <t id="27">Исследовать сектор?</t>
-    <t id="28">Сектор</t>-->
+    <t id="25">Automatic Fleet?</t>
   </page>
 </language>
 <!-- Thanks to alexalsp -->

@@ -2,25 +2,22 @@
 
 <aiscript name="JP_AnotherExplorerV2G" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd">
 
-  <order id="JP_AnotherExplorerV2G" name="AnotherExplorerV2 {20001, 901} JP" description="Finds unknown stations and jump gates in the galaxy." category="navigation" infinite="true">
+  <order id="JP_AnotherExplorerV2G" name="AnotherExplorerV2 {20001, 901} JP" category="navigation" infinite="true">
     <params>
-      <param name="EXPLORE_GATES" text="{8888888, 21}" type="bool" default="true"/>
-      <param name="EXPLORE_STATIONS" text="{8888888, 22}" type="bool" default="true"/>
-      <param name="EXPLORE_STATIONS_FROM_ENEMYS" text="{8888888, 23}" type="bool" default="false"/>
-      <param name="EXPLORE_ENEMY_SECTORS" text="{8888888, 24}" type="bool" default="false"/>
-      <param name="AUTO_FLEET" text="{8888888, 1005}" comment="Automatic Fleet?" type="bool" default="false"/>
-      <param name="SAFE_SECTOR_IDLING" text="{8888888, 1006}" comment="Idling in safe sector?" type="bool" default="false"/>
-      <param name="SAFE_SECTOR" text="{8888888, 1007}" comment="Safe sector." type="object" default="this.sector">
-        <input_param name="class" value="[class.sector]"/>
-      </param>
+      <param name="ADD_ORDER_TAG" text="{8888888, 20}" comment="Add order tag?" type="bool" default="true"/>
+      <param name="EXPLORE_GATES" text="{8888888, 21}" comment="Explore gates?" type="bool" default="true"/>
+      <param name="EXPLORE_STATIONS" text="{8888888, 22}" comment="Explore stations?" type="bool" default="true"/>
+      <param name="EXPLORE_ENEMY_STATIONS" text="{8888888, 23}" comment="Explore enemy stations?" type="bool" default="false"/>
+      <param name="EXPLORE_ENEMY_SECTORS" text="{8888888, 24}" comment="Explore enemy sectors?" type="bool" default="false"/>
+      <param name="AUTO_FLEET" text="{8888888, 25}" comment="Automatic Fleet?" type="bool" default="false"/>
       <!-- DEBUG -->
-      <param name="DEBUG" text="DebugText" type="number" default="0.0" advanced="1">
+      <param name="DEBUG" text="DebugText" type="number" default="0.0" advanced="true">
         <input_param name="min" value="0.0"/>
         <input_param name="max" value="1.0"/>
         <input_param name="step" value="0.1"/>
       </param>
     </params>
-    <skill min="30"/>
+    <skill min="40"/>
     <requires>
       <match shiptype="shiptype.lasertower" negate="true"/>
     </requires>
@@ -42,9 +39,12 @@
   <init>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <set_value name="$DebugDirectory" exact="'JP_AnotherExplorerV2.logs'"/>
-    <set_value name="$DebugFileName" exact="this.ship.idcode + '.JP_AnotherExplorerV2G.log'"/>
+    <set_value name="$DebugFileName" exact="this.ship.idcode + '.JP_AnotherExplorerV2G.xml.log'"/>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-    <set_value name="$Explorer" exact="this.ship"/>
+    <set_value name="$Ship" exact="this.ship"/>
+    <set_value name="this.$CurrentSector" exact="null"/>
+    <set_value name="$ExpTotalMultiplier" exact="0.87"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <do_if value="@global.$AnotherExplorerV2SectorBlackList == null">
       <create_list name="global.$AnotherExplorerV2SectorBlackList"/>
     </do_if>
@@ -52,8 +52,11 @@
       <create_list name="global.$AnotherExplorerV2Ships"/>
     </do_if>
     <append_to_list name="global.$AnotherExplorerV2Ships" exact="this.ship"/>
-    <set_value name="this.$CurrentSector" exact="null"/>
-    <set_value name="$ExpTotalMultiplier" exact="0.83"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <do_if value="$ADD_ORDER_TAG">
+      <set_value name="this.$OldName" exact="this.ship.name"/>
+      <set_object_name object="this.ship" name="this.ship.name + '\033#FFA2560B# #AEV2-G\033X'"/>
+    </do_if>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
   </init>
 
@@ -76,39 +79,22 @@
       <set_command command="command.explore"/>
       <set_command_action commandaction="commandaction.calculating"/>
 
-      <do_if value="$Explorer.pilot.combinedskill ge 50">
-        <set_value name="$ExpGainFactor" exact="(0.86 * $ExpTotalMultiplier)"/>
-      </do_if>
-      <do_elseif value="$Explorer.pilot.combinedskill gt 30 and $Explorer.pilot.combinedskill lt 50">
-        <set_value name="$ExpGainFactor" exact="(0.94 * $ExpTotalMultiplier)"/>
-      </do_elseif>
-      <do_elseif value="$Explorer.pilot.combinedskill le 30">
-        <set_value name="$ExpGainFactor" exact="(1.00 * $ExpTotalMultiplier)"/>
-      </do_elseif>
-      
       <!-- Get nearest sector with unknown objects that we can explore -->
       <run_script name="'JP_GetNearestSectorWithUnknownObjects'">
-        <param name="EXPLORER" value="$Explorer"/>
+        <param name="EXPLORER" value="$Ship"/>
         <param name="FIND_GATES" value="$EXPLORE_GATES"/>
         <param name="FIND_STATIONS" value="$EXPLORE_STATIONS"/>
-        <param name="FIND_STATIONS_FROM_ENEMYS" value="$EXPLORE_STATIONS_FROM_ENEMYS"/>
+        <param name="FIND_STATIONS_FROM_ENEMYS" value="$EXPLORE_ENEMY_STATIONS"/>
         <param name="EXPLORE_ENEMY_SECTORS" value="$EXPLORE_ENEMY_SECTORS"/>
         <param name="DEBUG" value="$DEBUG"/>
         <save_retval name="NEAREST_SECTOR" variable="this.$CurrentSector"/>
       </run_script>
 
-      <!-- Wait some time and resume if nothing found that we can explore -->
-      <do_if value="this.$CurrentSector == null">
-        <run_script name="'JP_IdleWait'">
-          <param name="SHIP" value="$Explorer"/>
-          <param name="TIMEOUT_MIN" value="5s"/>
-          <param name="TIMEOUT_MAX" value="(160s - ($Explorer.combinedskill)s)"/>
-          <param name="SECTOR" value="$SAFE_SECTOR"/>
-          <param name="SAFE_SECTOR_IDLING" value="$SAFE_SECTOR_IDLING"/>
-          <param name="DEBUG" value="$DEBUG"/>
-          <param name="DEBUG_DIRECTORY" value="$DebugDirectory"/>
-          <param name="DEBUG_FILE_NAME" value="$DebugFileName"/>
-        </run_script>
+      <do_if value="this.$CurrentSector == 'NoSuitableSectorFound'">
+        <!-- Case nothing to do.. TODO: Adding return logics like dock at or fly to or follow targed -->
+        <set_object_name object="$Ship" name="$Ship.name + '\033#FFCEFBA1# ~ nothing to do *TODO*\033X'"/>
+        <wait exact="60s"/>
+        <set_object_name object="$Ship" name="this.$OldName + '\033#FFA2560B# #AEV2-G\033X'"/>
         <resume label="RESUME"/>
       </do_if>
 
@@ -117,100 +103,84 @@
 
       <do_if value="$DEBUG gt 0.0">
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'Exploring sector %1 [%2]'.[this.$CurrentSector.knownname, this.$CurrentSector.owner.knownname]"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'this.$CurrentSector: ' + this.$CurrentSector.name + ' ~ ' + '[' + this.$CurrentSector.owner.name + ']'"/>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
       </do_if>
 
       <!-- Get all unknown objects in $this.CurrentSector -->
       <run_script name="'JP_GetUnknownObjectsFromSector'">
         <param name="SECTOR" value="this.$CurrentSector"/>
-        <param name="EXPLORER" value="$Explorer"/>
+        <param name="EXPLORER" value="$Ship"/>
         <param name="FIND_GATES" value="$EXPLORE_GATES"/>
         <param name="FIND_STATIONS" value="$EXPLORE_STATIONS"/>
-        <param name="FIND_STATIONS_FROM_ENEMYS" value="$EXPLORE_STATIONS_FROM_ENEMYS"/>
+        <param name="FIND_STATIONS_FROM_ENEMYS" value="$EXPLORE_ENEMY_STATIONS"/>
         <param name="SORT" value="false"/>
         <param name="DEBUG" value="$DEBUG"/>
         <save_retval name="UNKNOWN_OBJECTS" variable="$UnknownObjects"/>
       </run_script>
 
-      <!-- Are there object we need to explore? -->
+      <!-- When no objects are found, idle a bit and resume searching -->
       <do_if value="$UnknownObjects.count == 0">
         <do_if value="$DEBUG gt 0.0">
           <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'No objects found that we can explore.. start idling..'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'No objects found that we need to find.'"/>
           <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
         </do_if>
-        <run_script name="'JP_IdleWait'">
-          <param name="SHIP" value="$Explorer"/>
-          <param name="TIMEOUT_MIN" value="5s"/>
-          <param name="TIMEOUT_MAX" value="(160s - ($Explorer.combinedskill)s)"/>
-          <param name="SECTOR" value="$SAFE_SECTOR"/>
-          <param name="SAFE_SECTOR_IDLING" value="$SAFE_SECTOR_IDLING"/>
-          <param name="DEBUG" value="$DEBUG"/>
-          <param name="DEBUG_DIRECTORY" value="$DebugDirectory"/>
-          <param name="DEBUG_FILE_NAME" value="$DebugFileName"/>
-        </run_script>
+        <!-- Remove it from the blacklist so it can be explored again when it needs to -->
+        <remove_from_list name="global.$AnotherExplorerV2SectorBlackList" exact="this.$CurrentSector"/>
+        <wait exact="1s"/>
         <resume label="RESUME"/>
       </do_if>
 
       <!-- Are we in the right sector? -->
-      <run_script name="'JP_AreWeInTheRightSector'">
-        <param name="SHIP" value="$Explorer"/>
-        <param name="SECTOR" value="this.$CurrentSector"/>
-        <param name="DEBUG" value="$DEBUG"/>
-        <param name="DEBUG_DIRECTORY" value="$DebugDirectory"/>
-        <param name="DEBUG_FILE_NAME" value="$DebugFileName"/>
-      </run_script>
+      <do_if value="$Ship.sector != this.$CurrentSector">
+        <set_command command="command.move" param="this.$CurrentSector"/>
+        <do_if value="$DEBUG gt 0.0">
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'Moving to: ' + this.$CurrentSector.name"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+        </do_if>
+        <run_script name="'move.generic'">
+          <param name="destination" value="this.$CurrentSector"/>
+          <param name="endintargetzone" value="true"/>
+          <param name="recallsubordinates" value="true"/>
+        </run_script>
+      </do_if>
 
-      <do_while value="$UnknownObjects.count gt 0">
+      <label name="RESUME_SUBSCRIPTION_UPDATE"/>
+      <do_if value="$UnknownObjects.count gt 0">
         <do_if value="$UnknownObjects.count gt 1">
-          <!-- Sort $UnknownObjects to the ship distance -->
-          <run_script name="'JP_SortListByDistance'">
-            <param name="LIST" value="$UnknownObjects"/>
-            <param name="OBJECT" value="$Explorer"/>
-            <param name="DEBUG" value="0"/>
-            <save_retval name="SORTED_LIST" variable="$UnknownObjects"/>
-          </run_script>
+          <sort_list list="$UnknownObjects" sortbyvalue="$Ship.distanceto.{loop.element}"/>
         </do_if>
         <do_if value="$DEBUG gt 0.0">
           <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'Exploring unknown object %1 [%2]  ~~  %3'.[$UnknownObjects.{1}.knownname, $UnknownObjects.{1}.idcode, $UnknownObjects.{1}.owner.knownname]"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'Exploring: ' + $UnknownObjects.{1}.name + ' [' + @$UnknownObjects.{1}.owner.name + ']'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
         </do_if>
-        <!-- Explore the nearest object -->
         <run_script name="'JP_ExploreObject'">
-          <param name="EXPLORER" value="$Explorer"/>
+          <param name="EXPLORER" value="$Ship"/>
           <param name="OBJECT" value="$UnknownObjects.{1}"/>
           <param name="DEBUG" value="$DEBUG"/>
         </run_script>
-        <!-- EXP gain -->
-        <apply_experience entity="$Explorer.pilot" experience="'JP_SHIP_OBJECT_DISCOVERD'" factor="$ExpGainFactor"/>
-        <apply_experience object="$Explorer" role="entityrole.service" experience="'JP_SHIP_OBJECT_DISCOVERD'" factor="$ExpGainFactor"/>
-        <!-- EXP gain -->
-        <do_if value="$DEBUG gt 0.0">
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'Object %1 [%2] explored.  ~~  %3'.[$UnknownObjects.{1}.knownname, $UnknownObjects.{1}.idcode, $UnknownObjects.{1}.owner.knownname]"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
-        </do_if>
+        <apply_experience entity="$Ship.pilot" experience="'JP_SHIP_TRADESUBSCRIPTION_UPDATED'" factor="$ExpTotalMultiplier"/>
+        <apply_experience object="$Ship" experience="'JP_SHIP_TRADESUBSCRIPTION_UPDATED'" role="entityrole.service" factor="$ExpTotalMultiplier"/>
         <remove_from_list name="$UnknownObjects" exact="$UnknownObjects.{1}"/>
-      </do_while>
-
-      <!-- Clean for next iteration -->
+        <resume label="RESUME_SUBSCRIPTION_UPDATE"/>
+      </do_if>
       <remove_value name="$UnknownObjects"/>
 
       <!-- Remove the sector from the blacklist so the sector can be explored again if needed -->
       <remove_from_list name="global.$AnotherExplorerV2SectorBlackList" exact="this.$CurrentSector"/>
 
       <!-- Just a wait before resume to search for trade subscriptions -->
-      <run_script name="'JP_IdleWait'">
-        <param name="SHIP" value="$Explorer"/>
-        <param name="TIMEOUT_MIN" value="5s"/>
-        <param name="TIMEOUT_MAX" value="(160s - ($Explorer.combinedskill)s)"/>
-        <param name="DEBUG" value="$DEBUG"/>
-        <param name="DEBUG_DIRECTORY" value="$DebugDirectory"/>
-        <param name="DEBUG_FILE_NAME" value="$DebugFileName"/>
-      </run_script>
+      <wait min="1s" max="3s"/>
       <resume label="RESUME"/>
 
       <label name="END"/>
+
+      <do_if value="$ADD_ORDER_TAG">
+        <set_object_name object="$Ship" name="this.$OldName"/>
+      </do_if>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
@@ -227,9 +197,9 @@
         <remove_value name="global.$AnotherExplorerV2SectorBlackList"/>
       </do_if>
       <remove_value name="$ExpTotalMultiplier"/>
-      <remove_value name="$ExpGainFactor"/>
+      <remove_value name="this.$OldName"/>
       <remove_value name="this.$CurrentSector"/>
-      <remove_value name="$Explorer"/>
+      <remove_value name="$Ship"/>
       <remove_value name="$DebugFileName"/>
       <remove_value name="$DebugDirectory"/>
 
@@ -247,6 +217,10 @@
     <do_if value="global.$AnotherExplorerV2Ships.count == 0">
       <remove_value name="global.$AnotherExplorerV2Ships"/>
       <remove_value name="global.$AnotherExplorerV2SectorBlackList"/>
+    </do_if>
+    <do_if value="$ADD_ORDER_TAG">
+      <set_object_name object="this.ship" name="this.$OldName"/>
+      <remove_value name="this.$OldName"/>
     </do_if>
   </on_abort>
 
