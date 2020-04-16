@@ -9,7 +9,7 @@
       <param name="ENEMY_SECTORS" text="{8888888, 152}" comment="Enemy sectors?" type="bool" default="false"/>
       <param name="AUTO_FLEET" text="{8888888, 153}" comment="Automatic Fleet?" type="bool" default="false"/>
       <!-- DEBUG -->
-      <param name="DEBUG" text="DebugText" type="number" default="0.0" advanced="1">
+      <param name="DEBUG" text="DebugText" type="number" default="0.0" advanced="true">
         <input_param name="min" value="0.0"/>
         <input_param name="max" value="1.0"/>
         <input_param name="step" value="0.1"/>
@@ -41,7 +41,7 @@
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <set_value name="$Ship" exact="this.ship"/>
     <set_value name="this.$CurrentSector" exact="null"/>
-    <set_value name="$ExpTotalMultiplier" exact="0.97"/>
+    <set_value name="$ExpTotalMultiplier" exact="0.87"/>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <do_if value="@global.$TradeOrderExplorerSectorBlackList == null">
       <create_list name="global.$TradeOrderExplorerSectorBlackList"/>
@@ -93,7 +93,7 @@
 
       <do_if value="$DEBUG gt 0.0">
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'this.$CurrentSector: ' + this.$CurrentSector.name + ' ~ ' + '[' + this.$CurrentSector.owner.knownname + ']'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'this.$CurrentSector: ' + this.$CurrentSector.name + ' ~ ' + '[' + this.$CurrentSector.owner.name + ']'"/>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
       </do_if>
 
@@ -148,30 +148,8 @@
           <param name="STATION" value="$Stations.{1}"/>
           <param name="DEBUG" value="$DEBUG"/>
         </run_script>
-        <do_if value="$DEBUG gt 0.0">
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'Before:'"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~ $Ship.pilot.skill.{skilltype.morale}: ' + $Ship.pilot.skill.{skilltype.morale}"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~ $Ship.pilot.skill.{skilltype.piloting}: ' + $Ship.pilot.skill.{skilltype.piloting}"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~ $Ship.pilot.skill.{skilltype.boarding}: ' + $Ship.pilot.skill.{skilltype.boarding}"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~ $Ship.pilot.skill.{skilltype.management}: ' + $Ship.pilot.skill.{skilltype.management}"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~ $Ship.pilot.skill.{skilltype.engineering}: ' + $Ship.pilot.skill.{skilltype.engineering}"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
-        </do_if>
         <apply_experience entity="$Ship.pilot" experience="'JP_SHIP_TRADESUBSCRIPTION_UPDATED'" factor="$ExpTotalMultiplier"/>
         <apply_experience object="$Ship" experience="'JP_SHIP_TRADESUBSCRIPTION_UPDATED'" role="entityrole.service" factor="$ExpTotalMultiplier"/>
-        <do_if value="$DEBUG gt 0.0">
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'After:'"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~ $Ship.pilot.skill.{skilltype.morale}: ' + $Ship.pilot.skill.{skilltype.morale}"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~ $Ship.pilot.skill.{skilltype.piloting}: ' + $Ship.pilot.skill.{skilltype.piloting}"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~ $Ship.pilot.skill.{skilltype.boarding}: ' + $Ship.pilot.skill.{skilltype.boarding}"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~ $Ship.pilot.skill.{skilltype.management}: ' + $Ship.pilot.skill.{skilltype.management}"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~ $Ship.pilot.skill.{skilltype.engineering}: ' + $Ship.pilot.skill.{skilltype.engineering}"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
-        </do_if>
         <remove_from_list name="$Stations" exact="$Stations.{1}"/>
         <resume label="RESUME_SUBSCRIPTION_UPDATE"/>
       </do_if>
@@ -187,7 +165,7 @@
       <label name="END"/>
 
       <do_if value="$ADD_ORDER_TAG">
-        <set_object_name object="this.ship" name="this.$OldName"/>
+        <set_object_name object="$Ship" name="this.$OldName"/>
       </do_if>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
