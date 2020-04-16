@@ -140,6 +140,7 @@
   <ItemGroup>
     <Xml Include="aiscripts\JP_SatelliteDropper.xml" />
     <Xml Include="content.xml" />
+    <Xml Include="libraries\experiences.xml" />
     <Xml Include="libraries\icons.xml" />
     <Xml Include="t\0001-L007.xml" />
     <Xml Include="t\0001-L033.xml" />

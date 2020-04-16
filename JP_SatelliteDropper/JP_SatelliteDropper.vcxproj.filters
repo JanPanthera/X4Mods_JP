@@ -29,6 +29,7 @@
     <Xml Include="t\0001-L088.xml" />
     <Xml Include="libraries\icons.xml" />
     <Xml Include="aiscripts\JP_SatelliteDropper.xml" />
+    <Xml Include="libraries\experiences.xml" />
   </ItemGroup>
   <ItemGroup>
     <Xsd Include="md\md.xsd">
