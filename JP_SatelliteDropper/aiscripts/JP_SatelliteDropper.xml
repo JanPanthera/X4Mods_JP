@@ -88,6 +88,7 @@
             <match mayattack="$Ship" negate="true"/>
             <match cansupplyclass="$Ship.class"/>
             <match knownto="$Ship.owner"/>
+            <match_relation_to faction="$Ship.owner" comparison="ge" relation="neutral"/>
           </find_station>
           <do_if value="@$Stations.count gt 1">
             <sort_list list="$Stations" sortbyvalue="$Ship.distanceto.{loop.element}"/>
@@ -115,18 +116,19 @@
       </do_else>
 
       <!-- Get nearest Sector with an Gate without a satellite -->
-      <find_gate space="player.galaxy" name="$Gates" multiple="true">
-        <match knownto="$Ship.owner"/>
-      </find_gate>
-      <do_if value="not $ENEMY_SECTORS">
-        <create_list name="$GatesToRemove"/>
-        <do_for_each name="$Gate" in="$Gates">
-          <do_if value="$Gate.sector.owner.mayattack.{$Ship}">
-            <append_to_list name="$GatesToRemove" exact="$Gate"/>
-          </do_if>
-        </do_for_each>
-        <remove_from_list name="$Gates" list="$GatesToRemove"/>
+
+      <do_if value="$ENEMY_SECTORS">
+        <find_gate space="player.galaxy" name="$Gates" multiple="true">
+          <match knownto="$Ship.owner"/>
+        </find_gate>
       </do_if>
+      <do_else>
+        <find_gate space="player.galaxy" name="$Gates" multiple="true">
+          <match knownto="$Ship.owner"/>
+          <match mayattack="$Ship.owner" negate="true"/>
+          <match_relation_to faction="$Ship.owner" comparison="ge" relation="neutral"/>
+        </find_gate>
+      </do_else>
       <create_list name="$GatesWithoutSatellite"/>
       <do_for_each name="$Gate" in="$Gates">
         <find_object space="$Gate.sector" name="$Satellite">
