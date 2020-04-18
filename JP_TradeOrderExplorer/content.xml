@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<content id="JP_TradeOrderExplorer" name="JP_TradeOrderExplorer" description="Updates trade subscriptions." author="JanPanthera" version="131" date="2020-04-16" save="0" enabled="1">
+<content id="JP_TradeOrderExplorer" name="JP_TradeOrderExplorer" description="Updates trade subscriptions." author="JanPanthera" version="132" date="2020-04-18" save="0" enabled="1">
   <dependency version="300"/>
   <text language="7"  name="JP_TradeOrderExplorer" description="Обновление торговых предложений." author="JanPanthera"/>
   <text language="33" name="JP_TradeOrderExplorer" description="Updates trade subscriptions." author="JanPanthera"/>

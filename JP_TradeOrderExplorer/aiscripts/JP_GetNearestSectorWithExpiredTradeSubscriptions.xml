@@ -48,6 +48,7 @@
         <find_sector name="$Sectors" space="player.galaxy" multiple="true">
           <match knownto="$Ship.owner"/>
           <match mayattack="$Ship" negate="true"/>
+          <match_relation_to faction="$Ship.owner" comparison="ge" relation="neutral"/>
         </find_sector>
       </do_else>
 
@@ -72,6 +73,7 @@
         <find_station name="$Station" space="$Sector">
           <match checkoperational="true"/>
           <match mayattack="$Ship" negate="true"/>
+          <match_relation_to faction="$Ship.owner" comparison="ge" relation="neutral"/>
           <match tradesknownto="$Ship.owner" negate="true"/>
           <match knownto="$Ship.owner"/>
         </find_station>

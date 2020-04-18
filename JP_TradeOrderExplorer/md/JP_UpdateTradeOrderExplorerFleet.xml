@@ -8,32 +8,34 @@
         <check_value value="@global.$TradeOrderExplorerShips.count gt 1"/>
       </conditions>
       <actions>
-        <create_list name="$AutoFleetShips"/>
-        <do_for_each name="$TradeOrderExplorerShip" in="global.$TradeOrderExplorerShips">
-          <do_if value="$TradeOrderExplorerShip.defaultorder.$AUTO_FLEET == true">
-            <append_to_list name="$AutoFleetShips" exact="$TradeOrderExplorerShip"/>
-          </do_if>
-        </do_for_each>
-        <do_if value="@global.$TradeOrderExplorerFleetLeader != null">
-          <do_if value="global.$TradeOrderExplorerFleetLeader.fleet.iscommander == false">
-            <remove_value name="global.$TradeOrderExplorerFleetLeader"/>
-          </do_if>
-        </do_if>
-        <do_if value="$AutoFleetShips.count gt 1">
-          <do_for_each name="$AutoFleetShip" in="$AutoFleetShips" counter="$_it">
-            <do_if value="$_it == 1">
-              <continue/>
-            </do_if>
-            <do_if value="@global.$TradeOrderExplorerFleetLeader == null">
-              <set_value name="global.$TradeOrderExplorerFleetLeader" exact="$AutoFleetShips.{1}"/>
-            </do_if>
-            <do_if value="$AutoFleetShip.fleet.commander == null">
-              <set_object_commander object="$AutoFleetShip" commander="global.$TradeOrderExplorerFleetLeader"/>
+        <do_if value="@global.$TradeOrderExplorerShips">
+          <create_list name="$AutoFleetShips"/>
+          <do_for_each name="$TradeOrderExplorerShip" in="global.$TradeOrderExplorerShips">
+            <do_if value="$TradeOrderExplorerShip.defaultorder.$AUTO_FLEET == true">
+              <append_to_list name="$AutoFleetShips" exact="$TradeOrderExplorerShip"/>
             </do_if>
           </do_for_each>
-          <set_object_fleet_name object="global.$TradeOrderExplorerFleetLeader" name="'TradeOrderExplorer'"/>
+          <do_if value="@global.$TradeOrderExplorerFleetLeader != null">
+            <do_if value="global.$TradeOrderExplorerFleetLeader.fleet.iscommander == false">
+              <remove_value name="global.$TradeOrderExplorerFleetLeader"/>
+            </do_if>
+          </do_if>
+          <do_if value="$AutoFleetShips.count gt 1">
+            <do_for_each name="$AutoFleetShip" in="$AutoFleetShips" counter="$_it">
+              <do_if value="$_it == 1">
+                <continue/>
+              </do_if>
+              <do_if value="@global.$TradeOrderExplorerFleetLeader == null">
+                <set_value name="global.$TradeOrderExplorerFleetLeader" exact="$AutoFleetShips.{1}"/>
+              </do_if>
+              <do_if value="$AutoFleetShip.fleet.commander == null">
+                <set_object_commander object="$AutoFleetShip" commander="global.$TradeOrderExplorerFleetLeader"/>
+              </do_if>
+            </do_for_each>
+            <set_object_fleet_name object="global.$TradeOrderExplorerFleetLeader" name="'TradeOrderExplorer'"/>
+          </do_if>
+          <remove_value name="$AutoFleetShips"/>
         </do_if>
-        <remove_value name="$AutoFleetShips"/>
       </actions>
     </cue>
 
