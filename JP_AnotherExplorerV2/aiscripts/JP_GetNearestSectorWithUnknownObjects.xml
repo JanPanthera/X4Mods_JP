@@ -30,7 +30,7 @@
     <set_value name="$DebugDirectory" exact="'JP_AnotherExplorerV2.logs'"/>
     <set_value name="$DebugFileName" exact="$EXPLORER.idcode + '.JP_GetNearestSectorWithUnknownObjects.log'"/>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-    <set_value name="$NearestSector" exact="null"/>
+    <set_value name="$NearestSector" exact="'NoSuitableSectorFound'"/>
     <create_list name="$Sectors_List"/>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
   </init>
@@ -55,6 +55,7 @@
       <do_else>
         <find_sector name="$Sectors_List" multiple="true" space="player.galaxy">
           <match mayattack="$EXPLORER" negate="true"/>
+          <match_relation_to faction="$EXPLORER.owner" comparison="ge" relation="neutral"/>
         </find_sector>
       </do_else>
 
@@ -95,17 +96,26 @@
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
       </do_if>
 
-      <!-- Sort all $FoundSectors by distance to $Ship if more than one -->
-      <do_if value="$Sectors_List.count gt 1">
-        <sort_list list="$Sectors_List" sortbyvalue="$EXPLORER.gatedistance.{loop.element}"/>
+      <do_if value="$Sectors_List.count gt 0">
+        <do_if value="$Sectors_List.count gt 1">
+          <sort_list list="$Sectors_List" sortbyvalue="$EXPLORER.gatedistance.{loop.element}"/>
+        </do_if>
+        <do_for_each name="$Sector" in="$Sectors_List">
+          <do_if value="$Sector.gatedistance.{$EXPLORER} ge 0">
+            <set_value name="$NearestSector" exact="$Sector"/>
+            <break/>
+          </do_if>
+        </do_for_each>
       </do_if>
 
-      <do_for_each name="$Sector" in="$Sectors_List">
-        <do_if value="$Sector.gatedistance.{$EXPLORER} ge 0">
-          <set_value name="$NearestSector" exact="$Sector"/>
-          <break/>
-        </do_if>
-      </do_for_each>
+      <do_if value="$NearestSector" exact="'NoSuitableSectorFound'">
+        <!-- No suitable sector found -->
+        <resume label="END"/>
+      </do_if>
+      <do_else>
+        <!-- Append it to the global black list -->
+        <append_to_list name="global.$AnotherExplorerV2SectorBlackList" exact="$NearestSector"/>
+      </do_else>
 
       <!-- Debug -->
       <do_if value="$DEBUG gt 0.0">

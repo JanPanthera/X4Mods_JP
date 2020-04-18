@@ -54,6 +54,7 @@
       <create_list name="global.$AnotherExplorerV2Ships"/>
     </do_if>
     <append_to_list name="global.$AnotherExplorerV2Ships" exact="this.ship"/>
+    <append_to_list name="global.$AnotherExplorerV2SectorBlackList" exact="$SECTOR"/>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <do_if value="$ADD_ORDER_TAG">
       <set_value name="this.$OldName" exact="this.ship.name"/>

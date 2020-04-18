@@ -84,6 +84,7 @@
           <find_station name="$_tempStations" space="$SECTOR" multiple="true">
             <match knownto="$EXPLORER.owner" negate="true"/>
             <match mayattack="$EXPLORER" negate="true"/>
+            <match_relation_to faction="$EXPLORER.owner" comparison="ge" relation="neutral"/>
           </find_station>
         </do_else>
         <do_if value="$DEBUG gt 0.0">
