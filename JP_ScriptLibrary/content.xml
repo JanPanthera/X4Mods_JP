@@ -3,7 +3,7 @@
 <content id="JP_ScriptLibrary" name="JP_ScriptLibrary" description="A collection of scripts." author="JanPanthera" version="100" date="2019-12-22" save="0" enabled="1">
   <dependency version="300"/>
   <text language="7"  name="JP_ScriptLibrary" description="Коллекция скриптов." author="JanPanthera"/>
-  <text language="33" name="JP_ScriptLibrary" description="A collection of scripts." author="JanPanthera"/>
+  <text language="33" name="JP_ScriptLibrary" description="Une collection de scripts." author="JanPanthera"/>
   <text language="34" name="JP_ScriptLibrary" description="A collection of scripts." author="JanPanthera"/>
   <text language="39" name="JP_ScriptLibrary" description="Una raccolta di scripts." author="JanPanthera"/>
   <text language="44" name="JP_ScriptLibrary" description="A collection of scripts." author="JanPanthera"/>
