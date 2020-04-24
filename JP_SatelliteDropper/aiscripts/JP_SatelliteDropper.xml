@@ -4,16 +4,57 @@
 
   <order id="JP_SatelliteDropper" name="SatelliteDropper JP" category="navigation" infinite="true">
     <params>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="ADD_ORDER_TAG" text="{8888888, 1030}" comment="Add order tag?" type="bool" default="true"/>
-      <param name="ENEMY_SECTORS" text="{8888888, 1031}" comment="Enemy sectors?" type="bool" default="false"/>
-      <param name="MK2_INSTEAD" text="{8888888, 1032}" comment="Advanced satellites?" type="bool" default="false"/>
-      <param name="RESTOCK_SATELLITES" text="{8888888, 1033}" comment="Restock satellites?" type="bool" default="true"/>
-      <param name="RESTOCK_AMOUNT" text="{8888888, 1034}" comment="Restock amount?" type="number" default="1">
+      <param name="MK2_INSTEAD" text="{8888888, 1031}" comment="Advanced satellites?" type="bool" default="false"/>
+      <param name="RESTOCK_SATELLITES" text="{8888888, 1032}" comment="Restock satellites?" type="bool" default="true"/>
+      <param name="RESTOCK_AMOUNT" text="{8888888, 1033}" comment="Restock amount?" type="number" default="10">
         <input_param name="min" value="1"/>
         <input_param name="max" value="this.ship.ammostorage.deployable.capacity"/>
         <input_param name="step" value="1"/>
         <input_param name="startvalue" value="1"/>
       </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="ENEMY_SECTORS" text="{8888888, 1034}" comment="EnemySectors" type="bool" default="false"/>
+      <param name="NEUTRAL_SECTORS" text="{8888888, 1035}" comment="NeutralSectors" type="bool" default="true"/>
+      <param name="ENEMY_STATIONS" text="{8888888, 1036}" comment="EnemyStations" type="bool" default="false"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="GATES" text="{8888888, 1037}" comment="Gates" type="bool" default="true"/>
+      <param name="ACTIVE_GATES" text="{8888888, 1038}" comment="ActiveGates" type="bool" default="true"/>
+      <param name="INACTIVE_GATES" text="{8888888, 1039}" comment="InactiveGates" type="bool" default="true"/>
+      <param name="ACCELERATORS" text="{8888888, 1040}" comment="Accelerators" type="bool" default="true"/>
+      <param name="ACTIVE_ACCELERATORS" text="{8888888, 1041}" comment="ActiveAccelerators" type="bool" default="true"/>
+      <param name="INACTIVE_ACCELERATORS" text="{8888888, 1042}" comment="InactiveAccelerators" type="bool" default="true"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="STATIONS" text="{8888888, 1043}" comment="Stations" type="bool" default="true"/>
+      <param name="WHARFS" text="{8888888, 1044}" comment="Wharfs" type="bool" default="true"/>
+      <param name="SHIPYARDS" text="{8888888, 1045}" comment="Shipyards" type="bool" default="true"/>
+      <param name="EQUIPMENTDOCKS" text="{8888888, 1046}" comment="Equipmentdocks" type="bool" default="true"/>
+      <param name="TRADE_STATIONS" text="{8888888, 1047}" comment="TradeStations" type="bool" default="true"/>
+      <param name="DEFENCE_STATIONS" text="{8888888, 1048}" comment="DefenceStations" type="bool" default="true"/>
+      <param name="PIRATE_BASE" text="{8888888, 1049}" comment="PirateBase" type="bool" default="true"/>
+      <param name="FACTION_HEADQUARTERS" text="{8888888, 1050}" comment="FactionHeadquarters" type="bool" default="true"/>
+      <param name="NON_SPECIAL_STATIONS" text="{8888888, 1051}" comment="NonSpecialStations" type="bool" default="false"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="IDLE_FOLLOW" text="TODO! {8888888, 1052}" comment="Idle: Follow?" type="bool" default="false"/>
+      <param name="WHO_TO_FOLLOW" text="{8888888, 1053}" comment="Who to follow?" type="object" default="null">
+        <input_param name="class" value="[class.ship]"/>
+        <input_param name="owner" value="this.ship.owner"/>
+      </param>
+      <param name="IDLE_DOCKING" text="TODO! {8888888, 1054}" comment="Idle: Docking?" type="bool" default="false"/>
+      <param name="WHERE_TO_DOCK" text="{8888888, 1055}" comment="Where to dock?" type="object" default="null">
+        <input_param name="class" value="[class.station, class.ship_m, class.ship_l, class.ship_xl]"/>
+        <input_param name="owner" value="this.ship.owner"/>
+      </param>
+      <param name="IDLE_RANDOM_MOVEMENT" text="{8888888, 1056}" comment="Idle: Movement?" type="bool" default="false"/>
+      <param name="IN_WHICH_SECTOR" text="{8888888, 1057}" comment="In which sector?" type="position" default="[this.ship.sector, this.ship.position]">
+        <input_param name="class" value="class.sector"/>
+      </param>
+      <param name="IDLE_MOVE_TO" text="TODO! {8888888, 1058}" comment="Idle: Move to?" type="bool" default="false"/>
+      <param name="WHERE_TO_MOVE" text="{8888888, 1059}" comment="Where to move?" type="position" default="[this.ship.sector, this.ship.position]">
+        <input_param name="class" value="class.sector"/>
+      </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <!-- DEBUG -->
       <param name="DEBUG" text="DebugText" type="number" default="0.0" advanced="1">
         <input_param name="min" value="0.0"/>
@@ -43,13 +84,13 @@
   <init>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <set_value name="$DebugDirectory" exact="'JP_SatelliteDropper.logs'"/>
-    <set_value name="$DebugFileName" exact="this.ship.idcode + '.JP_SatelliteDropper.log'"/>
+    <set_value name="$DebugFileName" exact="this.ship.idcode + '.JP_SatelliteDropper.xml.log'"/>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <set_value name="$Ship" exact="this.ship"/>
     <set_value name="$ExpTotalMultiplier" exact="0.84"/>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <set_value name="this.$OldName" exact="this.ship.name"/>
     <do_if value="$ADD_ORDER_TAG">
-      <set_value name="this.$OldName" exact="this.ship.name"/>
       <set_object_name object="this.ship" name="this.ship.name + '\033#FFA95908# #SD\033X'"/>
     </do_if>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -104,7 +145,7 @@
             <show_help custom="'Ship ' + $Ship.knownname + ' failed to resupply satellites.'" log="true"/>
             <remove_value name="$Stations"/>
             <remove_value name="$AmmoTable"/>
-            <resume label="END"/>
+            <resume label="FINISH"/>
           </do_else>
           <remove_value name="$Stations"/>
           <remove_value name="$AmmoTable"/>
@@ -112,67 +153,102 @@
       </do_if>
       <do_else>
         <show_help custom="'Ship ' + $Ship.knownname + ' has no satellites and automatic restocking turned off.. canceling order.'" log="true"/>
-        <resume label="END"/>
+        <resume label="FINISH"/>
       </do_else>
 
-      <!-- Get nearest Sector with an Gate without a satellite -->
+      <run_script name="'JP_GetNearestSectorWithObjectsToMark'">
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <param name="ENEMY_SECTORS" value="$ENEMY_SECTORS"/>
+        <param name="NEUTRAL_SECTORS" value="$NEUTRAL_SECTORS"/>
+        <param name="ENEMY_STATIONS" value="$ENEMY_STATIONS"/>
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <param name="GATES" value="$GATES"/>
+        <param name="ACTIVE_GATES" value="$ACTIVE_GATES"/>
+        <param name="INACTIVE_GATES" value="$INACTIVE_GATES"/>
+        <param name="ACCELERATORS" value="$ACCELERATORS"/>
+        <param name="ACTIVE_ACCELERATORS" value="$ACTIVE_ACCELERATORS"/>
+        <param name="INACTIVE_ACCELERATORS" value="$INACTIVE_ACCELERATORS"/>
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <param name="STATIONS" value="$STATIONS"/>
+        <param name="WHARFS" value="$WHARFS"/>
+        <param name="SHIPYARDS" value="$SHIPYARDS"/>
+        <param name="EQUIPMENTDOCKS" value="$EQUIPMENTDOCKS"/>
+        <param name="TRADE_STATIONS" value="$TRADE_STATIONS"/>
+        <param name="DEFENCE_STATIONS" value="$DEFENCE_STATIONS"/>
+        <param name="PIRATE_BASE" value="$PIRATE_BASE"/>
+        <param name="FACTION_HEADQUARTERS" value="$FACTION_HEADQUARTERS"/>
+        <param name="NON_SPECIAL_STATIONS" value="$NON_SPECIAL_STATIONS"/>
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <param name="DEBUG" value="$DEBUG"/>
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <save_retval name="NEAREST_SECTOR" variable="$NearestSector"/>
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      </run_script>
 
-      <do_if value="$ENEMY_SECTORS">
-        <find_gate space="player.galaxy" name="$Gates" multiple="true">
-          <match knownto="$Ship.owner"/>
-        </find_gate>
+      <do_if value="$NearestSector == 'NoSectorFound'">
+        <run_script name="'JP_IdleReturnHome'">
+          <param name="IDLE_FOLLOW" value="$IDLE_FOLLOW"/>
+          <param name="WHO_TO_FOLLOW" value="$WHO_TO_FOLLOW"/>
+          <param name="IDLE_DOCKING" value="$IDLE_DOCKING"/>
+          <param name="WHERE_TO_DOCK" value="$WHERE_TO_DOCK"/>
+          <param name="IDLE_RANDOM_MOVEMENT" value="$IDLE_RANDOM_MOVEMENT"/>
+          <param name="IN_WHICH_SECTOR" value="$IN_WHICH_SECTOR"/>
+          <param name="IDLE_MOVE_TO" value="$IDLE_MOVE_TO"/>
+          <param name="WHERE_TO_MOVE" value="$WHERE_TO_MOVE"/>
+        </run_script>
+        <set_object_name object="this.ship" name="if $ADD_ORDER_TAG then this.$OldName + '\033#FFA95908# #SD\033X' else this.$OldName"/>
+        <resume label="RESUME"/>
       </do_if>
-      <do_else>
-        <find_gate space="player.galaxy" name="$Gates" multiple="true">
-          <match knownto="$Ship.owner"/>
-          <match mayattack="$Ship.owner" negate="true"/>
-          <match_relation_to faction="$Ship.owner" comparison="ge" relation="neutral"/>
-        </find_gate>
-      </do_else>
-      <create_list name="$GatesWithoutSatellite"/>
-      <do_for_each name="$Gate" in="$Gates">
-        <find_object space="$Gate.sector" name="$Satellite">
-          <match owner="$Ship.owner"/>
-          <match class="class.satellite"/>
-          <match_distance object="$Gate" max="20000m"/>
-        </find_object>
-        <do_if value="@$Satellite == null">
-          <append_to_list name="$GatesWithoutSatellite" exact="$Gate"/>
-        </do_if>
-        <remove_value name="$Satellite"/>
-      </do_for_each>
-      <do_if value="$GatesWithoutSatellite.count gt 1">
-        <sort_list list="$GatesWithoutSatellite" sortbyvalue="$Ship.gatedistance.{loop.element}"/>
-      </do_if>
-      <do_if value="$GatesWithoutSatellite.count gt 0">
-        <set_value name="$NearestGate" exact="$GatesWithoutSatellite.{1}"/>
-        <do_if value="$DEBUG gt 0.0">
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'$NearestGate: ' + $NearestGate.name + ' ~ ' + '$NearestGate.sector: ' + $NearestGate.sector.name + ' ~ ' + '$NearestGate.exit.sector: ' + @$NearestGate.exit.sector.name"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
-        </do_if>
-      </do_if>
-      <do_else>
-        <!-- No Gates without an placed satellite found -->
-        <!-- TODO: IDLE_WAIT -->
-      </do_else>
-      <remove_value name="$GatesWithoutSatellite"/>
 
-      <!-- Fly to the sector of the nearest gate -->
-      <do_if value="$Ship.sector != $NearestGate.sector">
-        <set_command command="command.move" param="$NearestGate.sector"/>
+      <run_script name="'JP_GetNearestObjectToMark'">
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <param name="SECTOR" value="$NearestSector"/>
+        <param name="ENEMY_STATIONS" value="$ENEMY_STATIONS"/>
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <param name="GATES" value="$GATES"/>
+        <param name="ACTIVE_GATES" value="$ACTIVE_GATES"/>
+        <param name="INACTIVE_GATES" value="$INACTIVE_GATES"/>
+        <param name="ACCELERATORS" value="$ACCELERATORS"/>
+        <param name="ACTIVE_ACCELERATORS" value="$ACTIVE_ACCELERATORS"/>
+        <param name="INACTIVE_ACCELERATORS" value="$INACTIVE_ACCELERATORS"/>
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <param name="STATIONS" value="$STATIONS"/>
+        <param name="WHARFS" value="$WHARFS"/>
+        <param name="SHIPYARDS" value="$SHIPYARDS"/>
+        <param name="EQUIPMENTDOCKS" value="$EQUIPMENTDOCKS"/>
+        <param name="TRADE_STATIONS" value="$TRADE_STATIONS"/>
+        <param name="DEFENCE_STATIONS" value="$DEFENCE_STATIONS"/>
+        <param name="PIRATE_BASE" value="$PIRATE_BASE"/>
+        <param name="FACTION_HEADQUARTERS" value="$FACTION_HEADQUARTERS"/>
+        <param name="NON_SPECIAL_STATIONS" value="$NON_SPECIAL_STATIONS"/>
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <param name="DEBUG" value="$DEBUG"/>
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <save_retval name="NEAREST_OBJECT" variable="$NearestObject"/>
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      </run_script>
+
+      <do_if value="$DEBUG gt 0.0">
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="' - ' + $NearestObject.knownname + ' ~ ' + if @$NearestObject.owner.knownname != null then @$NearestObject.owner.knownname else 'No Owner'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+      </do_if>
+
+      <!-- Fly to the sector of the $NearestObject -->
+      <do_if value="$Ship.sector != $NearestSector">
+        <set_command command="command.move" param="$NearestSector"/>
         <run_script name="'move.generic'">
-          <param name="destination" value="$NearestGate.sector"/>
+          <param name="destination" value="$NearestSector"/>
           <param name="endintargetzone" value="true"/>
           <param name="recallsubordinates" value="true"/>
         </run_script>
       </do_if>
 
-      <!-- Fly to the gate -->
+      <!-- Fly to the $NearestObject -->
       <label name="MOVING"/>
-      <set_command command="command.move" param="$NearestGate"/>
-      <get_safe_pos result="$TempPosition" zone="$NearestGate.sector" object="$NearestGate" directionobject="$Ship" radius="$Ship.size / 2"/>
-      <move_to object="$Ship" destination="$NearestGate.sector" finishonapproach="false" forceposition="true" travel="true">
+      <set_command command="command.move" param="$NearestObject"/>
+      <get_safe_pos result="$TempPosition" zone="$NearestSector" object="$NearestObject" directionobject="$Ship" radius="$Ship.size / 2"/>
+      <move_to object="$Ship" destination="$NearestSector" finishonapproach="false" forceposition="true" travel="true">
         <position value="$TempPosition"/>
       </move_to>
       <remove_value name="$TempPosition"/>
@@ -183,23 +259,30 @@
       <launch_satellite object="$Ship" macro="if $MK2_INSTEAD then ware.satellite_mk2.objectmacro else ware.satellite_mk1.objectmacro" name="$Satellite"/>
       <apply_experience entity="$Ship.pilot" experience="'JP_SHIP_SATELLITE_PLACE'" factor="$ExpTotalMultiplier"/>
       <apply_experience object="$Ship" experience="'JP_SHIP_SATELLITE_PLACE'" role="entityrole.service" factor="$ExpTotalMultiplier"/>
-      <do_if value="@$NearestGate.exit.sector.name == null">
-        <set_object_name object="$Satellite" name="'\033#FF00CC66#{20001, 701}\033X \033#FF00CCCC#~ ' + $NearestGate.sector.name + ' --> ' + '{20001, 704}' + '\033X'"/>
-      </do_if>
-      <do_elseif value="$NearestGate.exit.sector.isknown">
-        <set_object_name object="$Satellite" name="'\033#FF00CC66#{20001, 701}\033X \033#FF00CCCC#~ ' + $NearestGate.sector.name + ' --> ' + $NearestGate.exit.sector.name + '\033X'"/>
-      </do_elseif>
-      <do_else>
-        <set_object_name object="$Satellite" name="'\033#FF00CC66#{20001, 701}\033X \033#FF00CCCC#~ ' + $NearestGate.sector.name + ' --> ' + '{20006, 301}' + '\033X'"/>
-      </do_else>
-      <remove_value name="$Satellite"/>
 
+      <do_if value="$NearestObject.class == class.gate">
+        <do_if value="@$NearestObject.exit.sector.name == null">
+          <set_object_name object="$Satellite" name="'\033#FF00CC66#' + $NearestObject.name + '\033X \033#FF00CCCC#~ ' + $NearestObject.sector.name + ' --> ' + '{20001, 704}' + '\033X'"/>
+        </do_if>
+        <do_elseif value="$NearestObject.exit.sector.isknown">
+          <set_object_name object="$Satellite" name="'\033#FF00CC66#' + $NearestObject.name + '\033X \033#FF00CCCC#~ ' + $NearestObject.sector.name + ' --> ' + $NearestObject.exit.sector.name + '\033X'"/>
+        </do_elseif>
+        <do_else>
+          <set_object_name object="$Satellite" name="'\033#FF00CC66#' + $NearestObject.name + '\033X \033#FF00CCCC#~ ' + $NearestObject.sector.name + ' --> ' + '{20006, 301}' + '\033X'"/>
+        </do_else>
+      </do_if>
+      <do_if value="$NearestObject.class == class.station">
+        <set_object_name object="$Satellite" name="'\033#FF00CC66#' + $NearestObject.name + '\033X \033#FF00CCCC#~ ' + $NearestObject.sector.name + '\033X'"/>
+      </do_if>
+
+      <remove_value name="$Satellite"/>
       <remove_value name="$NearestGate"/>
+      <remove_value name="$NearestSector"/>
 
       <wait exact="1s"/>
       <resume label="RESUME"/>
 
-      <label name="END"/>
+      <label name="FINISH"/>
 
       <do_if value="$ADD_ORDER_TAG">
         <set_object_name object="this.ship" name="this.$OldName"/>
@@ -220,7 +303,7 @@
 
       <set_order_syncpoint_reached order="this.ship.order"/>
       <cancel_order order="this.ship.order" />
-      <label name="FINISH"/>
+      <label name="END"/>
       <wait exact="1ms"/>
 
     </actions>

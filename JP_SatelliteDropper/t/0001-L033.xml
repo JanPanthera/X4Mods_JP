@@ -4,10 +4,35 @@
   <page id="8888888" voice="no">
     <!-- JP_SatelliteDropper -->
     <t id="1030">Ajouter une étiquette de commande?</t>
-    <t id="1031">Secteurs ennemis?</t>
-    <t id="1032">Satellites avancés?</t>
-    <t id="1033">Réapprovisionner les satellites?</t>
-    <t id="1034">Montant de réapprovisionnement?</t>
+    <t id="1031">Satellites avancés?</t>
+    <t id="1032">Réapprovisionner les satellites?</t>
+    <t id="1033">Montant de réapprovisionnement?</t>
+    <t id="1034">Secteurs ennemis?</t>
+    <t id="1035">Neutral Sectors?</t>
+    <t id="1036">Enemy Stations?</t>
+    <t id="1037">Gates?</t>
+    <t id="1038">Active Gates?</t>
+    <t id="1039">Inactive Gates?</t>
+    <t id="1040">Accelerators?</t>
+    <t id="1041">Active Accelerators?</t>
+    <t id="1042">Inactive Accelerators?</t>
+    <t id="1043">Stations?</t>
+    <t id="1044">Wharfs?</t>
+    <t id="1045">Shipyards?</t>
+    <t id="1046">Equipmentdocks?</t>
+    <t id="1047">Trade Stations?</t>
+    <t id="1048">Defence Stations?</t>
+    <t id="1049">Pirate Bases?</t>
+    <t id="1050">Faction Headquarters?</t>
+    <t id="1051">Non Special Stations?</t>
+    <t id="1035">Idle: Follow?</t>
+    <t id="1036">Who to follow?</t>
+    <t id="1037">Idle: Docking?</t>
+    <t id="1038">Where to dock?</t>
+    <t id="1039">Idle: Random movement?</t>
+    <t id="1040">In which sector?</t>
+    <t id="1041">Idle: Move to?</t>
+    <t id="1042">Where to move?</t>
   </page>
 </language>
 <!-- Thanks to ZeroBoogie -->

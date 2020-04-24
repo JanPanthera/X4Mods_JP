@@ -3,10 +3,35 @@
 <language>
   <page id="8888888" voice="no">
     <!-- JP_SatelliteDropper -->
-    <t id="1030">Add order tag?</t>
-    <t id="1031">Enemy sectors?</t>
-    <t id="1032">Advanced satellites?</t>
-    <t id="1033">Restock satellites?</t>
-    <t id="1034">Restock amount?</t>
+    <t id="1030">Befehlskürzel hinzufügen?</t>
+    <t id="1031">Erweiterte Satelliten?</t>
+    <t id="1032">Satelliten auffüllen?</t>
+    <t id="1033">Nachfüll Anzahl?</t>
+    <t id="1034">Feindliche Sektoren?</t>
+    <t id="1035">Neutrale Sektoren?</t>
+    <t id="1036">Feindliche Stationen?</t>
+    <t id="1037">Sprungtore?</t>
+    <t id="1038">Aktive Sprungtore?</t>
+    <t id="1039">Inaktive Sprungtore?</t>
+    <t id="1040">Beschleuniger?</t>
+    <t id="1041">Aktive Beschleuniger?</t>
+    <t id="1042">Inaktive Beschleuniger?</t>
+    <t id="1043">Stationen?</t>
+    <t id="1044">Raumdocks?</t>
+    <t id="1045">Schiffswerften?</t>
+    <t id="1046">Ausrüstungsdocks?</t>
+    <t id="1047">Handels Stationen?</t>
+    <t id="1048">Verteidigungsstationen?</t>
+    <t id="1049">Piraten Basen?</t>
+    <t id="1050">Fraktions Hauptquartiere?</t>
+    <t id="1051">Nicht spezialisierte Stationen?</t>
+    <t id="1052">Leerlauf: Folgen?</t>
+    <t id="1053">Wem folgen?</t>
+    <t id="1054">Leerlauf: Andocken?</t>
+    <t id="1055">Wo andocken?</t>
+    <t id="1056">Leerlauf: Zufällige bewegung?</t>
+    <t id="1057">In welchem Sektor?</t>
+    <t id="1058">Leerlauf: Zu Position bewegen?</t>
+    <t id="1059">Wohin?</t>
   </page>
 </language>
