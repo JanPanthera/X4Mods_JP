@@ -3,7 +3,7 @@
 <content id="JP_StationAutoCreditTransfer" name="JP_StationAutoCreditTransfer" description="Transfers automaticly money from a station to the player when over production budget." author="JanPanthera" version="200" date="2020-04-10" save="0" enabled="1">
   <dependency version="300"/>
   <text language="7"  name="JP_StationAutoCreditTransfer" description="Transfers automaticly money from a station to the player when over production budget." author="JanPanthera"/>
-  <text language="33" name="JP_StationAutoCreditTransfer" description="Transfers automaticly money from a station to the player when over production budget." author="JanPanthera"/>
+  <text language="33" name="JP_StationAutoCreditTransfer" description="Transfert des fonds automatiquement depuis la station vers le joueur quand le budget de production est franchi." author="JanPanthera"/>
   <text language="34" name="JP_StationAutoCreditTransfer" description="Transfers automaticly money from a station to the player when over production budget." author="JanPanthera"/>
   <text language="39" name="JP_StationAutoCreditTransfer" description="Transfers automaticly money from a station to the player when over production budget." author="JanPanthera"/>
   <text language="44" name="JP_StationAutoCreditTransfer" description="Transfers automaticly money from a station to the player when over production budget." author="JanPanthera"/>
