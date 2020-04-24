@@ -3,7 +3,7 @@
 <language>
   <page id="8888888" voice="no">
     <!-- JP_StationAutoCreditTransfer -->
-    <t id="211">Money transferred to</t>
-    <t id="212">Buildstorage</t>
+    <t id="211">Fonds transférés à</t>
+    <t id="212">Stockage de constructions</t>
   </page>
 </language>
