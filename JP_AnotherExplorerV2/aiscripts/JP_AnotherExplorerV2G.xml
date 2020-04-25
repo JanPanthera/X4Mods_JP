@@ -218,7 +218,7 @@
       <remove_value name="global.$AnotherExplorerV2Ships"/>
       <remove_value name="global.$AnotherExplorerV2SectorBlackList"/>
     </do_if>
-    <do_if value="$ADD_ORDER_TAG">
+    <do_if value="$ADD_ORDER_TAG and @this.$OldName">
       <set_object_name object="this.ship" name="this.$OldName"/>
       <remove_value name="this.$OldName"/>
     </do_if>
