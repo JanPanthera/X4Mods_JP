@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<aiscript name="JP_CollectPlaceables" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd">
+
+  <order id="JP_CollectPlaceables" name="CollectPlaceables {20001, 201} JP" category="navigation" infinite="true">
+    <params>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="SECTOR" text="{20001, 201}" comment="Sector" type="object" default="this.sector">
+        <input_param name="class" value="[class.sector]"/>
+      </param>
+      <param name="COLLECT_MINES" text="{8888888, 133}" comment="Collect Mines?" type="bool" default="false"/>
+      <param name="COLLECT_SATELLITES" text="{8888888, 134}" comment="Collect Satellites?" type="bool" default="false"/>
+      <param name="COLLECT_NAVBEACONS" text="{8888888, 135}" comment="Collect Navigation Beacons?" type="bool" default="false"/>
+      <param name="COLLECT_RESOURCEPROBES" text="{8888888, 136}" comment="Collect Resource Probes?" type="bool" default="false"/>
+      <param name="COLLECT_LASERTOWERS" text="{8888888, 137}" comment="Collect Laser Towers?" type="bool" default="false"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <!-- Cheaty Version ~ collects without flying to the object ~ (/thereshallbewings) -->
+      <param name="INSTANT" text="{8888888, 138}" comment="Instant Collect?" type="bool" default="false" advanced="true"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <!-- DEBUG -->
+      <param name="DEBUG" text="DebugText" type="number" default="0.0" advanced="1">
+        <input_param name="min" value="0.0"/>
+        <input_param name="max" value="1.0"/>
+        <input_param name="step" value="0.1"/>
+      </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    </params>
+    <skill min="0"/>
+    <requires>
+      <match shiptype="shiptype.lasertower" negate="true"/>
+    </requires>
+  </order>
+
+  <interrupts>
+    <handler ref="SectorChangeHandler"/>
+    <handler ref="TargetInvalidHandler"/>
+    <handler ref="AttackHandler"/>
+    <handler ref="MissileLockHandler"/>
+    <handler ref="ScannedHandler"/>
+    <handler ref="InspectedHandler"/>
+    <handler ref="FoundAbandonedHandler"/>
+    <handler ref="FoundLockboxHandler"/>
+    <handler ref="ResupplyHandler"/>
+    <handler ref="JobRemoveRequestHandler"/>
+  </interrupts>
+
+  <init>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <set_value name="$DebugDirectory" exact="'JP_CollectPlaceables.logs'"/>
+    <set_value name="$DebugFileName" exact="this.ship.idcode + '.JP_CollectPlaceablesS.xml.log'"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <set_value name="$Ship" exact="this.ship"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <set_value name="this.$OldName" exact="this.ship.name"/>
+    <do_if value="$ADD_ORDER_TAG">
+      <set_object_name object="this.ship" name="this.ship.name + '\033#FFA95908# #CP-S\033X'"/>
+    </do_if>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  </init>
+
+  <attention min="unknown">
+    <actions>
+
+      <wait exact="1ms"/>
+      <label name="INIT"/>
+      <cancel_all_orders object="this.ship"/>
+
+      <do_if value="$DEBUG gt 0.0">
+        <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_CollectPlaceables.xml ~ Started ~~' + '\n'"/>
+      </do_if>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <label name="RESUME"/>
+
+      <set_command command="command.collect"/>
+      <set_command_action commandaction="commandaction.calculating"/>
+
+      <run_script name="'GetNearestPlacedObjectToCollect'">
+        <param name="SECTOR" value="$SECTOR"/>
+        <param name="MINES" value="$MINES"/>
+        <param name="SATELLITES" value="$SATELLITES"/>
+        <param name="NAVBEACONS" value="$NAVBEACONS"/>
+        <param name="RESOURCEPROBES" value="$RESOURCEPROBES"/>
+        <param name="LASERTOWERS" value="$LASERTOWERS"/>
+        <param name="DEBUG" value="$DEBUG"/>
+        <save_retval name="NEAREST_PLACED_OBJECT" variable="$NearestPlacedObject"/>
+      </run_script>
+
+      <!-- TODO: IDLE STUFF -->
+      <do_if value="$NearestPlacedObject == 'NoPlacedObjectFound'">
+        <wait exact="1s"/>
+        <resume label="RESUME"/>
+      </do_if>
+
+      <run_script name="''">
+        <param name="OBJECT" value="$NearestPlacedObject"/>
+      </run_script>
+      
+      <wait exact="1s"/>
+      <resume label="RESUME"/>
+
+      <label name="FINISH"/>
+
+      <do_if value="$ADD_ORDER_TAG">
+        <set_object_name object="this.ship" name="this.$OldName"/>
+      </do_if>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <do_if value="$DEBUG gt 0.0">
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_CollectPlaceables.xml ~ Finished ~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+      </do_if>
+
+      <label name="CLEANUP"/>
+      <remove_value name="$Ship"/>
+      <remove_value name="this.$OldName"/>
+      <remove_value name="$DebugFileName"/>
+      <remove_value name="$DebugDirectory"/>
+
+      <set_order_syncpoint_reached order="this.ship.order"/>
+      <cancel_order order="this.ship.order" />
+      <label name="END"/>
+      <wait exact="1ms"/>
+
+    </actions>
+  </attention>
+
+  <on_abort>
+    <do_if value="$ADD_ORDER_TAG">
+      <set_object_name object="this.ship" name="this.$OldName"/>
+      <remove_value name="this.$OldName"/>
+    </do_if>
+  </on_abort>
+
+</aiscript>
