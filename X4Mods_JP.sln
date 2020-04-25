@@ -5,9 +5,10 @@ VisualStudioVersion = 16.0.29609.76
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_OtherStuff", "_OtherStuff", "{2CB18865-9C1C-44A9-A1DF-BD112DB91F2D}"
 	ProjectSection(SolutionItems) = preProject
-		_OtherStuff\0001.xml = _OtherStuff\0001.xml
-		_OtherStuff\StuffGoodToKnow.xml = _OtherStuff\StuffGoodToKnow.xml
-		_OtherStuff\TODO.xml = _OtherStuff\TODO.xml
+		_OtherStuff\_StuffGoodToKnow.xml = _OtherStuff\_StuffGoodToKnow.xml
+		_OtherStuff\_TODO.xml = _OtherStuff\_TODO.xml
+		_OtherStuff\_TranslationUsedNumbers.xml = _OtherStuff\_TranslationUsedNumbers.xml
+		_OtherStuff\_X4AIOrderTemplateCode.xml = _OtherStuff\_X4AIOrderTemplateCode.xml
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "JP_TradeOrderExplorer", "JP_TradeOrderExplorer\JP_TradeOrderExplorer.vcxproj", "{5C91C12B-A737-4653-9557-D0FFF5F3A9B2}"
@@ -23,8 +24,6 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "JP_SetFleetNameColor", "JP_SetFleetNameColor\JP_SetFleetNameColor.vcxproj", "{86BA0666-41A1-4DAC-81D0-1F249904D632}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "JP_ScriptLibrary", "JP_ScriptLibrary\JP_ScriptLibrary.vcxproj", "{242EDE3D-0DC0-48BD-83D6-3679B7EEAE61}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "JP_RenameWingName", "JP_RenameWingName\JP_RenameWingName.vcxproj", "{32159C1F-79DA-42B9-AF63-B2878A6A19E9}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "JP_ProtectPosition", "JP_ProtectPosition\JP_ProtectPosition.vcxproj", "{BA0D715B-6388-4897-A820-2586E531A803}"
 EndProject
@@ -61,6 +60,22 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "JP_AnotherFleetBehavior", "JP_AnotherFleetBehavior\JP_AnotherFleetBehavior.vcxproj", "{BCBFA96A-5473-48B4-AA34-A7325311B3A7}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "JP_GiveMeMoney", "JP_GiveMeMoney\JP_GiveMeMoney.vcxproj", "{6F3C0C8B-6395-44CA-825A-22BAD3797E78}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "md", "md", "{D39664E7-33EB-450C-AA70-4BD8C6EBC25A}"
+	ProjectSection(SolutionItems) = preProject
+		_OtherStuff\md\md.xsd = _OtherStuff\md\md.xsd
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "aiscripts", "aiscripts", "{019C8F2A-BDC8-4D44-94F9-1797ABFB245E}"
+	ProjectSection(SolutionItems) = preProject
+		_OtherStuff\aiscripts\aiscripts.xsd = _OtherStuff\aiscripts\aiscripts.xsd
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "JP_AnotherAutoSave", "JP_AnotherAutoSave\JP_AnotherAutoSave.vcxproj", "{D18BBD76-6880-409C-B956-5EB4814D44F2}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "JP_GoSupply", "JP_GoSupply\JP_GoSupply.vcxproj", "{F134F6C6-D53E-417E-AC6A-333EDC3AF65F}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "JP_SatelliteDropper", "JP_SatelliteDropper\JP_SatelliteDropper.vcxproj", "{803C9D25-A4AA-4302-959B-51CDE0B6E8D8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -126,14 +141,6 @@ Global
 		{242EDE3D-0DC0-48BD-83D6-3679B7EEAE61}.Release|x64.Build.0 = Release|x64
 		{242EDE3D-0DC0-48BD-83D6-3679B7EEAE61}.Release|x86.ActiveCfg = Release|Win32
 		{242EDE3D-0DC0-48BD-83D6-3679B7EEAE61}.Release|x86.Build.0 = Release|Win32
-		{32159C1F-79DA-42B9-AF63-B2878A6A19E9}.Debug|x64.ActiveCfg = Debug|x64
-		{32159C1F-79DA-42B9-AF63-B2878A6A19E9}.Debug|x64.Build.0 = Debug|x64
-		{32159C1F-79DA-42B9-AF63-B2878A6A19E9}.Debug|x86.ActiveCfg = Debug|Win32
-		{32159C1F-79DA-42B9-AF63-B2878A6A19E9}.Debug|x86.Build.0 = Debug|Win32
-		{32159C1F-79DA-42B9-AF63-B2878A6A19E9}.Release|x64.ActiveCfg = Release|x64
-		{32159C1F-79DA-42B9-AF63-B2878A6A19E9}.Release|x64.Build.0 = Release|x64
-		{32159C1F-79DA-42B9-AF63-B2878A6A19E9}.Release|x86.ActiveCfg = Release|Win32
-		{32159C1F-79DA-42B9-AF63-B2878A6A19E9}.Release|x86.Build.0 = Release|Win32
 		{BA0D715B-6388-4897-A820-2586E531A803}.Debug|x64.ActiveCfg = Debug|x64
 		{BA0D715B-6388-4897-A820-2586E531A803}.Debug|x64.Build.0 = Debug|x64
 		{BA0D715B-6388-4897-A820-2586E531A803}.Debug|x86.ActiveCfg = Debug|Win32
@@ -278,9 +285,37 @@ Global
 		{6F3C0C8B-6395-44CA-825A-22BAD3797E78}.Release|x64.Build.0 = Release|x64
 		{6F3C0C8B-6395-44CA-825A-22BAD3797E78}.Release|x86.ActiveCfg = Release|Win32
 		{6F3C0C8B-6395-44CA-825A-22BAD3797E78}.Release|x86.Build.0 = Release|Win32
+		{D18BBD76-6880-409C-B956-5EB4814D44F2}.Debug|x64.ActiveCfg = Debug|x64
+		{D18BBD76-6880-409C-B956-5EB4814D44F2}.Debug|x64.Build.0 = Debug|x64
+		{D18BBD76-6880-409C-B956-5EB4814D44F2}.Debug|x86.ActiveCfg = Debug|Win32
+		{D18BBD76-6880-409C-B956-5EB4814D44F2}.Debug|x86.Build.0 = Debug|Win32
+		{D18BBD76-6880-409C-B956-5EB4814D44F2}.Release|x64.ActiveCfg = Release|x64
+		{D18BBD76-6880-409C-B956-5EB4814D44F2}.Release|x64.Build.0 = Release|x64
+		{D18BBD76-6880-409C-B956-5EB4814D44F2}.Release|x86.ActiveCfg = Release|Win32
+		{D18BBD76-6880-409C-B956-5EB4814D44F2}.Release|x86.Build.0 = Release|Win32
+		{F134F6C6-D53E-417E-AC6A-333EDC3AF65F}.Debug|x64.ActiveCfg = Debug|x64
+		{F134F6C6-D53E-417E-AC6A-333EDC3AF65F}.Debug|x64.Build.0 = Debug|x64
+		{F134F6C6-D53E-417E-AC6A-333EDC3AF65F}.Debug|x86.ActiveCfg = Debug|Win32
+		{F134F6C6-D53E-417E-AC6A-333EDC3AF65F}.Debug|x86.Build.0 = Debug|Win32
+		{F134F6C6-D53E-417E-AC6A-333EDC3AF65F}.Release|x64.ActiveCfg = Release|x64
+		{F134F6C6-D53E-417E-AC6A-333EDC3AF65F}.Release|x64.Build.0 = Release|x64
+		{F134F6C6-D53E-417E-AC6A-333EDC3AF65F}.Release|x86.ActiveCfg = Release|Win32
+		{F134F6C6-D53E-417E-AC6A-333EDC3AF65F}.Release|x86.Build.0 = Release|Win32
+		{803C9D25-A4AA-4302-959B-51CDE0B6E8D8}.Debug|x64.ActiveCfg = Debug|x64
+		{803C9D25-A4AA-4302-959B-51CDE0B6E8D8}.Debug|x64.Build.0 = Debug|x64
+		{803C9D25-A4AA-4302-959B-51CDE0B6E8D8}.Debug|x86.ActiveCfg = Debug|Win32
+		{803C9D25-A4AA-4302-959B-51CDE0B6E8D8}.Debug|x86.Build.0 = Debug|Win32
+		{803C9D25-A4AA-4302-959B-51CDE0B6E8D8}.Release|x64.ActiveCfg = Release|x64
+		{803C9D25-A4AA-4302-959B-51CDE0B6E8D8}.Release|x64.Build.0 = Release|x64
+		{803C9D25-A4AA-4302-959B-51CDE0B6E8D8}.Release|x86.ActiveCfg = Release|Win32
+		{803C9D25-A4AA-4302-959B-51CDE0B6E8D8}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D39664E7-33EB-450C-AA70-4BD8C6EBC25A} = {2CB18865-9C1C-44A9-A1DF-BD112DB91F2D}
+		{019C8F2A-BDC8-4D44-94F9-1797ABFB245E} = {2CB18865-9C1C-44A9-A1DF-BD112DB91F2D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {932FCB78-23DB-466A-A109-0585150613A8}
