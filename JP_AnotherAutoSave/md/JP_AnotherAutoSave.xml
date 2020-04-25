@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<mdscript name="JP_AnotherAutoSave_MD" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="md.xsd">
+  <cues>
+
+    <cue name="JP_ANOTHER_AUTO_SAVE" instantiate="true" checkinterval="1800s">
+      <conditions>
+      </conditions>
+      <actions>
+        <trigger_autosave/>
+      </actions>
+    </cue>
+
+  </cues>
+</mdscript>
