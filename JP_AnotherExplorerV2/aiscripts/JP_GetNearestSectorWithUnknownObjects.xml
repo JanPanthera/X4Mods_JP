@@ -48,16 +48,22 @@
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-      <!-- Filling $Sectors_List with all available Sectors in the galaxy -->
-      <do_if value="$EXPLORE_ENEMY_SECTORS">
-        <find_sector name="$Sectors_List" multiple="true" space="player.galaxy"/>
+      <!-- Find sectors -->
+      <create_list name="$Sectors_List"/>
+      <find_sector name="$Sectors_List" space="player.galaxy" multiple="true">
+        <match knownto="$Ship.owner"/>
+      </find_sector>
+
+      <do_if value="not $ENEMY_SECTORS">
+        <create_list name="$_SectorsToRemove"/>
+        <do_for_each name="$Sector" in="$Sectors_List">
+          <do_if value="$Sector.relationto.{$EXPLORER.owner} lt 0 or $Sector.mayattack.{$EXPLORER.owner}">
+            <append_to_list name="$_SectorsToRemove" exact="$Sector"/>
+          </do_if>
+        </do_for_each>
+        <remove_from_list name="$Sectors_List" list="$_SectorsToRemove"/>
+        <remove_value name="$_SectorsToRemove"/>
       </do_if>
-      <do_else>
-        <find_sector name="$Sectors_List" multiple="true" space="player.galaxy">
-          <match mayattack="$EXPLORER" negate="true"/>
-          <match_relation_to faction="$EXPLORER.owner" comparison="ge" relation="neutral"/>
-        </find_sector>
-      </do_else>
 
       <!-- Remove all sectors who already are being explored -->
       <remove_from_list name="$Sectors_List" list="global.$AnotherExplorerV2SectorBlackList"/>
