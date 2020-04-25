@@ -296,6 +296,7 @@
       </do_if>
 
       <label name="CLEANUP"/>
+      <remove_value name="$ExpTotalMultiplier"/>
       <remove_value name="$Ship"/>
       <remove_value name="this.$OldName"/>
       <remove_value name="$DebugFileName"/>
@@ -310,7 +311,7 @@
   </attention>
 
   <on_abort>
-    <do_if value="$ADD_ORDER_TAG">
+    <do_if value="$ADD_ORDER_TAG and @this.$OldName">
       <set_object_name object="this.ship" name="this.$OldName"/>
       <remove_value name="this.$OldName"/>
     </do_if>
