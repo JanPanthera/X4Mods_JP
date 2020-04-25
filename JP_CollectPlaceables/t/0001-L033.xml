@@ -3,8 +3,8 @@
 <language>
   <page id="8888888" voice="no">
     <!-- JP_CollectPlaceables -->
-    <t id="131">Objet a collecter</t>
-    <t id="132">Collecter dans le Secteur Complet?</t>
+    <t id="131">Add order tag?</t>
+    <t id="132">Enemy Sectors?</t>
     <t id="133">Collecter les Mines?</t>
     <t id="134">Collecter les Satellites?</t>
     <t id="135">Collecter les Balises de Navigation?</t>

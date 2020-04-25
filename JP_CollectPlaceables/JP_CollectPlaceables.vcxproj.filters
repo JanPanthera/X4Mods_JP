@@ -21,6 +21,9 @@
     <Xsd Include="aiscripts\aiscripts.xsd">
       <Filter>Headerdateien</Filter>
     </Xsd>
+    <Xsd Include="md\md.xsd">
+      <Filter>Headerdateien</Filter>
+    </Xsd>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="JP_CollectPlaceables\aiscripts\JP_CollectPlaceables.xml" />
@@ -37,7 +40,6 @@
     <Xml Include="JP_CollectPlaceables\t\0001-L086.xml" />
     <Xml Include="JP_CollectPlaceables\t\0001-L088.xml" />
     <Xml Include="content.xml" />
-    <Xml Include="aiscripts\JP_CollectPlaceables.xml" />
     <Xml Include="t\0001-L007.xml" />
     <Xml Include="t\0001-L033.xml" />
     <Xml Include="t\0001-L034.xml" />
@@ -49,5 +51,13 @@
     <Xml Include="t\0001-L082.xml" />
     <Xml Include="t\0001-L086.xml" />
     <Xml Include="t\0001-L088.xml" />
+    <Xml Include="aiscripts\JP_CollectPlaceablesG.xml" />
+    <Xml Include="aiscripts\JP_CollectPlaceablesS.xml" />
+    <Xml Include="aiscripts\JP_CollectPlaced.xml" />
+    <Xml Include="aiscripts\JP_GetNearestPlacedObjectToCollect.xml" />
+    <Xml Include="libraries\icons.xml" />
+    <Xml Include="libraries\experiences.xml" />
+    <Xml Include="t\0001.xml" />
+    <Xml Include="aiscripts\JP_GetNearestSectorWithPlacedObjectsToCollect.xml" />
   </ItemGroup>
 </Project>

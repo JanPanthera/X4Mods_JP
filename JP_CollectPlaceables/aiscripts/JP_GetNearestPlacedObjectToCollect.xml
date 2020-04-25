@@ -5,9 +5,10 @@
   <order id="JP_GetNearestPlacedObjectToCollect" name="GetNearestPlacedObjectToCollect JP" category="navigation" infinite="false">
     <params>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="SECTOR" text="{20001, 201}" comment="Sector" type="object" default="this.sector">
+      <param name="SECTOR" text="Sector" comment="Sector" type="object" default="this.sector">
         <input_param name="class" value="[class.sector]"/>
       </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="MINES" text="Collect Mines?" comment="Collect Mines?" type="bool" default="false"/>
       <param name="SATELLITES" text="Collect Satellites?" comment="Collect Satellites?" type="bool" default="false"/>
       <param name="NAVBEACONS" text="Collect Navigation Beacons?" comment="Collect Navigation Beacons?" type="bool" default="false"/>
@@ -86,8 +87,18 @@
         </find_object>
       </do_if>
 
-      <do_if value="$_Objects.count lt 0">
+      <do_if value="$_Objects.count le 0">
         <resume label="FINISH"/>
+      </do_if>
+
+      <do_if value="$DEBUG gt 0.0">
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="' ~ $_Objects.count: ' + $_Objects.count"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <do_for_each name="$_Object" in="$_Objects">
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="' - [' + $_Object.class + '] ' + $_Object.knownname + ' ~ ' + if @$_Object.owner.knownname != null then @$_Object.owner.knownname else 'No Owner'"/>
+        </do_for_each>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
       </do_if>
 
       <do_if value="$_Objects.count gt 1">
@@ -96,7 +107,13 @@
 
       <set_value name="$NearestPlacedObject" exact="$_Objects.{1}"/>
       <remove_value name="$_Objects"/>
-      
+
+      <do_if value="$DEBUG gt 0.0">
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="' ~ $NearestPlacedObject: ' + $NearestPlacedObject.knownname + ' ~ ' + if @$NearestPlacedObject.owner.knownname != null then @$NearestPlacedObject.owner.knownname else 'No Owner'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+      </do_if>
+
       <label name="FINISH"/>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->

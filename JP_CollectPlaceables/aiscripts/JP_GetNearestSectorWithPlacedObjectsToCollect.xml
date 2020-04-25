@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<aiscript name="JP_GetNearestSectorWithPlacedObjectsToCollect" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd">
+
+  <order id="JP_GetNearestSectorWithPlacedObjectsToCollect" name="GetNearestSectorWithPlacedObjectsToCollect JP" category="navigation" infinite="false">
+    <params>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="ENEMY_SECTORS" text="Enemy Sectors?" comment="Enemy Sectors?" type="bool" default="false"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="MINES" text="Collect Mines?" comment="Collect Mines?" type="bool" default="false"/>
+      <param name="SATELLITES" text="Collect Satellites?" comment="Collect Satellites?" type="bool" default="false"/>
+      <param name="NAVBEACONS" text="Collect Navigation Beacons?" comment="Collect Navigation Beacons?" type="bool" default="false"/>
+      <param name="RESOURCEPROBES" text="Collect Resource Probes?" comment="Collect Resource Probes?" type="bool" default="false"/>
+      <param name="LASERTOWERS" text="Collect Laser Towers?" comment="Collect Laser Towers?" type="bool" default="false"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="DEBUG" text="DebugText" type="number" default="0.0" advanced="1">
+        <input_param name="min" value="0.0"/>
+        <input_param name="max" value="1.0"/>
+        <input_param name="step" value="0.1"/>
+      </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    </params>
+  </order>
+
+  <interrupts>
+  </interrupts>
+
+  <init>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <set_value name="$DebugDirectory" exact="'JP_CollectPlaceables.logs'"/>
+    <set_value name="$DebugFileName" exact="this.ship.idcode + '.JP_GetNearestSectorWithPlacedObjectsToCollect.xml.log'"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <set_value name="$Ship" exact="this.ship"/>
+    <set_value name="$NearestSector" exact="'NoSectorFound'"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  </init>
+
+  <attention min="unknown">
+    <actions>
+
+      <wait exact="1ms"/>
+      <label name="INIT"/>
+
+      <do_if value="$DEBUG gt 0.0">
+        <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_GetNearestSectorWithPlacedObjectsToCollect.xml ~ Started ~~' + '\n'"/>
+      </do_if>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <create_list name="$_Sectors"/>
+      <find_sector name="$_Sectors" space="player.galaxy" multiple="true">
+        <match knownto="$Ship.owner"/>
+      </find_sector>
+
+      <include_interrupt_actions ref="GetBlacklistgroup"/>
+
+      <create_list name="$_SectorsToRemove"/>
+      <do_for_each name="$_Sector" in="$_Sectors">
+        <do_if value="$Ship.gatedistance.{$_Sector} lt 0">
+          <append_to_list name="$_SectorsToRemove" exact="$_Sector"/>
+          <continue/>
+        </do_if>
+        <do_if value="$_Sector.isblacklisted.{blacklisttype.sectortravel}.{$blacklistgroup}.{$Ship}">
+          <append_to_list name="$_SectorsToRemove" exact="$_Sector"/>
+          <continue/>
+        </do_if>
+        <do_if value="($_Sector.owner.mayattack.{$Ship.owner} or $_Sector.owner.relationto.{$Ship.owner} lt 0) and not $ENEMY_SECTORS">
+          <append_to_list name="$_SectorsToRemove" exact="$_Sector"/>
+          <continue/>
+        </do_if>
+      </do_for_each>
+      <remove_from_list name="$_Sectors" list="$_SectorsToRemove"/>
+      <remove_value name="$_SectorsToRemove"/>
+
+      <do_if value="$DEBUG gt 0.0">
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="' ~ $_Sectors.count: ' + $_Sectors.count"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <do_for_each name="$_Sector" in="$_Sectors">
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="' - ' + $_Sector.knownname + ' ~ ' + if @$_Sector.owner.knownname != null then @$_Sector.owner.knownname else 'No Owner'"/>
+        </do_for_each>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+      </do_if>
+
+      <create_list name="$_SectorsWithPlacedObjectsToCollect"/>
+      <do_for_each name="$_Sector" in="$_Sectors">
+        <run_script name="'JP_GetNearestPlacedObjectToCollect'">
+          <param name="SECTOR" value="$_Sector"/>
+          <param name="MINES" value="$MINES"/>
+          <param name="SATELLITES" value="$SATELLITES"/>
+          <param name="NAVBEACONS" value="$NAVBEACONS"/>
+          <param name="RESOURCEPROBES" value="$RESOURCEPROBES"/>
+          <param name="LASERTOWERS" value="$LASERTOWERS"/>
+          <param name="DEBUG" value="$DEBUG"/>
+          <save_retval name="NEAREST_PLACED_OBJECT" variable="$NearestPlacedObject"/>
+        </run_script>
+        <do_if value="$NearestPlacedObject != 'NoPlacedObjectFound'">
+          <append_to_list name="$_SectorsWithPlacedObjectsToCollect" exact="$_Sector"/>
+        </do_if>
+      </do_for_each>
+      <remove_value name="$_Sectors"/>
+
+      <do_if value="$_SectorsWithPlacedObjectsToCollect.count le 0">
+        <do_if value="$DEBUG gt 0.0">
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="' ~ No Sectors with objects to collect found.'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+        </do_if>
+        <remove_value name="$_SectorsWithPlacedObjectsToCollect"/>
+        <resume label="FINISH"/>
+      </do_if>
+
+      <do_if value="$DEBUG gt 0.0">
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="' ~ $_SectorsWithPlacedObjectsToCollect.count: ' + $_SectorsWithPlacedObjectsToCollect.count"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <do_for_each name="$_Sector" in="$_SectorsWithPlacedObjectsToCollect">
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="' - ' + $_Sector.knownname + ' ~ ' + if @$_Sector.owner.knownname != null then @$_Sector.owner.knownname else 'No Owner'"/>
+        </do_for_each>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+      </do_if>
+
+      <do_if value="$_SectorsWithPlacedObjectsToCollect.count gt 1">
+        <sort_list list="$_SectorsWithPlacedObjectsToCollect" sortbyvalue="$Ship.gatedistance.{loop.element}"/>
+      </do_if>
+
+      <set_value name="$NearestSector" exact="$_SectorsWithPlacedObjectsToCollect.{1}"/>
+      <remove_value name="$_SectorsWithPlacedObjectsToCollect"/>
+
+      <do_if value="$DEBUG gt 0.0">
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="' ~ $NearestSector: ' + $NearestSector.knownname + ' ~ ' + if @$NearestSector.owner.knownname != null then @$NearestSector.owner.knownname else 'No Owner'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+      </do_if>
+
+      <label name="FINISH"/>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <do_if value="$DEBUG gt 0.0">
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_GetNearestSectorWithPlacedObjectsToCollect.xml ~ Finished ~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+      </do_if>
+
+      <label name="CLEANUP"/>
+      <remove_value name="$Ship"/>
+      <remove_value name="$DebugFileName"/>
+      <remove_value name="$DebugDirectory"/>
+
+      <label name="END"/>
+      <wait exact="1ms"/>
+
+      <return>
+        <retval name="NEAREST_SECTOR" value="$NearestSector"/>
+      </return>
+
+    </actions>
+  </attention>
+
+  <on_abort>
+  </on_abort>
+
+</aiscript>

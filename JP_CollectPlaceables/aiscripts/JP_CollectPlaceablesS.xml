@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<aiscript name="JP_CollectPlaceables" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd">
+<aiscript name="JP_CollectPlaceablesS" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd">
 
-  <order id="JP_CollectPlaceables" name="CollectPlaceables {20001, 201} JP" category="navigation" infinite="true">
+  <order id="JP_CollectPlaceablesS" name="CollectPlaceables {20001, 201} JP" category="navigation" infinite="true">
     <params>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="ADD_ORDER_TAG" text="{8888888, 131}" comment="Add order tag?" type="bool" default="true"/>
       <param name="SECTOR" text="{20001, 201}" comment="Sector" type="object" default="this.sector">
         <input_param name="class" value="[class.sector]"/>
       </param>
-      <param name="COLLECT_MINES" text="{8888888, 133}" comment="Collect Mines?" type="bool" default="false"/>
-      <param name="COLLECT_SATELLITES" text="{8888888, 134}" comment="Collect Satellites?" type="bool" default="false"/>
-      <param name="COLLECT_NAVBEACONS" text="{8888888, 135}" comment="Collect Navigation Beacons?" type="bool" default="false"/>
-      <param name="COLLECT_RESOURCEPROBES" text="{8888888, 136}" comment="Collect Resource Probes?" type="bool" default="false"/>
-      <param name="COLLECT_LASERTOWERS" text="{8888888, 137}" comment="Collect Laser Towers?" type="bool" default="false"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="MINES" text="{8888888, 133}" comment="Collect Mines?" type="bool" default="false"/>
+      <param name="SATELLITES" text="{8888888, 134}" comment="Collect Satellites?" type="bool" default="false"/>
+      <param name="NAVBEACONS" text="{8888888, 135}" comment="Collect Navigation Beacons?" type="bool" default="false"/>
+      <param name="RESOURCEPROBES" text="{8888888, 136}" comment="Collect Resource Probes?" type="bool" default="false"/>
+      <param name="LASERTOWERS" text="{8888888, 137}" comment="Collect Laser Towers?" type="bool" default="false"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <!-- Cheaty Version ~ collects without flying to the object ~ (/thereshallbewings) -->
       <param name="INSTANT" text="{8888888, 138}" comment="Instant Collect?" type="bool" default="false" advanced="true"/>
@@ -50,6 +52,7 @@
     <set_value name="$DebugFileName" exact="this.ship.idcode + '.JP_CollectPlaceablesS.xml.log'"/>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <set_value name="$Ship" exact="this.ship"/>
+    <set_value name="$ExpTotalMultiplier" exact="0.84"/>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <set_value name="this.$OldName" exact="this.ship.name"/>
     <do_if value="$ADD_ORDER_TAG">
@@ -61,13 +64,13 @@
   <attention min="unknown">
     <actions>
 
-      <wait exact="1ms"/>
+      <wait exact="1s"/>
       <label name="INIT"/>
       <cancel_all_orders object="this.ship"/>
 
       <do_if value="$DEBUG gt 0.0">
         <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_CollectPlaceables.xml ~ Started ~~' + '\n'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_CollectPlaceablesS.xml ~ Started ~~' + '\n'"/>
       </do_if>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -77,7 +80,13 @@
       <set_command command="command.collect"/>
       <set_command_action commandaction="commandaction.calculating"/>
 
-      <run_script name="'GetNearestPlacedObjectToCollect'">
+      <do_if value="$Ship.ammostorage.deployable.free le 0">
+        <show_help custom="'Ship ' + $Ship.knownname + ' cannot collect deployables because there is no place in cargo for them.\nTODO: Some idle functions will follow.'" log="true"/>
+        <!-- TODO: IdleReturn -->
+        <resume label="FINISH"/>
+      </do_if>
+      
+      <run_script name="'JP_GetNearestPlacedObjectToCollect'">
         <param name="SECTOR" value="$SECTOR"/>
         <param name="MINES" value="$MINES"/>
         <param name="SATELLITES" value="$SATELLITES"/>
@@ -90,14 +99,45 @@
 
       <!-- TODO: IDLE STUFF -->
       <do_if value="$NearestPlacedObject == 'NoPlacedObjectFound'">
-        <wait exact="1s"/>
+        <set_command command="command.move" param="$SECTOR"/>
+        <set_object_name object="$Ship" name="$Ship.name + ' \033#FFCEFBA1#~ nothing to do - moving randomly ~ TODO!\033X'"/>
+        <run_script name="'move.random'">
+          <param name="TimeOut" value="60s"/>
+          <param name="Anchor" value="$SECTOR"/>
+          <param name="Offset" value="$SECTOR"/>
+          <param name="MaxDistance" value="10km"/>
+        </run_script>
         <resume label="RESUME"/>
       </do_if>
 
-      <run_script name="''">
+      <do_if value="$Ship.sector != $NearestPlacedObject.sector">
+        <set_command command="command.move" param="$NearestPlacedObject.sector"/>
+        <do_if value="$DEBUG gt 0.0">
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'Moving to: ' + $NearestPlacedObject.sector.name"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+        </do_if>
+        <run_script name="'move.generic'">
+          <param name="destination" value="$NearestPlacedObject.sector"/>
+          <param name="endintargetzone" value="true"/>
+          <param name="recallsubordinates" value="true"/>
+        </run_script>
+      </do_if>
+
+      <do_if value="$DEBUG gt 0.0">
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'Collecting Object: [' + $NearestPlacedObject.class + '] ~ ' + $NearestPlacedObject.name"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+      </do_if>
+
+      <run_script name="'JP_CollectPlaced'">
         <param name="OBJECT" value="$NearestPlacedObject"/>
+        <param name="INSTANT" value="$INSTANT"/>
+        <param name="DEBUG" value="$DEBUG"/>
       </run_script>
-      
+      <apply_experience entity="$Ship.pilot" experience="'JP_SHIP_DEPLOAYABLE_COLLECT'" factor="$ExpTotalMultiplier"/>
+      <apply_experience object="$Ship" experience="'JP_SHIP_DEPLOAYABLE_COLLECT'" role="entityrole.service" factor="$ExpTotalMultiplier"/>
+
       <wait exact="1s"/>
       <resume label="RESUME"/>
 
@@ -110,11 +150,12 @@
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
       <do_if value="$DEBUG gt 0.0">
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_CollectPlaceables.xml ~ Finished ~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_CollectPlaceablesS.xml ~ Finished ~~'"/>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
       </do_if>
 
       <label name="CLEANUP"/>
+      <remove_value name="$ExpTotalMultiplier"/>
       <remove_value name="$Ship"/>
       <remove_value name="this.$OldName"/>
       <remove_value name="$DebugFileName"/>
@@ -123,13 +164,13 @@
       <set_order_syncpoint_reached order="this.ship.order"/>
       <cancel_order order="this.ship.order" />
       <label name="END"/>
-      <wait exact="1ms"/>
+      <wait exact="1s"/>
 
     </actions>
   </attention>
 
   <on_abort>
-    <do_if value="$ADD_ORDER_TAG">
+    <do_if value="$ADD_ORDER_TAG and @this.$OldName">
       <set_object_name object="this.ship" name="this.$OldName"/>
       <remove_value name="this.$OldName"/>
     </do_if>

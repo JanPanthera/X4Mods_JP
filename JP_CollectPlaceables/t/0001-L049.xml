@@ -3,8 +3,8 @@
 <language>
   <page id="8888888" voice="no">
     <!-- JP_CollectPlaceables -->
-    <t id="131">Zu sammelndes objekt</t>
-    <t id="132">Im ganzen Sektor sammeln?</t>
+    <t id="131">Befehlskürzel hinzufügen?</t>
+    <t id="132">Feindliche Sektoren?</t>
     <t id="133">Minen aufsammeln?</t>
     <t id="134">Satelliten aufsammeln?</t>
     <t id="135">Navigationsbaken aufsammeln?</t>

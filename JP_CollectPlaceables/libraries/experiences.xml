@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <experiences>
-  <experience id="JP_SHIP_SATELLITE_PLACE">
+  <experience id="JP_SHIP_DEPLOAYABLE_COLLECT">
     <skill ref="piloting">
-      <individual base="1.0" falloff="0.88" limit="25"/>
+      <individual base="1.0" falloff="0.94" limit="25"/>
     </skill>
     <skill ref="engineering">
-      <individual base="1.0" falloff="0.84" limit="25"/>
-      <group base="1.0" falloff="0.88" limit="25"/>
+      <individual base="1.0" falloff="0.91" limit="25"/>
+      <group base="1.0" falloff="0.89" limit="25"/>
     </skill>
     <skill ref="morale">
       <individual base="1.0" falloff="0.92" limit="25"/>

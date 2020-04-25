@@ -6,6 +6,7 @@
     <params>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="OBJECT" text="Object" comment="Object" type="object" default="null"/>
+      <param name="INSTANT" text="Instant Collect?" comment="Instant Collect?" type="bool" default="false"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="DEBUG" text="DebugText" type="number" default="0.0" advanced="1">
         <input_param name="min" value="0.0"/>
@@ -40,6 +41,43 @@
       </do_if>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <do_if value="$INSTANT">
+        <resume label="COLLECT"/>
+      </do_if>
+
+      <set_command command="command.move" param="$OBJECT"/>
+      <label name="MOVING"/>
+      <do_if value="$OBJECT.class == class.mine">
+        <get_safe_pos result="$TempPosition" zone="$OBJECT.sector" object="$OBJECT" directionobject="$Ship" radius="1000m" ignored="$Ship"/>
+      </do_if>
+      <do_else>
+        <get_safe_pos result="$TempPosition" zone="$OBJECT.sector" object="$OBJECT" directionobject="$Ship" radius="$Ship.size" ignored="$Ship"/>
+      </do_else>
+      <move_to object="$Ship" destination="$OBJECT.sector" travel="true" forceposition="false" finishonapproach="false" commandaction="false">
+        <position value="$TempPosition"/>
+        <interrupt_after_time time="2s"/>
+      </move_to>
+      <wait exact="1ms"/>
+
+      <do_if value="$Ship.speed == 0">
+        <resume label="COLLECT"/>
+      </do_if>
+      <do_if value="$OBJECT.class == class.mine">
+        <do_if value="$Ship.distanceto.{$OBJECT} gt 1200m">
+          <resume label="MOVING"/>
+        </do_if>
+      </do_if>
+      <do_else>
+        <do_if value="$Ship.distanceto.{$OBJECT} gt 200m">
+          <resume label="MOVING"/>
+        </do_if>
+      </do_else>
+      <stop_moving object="$Ship"/>
+      <remove_value name="$TempPosition"/>
+
+      <label name="COLLECT"/>
+      <collect_deployable deployable="$OBJECT" object="$Ship"/>
 
       <label name="FINISH"/>
 

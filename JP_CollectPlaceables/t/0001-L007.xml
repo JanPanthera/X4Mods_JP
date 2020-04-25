@@ -1,14 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Russian ~~ Русский 
-alexalsp
-
-http://apocalypse.moy.su/
--->
+<!-- Russian ~~ Русский -->
 <language>
   <page id="8888888" voice="no">
     <!-- JP_CollectPlaceables -->
-    <t id="131">Объект для сбора</t>
-    <t id="132">Весь сектор?</t>
+    <t id="131">Add order tag?</t>
+    <t id="132">Enemy Sectors?</t>
     <t id="133">Мины?</t>
     <t id="134">Спутники?</t>
     <t id="135">Нав.маяки?</t>

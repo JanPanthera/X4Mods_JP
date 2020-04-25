@@ -126,9 +126,14 @@
   <ItemGroup>
     <Xsd Include="aiscripts\aiscripts.xsd" />
     <Xsd Include="JP_CollectPlaceables\aiscripts\aiscripts.xsd" />
+    <Xsd Include="md\md.xsd" />
   </ItemGroup>
   <ItemGroup>
-    <Xml Include="aiscripts\JP_CollectPlaceables.xml" />
+    <Xml Include="aiscripts\JP_CollectPlaceablesG.xml" />
+    <Xml Include="aiscripts\JP_CollectPlaceablesS.xml" />
+    <Xml Include="aiscripts\JP_CollectPlaced.xml" />
+    <Xml Include="aiscripts\JP_GetNearestPlacedObjectToCollect.xml" />
+    <Xml Include="aiscripts\JP_GetNearestSectorWithPlacedObjectsToCollect.xml" />
     <Xml Include="content.xml" />
     <Xml Include="JP_CollectPlaceables\aiscripts\JP_CollectPlaceables.xml" />
     <Xml Include="JP_CollectPlaceables\content.xml" />
@@ -143,6 +148,8 @@
     <Xml Include="JP_CollectPlaceables\t\0001-L082.xml" />
     <Xml Include="JP_CollectPlaceables\t\0001-L086.xml" />
     <Xml Include="JP_CollectPlaceables\t\0001-L088.xml" />
+    <Xml Include="libraries\experiences.xml" />
+    <Xml Include="libraries\icons.xml" />
     <Xml Include="t\0001-L007.xml" />
     <Xml Include="t\0001-L033.xml" />
     <Xml Include="t\0001-L034.xml" />
@@ -154,6 +161,7 @@
     <Xml Include="t\0001-L082.xml" />
     <Xml Include="t\0001-L086.xml" />
     <Xml Include="t\0001-L088.xml" />
+    <Xml Include="t\0001.xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
