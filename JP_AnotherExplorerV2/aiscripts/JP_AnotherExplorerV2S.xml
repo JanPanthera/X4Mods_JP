@@ -8,9 +8,9 @@
       <param name="SECTOR" text="{20001, 201}" comment="Sector" type="object" default="this.sector">
         <input_param name="class" value="[class.sector]"/>
       </param>
-      <param name="EXPLORE_GATES" text="{8888888, 21}" comment="Explore gates?" type="bool" default="true"/>
-      <param name="EXPLORE_STATIONS" text="{8888888, 22}" comment="Explore stations?" type="bool" default="true"/>
-      <param name="EXPLORE_ENEMY_STATIONS" text="{8888888, 23}" comment="Explore enemy stations?" type="bool" default="false"/>
+      <param name="GATES" text="{8888888, 21}" comment="Explore gates?" type="bool" default="true"/>
+      <param name="STATIONS" text="{8888888, 22}" comment="Explore stations?" type="bool" default="true"/>
+      <param name="ENEMY_STATIONS" text="{8888888, 23}" comment="Explore enemy stations?" type="bool" default="false"/>
       <param name="AUTO_FLEET" text="{8888888, 25}" comment="Automatic Fleet?" type="bool" default="false"/>
       <!-- DEBUG -->
       <param name="DEBUG" text="DebugText" type="number" default="0.0" advanced="true">
@@ -82,41 +82,37 @@
       <set_command command="command.explore"/>
       <set_command_action commandaction="commandaction.calculating"/>
 
+      <append_to_list name="global.$AnotherExplorerV2SectorBlackList" exact="this.$CurrentSector"/>
+
       <do_if value="$DEBUG gt 0.0">
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'this.$CurrentSector: ' + this.$CurrentSector.name + ' ~ ' + '[' + this.$CurrentSector.owner.knownname + ']'"/>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
       </do_if>
 
-      <!-- Get all unknown objects in $this.CurrentSector -->
-      <run_script name="'JP_GetUnknownObjectsFromSector'">
+      <run_script name="'JP_GetNearestUnknownObject'">
         <param name="SECTOR" value="this.$CurrentSector"/>
-        <param name="EXPLORER" value="$Ship"/>
-        <param name="FIND_GATES" value="$EXPLORE_GATES"/>
-        <param name="FIND_STATIONS" value="$EXPLORE_STATIONS"/>
-        <param name="FIND_STATIONS_FROM_ENEMYS" value="$EXPLORE_ENEMY_STATIONS"/>
-        <param name="SORT" value="false"/>
+        <param name="GATES" value="$GATES"/>
+        <param name="STATIONS" value="$STATIONS"/>
+        <param name="ENEMY_STATIONS" value="$ENEMY_STATIONS"/>
         <param name="DEBUG" value="$DEBUG"/>
-        <save_retval name="UNKNOWN_OBJECTS" variable="$UnknownObjects"/>
+        <save_retval name="NEAREST_UNKNOWN_OBJECT" variable="$NearestUnknownObject"/>
       </run_script>
 
-      <!-- When no objects are found, idle a bit and resume searching -->
-      <do_if value="$UnknownObjects.count == 0">
-        <do_if value="$DEBUG gt 0.0">
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'No objects found that we need to find.'"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
-        </do_if>
-        <!-- Remove it from the blacklist so it can be explored again when it needs to -->
-        <remove_from_list name="global.$AnotherExplorerV2SectorBlackList" exact="this.$CurrentSector"/>
-        <!-- Case nothing to do.. TODO: Adding return logics like dock at or fly to or follow targed -->
-        <set_object_name object="$Ship" name="$Ship.name + '\033#FFCEFBA1# ~ nothing to do *TODO*\033X'"/>
-        <wait exact="60s"/>
-        <set_object_name object="$Ship" name="this.$OldName + '\033#FFA2560B# #AEV2-S\033X'"/>
+      <!-- TODO: IDLE STUFF -->
+      <do_if value="$NearestUnknownObject == 'NoUnknownObjectFound'">
+        <set_command command="command.move" param="this.$CurrentSector"/>
+        <set_object_name object="$Ship" name="$Ship.name + ' \033#FFCEFBA1#~ nothing to do - moving randomly ~ TODO!\033X'"/>
+        <run_script name="'move.random'">
+          <param name="TimeOut" value="60s"/>
+          <param name="Anchor" value="this.$CurrentSector"/>
+          <param name="Offset" value="this.$CurrentSector"/>
+          <param name="MaxDistance" value="10km"/>
+        </run_script>
+        <set_object_name object="this.ship" name="if $ADD_ORDER_TAG then this.$OldName + '\033#FFA95908# #AEV2-S\033X' else this.$OldName"/>
         <resume label="RESUME"/>
       </do_if>
 
-      <!-- Are we in the right sector? -->
       <do_if value="$Ship.sector != this.$CurrentSector">
         <set_command command="command.move" param="this.$CurrentSector"/>
         <do_if value="$DEBUG gt 0.0">
@@ -131,39 +127,27 @@
         </run_script>
       </do_if>
 
-      <label name="RESUME_SUBSCRIPTION_UPDATE"/>
-      <do_if value="$UnknownObjects.count gt 0">
-        <do_if value="$UnknownObjects.count gt 1">
-          <sort_list list="$UnknownObjects" sortbyvalue="$Ship.distanceto.{loop.element}"/>
-        </do_if>
-        <do_if value="$DEBUG gt 0.0">
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'Updating: ' + $UnknownObjects.{1}.name + ' [' + @$UnknownObjects.{1}.owner.name + ']'"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
-        </do_if>
-        <run_script name="'JP_ExploreObject'">
-          <param name="EXPLORER" value="$Ship"/>
-          <param name="OBJECT" value="$UnknownObjects.{1}"/>
-          <param name="DEBUG" value="$DEBUG"/>
-        </run_script>
-        <apply_experience entity="$Ship.pilot" experience="'JP_SHIP_TRADESUBSCRIPTION_UPDATED'" factor="$ExpTotalMultiplier"/>
-        <apply_experience object="$Ship" experience="'JP_SHIP_TRADESUBSCRIPTION_UPDATED'" role="entityrole.service" factor="$ExpTotalMultiplier"/>
-        <remove_from_list name="$UnknownObjects" exact="$UnknownObjects.{1}"/>
-        <resume label="RESUME_SUBSCRIPTION_UPDATE"/>
+      <do_if value="$DEBUG gt 0.0">
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'Exploring Object: [' + $NearestUnknownObject.class + '] ~ ' + $NearestUnknownObject.name"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
       </do_if>
-      <remove_value name="$UnknownObjects"/>
 
-      <!-- Remove it from the blacklist so it can be explored again when it needs to -->
-      <remove_from_list name="global.$AnotherExplorerV2SectorBlackList" exact="this.$CurrentSector"/>
+      <run_script name="'JP_ExploreObject'">
+        <param name="EXPLORER" value="$Ship"/>
+        <param name="OBJECT" value="$NearestUnknownObject"/>
+        <param name="DEBUG" value="$DEBUG"/>
+      </run_script>
+      <apply_experience entity="$Ship.pilot" experience="'JP_SHIP_OBJECT_DISCOVERED'" factor="$ExpTotalMultiplier"/>
+      <apply_experience object="$Ship" experience="'JP_SHIP_OBJECT_DISCOVERED'" role="entityrole.service" factor="$ExpTotalMultiplier"/>
 
-      <!-- Just a wait before resume to search for trade subscriptions -->
-      <wait min="1s" max="3s"/>
+      <wait exact="1s"/>
       <resume label="RESUME"/>
 
-      <label name="END"/>
+      <label name="FINISH"/>
 
       <do_if value="$ADD_ORDER_TAG">
-        <set_object_name object="$Ship" name="this.$OldName"/>
+        <set_object_name object="this.ship" name="this.$OldName"/>
       </do_if>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -189,7 +173,7 @@
 
       <set_order_syncpoint_reached order="this.ship.order"/>
       <cancel_order order="this.ship.order" />
-      <label name="FINISH"/>
+      <label name="END"/>
       <wait exact="1ms"/>
 
     </actions>
