@@ -26,11 +26,6 @@
         <event_cue_signalled/>
       </conditions>
       <actions>
-        <do_if value="not md.JP_StationAutoCreditTransferDisablePlayerToTransfers?">
-          <do_if value="global.$JP_StationAutoCreditTransferDisablePlayerToTransfer?">
-            <remove_value name="global.$JP_StationAutoCreditTransferDisablePlayerToTransfer"/>
-          </do_if>
-        </do_if>
         <set_value name="$DEBUG" exact="0.0"/>
         <!-- $PlayerBudgetCap ~ Default 1.000.000 Cr ~ Only money above amount X will be transferred automatically -->
         <set_value name="$PlayerBudgetCap" exact="1000000"/>
@@ -43,10 +38,16 @@
         <set_value name="$PlayerToStation" exact="true"/>
         <set_value name="$StationToPlayer" exact="true"/>
         <set_value name="$BuildstorageToPlayer" exact="true"/>
-        <do_if value="global.$JP_StationAutoCreditTransferDisablePlayerToTransfer?">
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <do_if value="md.JP_SACT_DisablePlayerToTransfers?">
           <set_value name="$PlayerToBuildstorage" exact="false"/>
           <set_value name="$PlayerToStation" exact="false"/>
         </do_if>
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <do_if value="md.JP_SACT_DisableStationToPlayerTransfers?">
+          <set_value name="$StationToPlayer" exact="false"/>
+        </do_if>
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       </actions>
     </cue>
 
