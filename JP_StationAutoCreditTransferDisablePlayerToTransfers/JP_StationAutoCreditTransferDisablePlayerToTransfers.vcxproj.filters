@@ -16,7 +16,7 @@
   </ItemGroup>
   <ItemGroup>
     <Xml Include="content.xml" />
-    <Xml Include="md\JP_StationAutoCreditTransferDisablePlayerToTransfers.xml" />
+    <Xml Include="md\JP_SACT_DisablePlayerToTransfers.xml" />
   </ItemGroup>
   <ItemGroup>
     <Xsd Include="md\md.xsd">

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<content id="JP_StationAutoCreditTransferDisablePlayerToTransfers" name="JP_StationAutoCreditTransferDisablePlayerToTransfers" description="Just disables the transferring of Money from the Player to the Station or Stations Buildstorage." author="JanPanthera" version="100" date="2020-05-01" save="0" enabled="1">
+<content id="JP_StationAutoCreditTransferDisablePlayerToTransfers" name="JP_StationAutoCreditTransferDisablePlayerToTransfers" description="Just disables the transferring of Money from the Player to the Station or Stations Buildstorage." author="JanPanthera" version="101" date="2020-05-01" save="0" enabled="1">
   <dependency version="300"/>
   <text language="7"  name="JP_StationAutoCreditTransferDisablePlayerToTransfers" description="Just disables the transferring of Money from the Player to the Station or Stations Buildstorage." author="JanPanthera"/>
   <text language="33" name="JP_StationAutoCreditTransferDisablePlayerToTransfers" description="Just disables the transferring of Money from the Player to the Station or Stations Buildstorage." author="JanPanthera"/>
