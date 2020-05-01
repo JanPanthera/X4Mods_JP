@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<aiscript name="JP_GiveMeExperience" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd">
+
+  <order id="JP_GiveMeExperience" name="Cheat GiveMeExperience JP" category="navigation" infinite="true">
+    <params>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="OBJECT" text="Object" type="object" default="this.ship">
+        <input_param name="owner" value="this.ship.owner"/>
+        <input_param name="class" value="[class.ship]"/>
+        <input_param name="excludeself" value="false"/>
+      </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="PILOT" text="Pilot?" comment="Pilot?" type="bool" default="true"/>
+      <param name="CREW" text="Crew?" comment="Crew?" type="bool" default="true"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="BOARDING_EXP" text="BoardingExp?" comment="BoardingExp?" type="bool" default="true"/>
+      <param name="ENGINEERING_EXP" text="EngineeringExp?" comment="EngineeringExp?" type="bool" default="true"/>
+      <param name="MANAGEMENT_EXP" text="ManagementExp?" comment="ManagementExp?" type="bool" default="true"/>
+      <param name="MORALE_EXP" text="MoraleExp?" comment="MoraleExp?" type="bool" default="true"/>
+      <param name="PILOTING_EXP" text="PilotingExp?" comment="PilotingExp?" type="bool" default="true"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <!-- DEBUG -->
+      <param name="DEBUG" text="DebugText" type="number" default="0.0" advanced="1">
+        <input_param name="min" value="0.0"/>
+        <input_param name="max" value="1.0"/>
+        <input_param name="step" value="0.1"/>
+      </param>
+    </params>
+    <skill min="0"/>
+    <requires>
+      <match shiptype="shiptype.lasertower" negate="true"/>
+    </requires>
+  </order>
+
+  <interrupts>
+    <handler ref="SectorChangeHandler"/>
+    <handler ref="TargetInvalidHandler"/>
+    <handler ref="AttackHandler"/>
+    <handler ref="MissileLockHandler"/>
+    <handler ref="ScannedHandler"/>
+    <handler ref="InspectedHandler"/>
+    <handler ref="FoundAbandonedHandler"/>
+    <handler ref="FoundLockboxHandler"/>
+    <handler ref="ResupplyHandler"/>
+    <handler ref="JobRemoveRequestHandler"/>
+  </interrupts>
+
+  <init>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <set_value name="$DebugDirectory" exact="'JP_GiveMeExperience.logs'"/>
+    <set_value name="$DebugFileName" exact="'JP_GiveMeExperience.xml.log'"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  </init>
+
+  <attention min="unknown">
+    <actions>
+
+      <wait exact="1ms"/>
+      <label name="INIT"/>
+      <cancel_all_orders object="this.ship"/>
+
+      <do_if value="$DEBUG gt 0.0">
+        <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_GiveMeExperience.xml ~ Started ~~' + '\n'"/>
+      </do_if>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <do_if value="$PILOT">
+        <do_all exact="100">
+          <do_if value="$BOARDING_EXP">
+            <apply_experience entity="$OBJECT.pilot" experience="'JP_GIVE_ME_BOARDING_EXP'" factor="1.00"/>
+          </do_if>
+          <do_if value="$ENGINEERING_EXP">
+            <apply_experience entity="$OBJECT.pilot" experience="'JP_GIVE_ME_ENGINEERING_EXP'" factor="1.00"/>
+          </do_if>
+          <do_if value="$MANAGEMENT_EXP">
+            <apply_experience entity="$OBJECT.pilot" experience="'JP_GIVE_ME_MANAGEMENT_EXP'" factor="1.00"/>
+          </do_if>
+          <do_if value="$MORALE_EXP">
+            <apply_experience entity="$OBJECT.pilot" experience="'JP_GIVE_ME_MORALE_EXP'" factor="1.00"/>
+          </do_if>
+          <do_if value="$PILOTING_EXP">
+            <apply_experience entity="$OBJECT.pilot" experience="'JP_GIVE_ME_PILOTING_EXP'" factor="1.00"/>
+          </do_if>
+        </do_all>
+      </do_if>
+      <do_if value="$CREW">
+        <do_all exact="100">
+          <do_if value="$BOARDING_EXP">
+            <apply_experience object="$OBJECT" experience="'JP_GIVE_ME_BOARDING_EXP'" role="entityrole.service" factor="1.00"/>
+          </do_if>
+          <do_if value="$ENGINEERING_EXP">
+            <apply_experience object="$OBJECT" experience="'JP_GIVE_ME_ENGINEERING_EXP'" role="entityrole.service" factor="1.00"/>
+          </do_if>
+          <do_if value="$MANAGEMENT_EXP">
+            <apply_experience object="$OBJECT" experience="'JP_GIVE_ME_MANAGEMENT_EXP'" role="entityrole.service" factor="1.00"/>
+          </do_if>
+          <do_if value="$MORALE_EXP">
+            <apply_experience object="$OBJECT" experience="'JP_GIVE_ME_MORALE_EXP'" role="entityrole.service" factor="1.00"/>
+          </do_if>
+          <do_if value="$PILOTING_EXP">
+            <apply_experience object="$OBJECT" experience="'JP_GIVE_ME_PILOTING_EXP'" role="entityrole.service" factor="1.00"/>
+          </do_if>
+        </do_all>
+      </do_if>
+
+      <wait exact="1s"/>
+      <label name="FINISH"/>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <do_if value="$DEBUG gt 0.0">
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_GiveMeExperience.xml ~ Finished ~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+      </do_if>
+
+      <label name="CLEANUP"/>
+      <remove_value name="$DebugFileName"/>
+      <remove_value name="$DebugDirectory"/>
+
+      <set_order_syncpoint_reached order="this.ship.order"/>
+      <cancel_order order="this.ship.order" />
+      <label name="END"/>
+      <wait exact="1ms"/>
+
+    </actions>
+  </attention>
+
+  <on_abort>
+  </on_abort>
+
+</aiscript>

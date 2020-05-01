@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<diff>
+  <add sel="/icons">
+    <icon name="order_jp_givemeexperience" texture="assets\fx\gui\textures\order\order_resupply.tga" height="32" width="32"></icon>
+    <icon name="order_jp_givememoney" texture="assets\fx\gui\textures\order\order_resupply.tga" height="32" width="32"></icon>
+    <icon name="order_jp_givemethatcargo" texture="assets\fx\gui\textures\order\order_resupply.tga" height="32" width="32"></icon>
+    <icon name="order_jp_teleportthatshiporfleetthere" texture="assets\fx\gui\textures\order\order_resupply.tga" height="32" width="32"></icon>
+  </add>
+</diff>

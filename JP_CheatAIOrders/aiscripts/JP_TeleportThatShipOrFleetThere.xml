@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<aiscript name="JP_TeleportThatShipOrFleetThere" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd">
+
+  <order id="JP_TeleportThatShipOrFleetThere" name="Cheat TeleportThatShipOrFleetThere JP" category="navigation" infinite="true">
+    <params>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="WHOLE_FLEET" text="Whole Fleet?" type="bool" default="false"/>
+      <param name="OBJECT" text="Object" comment="Object" type="object" default="this.ship">
+        <input_param name="owner" value="this.ship.owner"/>
+        <input_param name="class" value="[class.ship]"/>
+      </param>
+      <param name="DESTINATION" text="{1041, 10027}" comment="Targed" type="position" required="true">
+        <input_param name="class" value="class.sector"/>
+      </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <!-- DEBUG -->
+      <param name="DEBUG" text="DebugText" type="number" default="0.0" advanced="1">
+        <input_param name="min" value="0.0"/>
+        <input_param name="max" value="1.0"/>
+        <input_param name="step" value="0.1"/>
+      </param>
+    </params>
+    <skill min="0"/>
+    <requires>
+      <match shiptype="shiptype.lasertower" negate="true"/>
+    </requires>
+  </order>
+
+  <interrupts>
+    <handler ref="SectorChangeHandler"/>
+    <handler ref="TargetInvalidHandler"/>
+    <handler ref="AttackHandler"/>
+    <handler ref="MissileLockHandler"/>
+    <handler ref="ScannedHandler"/>
+    <handler ref="InspectedHandler"/>
+    <handler ref="FoundAbandonedHandler"/>
+    <handler ref="FoundLockboxHandler"/>
+    <handler ref="ResupplyHandler"/>
+    <handler ref="JobRemoveRequestHandler"/>
+  </interrupts>
+
+  <init>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <set_value name="$DebugDirectory" exact="'JP_TeleportThatShipOrFleetThere.logs'"/>
+    <set_value name="$DebugFileName" exact="'JP_TeleportThatShipOrFleetThere.xml.log'"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <set_value name="$Ship" exact="$OBJECT"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  </init>
+
+  <attention min="unknown">
+    <actions>
+
+      <wait exact="1ms"/>
+      <label name="INIT"/>
+      <cancel_all_orders object="this.ship"/>
+
+      <do_if value="$DEBUG gt 0.0">
+        <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_TeleportThatShipOrFleetThere.xml ~ Started ~~' + '\n'"/>
+      </do_if>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <warp object="$Ship" sector="$DESTINATION.{1}">
+        <position x="$DESTINATION.{2}.x" y="$DESTINATION.{2}.y" z="$DESTINATION.{2}.z"/>
+      </warp>
+
+      <wait exact="100ms"/>
+
+      <do_if value="$WHOLE_FLEET">
+        <do_for_each name="$Subordinate" in="$Ship.allsubordinates">
+          <check_object result="$Docked" docked="true" object="$Subordinate"/>
+          <do_if value="not $Docked">
+            <get_safe_pos object="$Ship" sector="$Ship.sector" radius="$Subordinate.size" allowyaxis="false" result="$TempPosition" ignored="$Subordinate"/>
+            <warp object="$Subordinate" sector="$Ship.sector">
+              <safepos value="$TempPosition"/>
+            </warp>
+            <run_script name="'lib.request.orders'">
+              <param name="object" value="$Subordinate"/>
+            </run_script>
+          </do_if>
+        </do_for_each>
+        <wait exact="2s"/>
+      </do_if>
+
+      <wait exact="1s"/>
+      <label name="FINISH"/>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <do_if value="$DEBUG gt 0.0">
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_TeleportThatShipOrFleetThere.xml ~ Finished ~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+      </do_if>
+
+      <label name="CLEANUP"/>
+      <remove_value name="$Ship"/>
+      <remove_value name="$DebugFileName"/>
+      <remove_value name="$DebugDirectory"/>
+
+      <set_order_syncpoint_reached order="this.ship.order"/>
+      <cancel_order order="this.ship.order" />
+      <label name="END"/>
+      <wait exact="1ms"/>
+
+    </actions>
+  </attention>
+
+  <on_abort>
+  </on_abort>
+
+</aiscript>
