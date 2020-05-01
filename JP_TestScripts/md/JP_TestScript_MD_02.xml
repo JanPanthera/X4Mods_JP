@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<mdscript name="JP_TestScript_MD_02" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="md.xsd">
+  <cues>
+
+    <cue name="JP_TestScript_MD_02_OnNewGameStarted" instantiate="true">
+      <conditions>
+        <event_game_started/>
+      </conditions>
+      <actions>
+        <signal_cue_instantly cue="JP_TestScript_MD_02_INIT"/>
+      </actions>
+    </cue>
+
+    <cue name="JP_TestScript_MD_02_OnGameLoaded" instantiate="true">
+      <conditions>
+        <event_game_loaded/>
+      </conditions>
+      <actions>
+        <signal_cue_instantly cue="JP_TestScript_MD_02_INIT"/>
+      </actions>
+    </cue>
+
+    <cue name="JP_TestScript_MD_02_INIT" instantiate="true">
+      <conditions>
+        <event_cue_signalled/>
+      </conditions>
+      <actions>
+        <show_help custom="'JP_TestScript_MD_02 initialized...'" duration="2s"/>
+      </actions>
+    </cue>
+
+
+    <cue name="JP_TestScript_MD_02_LOOP" instantiate="true" checkinterval="1s">
+      <conditions>
+      </conditions>
+      <actions>
+        <set_value name="$DebugDirectory" exact="'JP_TestScripts.logs'"/>
+        <set_value name="$DebugFileName" exact="'JP_TestScript_MD_02.xml.log'"/>
+
+        <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_TestScript_MD_02.xml ~ Started ~~' + '\n'"/>
+
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_TestScript_MD_02.xml ~ Finished ~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+
+        <remove_value name="$DebugFileName"/>
+        <remove_value name="$DebugDirectory"/>
+      </actions>
+    </cue>
+
+  </cues>
+</mdscript>

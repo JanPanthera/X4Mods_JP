@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<diff>
+  <add sel="/icons">
+    <icon name="order_jp_testscript_ai_01" texture="assets\fx\gui\textures\order\order_resupply.tga" height="32" width="32"></icon>
+    <icon name="order_jp_testscript_ai_02" texture="assets\fx\gui\textures\order\order_resupply.tga" height="32" width="32"></icon>
+    <icon name="order_jp_testscript_ai_03" texture="assets\fx\gui\textures\order\order_resupply.tga" height="32" width="32"></icon>
+  </add>
+</diff>
