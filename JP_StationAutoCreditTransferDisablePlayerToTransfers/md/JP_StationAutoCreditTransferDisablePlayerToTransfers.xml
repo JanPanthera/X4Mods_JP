@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<mdscript name="JP_StationAutoCreditTransferDisablePlayerToTransfers" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="md.xsd">
+  <cues>
+
+    <cue name="JP_StationAutoCreditTransferDisablePlayerToTransfers_OnNewGameStarted" instantiate="true">
+      <conditions>
+        <event_game_started/>
+      </conditions>
+      <actions>
+        <do_if value="not global.$JP_StationAutoCreditTransferDisablePlayerToTransfer?">
+          <set_value name="global.$JP_StationAutoCreditTransferDisablePlayerToTransfer" exact="true"/>
+        </do_if>
+      </actions>
+    </cue>
+
+    <cue name="JP_StationAutoCreditTransferDisablePlayerToTransfers_OnGameLoaded" instantiate="true">
+      <conditions>
+        <event_game_loaded/>
+      </conditions>
+      <actions>
+        <do_if value="not global.$JP_StationAutoCreditTransferDisablePlayerToTransfer?">
+          <set_value name="global.$JP_StationAutoCreditTransferDisablePlayerToTransfer" exact="true"/>
+        </do_if>
+      </actions>
+    </cue>
+
+  </cues>
+</mdscript>
