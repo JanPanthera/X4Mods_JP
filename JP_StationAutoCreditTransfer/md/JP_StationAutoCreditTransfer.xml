@@ -43,6 +43,10 @@
         <set_value name="$PlayerToStation" exact="true"/>
         <set_value name="$StationToPlayer" exact="true"/>
         <set_value name="$BuildstorageToPlayer" exact="true"/>
+        <do_if value="global.$JP_StationAutoCreditTransferDisablePlayerToTransfer?">
+          <set_value name="$PlayerToBuildstorage" exact="false"/>
+          <set_value name="$PlayerToStation" exact="false"/>
+        </do_if>
       </actions>
     </cue>
 
