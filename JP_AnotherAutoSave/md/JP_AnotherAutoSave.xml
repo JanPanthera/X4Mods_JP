@@ -3,11 +3,44 @@
 <mdscript name="JP_AnotherAutoSave_MD" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="md.xsd">
   <cues>
 
-    <cue name="JP_ANOTHER_AUTO_SAVE" instantiate="true" checkinterval="1800s">
+    <cue name="JP_ANOTHER_AUTO_SAVE_900" instantiate="true" checkinterval="900s">
       <conditions>
+        <check_value value="player.autosave.active == true and player.autosave.factor == 1"/>
       </conditions>
       <actions>
-        <trigger_autosave/>
+        <set_value name="$AutoSaveTriggered" exact="true"/>
+      </actions>
+    </cue>
+
+    <cue name="JP_ANOTHER_AUTO_SAVE_1800" instantiate="true" checkinterval="1800s">
+      <conditions>
+        <check_value value="player.autosave.active == true and player.autosave.factor == 2"/>
+      </conditions>
+      <actions>
+        <set_value name="$AutoSaveTriggered" exact="true"/>
+      </actions>
+    </cue>
+
+    <cue name="JP_ANOTHER_AUTO_SAVE_TRIGGERED" instantiate="true" checkinterval="1s">
+      <conditions>
+        <check_value value="if player.autosave.factor == 1 then JP_ANOTHER_AUTO_SAVE_900.$AutoSaveTriggered == true else JP_ANOTHER_AUTO_SAVE_1800.$AutoSaveTriggered == true"/>
+      </conditions>
+      <actions>
+        <do_if value="player.timewarp.active">
+          <toggle_timewarp/>
+        </do_if>
+        <set_value name="$COUNTER" exact="1" operation="subtract"/>
+        <show_help custom="'Autosave in \033#FFA95908#%1\033X seconds.'.[$COUNTER]" duration="1s"/>
+        <do_if value="$COUNTER le 0">
+          <do_if value="player.autosave.factor == 1">
+            <set_value name="JP_ANOTHER_AUTO_SAVE_900.$AutoSaveTriggered" exact="false"/>
+          </do_if>
+          <do_else>
+            <set_value name="JP_ANOTHER_AUTO_SAVE_1800.$AutoSaveTriggered" exact="false"/>
+          </do_else>
+          <set_value name="$COUNTER" exact="11"/>
+          <trigger_autosave/>
+        </do_if>
       </actions>
     </cue>
 

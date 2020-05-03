@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<content id="JP_AnotherAutoSave" name="JP_AnotherAutoSave" description="Constant Auto Save." author="JanPanthera" version="100" date="2020-04-18" save="0" enabled="1">
+<content id="JP_AnotherAutoSave" name="JP_AnotherAutoSave" description="Will do an automatic save in constant interval and shows you a 10 seconds timer before the save." author="JanPanthera" version="101" date="2020-05-03" save="0" enabled="1">
   <dependency version="300"/>
-  <text language="7"  name="JP_AnotherAutoSave" description="Constant Auto Save" author="JanPanthera"/>
-  <text language="33" name="JP_AnotherAutoSave" description="Constant Auto Save" author="JanPanthera"/>
-  <text language="34" name="JP_AnotherAutoSave" description="Constant Auto Save" author="JanPanthera"/>
-  <text language="39" name="JP_AnotherAutoSave" description="Constant Auto Save" author="JanPanthera"/>
-  <text language="44" name="JP_AnotherAutoSave" description="Constant Auto Save" author="JanPanthera"/>
-  <text language="49" name="JP_AnotherAutoSave" description="Constant Auto Save." author="JanPanthera"/>
-  <text language="55" name="JP_AnotherAutoSave" description="Constant Auto Save" author="JanPanthera"/>
-  <text language="81" name="JP_AnotherAutoSave" description="Constant Auto Save" author="JanPanthera"/>
-  <text language="82" name="JP_AnotherAutoSave" description="Constant Auto Save" author="JanPanthera"/>
-  <text language="86" name="JP_AnotherAutoSave" description="Constant Auto Save" author="JanPanthera"/>
-  <text language="88" name="JP_AnotherAutoSave" description="Constant Auto Save" author="JanPanthera"/>
+  <text language="7"  name="JP_AnotherAutoSave" description="Will do an automatic save in constant interval and shows you a 10 seconds timer before the save." author="JanPanthera"/>
+  <text language="33" name="JP_AnotherAutoSave" description="Will do an automatic save in constant interval and shows you a 10 seconds timer before the save." author="JanPanthera"/>
+  <text language="34" name="JP_AnotherAutoSave" description="Will do an automatic save in constant interval and shows you a 10 seconds timer before the save." author="JanPanthera"/>
+  <text language="39" name="JP_AnotherAutoSave" description="Will do an automatic save in constant interval and shows you a 10 seconds timer before the save." author="JanPanthera"/>
+  <text language="44" name="JP_AnotherAutoSave" description="Will do an automatic save in constant interval and shows you a 10 seconds timer before the save." author="JanPanthera"/>
+  <text language="49" name="JP_AnotherAutoSave" description="Führt eine automatische Speicherung in konstanten Intervallen durch und zeigt Ihnen einen 10-Sekunden-Timer vor der Speicherung an." author="JanPanthera"/>
+  <text language="55" name="JP_AnotherAutoSave" description="Will do an automatic save in constant interval and shows you a 10 seconds timer before the save." author="JanPanthera"/>
+  <text language="81" name="JP_AnotherAutoSave" description="Will do an automatic save in constant interval and shows you a 10 seconds timer before the save." author="JanPanthera"/>
+  <text language="82" name="JP_AnotherAutoSave" description="Will do an automatic save in constant interval and shows you a 10 seconds timer before the save." author="JanPanthera"/>
+  <text language="86" name="JP_AnotherAutoSave" description="Will do an automatic save in constant interval and shows you a 10 seconds timer before the save." author="JanPanthera"/>
+  <text language="88" name="JP_AnotherAutoSave" description="Will do an automatic save in constant interval and shows you a 10 seconds timer before the save." author="JanPanthera"/>
 </content>
