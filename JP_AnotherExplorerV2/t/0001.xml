@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Simplified Chinese ~~ 简体中文 -->
+<!-- English ~~ English -->
 <language>
   <page id="8888888" voice="no">
     <!--  JP_AnotherExplorerV2 -->
@@ -8,7 +8,6 @@
     <t id="22">Explore stations?</t>
     <t id="23">Enemy stations?</t>
     <t id="24">Enemy sectors?</t>
-    <t id="25">Unknown sectors?</t>
-    <t id="26">Automatic Fleet?</t>
+    <t id="25">Automatic Fleet?</t>
   </page>
 </language>

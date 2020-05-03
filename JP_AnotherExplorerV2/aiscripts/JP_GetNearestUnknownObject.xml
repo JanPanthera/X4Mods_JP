@@ -65,7 +65,7 @@
           <match knownto="$Ship.owner" negate="true"/>
         </find_station>
         <do_for_each name="$_Station" in="$_Stations">
-          <do_if value="($_Station.owner.mayattack.{$Ship.owner} or $_Station.owner.relationto.{$Ship.owner} lt 0) and not $ENEMY_STATIONS">
+          <do_if value="($_Station.owner.mayattack.{$Ship} and not $ENEMY_STATIONS)">
             <continue/>
           </do_if>
           <append_to_list name="$_Objects" exact="$_Station"/>

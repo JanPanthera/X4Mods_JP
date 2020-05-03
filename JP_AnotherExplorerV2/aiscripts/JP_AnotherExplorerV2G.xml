@@ -9,8 +9,8 @@
       <param name="STATIONS" text="{8888888, 22}" comment="Explore stations?" type="bool" default="true"/>
       <param name="ENEMY_STATIONS" text="{8888888, 23}" comment="Explore enemy stations?" type="bool" default="false"/>
       <param name="ENEMY_SECTORS" text="{8888888, 24}" comment="Explore enemy sectors?" type="bool" default="false"/>
-      <param name="UNKNOWN_SECTORS" text="Unknown Sectors?" type="bool" default="true"/>
-      <param name="AUTO_FLEET" text="{8888888, 25}" comment="Automatic Fleet?" type="bool" default="false"/>
+      <param name="UNKNOWN_SECTORS" text="{8888888, 25}" comment="Unknown Sectors?" type="bool" default="true"/>
+      <param name="AUTO_FLEET" text="{8888888, 26}" comment="Automatic Fleet?" type="bool" default="false"/>
       <!-- DEBUG -->
       <param name="DEBUG" text="DebugText" type="number" default="0.0" advanced="true">
         <input_param name="min" value="0.0"/>

@@ -42,13 +42,8 @@
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
       <do_if value="$DEBUG gt 0.0">
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'Exploring ' + {20001, 201} + ' %1 [%2]'.[$OBJECT.sector.knownname, $OBJECT.sector.owner.knownname]"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
-      </do_if>
-
-      <do_if value="$DEBUG gt 0.0">
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'Moving to %1 [%2]...'.[$OBJECT.knownname, $OBJECT.idcode]"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'Moving to %1 [%2] in Sector %3 [%4]...'.[$OBJECT.knownname, $OBJECT.idcode, $OBJECT.sector.knownname, (if @$OBJECT.sector.owner.knownname != null then @$OBJECT.sector.owner.knownname else 'No Owner')]"/>
       </do_if>
 
       <set_command command="command.move" param="$OBJECT"/>

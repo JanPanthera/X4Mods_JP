@@ -52,40 +52,21 @@
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
       <create_list name="$_Sectors"/>
-      <do_if value="$UNKNOWN_SECTORS">
-        <find_sector name="$_Sectors" space="player.galaxy" multiple="true">
-        </find_sector>
-      </do_if>
-      <do_else>
-        <find_sector name="$_Sectors" space="player.galaxy" multiple="true">
-          <match knownto="$Ship.owner"/>
-        </find_sector>
-      </do_else>
+      <find_sector name="$_Sectors" space="player.galaxy" multiple="true"/>
 
       <include_interrupt_actions ref="GetBlacklistgroup"/>
 
       <create_list name="$_SectorsToRemove"/>
       <do_for_each name="$_Sector" in="$_Sectors">
-        <do_if value="$Ship.gatedistance.{$_Sector} lt 0">
+        <do_if value="($Ship.gatedistance.{$_Sector} lt 0) or ($_Sector.isblacklisted.{blacklisttype.sectortravel}.{$blacklistgroup}.{$Ship}) 
+                      or ($_Sector.owner.mayattack.{$Ship} and not $ENEMY_SECTORS) or ($_Sector.isknown == false and not $UNKNOWN_SECTORS)">
           <append_to_list name="$_SectorsToRemove" exact="$_Sector"/>
-          <continue/>
-        </do_if>
-        <do_if value="$_Sector.isblacklisted.{blacklisttype.sectortravel}.{$blacklistgroup}.{$Ship}">
-          <append_to_list name="$_SectorsToRemove" exact="$_Sector"/>
-          <continue/>
-        </do_if>
-        <do_if value="($_Sector.owner.mayattack.{$Ship.owner} or $_Sector.owner.relationto.{$Ship.owner} lt 0) and not $ENEMY_SECTORS">
-          <append_to_list name="$_SectorsToRemove" exact="$_Sector"/>
-          <continue/>
         </do_if>
       </do_for_each>
       <remove_from_list name="$_Sectors" list="$_SectorsToRemove"/>
       <remove_value name="$_SectorsToRemove"/>
 
-      <do_if value="$DEBUG gt 0.0">
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-      </do_if>
-      <create_list name="$_SectorsWithObjectsToExplore"/>
+      <create_list name="$_SectorsToRemove"/>
       <do_for_each name="$_Sector" in="$_Sectors">
         <run_script name="'JP_GetNearestUnknownObject'">
           <param name="SECTOR" value="$_Sector"/>
@@ -95,48 +76,43 @@
           <param name="DEBUG" value="$DEBUG"/>
           <save_retval name="NEAREST_UNKNOWN_OBJECT" variable="$NearestUnknownObject"/>
         </run_script>
-        <do_if value="$DEBUG gt 0.0">
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="' - ' + $_Sector.knownname + ' ~ ' + if $NearestUnknownObject == 'NoUnknownObjectFound' then $NearestUnknownObject else $NearestUnknownObject.knownname"/>
-        </do_if>
-        <do_if value="$NearestUnknownObject != 'NoUnknownObjectFound'">
-          <append_to_list name="$_SectorsWithObjectsToExplore" exact="$_Sector"/>
+        <do_if value="$NearestUnknownObject == 'NoUnknownObjectFound'">
+          <append_to_list name="$_SectorsToRemove" exact="$_Sector"/>
         </do_if>
       </do_for_each>
-      <do_if value="$DEBUG gt 0.0">
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
-      </do_if>
-      <remove_value name="$_Sectors"/>
+      <remove_from_list name="$_Sectors" list="$_SectorsToRemove"/>
+      <remove_value name="$_SectorsToRemove"/>
 
       <do_if value="$DEBUG gt 0.0">
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="' ~ $_SectorsWithObjectsToExplore.count: ' + $_SectorsWithObjectsToExplore.count"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="' ~ Sectors found where we have unknown objects: ' + $_Sectors.count"/>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-        <do_for_each name="$_Sector" in="$_SectorsWithObjectsToExplore">
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="' - ' + $_Sector.knownname + ' ~ ' + if @$_Sector.owner.knownname != null then @$_Sector.owner.knownname else 'No Owner'"/>
+        <do_for_each name="$_Sector" in="$_Sectors">
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="' - ' + $_Sector.knownname + ' ~ ' + '[' + (if @$_Sector.owner.knownname != null then @$_Sector.owner.knownname else 'No Owner') + ']'"/>
         </do_for_each>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
       </do_if>
 
-      <do_if value="$_SectorsWithObjectsToExplore.count le 0">
+      <do_if value="$_Sectors.count le 0">
         <do_if value="$DEBUG gt 0.0">
           <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
           <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="' ~ No Sectors with objects to explore found.'"/>
           <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
         </do_if>
-        <remove_value name="$_SectorsWithObjectsToExplore"/>
+        <remove_value name="$_Sectors"/>
         <resume label="FINISH"/>
       </do_if>
 
-      <do_if value="$_SectorsWithObjectsToExplore.count gt 1">
-        <sort_list list="$_SectorsWithObjectsToExplore" sortbyvalue="$Ship.gatedistance.{loop.element}"/>
+      <do_if value="$_Sectors.count gt 1">
+        <sort_list list="$_Sectors" sortbyvalue="$Ship.gatedistance.{loop.element}"/>
       </do_if>
 
-      <set_value name="$NearestSector" exact="$_SectorsWithObjectsToExplore.{1}"/>
-      <remove_value name="$_SectorsWithObjectsToExplore"/>
+      <set_value name="$NearestSector" exact="$_Sectors.{1}"/>
+      <remove_value name="$_Sectors"/>
 
       <do_if value="$DEBUG gt 0.0">
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="' ~ $NearestSector: ' + $NearestSector.knownname + ' ~ ' + if @$NearestSector.owner.knownname != null then @$NearestSector.owner.knownname else 'No Owner'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="' ~ Nearest Sector with one or more unknown objects: ' + $NearestSector.knownname + ' ~ ' + '[' + (if @$NearestSector.owner.knownname != null then @$NearestSector.owner.knownname else 'No Owner') + ']'"/>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
       </do_if>
 
