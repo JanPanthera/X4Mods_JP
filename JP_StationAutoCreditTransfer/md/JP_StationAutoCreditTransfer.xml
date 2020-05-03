@@ -86,8 +86,8 @@
               <do_if value="JP_StationAutoCreditsTransfer_INIT.$StationToBuildstorage">
                 <signal_cue_instantly cue="JP_StationAutoCreditsTransfer_CalculateNeeds"/>
                 <do_if value="$StationAvailableMoney gt 10Cr and $BuildstorageNeeds gt 10Cr">
-                  <write_to_logbook category="tips" title="'\033#6400FF00#' + $Station.knownname + '\033X\033#FF00FF00# [' + faction.player + ']\033X'"
-                                    text="'\033#FF00CC66#' + {8888888, 211} + ':\033X \033#B600CCCC#' + $Station.name + ' ' + $Station.buildstorage.knownname + '\033X'"
+                  <write_to_logbook category="tips" title="'\033#FF516E38#' + $Station.knownname + '\033X\033#FF516E38# [' + faction.player + ']\033X'"
+                                    text="'\033#A03A7F8F#' + {8888888, 211} + ':\033X \033#A000CCCC#' + $Station.name + ' ' + $Station.buildstorage.knownname + '\033X'"
                                     money="(if $StationAvailableMoney gt $BuildstorageNeeds then $BuildstorageNeeds else $StationAvailableMoney)Cr"/>
                   <transfer_money from="$Station" to="$Station.buildstorage" amount="(if $StationAvailableMoney gt $BuildstorageNeeds then $BuildstorageNeeds else $StationAvailableMoney)Cr"/>
                 </do_if>
@@ -97,8 +97,8 @@
               <do_if value="JP_StationAutoCreditsTransfer_INIT.$BuildstorageToStation">
                 <signal_cue_instantly cue="JP_StationAutoCreditsTransfer_CalculateNeeds"/>
                 <do_if value="$BuildstorageAvailableMoney gt 10Cr and $StationNeeds gt 10Cr">
-                  <write_to_logbook category="tips" title="'\033#6400FF00#' + $Station.name + ' ' + $Station.buildstorage.name + '\033X\033#FF00FF00# [' + faction.player + ']\033X'"
-                                    text="'\033#FF00CC66#' + {8888888, 211} + ':\033X \033#B600CCCC#' + $Station.name + '\033X'"
+                  <write_to_logbook category="tips" title="'\033#FF516E38#' + $Station.name + ' ' + $Station.buildstorage.name + '\033X\033#FF516E38# [' + faction.player + ']\033X'"
+                                    text="'\033#A03A7F8F#' + {8888888, 211} + ':\033X \033#A000CCCC#' + $Station.name + '\033X'"
                                     money="(if $BuildstorageAvailableMoney gt $StationNeeds then $StationNeeds else $BuildstorageAvailableMoney)Cr"/>
                   <transfer_money from="$Station.buildstorage" to="$Station" amount="(if $BuildstorageAvailableMoney gt $StationNeeds then $StationNeeds else $BuildstorageAvailableMoney)Cr"/>
                 </do_if>
@@ -107,9 +107,9 @@
               <!-- Transfer money from Player to Buildstorage? -->
               <do_if value="JP_StationAutoCreditsTransfer_INIT.$PlayerToBuildstorage">
                 <signal_cue_instantly cue="JP_StationAutoCreditsTransfer_CalculateNeeds"/>
-                <do_if value="$PlayerAvailableMoney gt 10Cr and $BuildstorageNeeds gt 10Cr">
-                  <write_to_logbook category="tips" title="'\033#6400FF00#' + player.name + '\033X\033#FF00FF00# [' + faction.player + ']\033X'"
-                                    text="'\033#FF00CC66#' + {8888888, 211} + ':\033X \033#B600CCCC#' + $Station.name + ' ' + $Station.buildstorage.name + '\033X'"
+                <do_if value="($PlayerAvailableMoney)Cr gt 10000Cr and $BuildstorageNeeds gt 10Cr">
+                  <write_to_logbook category="tips" title="'\033#FF516E38#' + player.name + '\033X\033#FF516E38# [' + faction.player + ']\033X'"
+                                    text="'\033#A09E0606#' + {8888888, 211} + ':\033X \033#A000CCCC#' + $Station.name + ' ' + $Station.buildstorage.name + '\033X'"
                                     money="-(if $PlayerAvailableMoney gt $BuildstorageNeeds then $BuildstorageNeeds else $PlayerAvailableMoney)Cr"/>
                   <transfer_money from="faction.player" to="$Station.buildstorage" amount="(if $PlayerAvailableMoney gt $BuildstorageNeeds then $BuildstorageNeeds else $PlayerAvailableMoney)Cr"/>
                 </do_if>
@@ -118,9 +118,9 @@
               <!-- Transfer money from Player to Station? -->
               <do_if value="JP_StationAutoCreditsTransfer_INIT.$PlayerToStation">
                 <signal_cue_instantly cue="JP_StationAutoCreditsTransfer_CalculateNeeds"/>
-                <do_if value="$PlayerAvailableMoney gt 10Cr and $StationNeeds gt 10Cr">
-                  <write_to_logbook category="tips" title="'\033#6400FF00#' + player.name + '\033X\033#FF00FF00# [' + faction.player + ']\033X'"
-                                    text="'\033#FF00CC66#' + {8888888, 211} + ':\033X \033#B600CCCC#' + $Station.name + '\033X'"
+                <do_if value="($PlayerAvailableMoney)Cr gt 100000Cr and $StationNeeds gt 10Cr">
+                  <write_to_logbook category="tips" title="'\033#FF516E38#' + player.name + '\033X\033#FF516E38# [' + faction.player + ']\033X'"
+                                    text="'\033#A09E0606#' + {8888888, 211} + ':\033X \033#A000CCCC#' + $Station.name + '\033X'"
                                     money="-(if $PlayerAvailableMoney gt $StationNeeds then $StationNeeds else $PlayerAvailableMoney)Cr"/>
                   <transfer_money from="faction.player" to="$Station" amount="(if $PlayerAvailableMoney gt $StationNeeds then $StationNeeds else $PlayerAvailableMoney)Cr"/>
                 </do_if>
@@ -129,9 +129,9 @@
               <!-- Transfer money from Station to Player? -->
               <do_if value="JP_StationAutoCreditsTransfer_INIT.$StationToPlayer">
                 <signal_cue_instantly cue="JP_StationAutoCreditsTransfer_CalculateNeeds"/>
-                <do_if value="$StationAvailableMoney gt 10 Cr">
-                  <write_to_logbook category="tips" title="'\033#6400FF00#' + $Station.name + '\033X\033#FF00FF00# [' + faction.player + ']\033X'"
-                                    text="'\033#FF00CC66#' + {8888888, 211} + ':\033X \033#B600CCCC#' + player.name + '\033X'"
+                <do_if value="($StationAvailableMoney)Cr gt 100000Cr">
+                  <write_to_logbook category="tips" title="'\033#FF516E38#' + $Station.name + '\033X\033#FF516E38# [' + faction.player + ']\033X'"
+                                    text="'\033#A0E3A624#* ' + {8888888, 211} + ':\033X \033#A000CCCC#' + player.name + '\033X'"
                                     money="($StationAvailableMoney)Cr"/>
                   <transfer_money from="$Station" to="faction.player" amount="($StationAvailableMoney)Cr"/>
                 </do_if>
@@ -140,9 +140,9 @@
               <!-- Transfer money from Buildstorage to Player? -->
               <do_if value="JP_StationAutoCreditsTransfer_INIT.$BuildstorageToPlayer">
                 <signal_cue_instantly cue="JP_StationAutoCreditsTransfer_CalculateNeeds"/>
-                <do_if value="$BuildstorageAvailableMoney gt 10 Cr">
-                  <write_to_logbook category="tips" title="'\033#6400FF00#' + $Station.name + ' ' + $Station.buildstorage.name + '\033X\033#FF00FF00# [' + faction.player + ']\033X'"
-                                    text="'\033#FF00CC66#' + {8888888, 211} + ':\033X \033#B600CCCC#' + player.name + '\033X'"
+                <do_if value="($BuildstorageAvailableMoney)Cr gt 10Cr">
+                  <write_to_logbook category="tips" title="'\033#FF516E38#' + $Station.name + ' ' + $Station.buildstorage.name + '\033X\033#FF516E38# [' + faction.player + ']\033X'"
+                                    text="'\033#A0E3A624#* ' + {8888888, 211} + ':\033X \033#A000CCCC#' + player.name + '\033X'"
                                     money="($BuildstorageAvailableMoney)Cr"/>
                   <transfer_money from="$Station.buildstorage" to="faction.player" amount="($BuildstorageAvailableMoney)Cr"/>
                 </do_if>
