@@ -36,30 +36,34 @@
       <param name="FACTION_HEADQUARTERS" text="{8888888, 1050}" comment="FactionHeadquarters" type="bool" default="true"/>
       <param name="NON_SPECIAL_STATIONS" text="{8888888, 1051}" comment="NonSpecialStations" type="bool" default="false"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="IDLE_TIME" text="IdleTime" comment="IdleTime" type="time" default="60s">
+        <input_param name="min" value="60s"/>
+        <input_param name="max" value="3600s"/>
+        <input_param name="step" value="10s"/>
+      </param>
       <param name="IDLE_FOLLOW" text="TODO! {8888888, 1052}" comment="Idle: Follow?" type="bool" default="false"/>
       <param name="WHO_TO_FOLLOW" text="{8888888, 1053}" comment="Who to follow?" type="object" default="null">
         <input_param name="class" value="[class.ship]"/>
         <input_param name="owner" value="this.ship.owner"/>
       </param>
-      <param name="IDLE_DOCKING" text="TODO! {8888888, 1054}" comment="Idle: Docking?" type="bool" default="false"/>
+      <param name="IDLE_DOCKING" text="{8888888, 1054}" comment="Idle: Docking?" type="bool" default="false"/>
       <param name="WHERE_TO_DOCK" text="{8888888, 1055}" comment="Where to dock?" type="object" default="null">
-        <input_param name="class" value="[class.station, class.ship_m, class.ship_l, class.ship_xl]"/>
-        <input_param name="owner" value="this.ship.owner"/>
+        <input_param name="class" value="if this.ship.isclass.[class.ship_s, class.ship_xs] then [class.station, class.ship_m, class.ship_l, class.ship_xl] else [class.station, class.ship_l, class.ship_xl]"/>
       </param>
       <param name="IDLE_RANDOM_MOVEMENT" text="{8888888, 1056}" comment="Idle: Movement?" type="bool" default="false"/>
       <param name="IN_WHICH_SECTOR" text="{8888888, 1057}" comment="In which sector?" type="position" default="[this.ship.sector, this.ship.position]">
         <input_param name="class" value="class.sector"/>
       </param>
-      <param name="IDLE_MOVE_TO" text="TODO! {8888888, 1058}" comment="Idle: Move to?" type="bool" default="false"/>
+      <param name="IDLE_MOVE_TO" text="{8888888, 1058}" comment="Idle: Move to?" type="bool" default="false"/>
       <param name="WHERE_TO_MOVE" text="{8888888, 1059}" comment="Where to move?" type="position" default="[this.ship.sector, this.ship.position]">
         <input_param name="class" value="class.sector"/>
       </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <!-- DEBUG -->
-      <param name="DEBUG" text="DebugText" type="number" default="0.0" advanced="1">
-        <input_param name="min" value="0.0"/>
-        <input_param name="max" value="1.0"/>
-        <input_param name="step" value="0.1"/>
+      <param name="DEBUG" text="DebugText" type="number" default="0" advanced="1">
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="100"/>
+        <input_param name="step" value="100"/>
       </param>
     </params>
     <skill min="0"/>
@@ -103,10 +107,8 @@
       <label name="INIT"/>
       <cancel_all_orders object="this.ship"/>
 
-      <do_if value="$DEBUG gt 0.0">
-        <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_SatelliteDropper.xml ~ Started ~~' + '\n'"/>
-      </do_if>
+      <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'" chance="$DEBUG"/>
+      <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_SatelliteDropper.xml ~ Started ~~' + '\n'" chance="$DEBUG"/>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
@@ -136,7 +138,7 @@
           </do_if>
           <do_if value="@$Stations.count gt 0">
             <set_value name="$RestockPrice" exact="0Cr"/>
-            <set_value name="$RestockPrice" operation="add" exact="$Stations.{1}.buyprice.{ware.satellite_mk1} * $RESTOCK_AMOUNT"/>
+            <set_value name="$RestockPrice" operation="add" exact="$Stations.{1}.buyprice.{if $MK2_INSTEAD then ware.satellite_mk2 else ware.satellite_mk1} * $RESTOCK_AMOUNT"/>
             <add_build_to_modify_ship buildobject="$Ship" object="$Stations.{1}" ammo="$AmmoTable" price="$RestockPrice"/>
             <transfer_money from="$Ship.owner" to="$Stations.{1}" amount="$RestockPrice"/>
             <write_to_logbook title="'MoneyTransfer'" text="'Ship ' + $Ship.name + ' bought ' + $RESTOCK_AMOUNT + ' satellites.'" category="upkeep" money="-($RestockPrice)"/>
@@ -157,18 +159,15 @@
       </do_else>
 
       <run_script name="'JP_GetNearestSectorWithObjectsToMark'">
-        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
         <param name="ENEMY_SECTORS" value="$ENEMY_SECTORS"/>
         <param name="NEUTRAL_SECTORS" value="$NEUTRAL_SECTORS"/>
         <param name="ENEMY_STATIONS" value="$ENEMY_STATIONS"/>
-        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
         <param name="GATES" value="$GATES"/>
         <param name="ACTIVE_GATES" value="$ACTIVE_GATES"/>
         <param name="INACTIVE_GATES" value="$INACTIVE_GATES"/>
         <param name="ACCELERATORS" value="$ACCELERATORS"/>
         <param name="ACTIVE_ACCELERATORS" value="$ACTIVE_ACCELERATORS"/>
         <param name="INACTIVE_ACCELERATORS" value="$INACTIVE_ACCELERATORS"/>
-        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
         <param name="STATIONS" value="$STATIONS"/>
         <param name="WHARFS" value="$WHARFS"/>
         <param name="SHIPYARDS" value="$SHIPYARDS"/>
@@ -178,11 +177,9 @@
         <param name="PIRATE_BASE" value="$PIRATE_BASE"/>
         <param name="FACTION_HEADQUARTERS" value="$FACTION_HEADQUARTERS"/>
         <param name="NON_SPECIAL_STATIONS" value="$NON_SPECIAL_STATIONS"/>
-        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
         <param name="DEBUG" value="$DEBUG"/>
         <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
         <save_retval name="NEAREST_SECTOR" variable="$NearestSector"/>
-        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       </run_script>
 
       <do_if value="$NearestSector == 'NoSectorFound'">
@@ -195,23 +192,22 @@
           <param name="IN_WHICH_SECTOR" value="$IN_WHICH_SECTOR"/>
           <param name="IDLE_MOVE_TO" value="$IDLE_MOVE_TO"/>
           <param name="WHERE_TO_MOVE" value="$WHERE_TO_MOVE"/>
+          <param name="IDLE_TIME" value="$IDLE_TIME"/>
+          <param name="DEBUG" value="$DEBUG"/>
         </run_script>
         <set_object_name object="this.ship" name="if $ADD_ORDER_TAG then this.$OldName + '\033#FFA95908# #SD\033X' else this.$OldName"/>
         <resume label="RESUME"/>
       </do_if>
 
       <run_script name="'JP_GetNearestObjectToMark'">
-        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
         <param name="SECTOR" value="$NearestSector"/>
         <param name="ENEMY_STATIONS" value="$ENEMY_STATIONS"/>
-        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
         <param name="GATES" value="$GATES"/>
         <param name="ACTIVE_GATES" value="$ACTIVE_GATES"/>
         <param name="INACTIVE_GATES" value="$INACTIVE_GATES"/>
         <param name="ACCELERATORS" value="$ACCELERATORS"/>
         <param name="ACTIVE_ACCELERATORS" value="$ACTIVE_ACCELERATORS"/>
         <param name="INACTIVE_ACCELERATORS" value="$INACTIVE_ACCELERATORS"/>
-        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
         <param name="STATIONS" value="$STATIONS"/>
         <param name="WHARFS" value="$WHARFS"/>
         <param name="SHIPYARDS" value="$SHIPYARDS"/>
@@ -221,18 +217,14 @@
         <param name="PIRATE_BASE" value="$PIRATE_BASE"/>
         <param name="FACTION_HEADQUARTERS" value="$FACTION_HEADQUARTERS"/>
         <param name="NON_SPECIAL_STATIONS" value="$NON_SPECIAL_STATIONS"/>
-        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
         <param name="DEBUG" value="$DEBUG"/>
         <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
         <save_retval name="NEAREST_OBJECT" variable="$NearestObject"/>
-        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       </run_script>
 
-      <do_if value="$DEBUG gt 0.0">
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="' - ' + $NearestObject.knownname + ' ~ ' + if @$NearestObject.owner.knownname != null then @$NearestObject.owner.knownname else 'No Owner'"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
-      </do_if>
+      <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'" chance="$DEBUG"/>
+      <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="' - ' + $NearestObject.knownname + ' ~ ' + if @$NearestObject.owner.knownname != null then @$NearestObject.owner.knownname else 'No Owner'" chance="$DEBUG"/>
+      <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'" chance="$DEBUG"/>
 
       <!-- Fly to the sector of the $NearestObject -->
       <do_if value="$Ship.sector != $NearestSector">
@@ -290,10 +282,8 @@
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-      <do_if value="$DEBUG gt 0.0">
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_SatelliteDropper.xml ~ Finished ~~'"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
-      </do_if>
+      <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_SatelliteDropper.xml ~ Finished ~~'" chance="$DEBUG"/>
+      <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'" chance="$DEBUG"/>
 
       <label name="CLEANUP"/>
       <remove_value name="$ExpTotalMultiplier"/>
