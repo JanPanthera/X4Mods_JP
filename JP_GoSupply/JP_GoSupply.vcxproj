@@ -139,6 +139,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <Xml Include="aiscripts\JP_GoSupply.xml" />
+    <Xml Include="aiscripts\JP_SupplyStation.xml" />
     <Xml Include="content.xml" />
     <Xml Include="libraries\icons.xml" />
     <Xml Include="t\0001-L007.xml" />

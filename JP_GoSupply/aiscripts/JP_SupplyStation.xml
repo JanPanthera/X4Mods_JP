@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<aiscript name="JP_SupplyStation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd">
+
+  <order id="JP_SupplyStation" name="SupplyStation JP" category="trade" infinite="true">
+    <params>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="ADD_ORDER_TAG" text="{8888888, 1030}" comment="Add order tag?" type="bool" default="true"/>
+      <param name="WARES" text="{1041, 10146}" comment="Wares" type="list">
+        <input_param name="type" value="'ware'"/>
+        <input_param name="cancarry" value="this.ship"/>
+      </param>
+      <param name="STATION" text="Station" comment="Station" type="object" default="null" required="true">
+        <input_param name="class" value="[class.station]"/>
+      </param>
+      <param name="MAX_BUY_JUMP_COUNT" text="MaxBuyJumpCount" comment="MaxBuyJumpCount" type="number" default="5">
+        <input_param name="startvalue" value="5"/>
+        <input_param name="step" value="1"/>
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="30"/>
+      </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <!-- DEBUG -->
+      <param name="DEBUG" text="DebugText" type="number" default="0" advanced="true">
+        <input_param name="startvalue" value="0"/>
+        <input_param name="step" value="100"/>
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="100"/>
+      </param>
+    </params>
+    <skill min="0"/>
+    <requires>
+      <match shiptype="shiptype.lasertower" negate="true"/>
+    </requires>
+  </order>
+
+  <interrupts>
+    <handler ref="SectorChangeHandler"/>
+    <handler ref="TargetInvalidHandler"/>
+    <handler ref="AttackHandler"/>
+    <handler ref="MissileLockHandler"/>
+    <handler ref="ScannedHandler"/>
+    <handler ref="InspectedHandler"/>
+    <handler ref="FoundAbandonedHandler"/>
+    <handler ref="FoundLockboxHandler"/>
+    <handler ref="ResupplyHandler"/>
+    <handler ref="JobRemoveRequestHandler"/>
+  </interrupts>
+
+  <init>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <set_value name="$DebugDirectory" exact="'JP_SupplyStation.logs'"/>
+    <set_value name="$DebugFileName" exact="this.ship.idcode + '.JP_SupplyStation.log'"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <set_value name="this.$OldName" exact="this.ship.knownname"/>
+    <set_value name="$Ship" exact="this.ship"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <do_if value="$ADD_ORDER_TAG">
+      <set_object_name object="this.ship" name="this.ship.knownname + '\033#FFA95908# #GS_SS\033X'"/>
+    </do_if>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  </init>
+
+  <attention min="unknown">
+    <actions>
+
+      <wait exact="1ms"/>
+      <label name="INIT"/>
+
+      <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'" chance="$DEBUG"/>
+      <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_SupplyStation.xml ~ Started ~~' + '\n'" chance="$DEBUG"/>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <do_for_each name="$_Ware" in="$WARES">
+
+        <create_list name="$_BuyOffers"/>
+        <find_buy_offer result="$_BuyOffers" space="$STATION.zone" wares="$_Ware" multiple="true" tradepartner="$Ship"/>
+        <do_if value="$_BuyOffers.count le 0">
+          <continue/>
+        </do_if>
+
+        <create_list name="$_SellSpaces"/>
+        <find_sector_in_range name="$_SellSpaces" object="$STATION" maxdistance="$MAX_BUY_JUMP_COUNT" multiple="true">
+          <match mayattack="$Ship" negate="true"/>
+        </find_sector_in_range>
+
+        <create_list name="$_PotentialSellOffers"/>
+        <create_list name="$_SellOffers"/>
+        <do_for_each name="$_SellSpace" in="$_SellSpaces">
+          <find_sell_offer result="$_SellOffers" space="$_SellSpace" wares="$_Ware" multiple="true" tradepartner="$Ship">
+            <match_seller>
+              <match mayattack="$Ship" negate="true"/>
+            </match_seller>
+          </find_sell_offer>
+          <do_if value="$_SellOffers.count le 0">
+            <continue/>
+          </do_if>
+          <append_list_elements name="$_PotentialSellOffers" other="$_SellOffers"/>
+        </do_for_each>
+
+        <do_if value="$_PotentialSellOffers.count le 0">
+          <continue/>
+        </do_if>
+
+        <do_if value="$_PotentialSellOffers.count gt 1">
+          <sort_trades name="$_PotentialSellOffers" sorter="price" tradelist="$_PotentialSellOffers"/>
+        </do_if>
+
+        <!--Queue the sell order first as immediate. It will be displaced by the buy order also being queued as immediate-->
+        <!-- Add buy trade perform (if available) => This object sells (create_trade_order adds the reservation automatically) -->
+        <create_trade_order name="$sellorder" object="$Ship" tradeoffer="$_BuyOffers.{1}" amount="if $_BuyOffers.{1}.amount gt $Ship.cargo.{$_Ware}.free then $Ship.cargo.{$_Ware}.free else $_BuyOffers.{1}.amount" immediate="true"/>
+        <!-- Add sell trade perform (if available) => This object buys (create_trade_order adds the reservation automatically) -->
+        <create_trade_order name="$buyorder" object="$Ship" tradeoffer="$_PotentialSellOffers.{1}" amount="if $_BuyOffers.{1}.amount gt $Ship.cargo.{$_Ware}.free then $Ship.cargo.{$_Ware}.free else $_BuyOffers.{1}.amount" immediate="true"/>
+
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'" chance="$DEBUG"/>
+        <do_for_each name="$_PotentialSellOffer" in="$_PotentialSellOffers">
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="$_PotentialSellOffer.seller.knownname + ' ~ ' + $_PotentialSellOffer.seller.sector.knownname + ' ~ ' + $_PotentialSellOffer.ware + ' ~ ' + ($_PotentialSellOffer.unitprice / 100) + 'Cr'" chance="$DEBUG"/>
+        </do_for_each>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'" chance="$DEBUG"/>
+      </do_for_each>
+
+      <remove_value name="$_BuyOffers"/>
+      <remove_value name="$_SellSpaces"/>
+      <remove_value name="$_PotentialSellOffers"/>
+      <remove_value name="$_SellOffers"/>
+
+      <wait exact="1s"/>
+      <resume label="INIT"/>
+
+      <do_if value="$ADD_ORDER_TAG and this.$OldName?">
+        <set_object_name object="this.ship" name="this.$OldName"/>
+        <remove_value name="this.$OldName"/>
+      </do_if>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_SupplyStation.xml ~ Finished ~~'" chance="$DEBUG"/>
+      <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'" chance="$DEBUG"/>
+
+      <label name="CLEANUP"/>
+      <remove_value name="$Ship"/>
+      <remove_value name="$DebugFileName"/>
+      <remove_value name="$DebugDirectory"/>
+
+      <set_order_syncpoint_reached order="this.ship.order"/>
+      <cancel_order order="this.ship.order" />
+      <label name="FINISH"/>
+      <wait exact="1ms"/>
+
+    </actions>
+  </attention>
+
+  <on_abort>
+    <do_if value="$ADD_ORDER_TAG and this.$OldName?">
+      <set_object_name object="this.ship" name="this.$OldName"/>
+      <remove_value name="this.$OldName"/>
+    </do_if>
+  </on_abort>
+
+</aiscript>
