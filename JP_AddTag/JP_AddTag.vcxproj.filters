@@ -31,7 +31,6 @@
     <Xml Include="JP_AddTag\aiscripts\JP_SetNewNameAT.xml" />
     <Xml Include="content.xml" />
     <Xml Include="aiscripts\JP_AddTag.xml" />
-    <Xml Include="aiscripts\JP_SetNewNameAT.xml" />
     <Xml Include="t\0001-L007.xml" />
     <Xml Include="t\0001-L033.xml" />
     <Xml Include="t\0001-L034.xml" />
@@ -44,6 +43,8 @@
     <Xml Include="t\0001-L086.xml" />
     <Xml Include="t\0001-L088.xml" />
     <Xml Include="libraries\icons.xml" />
+    <Xml Include="t\0001.xml" />
+    <Xml Include="aiscripts\JP_GetColorStringAT.xml" />
   </ItemGroup>
   <ItemGroup>
     <Xsd Include="JP_AddTag\aiscripts\aiscripts.xsd">

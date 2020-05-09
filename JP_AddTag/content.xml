@@ -1,20 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<content id="JP_AddTag" name="JP_AddTag" description="Gives your ship or your fleet your own tag." author="JanPanthera" version="112" date="2020-04-06" save="0" enabled="1">
+<content id="JP_AddTag" name="JP_AddTag" description="This AI default order script adds your own tag to the name of one of your ships and/or to the whole fleet." author="JanPanthera" version="120" date="2020-05-09" save="0" enabled="1">
   <dependency version="300"/>
-  <dependency id="JP_ScriptLibrary" version="100"/>
-  <text language="7"  name="JP_AddTag" description="Мод добавляет к вашему кораблю или флоту собственный тэг (метку)." author="JanPanthera"/>
-  <text language="33" name="JP_AddTag" description="Gives your ship or your fleet your own tag." author="JanPanthera"/>
-  <text language="34" name="JP_AddTag" description="Gives your ship or your fleet your own tag." author="JanPanthera"/>
-  <text language="39" name="JP_AddTag" description="Gives your ship or your fleet your own tag." author="JanPanthera"/>
-  <text language="44" name="JP_AddTag" description="Gives your ship or your fleet your own tag." author="JanPanthera"/>
-  <text language="49" name="JP_AddTag" description="Verleiht Ihrem Schiff oder Ihrer Flotte einen eigenen Tag." author="JanPanthera"/>
-  <text language="55" name="JP_AddTag" description="Gives your ship or your fleet your own tag." author="JanPanthera"/>
-  <text language="81" name="JP_AddTag" description="Gives your ship or your fleet your own tag." author="JanPanthera"/>
-  <text language="82" name="JP_AddTag" description="Gives your ship or your fleet your own tag." author="JanPanthera"/>
-  <text language="86" name="JP_AddTag" description="Gives your ship or your fleet your own tag." author="JanPanthera"/>
-  <text language="88" name="JP_AddTag" description="Gives your ship or your fleet your own tag." author="JanPanthera"/>
+  <text language="7"  name="JP_AddTag" description="This AI default order script adds your own tag to the name of one of your ships and/or to the whole fleet." author="JanPanthera"/>
+  <text language="33" name="JP_AddTag" description="This AI default order script adds your own tag to the name of one of your ships and/or to the whole fleet." author="JanPanthera"/>
+  <text language="34" name="JP_AddTag" description="This AI default order script adds your own tag to the name of one of your ships and/or to the whole fleet." author="JanPanthera"/>
+  <text language="39" name="JP_AddTag" description="This AI default order script adds your own tag to the name of one of your ships and/or to the whole fleet." author="JanPanthera"/>
+  <text language="44" name="JP_AddTag" description="This AI default order script adds your own tag to the name of one of your ships and/or to the whole fleet." author="JanPanthera"/>
+  <text language="49" name="JP_AddTag" description="Dieses AI-Standardverhaltensskript fügt dem Namen eines deiner Schiffe und/oder der gesamten Flotte ein eigenes Tag hinzu." author="JanPanthera"/>
+  <text language="55" name="JP_AddTag" description="This AI default order script adds your own tag to the name of one of your ships and/or to the whole fleet." author="JanPanthera"/>
+  <text language="81" name="JP_AddTag" description="This AI default order script adds your own tag to the name of one of your ships and/or to the whole fleet." author="JanPanthera"/>
+  <text language="82" name="JP_AddTag" description="This AI default order script adds your own tag to the name of one of your ships and/or to the whole fleet." author="JanPanthera"/>
+  <text language="86" name="JP_AddTag" description="This AI default order script adds your own tag to the name of one of your ships and/or to the whole fleet." author="JanPanthera"/>
+  <text language="88" name="JP_AddTag" description="This AI default order script adds your own tag to the name of one of your ships and/or to the whole fleet." author="JanPanthera"/>
 </content>
-
-<!-- Russian ~~ Русский (language=7) translation by alexalsp -->
-<!-- French ~~ Français (language=33) translation by darkslimus / Xchange Guild -->
