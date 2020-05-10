@@ -44,12 +44,16 @@
     <Xml Include="t\0001-L086.xml" />
     <Xml Include="t\0001-L088.xml" />
     <Xml Include="libraries\icons.xml" />
+    <Xml Include="aiscripts\JP_ResupplyNavBeacons_ASE.xml" />
   </ItemGroup>
   <ItemGroup>
     <Xsd Include="JP_AbandonedShipExplorer\aiscripts\aiscripts.xsd">
       <Filter>Header Files</Filter>
     </Xsd>
     <Xsd Include="aiscripts\aiscripts.xsd">
+      <Filter>Header Files</Filter>
+    </Xsd>
+    <Xsd Include="md\md.xsd">
       <Filter>Header Files</Filter>
     </Xsd>
   </ItemGroup>

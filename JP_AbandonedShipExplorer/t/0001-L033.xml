@@ -3,6 +3,7 @@
 <language>
   <page id="8888888" voice="no">
     <!-- JP_AbandonedShipExplorer -->
+    <t id="170">Ajouter une étiquette de commande?</t>
     <t id="171">Inclure les secteurs ennemis?</t>
     <t id="172">Wait at the abandoned ship?</t>
     <t id="173">How long to wait?</t>

@@ -141,6 +141,7 @@
   <ItemGroup>
     <Xml Include="aiscripts\JP_AbandonedShipExplorer.xml" />
     <Xml Include="aiscripts\JP_ExploreAbandonedShip.xml" />
+    <Xml Include="aiscripts\JP_ResupplyNavBeacons_ASE.xml" />
     <Xml Include="content.xml" />
     <Xml Include="JP_AbandonedShipExplorer\aiscripts\JP_AbandonedShipExplorer.xml" />
     <Xml Include="JP_AbandonedShipExplorer\aiscripts\JP_ExploreAbandonedShip.xml" />
@@ -172,6 +173,7 @@
   <ItemGroup>
     <Xsd Include="aiscripts\aiscripts.xsd" />
     <Xsd Include="JP_AbandonedShipExplorer\aiscripts\aiscripts.xsd" />
+    <Xsd Include="md\md.xsd" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

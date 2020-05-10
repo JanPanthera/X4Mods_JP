@@ -3,6 +3,7 @@
 <language>
   <page id="8888888" voice="no">
     <!-- JP_AbandonedShipExplorer -->
+    <t id="170">Befehlskürzel hinzufügen?</t>
     <t id="171">Feindliche Sektoren einbeziehen?</t>
     <t id="172">Warte am verlassenen Schiff?</t>
     <t id="173">Wie lange Warten?</t>

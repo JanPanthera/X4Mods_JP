@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<!-- TODO exp gain for pilots -->
 
 <aiscript name="JP_AbandonedShipExplorer" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd">
 
-  <order id="JP_AbandonedShipExplorer" name="AbandonedShipExplorer JP" description="Finds all abandoned ships in the galaxy and marks them with a navigation beacon." category="navigation" infinite="true">
+  <order id="JP_AbandonedShipExplorer" name="_AbandonedShipExplorer JP" category="navigation" infinite="true">
     <params>
-      <!-- Mod Params -->
-      <param name="INCLUDE_ENEMY_SECTORS" text="{8888888, 171}" comment="Include enemy sectors?" type="bool" default="false"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="ADD_ORDER_TAG" text="{8888888, 170}" comment="Add order tag?" type="bool" default="true"/>
+      <param name="ENEMY_SECTORS" text="{8888888, 171}" comment="Include enemy sectors?" type="bool" default="false"/>
       <param name="WAIT_AT_SHIP" text="{8888888, 172}" comment="Wait at the ship?" type="bool" default="true"/>
       <param name="WAIT_AMOUNT" text="{8888888, 173}" comment="How long to wait?" type="time" default="60s">
         <input_param name="step" value="10s"/>
@@ -19,14 +19,15 @@
       <param name="RESTOCK_AMOUNT" text="{8888888, 176}" comment="Amount to restock" type="number" default="3">
         <input_param name="step" value="1"/>
         <input_param name="min" value="1"/>
-        <input_param name="max" value="10"/>
+        <input_param name="max" value="this.ship.ammostorage.deployable.capacity"/>
       </param>
       <param name="SHOW_MESSAGE" text="{8888888, 178}" comment="Message when arrived?" type="bool" default="true"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <!-- DEBUG -->
-      <param name="DEBUG" text="Debug" type="number" default="0.0" advanced="true">
-        <input_param name="step" value="0.0"/>
-        <input_param name="min" value="0.0"/>
-        <input_param name="max" value="1.0"/>
+      <param name="DEBUG" text="DebugText" type="number" default="0" advanced="1">
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="100"/>
+        <input_param name="step" value="100"/>
       </param>
     </params>
     <skill min="0"/>
@@ -49,10 +50,16 @@
   </interrupts>
 
   <init>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <set_value name="$DebugDirectory" exact="'JP_AbandonedShipExplorer.logs'"/>
-    <set_value name="$DebugFileName" exact="'JP_AbandonedShipExplorer.log'"/>
-    <set_value name="$Explorer" exact="this.ship"/>
-    <create_list name="$AbandonedShips"/>
+    <set_value name="$DebugFileName" exact="this.ship.idcode + '.JP_AbandonedShipExplorer.xml.log'"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <set_value name="$Ship" exact="this.ship"/>
+    <set_value name="this.$OldName" exact="this.ship.name"/>
+    <do_if value="$ADD_ORDER_TAG">
+      <set_object_name object="this.ship" name="this.ship.name + '\033#FFA2560B# #ASE\033X'"/>
+    </do_if>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
   </init>
 
   <attention min="unknown">
@@ -60,30 +67,27 @@
 
       <wait exact="1ms"/>
       <label name="INIT"/>
-      <cancel_all_orders object="$Explorer"/>
 
-      <do_if value="$DEBUG gt 0.0">
+      <do_if value="$DEBUG gt 0">
         <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_AbandonedShipExplorer ~ Started ~~' + '\n'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_AbandonedShipExplorer.xml ~ Started ~~' + '\n'"/>
       </do_if>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
       <label name="RESUME"/>
+
+      <create_list name="$AbandonedShips"/>
       <find_ship name="$AbandonedShips" space="player.galaxy" multiple="true">
         <match owner="faction.ownerless"/>
       </find_ship>
 
-      <do_if value="$AbandonedShips.count == 0">
-        <resume label="IDLE_WAIT"/>
-      </do_if>
-
       <!-- Show what we have found -->
-      <do_if value="$DEBUG gt 0.0">
+      <do_if value="$DEBUG gt 0">
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'Found _%1_ abandoned ships.'.[$AbandonedShips.count]"/>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-        <do_if value="$DEBUG gt 0.5">
+        <do_if value="$DEBUG gt 50">
           <do_for_each name="$AbandonedShip" in="$AbandonedShips">
             <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~ Ship: %1 [%2] -- %3 [].'.[$AbandonedShip.knownname, $AbandonedShip.idcode, $AbandonedShip.sector.knownname, $AbandonedShip.sector.owner.knownname]"/>
           </do_for_each>
@@ -95,26 +99,22 @@
       <create_list name="$AlreadyMarkedAbandonedShips"/>
       <do_for_each name="$AbandonedShip" in="$AbandonedShips">
         <create_list name="$NavBeacons"/>
-        <find_object name="$NavBeacons" space="$AbandonedShip.zone" multiple="true">
-          <match owner="$Explorer.owner"/>
+        <find_object name="$NavBeacons" space="$AbandonedShip.zone" append="true" multiple="false">
+          <match owner="$Ship.owner"/>
           <match class="class.navbeacon"/>
+          <match_distance object="$AbandonedShip" max="20km"/>
         </find_object>
         <do_if value="$NavBeacons.count gt 0">
-          <do_for_each name="$NavBeacon" in="$NavBeacons">
-            <do_if value="$NavBeacon.distanceto.{$AbandonedShip} le 2000">
-              <append_to_list name="$AlreadyMarkedAbandonedShips" exact="$AbandonedShip"/>
-              <break/>
-            </do_if>
-          </do_for_each>
+          <append_to_list name="$AlreadyMarkedAbandonedShips" exact="$AbandonedShip"/>
         </do_if>
         <remove_value name="$NavBeacons"/>
       </do_for_each>
       <remove_from_list name="$AbandonedShips" list="$AlreadyMarkedAbandonedShips"/>
-      <do_if value="$DEBUG gt 0.0 and $AlreadyMarkedAbandonedShips.count gt 0">
+      <do_if value="$DEBUG gt 0 and $AlreadyMarkedAbandonedShips.count gt 0">
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'Removed _%1_ abandoned ships. -- Already marked'.[$AlreadyMarkedAbandonedShips.count]"/>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-        <do_if value="$DEBUG gt 0.5">
+        <do_if value="$DEBUG gt 50">
           <do_for_each name="$AlreadyMarkedAbandonedShip" in="$AlreadyMarkedAbandonedShips">
             <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~ Removed abandoned ship %1 [%2] ~~ %3 [%4] -- Already marked'.[$AlreadyMarkedAbandonedShip.knownname, $AlreadyMarkedAbandonedShip.idcode, $AlreadyMarkedAbandonedShip.sector.knownname, $AlreadyMarkedAbandonedShip.sector.owner]"/>
           </do_for_each>
@@ -124,21 +124,21 @@
       <remove_value name="$AlreadyMarkedAbandonedShips"/>
 
       <!-- Removing all abandoned ships that are in an enemy sector -->
-      <do_if value="$INCLUDE_ENEMY_SECTORS == false">
+      <do_if value="not $ENEMY_SECTORS">
         <create_list name="$EnemySectorAbandonedShips"/>
         <do_for_each name="$AbandonedShip" in="$AbandonedShips">
-          <do_if value="$AbandonedShip.sector.owner.mayattack.{$Explorer}">
+          <do_if value="$AbandonedShip.sector.owner.mayattack.{$Ship}">
             <append_to_list name="$EnemySectorAbandonedShips" exact="$AbandonedShip"/>
           </do_if>
         </do_for_each>
         <remove_from_list name="$AbandonedShips" list="$EnemySectorAbandonedShips"/>
-        <do_if value="$DEBUG gt 0.0 and $EnemySectorAbandonedShips.count gt 0">
+        <do_if value="$DEBUG gt 0 and $EnemySectorAbandonedShips.count gt 0">
           <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
           <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'Removed _%1_ abandoned ships. -- Enemy Sector'.[$EnemySectorAbandonedShips.count]"/>
           <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-          <do_if value="$DEBUG gt 0.5">
+          <do_if value="$DEBUG gt 50">
             <do_for_each name="$EnemySectorAbandonedShip" in="$EnemySectorAbandonedShips">
-              <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~ Removed abandoned ship %1 [%2] ~~ %3 [%4] -- Enemy Sector'.[$EnemySectorAbandonedShip.knownname, $EnemySectorAbandonedShip.idcode, $EnemySectorAbandonedShip.sector.knownname, $EnemySectorAbandonedShip.sector.owner]"/>
+              <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~ Removed abandoned ship %1 [%2] ~~ %3 [%4] -- Enemy Sector'.[$EnemySectorAbandonedShip.knownname, $EnemySectorAbandonedShip.idcode, $EnemySectorAbandonedShip.sector.knownname, $EnemySectorAbandonedShip.sector.owner.knownname]"/>
             </do_for_each>
           </do_if>
           <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
@@ -146,102 +146,121 @@
         <remove_value name="$EnemySectorAbandonedShips"/>
       </do_if>
 
+      <do_if value="$AbandonedShips.count == 0">
+        <resume label="IDLE_WAIT"/>
+      </do_if>
+
       <!-- Restock navbeacons? -->
       <do_if value="$PLACE_NAVBEACON">
-        <do_if value="$RESTOCK_NAV_BEACONS and $Explorer.ammostorage.{deployablecategory.navbeacon}.count == 0">
-          <set_value name="$AmmoTable" exact="table[]"/>
-          <set_value name="$AmmoTable.{ware.waypointmarker_01}" exact="$RESTOCK_AMOUNT"/>
-          <do_if value="$DEBUG gt 0.0">
+        <do_if value="$RESTOCK_NAV_BEACONS and $Ship.ammostorage.{deployablecategory.navbeacon}.count == 0">
+          <do_if value="$DEBUG gt 0">
             <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-            <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'We going to restock %1 nav beacons now'.[$RESTOCK_AMOUNT]"/>
+            <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'Start to resupply navigation beacons.'"/>
             <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
           </do_if>
-          <run_script name="'JP_Restock_X_ToShip'">
-            <param name="SHIP" value="$Explorer"/>
-            <param name="AMMO_TABLE" value="$AmmoTable"/>
-            <param name="DEBUG_DIRECTORY" value="$DebugDirectory"/>
-            <param name="DEBUG_FILE_NAME" value="$DebugFileName"/>
+          <run_script name="'JP_ResupplyNavBeacons_ASE'">
+            <param name="RESTOCK_AMOUNT" value="$RESTOCK_AMOUNT"/>
             <param name="DEBUG" value="$DEBUG"/>
+            <save_retval name="RESULT" variable="$Result"/>
           </run_script>
-          <remove_value name="$AmmoTable"/>
+          <do_if value="$Result == 'Resupplying_NoFreeStorage'">
+            <resume label="FINISH"/>
+          </do_if>
+          <do_if value="$Result == 'Resupplying_Failed'">
+            <resume label="IDLE_WAIT"/>
+          </do_if>
         </do_if>
-        <do_elseif value="not $RESTOCK_NAV_BEACONS and $Explorer.ammostorage.{deployablecategory.navbeacon}.count == 0">
-          <show_help custom="'~ JP_AbandonedShipExplorer: No nav beacons on board and restocking turned off, cancel all orders...\n%1  [%2]'.[$Explorer.knownname,  $Explorer.idcode]" duration="10s"/>
-          <do_if value="$DEBUG gt 0.0">
+        <do_elseif value="not $RESTOCK_NAV_BEACONS and $Ship.ammostorage.{deployablecategory.navbeacon}.count == 0">
+          <show_help custom="'~ JP_AbandonedShipExplorer: No navigation beacons on board and restocking turned off, canceling all orders...\n%1  [%2]'.[$Ship.knownname,  $Ship.idcode]" duration="20s" allowclose="true"/>
+          <do_if value="$DEBUG gt 0">
             <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-            <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~ JP_AbandonedShipExplorer: No nav beacons on board and restocking turned off, cancel all orders...\n%1  [%2]'.[$Explorer.knownname,  $Explorer.idcode]"/>
+            <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~ JP_AbandonedShipExplorer: No nav beacons on board and restocking turned off, cancel all orders...\n%1  [%2]'.[$Ship.knownname,  $Ship.idcode]"/>
             <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
           </do_if>
-          <resume label="END"/>
+          <resume label="FINISH"/>
         </do_elseif>
       </do_if>
 
       <!-- Explore the nearest abandoned ship -->
       <label name="EXPLORE_ABANDONED_SHIP"/>
 
-      <!-- Sort all $AbandonedShips by gate jump distance to $Explorer if more than one -->
+      <!-- Sort all $AbandonedShips by gate jump distance to $Ship if more than one -->
       <do_if value="$AbandonedShips.count gt 1">
-        <sort_list list="$AbandonedShips" sortbyvalue="$Explorer.gatedistance.{loop.element}"/>
+        <sort_list list="$AbandonedShips" sortbyvalue="$Ship.gatedistance.{loop.element}"/>
       </do_if>
 
       <set_value name="$NearestAbandonedShip" exact="null"/>
       <do_for_each name="$AbandonedShip" in="$AbandonedShips">
-        <do_if value="$Explorer.gatedistance.{$AbandonedShip} ge 0">
+        <do_if value="$Ship.gatedistance.{$AbandonedShip} ge 0">
           <set_value name="$NearestAbandonedShip" exact="$AbandonedShip"/>
           <break/>
         </do_if>
       </do_for_each>
 
-      <do_if value="@$NearestAbandonedShip != null">
+      <do_if value="$NearestAbandonedShip != null">
+        <do_if value="$DEBUG gt 0">
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'Exploring abandoned ship %1 in %2'.[$NearestAbandonedShip.knownname, $NearestAbandonedShip.sector.knownname]"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+        </do_if>
         <run_script name="'JP_ExploreAbandonedShip'">
+          <param name="ABANDONED_SHIP" value="$NearestAbandonedShip"/>
           <param name="WAIT_AT_SHIP" value="$WAIT_AT_SHIP"/>
           <param name="WAIT_AMOUNT" value="$WAIT_AMOUNT"/>
           <param name="PLACE_NAVBEACON" value="$PLACE_NAVBEACON"/>
-          <param name="ABANDONED_SHIP" value="$NearestAbandonedShip"/>
+          <param name="SHOW_MESSAGE" value="$SHOW_MESSAGE"/>
           <param name="DEBUG" value="$DEBUG"/>
         </run_script>
       </do_if>
 
       <remove_value name="$AbandonedShips"/>
       <remove_value name="$NearestAbandonedShip"/>
-      <wait min="1s" max="3s"/>
-      <resume label="RESUME"/>
 
+      <!-- TODO: IDLE STUFF -->
       <label name="IDLE_WAIT"/>
-      <run_script name="'JP_IdleWait'">
-        <param name="SHIP" value="$Explorer"/>
-        <param name="TIMEOUT_MIN" value="30s"/>
-        <param name="TIMEOUT_MAX" value="60s"/>
-        <param name="DEBUG" value="$DEBUG"/>
-        <param name="DEBUG_DIRECTORY" value="$DebugDirectory"/>
-        <param name="DEBUG_FILE_NAME" value="$DebugFileName"/>
+      <set_command command="command.move" param="$Ship.sector"/>
+      <set_object_name object="$Ship" name="$Ship.name + ' \033#FFCEFBA1#~ nothing to do - moving randomly ~ TODO!\033X'"/>
+      <run_script name="'move.random'">
+        <param name="TimeOut" value="60s"/>
+        <param name="Anchor" value="$Ship.sector"/>
+        <param name="Offset" value="$Ship.sector.coreposition"/>
+        <param name="MaxDistance" value="10km"/>
       </run_script>
+      <set_object_name object="this.ship" name="if $ADD_ORDER_TAG then this.$OldName + '\033#FFA95908# #ASE\033X' else this.$OldName"/>
       <resume label="RESUME"/>
 
+      <label name="FINISH"/>
 
-      <label name="END"/>
+      <do_if value="$ADD_ORDER_TAG and this.$OldName?">
+        <set_object_name object="this.ship" name="this.$OldName"/>
+      </do_if>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-      <do_if value="$DEBUG gt 0.0">
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_AbandonedShipExplorer ~ Finished ~~'"/>
+      <do_if value="$DEBUG gt 0">
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_AbandonedShipExplorer.xml ~ Finished ~~'"/>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
       </do_if>
 
       <label name="CLEANUP"/>
-      <remove_value name="$Explorer"/>
+      <remove_value name="this.$OldName"/>
+      <remove_value name="$Ship"/>
       <remove_value name="$DebugFileName"/>
       <remove_value name="$DebugDirectory"/>
 
-      <label name="FINISH"/>
+      <label name="END"/>
+      <wait exact="1ms"/>
       <set_order_syncpoint_reached order="this.ship.order"/>
       <cancel_order order="this.ship.order" />
-      <wait exact="1ms"/>
 
     </actions>
   </attention>
 
   <on_abort>
+    <do_if value="$ADD_ORDER_TAG and this.$OldName?">
+      <set_object_name object="this.ship" name="this.$OldName"/>
+      <remove_value name="this.$OldName"/>
+    </do_if>
   </on_abort>
 
 </aiscript>

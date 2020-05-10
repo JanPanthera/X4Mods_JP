@@ -3,6 +3,7 @@
 <language>
   <page id="8888888" voice="no">
     <!-- JP_AbandonedShipExplorer -->
+    <t id="170">Add order tag?</t>
     <t id="171">Include enemy sectors?</t>
     <t id="172">Wait at the ship?</t>
     <t id="173">How long to wait?</t>
