@@ -2,7 +2,7 @@
 
 <aiscript name="JP_SatelliteDropper" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd">
 
-  <order id="JP_SatelliteDropper" name="SatelliteDropper JP" category="navigation" infinite="true">
+  <order id="JP_SatelliteDropper" name="_SatelliteDropper JP" category="navigation" infinite="true">
     <params>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="ADD_ORDER_TAG" text="{8888888, 1030}" comment="Add order tag?" type="bool" default="true"/>
@@ -15,47 +15,48 @@
         <input_param name="startvalue" value="1"/>
       </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="ENEMY_SECTORS" text="{8888888, 1034}" comment="EnemySectors" type="bool" default="false"/>
-      <param name="NEUTRAL_SECTORS" text="{8888888, 1035}" comment="NeutralSectors" type="bool" default="true"/>
-      <param name="ENEMY_STATIONS" text="{8888888, 1036}" comment="EnemyStations" type="bool" default="false"/>
+      <param name="ENEMY_SECTORS" text="{8888888, 1034}" comment="Enemy Sectors?" type="bool" default="false"/>
+      <param name="NEUTRAL_SECTORS" text="{8888888, 1035}" comment="Neutral Sectors?" type="bool" default="true"/>
+      <param name="FRIENDLY_SECTORS" text="{8888888, 1036}" comment="Friendly Sectors?" type="bool" default="true"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="GATES" text="{8888888, 1037}" comment="Gates" type="bool" default="true"/>
-      <param name="ACTIVE_GATES" text="{8888888, 1038}" comment="ActiveGates" type="bool" default="true"/>
-      <param name="INACTIVE_GATES" text="{8888888, 1039}" comment="InactiveGates" type="bool" default="true"/>
-      <param name="ACCELERATORS" text="{8888888, 1040}" comment="Accelerators" type="bool" default="true"/>
-      <param name="ACTIVE_ACCELERATORS" text="{8888888, 1041}" comment="ActiveAccelerators" type="bool" default="true"/>
-      <param name="INACTIVE_ACCELERATORS" text="{8888888, 1042}" comment="InactiveAccelerators" type="bool" default="true"/>
+      <param name="GATES" text="{8888888, 1037}" comment="Gates?" type="bool" default="true"/>
+      <param name="ACTIVE_GATES" text="{8888888, 1038}" comment="Active Gates?" type="bool" default="true"/>
+      <param name="INACTIVE_GATES" text="{8888888, 1039}" comment="Inactive Gates?" type="bool" default="true"/>
+      <param name="ACCELERATORS" text="{8888888, 1040}" comment="Accelerators?" type="bool" default="true"/>
+      <param name="ACTIVE_ACCELERATORS" text="{8888888, 1041}" comment="Active Accelerators?" type="bool" default="true"/>
+      <param name="INACTIVE_ACCELERATORS" text="{8888888, 1042}" comment="Inactive Accelerators?" type="bool" default="true"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="STATIONS" text="{8888888, 1043}" comment="Stations" type="bool" default="true"/>
-      <param name="WHARFS" text="{8888888, 1044}" comment="Wharfs" type="bool" default="true"/>
-      <param name="SHIPYARDS" text="{8888888, 1045}" comment="Shipyards" type="bool" default="true"/>
-      <param name="EQUIPMENTDOCKS" text="{8888888, 1046}" comment="Equipmentdocks" type="bool" default="true"/>
-      <param name="TRADE_STATIONS" text="{8888888, 1047}" comment="TradeStations" type="bool" default="true"/>
-      <param name="DEFENCE_STATIONS" text="{8888888, 1048}" comment="DefenceStations" type="bool" default="true"/>
-      <param name="PIRATE_BASE" text="{8888888, 1049}" comment="PirateBase" type="bool" default="true"/>
-      <param name="FACTION_HEADQUARTERS" text="{8888888, 1050}" comment="FactionHeadquarters" type="bool" default="true"/>
-      <param name="NON_SPECIAL_STATIONS" text="{8888888, 1051}" comment="NonSpecialStations" type="bool" default="false"/>
+      <param name="STATIONS" text="{8888888, 1043}" comment="Stations?" type="bool" default="true"/>
+      <param name="WHARFS" text="{8888888, 1044}" comment="Wharfs?" type="bool" default="true"/>
+      <param name="SHIPYARDS" text="{8888888, 1045}" comment="Shipyards?" type="bool" default="true"/>
+      <param name="EQUIPMENTDOCKS" text="{8888888, 1046}" comment="Equipmentdocks?" type="bool" default="true"/>
+      <param name="TRADE_STATIONS" text="{8888888, 1047}" comment="Trade Stations?" type="bool" default="true"/>
+      <param name="DEFENCE_STATIONS" text="{8888888, 1048}" comment="Defence Stations?" type="bool" default="true"/>
+      <param name="PIRATE_BASE" text="{8888888, 1049}" comment="Pirate Bases?" type="bool" default="true"/>
+      <param name="FACTION_HEADQUARTERS" text="{8888888, 1050}" comment="Faction Headquarters?" type="bool" default="true"/>
+      <param name="NON_SPECIAL_STATIONS" text="{8888888, 1051}" comment="Non Special Stations?" type="bool" default="false"/>
+      <param name="ENEMY_STATIONS" text="{8888888, 1052}" comment="Enemy Stations?" type="bool" default="false"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="IDLE_TIME" text="IdleTime" comment="IdleTime" type="time" default="60s">
+      <param name="IDLE_TIME" text="{8888888, 1053}" comment="Idle Time" type="time" default="600s">
         <input_param name="min" value="60s"/>
         <input_param name="max" value="3600s"/>
         <input_param name="step" value="10s"/>
       </param>
-      <param name="IDLE_FOLLOW" text="TODO! {8888888, 1052}" comment="Idle: Follow?" type="bool" default="false"/>
-      <param name="WHO_TO_FOLLOW" text="{8888888, 1053}" comment="Who to follow?" type="object" default="null">
+      <param name="IDLE_FOLLOW" text="TODO! {8888888, 1054}" comment="Idle: Follow?" type="bool" default="false"/>
+      <param name="WHO_TO_FOLLOW" text="{8888888, 1055}" comment="Who to follow?" type="object" default="null">
         <input_param name="class" value="[class.ship]"/>
         <input_param name="owner" value="this.ship.owner"/>
       </param>
-      <param name="IDLE_DOCKING" text="{8888888, 1054}" comment="Idle: Docking?" type="bool" default="false"/>
-      <param name="WHERE_TO_DOCK" text="{8888888, 1055}" comment="Where to dock?" type="object" default="null">
+      <param name="IDLE_DOCKING" text="{8888888, 1056}" comment="Idle: Docking?" type="bool" default="false"/>
+      <param name="WHERE_TO_DOCK" text="{8888888, 1057}" comment="Where to dock?" type="object" default="null">
         <input_param name="class" value="if this.ship.isclass.[class.ship_s, class.ship_xs] then [class.station, class.ship_m, class.ship_l, class.ship_xl] else [class.station, class.ship_l, class.ship_xl]"/>
       </param>
-      <param name="IDLE_RANDOM_MOVEMENT" text="{8888888, 1056}" comment="Idle: Movement?" type="bool" default="false"/>
-      <param name="IN_WHICH_SECTOR" text="{8888888, 1057}" comment="In which sector?" type="position" default="[this.ship.sector, this.ship.position]">
+      <param name="IDLE_RANDOM_MOVEMENT" text="{8888888, 1058}" comment="Idle: Movement?" type="bool" default="false"/>
+      <param name="IN_WHICH_SECTOR" text="{8888888, 1059}" comment="In which sector?" type="position" default="[this.ship.sector, this.ship.position]">
         <input_param name="class" value="class.sector"/>
       </param>
-      <param name="IDLE_MOVE_TO" text="{8888888, 1058}" comment="Idle: Move to?" type="bool" default="false"/>
-      <param name="WHERE_TO_MOVE" text="{8888888, 1059}" comment="Where to move?" type="position" default="[this.ship.sector, this.ship.position]">
+      <param name="IDLE_MOVE_TO" text="{8888888, 1060}" comment="Idle: Move to?" type="bool" default="false"/>
+      <param name="WHERE_TO_MOVE" text="{8888888, 1061}" comment="Where to move?" type="position" default="[this.ship.sector, this.ship.position]">
         <input_param name="class" value="class.sector"/>
       </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -161,6 +162,7 @@
       <run_script name="'JP_GetNearestSectorWithObjectsToMark'">
         <param name="ENEMY_SECTORS" value="$ENEMY_SECTORS"/>
         <param name="NEUTRAL_SECTORS" value="$NEUTRAL_SECTORS"/>
+        <param name="FRIENDLY_SECTORS" value="$FRIENDLY_SECTORS"/>
         <param name="ENEMY_STATIONS" value="$ENEMY_STATIONS"/>
         <param name="GATES" value="$GATES"/>
         <param name="ACTIVE_GATES" value="$ACTIVE_GATES"/>

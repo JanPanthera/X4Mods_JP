@@ -9,7 +9,7 @@
     <t id="1033">Nachfüll Anzahl?</t>
     <t id="1034">Feindliche Sektoren?</t>
     <t id="1035">Neutrale Sektoren?</t>
-    <t id="1036">Feindliche Stationen?</t>
+    <t id="1036">Befreundete Sektoren?</t>
     <t id="1037">Sprungtore?</t>
     <t id="1038">Aktive Sprungtore?</t>
     <t id="1039">Inaktive Sprungtore?</t>
@@ -25,13 +25,15 @@
     <t id="1049">Piraten Basen?</t>
     <t id="1050">Fraktions Hauptquartiere?</t>
     <t id="1051">Nicht spezialisierte Stationen?</t>
-    <t id="1052">Leerlauf: Folgen?</t>
-    <t id="1053">Wem folgen?</t>
-    <t id="1054">Leerlauf: Andocken?</t>
-    <t id="1055">Wo andocken?</t>
-    <t id="1056">Leerlauf: Zufällige bewegung?</t>
-    <t id="1057">In welchem Sektor?</t>
-    <t id="1058">Leerlauf: Zu Position bewegen?</t>
-    <t id="1059">Wohin?</t>
+    <t id="1052">Feindliche Stationen?</t>
+    <t id="1053">Leerlauf Zeit</t>
+    <t id="1054">Leerlauf: Folgen?</t>
+    <t id="1055">Wem folgen?</t>
+    <t id="1056">Leerlauf: Andocken?</t>
+    <t id="1057">Wo andocken?</t>
+    <t id="1058">Leerlauf: Zufällige bewegung?</t>
+    <t id="1059">In welchem Sektor?</t>
+    <t id="1060">Leerlauf: Zu Position bewegen?</t>
+    <t id="1061">Wohin?</t>
   </page>
 </language>

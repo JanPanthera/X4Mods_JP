@@ -9,7 +9,7 @@
     <t id="1033">Restock Amount?</t>
     <t id="1034">Enemy Sectors?</t>
     <t id="1035">Neutral Sectors?</t>
-    <t id="1036">Enemy Stations?</t>
+    <t id="1036">Friendly Sectors?</t>
     <t id="1037">Gates?</t>
     <t id="1038">Active Gates?</t>
     <t id="1039">Inactive Gates?</t>
@@ -25,13 +25,15 @@
     <t id="1049">Pirate Bases?</t>
     <t id="1050">Faction Headquarters?</t>
     <t id="1051">Non Special Stations?</t>
-    <t id="1052">Idle: Follow?</t>
-    <t id="1053">Who to follow?</t>
-    <t id="1054">Idle: Docking?</t>
-    <t id="1055">Where to dock?</t>
-    <t id="1056">Idle: Random movement?</t>
-    <t id="1057">In which sector?</t>
-    <t id="1058">Idle: Move to?</t>
-    <t id="1059">Where to move?</t>
+    <t id="1052">Enemy Stations?</t>
+    <t id="1053">Idle Time</t>
+    <t id="1054">Idle: Follow?</t>
+    <t id="1055">Who to follow?</t>
+    <t id="1056">Idle: Docking?</t>
+    <t id="1057">Where to dock?</t>
+    <t id="1058">Idle: Random movement?</t>
+    <t id="1059">In which sector?</t>
+    <t id="1060">Idle: Move to?</t>
+    <t id="1061">Where to move?</t>
   </page>
 </language>

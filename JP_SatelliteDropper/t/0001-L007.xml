@@ -3,35 +3,38 @@
 <language>
   <page id="8888888" voice="no">
     <!-- JP_SatelliteDropper -->
-    <t id="1030">Add order tag?</t>
-    <t id="1031">Advanced Satellites?</t>
-    <t id="1032">Restock Satellites?</t>
-    <t id="1033">Restock Amount?</t>
-    <t id="1034">Enemy Sectors?</t>
-    <t id="1035">Neutral Sectors?</t>
-    <t id="1036">Enemy Stations?</t>
-    <t id="1037">Gates?</t>
-    <t id="1038">Active Gates?</t>
-    <t id="1039">Inactive Gates?</t>
-    <t id="1040">Accelerators?</t>
-    <t id="1041">Active Accelerators?</t>
-    <t id="1042">Inactive Accelerators?</t>
-    <t id="1043">Stations?</t>
-    <t id="1044">Wharfs?</t>
-    <t id="1045">Shipyards?</t>
-    <t id="1046">Equipmentdocks?</t>
-    <t id="1047">Trade Stations?</t>
-    <t id="1048">Defence Stations?</t>
-    <t id="1049">Pirate Bases?</t>
-    <t id="1050">Faction Headquarters?</t>
-    <t id="1051">Non Special Stations?</t>
-    <t id="1052">Idle: Follow?</t>
-    <t id="1053">Who to follow?</t>
-    <t id="1054">Idle: Docking?</t>
-    <t id="1055">Where to dock?</t>
-    <t id="1056">Idle: Random movement?</t>
-    <t id="1057">In which sector?</t>
-    <t id="1058">Idle: Move to?</t>
-    <t id="1059">Where to move?</t>
+    <t id="1030">Добавить метку заказа?</t>
+    <t id="1031">Исп. улуч. спутники?</t>
+    <t id="1032">Авт. пополн. спутн.?</t>
+    <t id="1033">Кол. пополн. спутн.?</t>
+    <t id="1034">Вкл. вражеские сектора?</t>
+    <t id="1035">Вкл. нейтральные сектора?</t>
+    <t id="1036">Friendly Sectors?</t>
+    <t id="1037">Вкл/Выкл у ворот?</t>
+    <t id="1038">Возле акт. ворот?</t>
+    <t id="1039">Возле неакт. ворот?</t>
+    <t id="1040">Вкл/Выкл возле ускор.?</t>
+    <t id="1041">Возле акт. ускор.?</t>
+    <t id="1042">Возле неакт. ускор.?</t>
+    <t id="1043">Вкл/Выкл у станций?</t>
+    <t id="1044">Возле причалов?</t>
+    <t id="1045">Возле верфей?</t>
+    <t id="1046">Возле доков оборудования?</t>
+    <t id="1047">Возле торг. станций?</t>
+    <t id="1048">Возле оборон. станций?</t>
+    <t id="1049">Возле пиратских баз?</t>
+    <t id="1050">Возле штаба фракций?</t>
+    <t id="1051">Возле не спец. станц.?</t>
+    <t id="1052">Вкл. вражеские станции?</t>
+    <t id="1053">Idle Time</t>
+    <t id="1054">Следовать?</t>
+    <t id="1055">За кем следовать?</t>
+    <t id="1056">Стыковаться и ждать?</t>
+    <t id="1057">Где стыковаться?</t>
+    <t id="1058">Ждать в секторе?</t>
+    <t id="1059">В каком секторе?</t>
+    <t id="1060">Ждать в?</t>
+    <t id="1061">Где ждать?</t>
   </page>
 </language>
+<!-- Thanks ~ envedimka -->

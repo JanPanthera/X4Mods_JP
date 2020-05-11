@@ -7,7 +7,7 @@
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="ENEMY_SECTORS" text="EnemySectors" comment="EnemySectors" type="bool" default="false"/>
       <param name="NEUTRAL_SECTORS" text="NeutralSectors" comment="NeutralSectors" type="bool" default="true"/>
-      <param name="ENEMY_STATIONS" text="EnemyStations" comment="EnemyStations" type="bool" default="false"/>
+      <param name="FRIENDLY_SECTORS" text="FriendlySectors" comment="FriendlySectors" type="bool" default="true"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="GATES" text="Gates" comment="Gates" type="bool" default="true"/>
       <param name="ACTIVE_GATES" text="ActiveGates" comment="ActiveGates" type="bool" default="true"/>
@@ -25,6 +25,7 @@
       <param name="PIRATE_BASE" text="PirateBase" comment="PirateBase" type="bool" default="true"/>
       <param name="FACTION_HEADQUARTERS" text="FactionHeadquarters" comment="FactionHeadquarters" type="bool" default="true"/>
       <param name="NON_SPECIAL_STATIONS" text="NonSpecialStations" comment="NonSpecialStations" type="bool" default="false"/>
+      <param name="ENEMY_STATIONS" text="EnemyStations" comment="EnemyStations" type="bool" default="false"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <!-- DEBUG -->
       <param name="DEBUG" text="DebugText" type="number" default="0" advanced="1">
@@ -69,34 +70,33 @@
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-      <create_list name="$_Sectors"/>
-      <find_sector name="$_Sectors" space="player.galaxy" multiple="true">
+      <create_list name="$_TempSectors"/>
+      <find_sector name="$_TempSectors" space="player.galaxy" multiple="true">
         <match knownto="$Ship.owner"/>
       </find_sector>
 
       <include_interrupt_actions ref="GetBlacklistgroup"/>
 
-      <create_list name="$_SectorsToRemove"/>
-      <do_for_each name="$_Sector" in="$_Sectors">
+      <create_list name="$_Sectors"/>
+      <do_for_each name="$_Sector" in="$_TempSectors">
         <do_if value="$Ship.gatedistance.{$_Sector} lt 0">
-          <append_to_list name="$_SectorsToRemove" exact="$_Sector"/>
           <continue/>
         </do_if>
         <do_if value="$_Sector.isblacklisted.{blacklisttype.sectortravel}.{$blacklistgroup}.{$Ship}">
-          <append_to_list name="$_SectorsToRemove" exact="$_Sector"/>
           <continue/>
         </do_if>
         <do_if value="$_Sector.owner == faction.ownerless and not $NEUTRAL_SECTORS">
-          <append_to_list name="$_SectorsToRemove" exact="$_Sector"/>
           <continue/>
         </do_if>
         <do_if value="($_Sector.owner.mayattack.{$Ship} and not $ENEMY_SECTORS)">
-          <append_to_list name="$_SectorsToRemove" exact="$_Sector"/>
           <continue/>
         </do_if>
+        <do_if value="$_Sector.owner.mayattack.{$Ship} == false and not $FRIENDLY_SECTORS">
+          <continue/>
+        </do_if>
+        <append_to_list name="$_Sectors" exact="$_Sector"/>
       </do_for_each>
-      <remove_from_list name="$_Sectors" list="$_SectorsToRemove"/>
-      <remove_value name="$_SectorsToRemove"/>
+      <remove_value name="$_TempSectors"/>
 
       <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'" chance="$DEBUG"/>
       <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="' ~ $_Sectors.count: ' + $_Sectors.count" chance="$DEBUG"/>
