@@ -51,7 +51,6 @@
     <Xml Include="aiscripts\JP_AnotherExplorerV2G.xml" />
     <Xml Include="aiscripts\JP_AnotherExplorerV2S.xml" />
     <Xml Include="aiscripts\JP_ExploreObject.xml" />
-    <Xml Include="aiscripts\JP_GetNearestSectorWithUnknownObjects.xml" />
     <Xml Include="md\JP_UpdateAnotherExplorerV2Fleet.xml" />
     <Xml Include="t\0001-L007.xml" />
     <Xml Include="t\0001-L033.xml" />
@@ -66,7 +65,8 @@
     <Xml Include="t\0001-L088.xml" />
     <Xml Include="libraries\icons.xml" />
     <Xml Include="libraries\experiences.xml" />
-    <Xml Include="aiscripts\JP_GetNearestUnknownObject.xml" />
     <Xml Include="t\0001.xml" />
+    <Xml Include="aiscripts\JP_IdleReturnHome_AEV2.xml" />
+    <Xml Include="aiscripts\JP_GetNearestUnknownObject.xml" />
   </ItemGroup>
 </Project>

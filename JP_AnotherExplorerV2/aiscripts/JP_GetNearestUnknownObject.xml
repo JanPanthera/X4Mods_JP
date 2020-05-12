@@ -2,21 +2,28 @@
 
 <aiscript name="JP_GetNearestUnknownObject" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd">
 
-  <order id="JP_GetNearestUnknownObject" name="JP GetNearestUnknownObject" category="internal" infinite="false">
+  <order id="JP_GetNearestUnknownObject" name="GetNearestUnknownObject JP" category="internal" infinite="false">
     <params>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="SECTOR" text="{20001, 201}" comment="Sector" type="object" default="this.sector">
-        <input_param name="class" value="[class.sector]"/>
-      </param>
+      <param name="ENEMY_SECTORS" text="EnemySectors" comment="EnemySectors" type="bool" default="false"/>
+      <param name="NEUTRAL_SECTORS" text="NeutralSectors" comment="NeutralSectors" type="bool" default="true"/>
+      <param name="FRIENDLY_SECTORS" text="FriendlySectors" comment="FriendlySectors" type="bool" default="true"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="GATES" text="Gates?" type="bool" default="true"/>
       <param name="STATIONS" text="Stations?" type="bool" default="true"/>
       <param name="ENEMY_STATIONS" text="Enemy Stations?" type="bool" default="false"/>
+      <param name="FRIENDLY_STATIONS" text="Friendly Stations?" type="bool" default="true"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <!-- If not specified the script will search the galaxy for sectors with unknown objects.. if not.. it simply searches in SECTOR -->
+      <param name="SECTOR" text="{20001, 201}" comment="Sector" type="object" default="null" required="false">
+        <input_param name="class" value="[class.sector]"/>
+      </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <!-- DEBUG -->
-      <param name="DEBUG" text="DebugText" type="number" default="0.0" advanced="1">
-        <input_param name="min" value="0.0"/>
-        <input_param name="max" value="1.0"/>
-        <input_param name="step" value="0.1"/>
+      <param name="DEBUG" text="DebugText" type="number" default="0" advanced="1">
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="100"/>
+        <input_param name="step" value="100"/>
       </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     </params>
@@ -44,73 +51,97 @@
       <wait exact="1ms"/>
       <label name="INIT"/>
 
-      <do_if value="$DEBUG gt 0.0">
+      <do_if value="$DEBUG gt 0">
         <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_GetNearestUnknownObject.xml ~ Started ~~' + '\n'"/>
       </do_if>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-      <create_list name="$_Objects"/>
-
-      <do_if value="$GATES">
-        <find_gate name="$_Objects" space="$SECTOR" multiple="true" append="true">
-          <match knownto="$Ship.owner" negate="true"/>
-        </find_gate>
+      <do_if value="$SECTOR != null">
+        <create_list name="$_Sectors"/>
+        <append_to_list name="$_Sectors" exact="$SECTOR"/>
+        <resume label="FIND_OBJECTS"/>
       </do_if>
 
-      <do_if value="$STATIONS">
-        <create_list name="$_Stations"/>
-        <find_station name="$_Stations" space="$SECTOR" multiple="true">
-          <match knownto="$Ship.owner" negate="true"/>
-        </find_station>
-        <do_for_each name="$_Station" in="$_Stations">
-          <do_if value="($_Station.owner.mayattack.{$Ship} and not $ENEMY_STATIONS)">
-            <continue/>
+      <create_list name="$_TempSectors"/>
+      <find_sector name="$_TempSectors" space="player.galaxy" multiple="true">
+      </find_sector>
+
+      <include_interrupt_actions ref="GetBlacklistgroup"/>
+
+      <create_list name="$_Sectors"/>
+      <do_for_each name="$_Sector" in="$_TempSectors">
+        <do_if value="$Ship.gatedistance.{$_Sector} lt 0">
+          <continue/>
+        </do_if>
+        <do_if value="$_Sector.isblacklisted.{blacklisttype.sectortravel}.{$blacklistgroup}.{$Ship} or $_Sector.isblacklisted.{blacklisttype.objectactivity}.{$blacklistgroup}.{$Ship}">
+          <continue/>
+        </do_if>
+        <do_if value="$_Sector.owner.mayattack.{$Ship} and not $ENEMY_SECTORS">
+          <continue/>
+        </do_if>
+        <do_if value="$_Sector.owner == faction.ownerless and not $NEUTRAL_SECTORS">
+          <continue/>
+        </do_if>
+        <do_if value="not $_Sector.owner.mayattack.{$Ship} and not $FRIENDLY_SECTORS">
+          <continue/>
+        </do_if>
+        <append_to_list name="$_Sectors" exact="$_Sector"/>
+      </do_for_each>
+
+      <remove_value name="$_TempSectors"/>
+
+      <do_if value="$_Sectors.count gt 1">
+        <sort_list list="$_Sectors" sortbyvalue="$Ship.gatedistance.{loop.element}"/>
+      </do_if>
+
+      <label name="FIND_OBJECTS"/>
+
+      <do_for_each name="$_Sector" in="$_Sectors">
+
+        <create_list name="$_Objects"/>
+
+        <do_if value="$GATES">
+          <find_gate name="$_Objects" space="$_Sector" multiple="true">
+            <match knownto="$Ship.owner" negate="true"/>
+          </find_gate>
+        </do_if>
+
+        <do_if value="$STATIONS">
+          <create_list name="$_Stations"/>
+          <find_station name="$_Stations" space="$SECTOR" multiple="true">
+            <match knownto="$Ship.owner" negate="true"/>
+          </find_station>
+          <do_for_each name="$_Station" in="$_Stations">
+            <do_if value="$_Station.owner.mayattack.{$Ship} and not $ENEMY_STATIONS">
+              <continue/>
+            </do_if>
+            <do_if value="not $_Station.owner.mayattack.{$Ship} and not $FRIENDLY_STATIONS">
+              <continue/>
+            </do_if>
+            <append_to_list name="$_Objects" exact="$_Station"/>
+          </do_for_each>
+          <remove_value name="$_Stations"/>
+        </do_if>
+
+        <do_if value="$_Objects.count gt 0">
+          <do_if value="$_Objects.count gt 1">
+            <sort_list list="$_Objects" sortbyvalue="$Ship.distanceto.{loop.element}"/>
           </do_if>
-          <append_to_list name="$_Objects" exact="$_Station"/>
-        </do_for_each>
-        <remove_value name="$_Stations"/>
-      </do_if>
-
-      <do_if value="$_Objects.count le 0">
-        <do_if value="$DEBUG gt 0.0">
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="' ~ No unknown objects found in ' + $SECTOR.name + ' ~ ' + if @$SECTOR.owner.knownname != null then @$SECTOR.owner.knownname else 'No Owner'"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+          <set_value name="$NearestUnknownObject" exact="$_Objects.{1}"/>
+          <remove_value name="$_Objects"/>
+          <break/>
         </do_if>
         <remove_value name="$_Objects"/>
-        <resume label="FINISH"/>
-      </do_if>
 
-      <do_if value="$_Objects.count gt 1">
-        <sort_list list="$_Objects" sortbyvalue="$Ship.distanceto.{loop.element}"/>
-      </do_if>
-
-      <do_if value="$DEBUG gt 0.0">
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="' ~ $_Objects.count: ' + $_Objects.count"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-        <do_for_each name="$_Object" in="$_Objects" counter="$_it">
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="' - ' + '[' + $_it + '] ' + $_Object.knownname + ' ~ ' + if @$_Object.owner.knownname != null then @$_Object.owner.knownname else 'No Owner'"/>
-        </do_for_each>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
-      </do_if>
-
-      <set_value name="$NearestUnknownObject" exact="$_Objects.{1}"/>
-      <remove_value name="$_Objects"/>
-
-      <do_if value="$DEBUG gt 0.0">
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="' ~ $NearestUnknownObject: ' + $NearestUnknownObject.knownname + ' ~ ' + if @$NearestUnknownObject.owner.knownname != null then @$NearestUnknownObject.owner.knownname else 'No Owner'"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
-      </do_if>
+      </do_for_each>
 
       <label name="FINISH"/>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-      <do_if value="$DEBUG gt 0.0">
+      <do_if value="$DEBUG gt 0">
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_GetNearestUnknownObject.xml ~ Finished ~~'"/>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
       </do_if>

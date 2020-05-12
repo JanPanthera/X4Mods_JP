@@ -12,7 +12,31 @@
       <param name="GATES" text="{8888888, 21}" comment="Explore gates?" type="bool" default="true"/>
       <param name="STATIONS" text="{8888888, 22}" comment="Explore stations?" type="bool" default="true"/>
       <param name="ENEMY_STATIONS" text="{8888888, 23}" comment="Explore enemy stations?" type="bool" default="false"/>
+      <param name="FRIENDLY_STATIONS" text="Friendly Stations?" type="bool" default="true"/>
       <param name="AUTO_FLEET" text="{8888888, 26}" comment="Automatic Fleet?" type="bool" default="false"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="IDLE_TIME" text="{8888888, 1053}" comment="Idle Time" type="time" default="600s">
+        <input_param name="min" value="60s"/>
+        <input_param name="max" value="3600s"/>
+        <input_param name="step" value="10s"/>
+      </param>
+      <param name="IDLE_FOLLOW" text="TODO! {8888888, 1054}" comment="Idle: Follow?" type="bool" default="false"/>
+      <param name="WHO_TO_FOLLOW" text="{8888888, 1055}" comment="Who to follow?" type="object" default="null">
+        <input_param name="class" value="[class.ship]"/>
+        <input_param name="owner" value="this.ship.owner"/>
+      </param>
+      <param name="IDLE_DOCKING" text="{8888888, 1056}" comment="Idle: Docking?" type="bool" default="false"/>
+      <param name="WHERE_TO_DOCK" text="{8888888, 1057}" comment="Where to dock?" type="object" default="null">
+        <input_param name="class" value="if this.ship.isclass.[class.ship_s, class.ship_xs] then [class.station, class.ship_m, class.ship_l, class.ship_xl] else [class.station, class.ship_l, class.ship_xl]"/>
+      </param>
+      <param name="IDLE_RANDOM_MOVEMENT" text="{8888888, 1058}" comment="Idle: Movement?" type="bool" default="false"/>
+      <param name="IN_WHICH_SECTOR" text="{8888888, 1059}" comment="In which sector?" type="position" default="[this.ship.sector, this.ship.position]">
+        <input_param name="class" value="class.sector"/>
+      </param>
+      <param name="IDLE_MOVE_TO" text="{8888888, 1060}" comment="Idle: Move to?" type="bool" default="false"/>
+      <param name="WHERE_TO_MOVE" text="{8888888, 1061}" comment="Where to move?" type="position" default="[this.ship.sector, this.ship.position]">
+        <input_param name="class" value="class.sector"/>
+      </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <!-- DEBUG -->
       <param name="DEBUG" text="DebugText" type="number" default="0" advanced="1">
@@ -72,7 +96,7 @@
       <label name="INIT"/>
       <cancel_all_orders object="this.ship"/>
 
-      <do_if value="$DEBUG gt 0.0">
+      <do_if value="$DEBUG gt 0">
         <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_AnotherExplorerV2S.xml ~ Started ~~' + '\n'"/>
       </do_if>
@@ -86,30 +110,34 @@
 
       <append_to_list name="global.$AnotherExplorerV2SectorBlackList" exact="this.$CurrentSector"/>
 
-      <do_if value="$DEBUG gt 0.0">
+      <do_if value="$DEBUG gt 0">
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'this.$CurrentSector: ' + this.$CurrentSector.name + ' ~ ' + '[' + this.$CurrentSector.owner.knownname + ']'"/>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
       </do_if>
 
       <run_script name="'JP_GetNearestUnknownObject'">
-        <param name="SECTOR" value="this.$CurrentSector"/>
         <param name="GATES" value="$GATES"/>
         <param name="STATIONS" value="$STATIONS"/>
         <param name="ENEMY_STATIONS" value="$ENEMY_STATIONS"/>
+        <param name="FRIENDLY_STATIONS" value="$FRIENDLY_STATIONS"/>
+        <param name="SECTOR" value="this.$CurrentSector"/>
         <param name="DEBUG" value="$DEBUG"/>
         <save_retval name="NEAREST_UNKNOWN_OBJECT" variable="$NearestUnknownObject"/>
       </run_script>
 
-      <!-- TODO: IDLE STUFF -->
       <do_if value="$NearestUnknownObject == 'NoUnknownObjectFound'">
-        <set_command command="command.move" param="this.$CurrentSector"/>
-        <set_object_name object="$Ship" name="$Ship.name + ' \033#FFCEFBA1#~ nothing to do - moving randomly ~ TODO!\033X'"/>
-        <run_script name="'move.random'">
-          <param name="TimeOut" value="60s"/>
-          <param name="Anchor" value="this.$CurrentSector"/>
-          <param name="Offset" value="this.$CurrentSector"/>
-          <param name="MaxDistance" value="10km"/>
+        <run_script name="'JP_IdleReturnHome_AEV2'">
+          <param name="IDLE_FOLLOW" value="$IDLE_FOLLOW"/>
+          <param name="WHO_TO_FOLLOW" value="$WHO_TO_FOLLOW"/>
+          <param name="IDLE_DOCKING" value="$IDLE_DOCKING"/>
+          <param name="WHERE_TO_DOCK" value="$WHERE_TO_DOCK"/>
+          <param name="IDLE_RANDOM_MOVEMENT" value="$IDLE_RANDOM_MOVEMENT"/>
+          <param name="IN_WHICH_SECTOR" value="$IN_WHICH_SECTOR"/>
+          <param name="IDLE_MOVE_TO" value="$IDLE_MOVE_TO"/>
+          <param name="WHERE_TO_MOVE" value="$WHERE_TO_MOVE"/>
+          <param name="IDLE_TIME" value="$IDLE_TIME"/>
+          <param name="DEBUG" value="$DEBUG"/>
         </run_script>
         <set_object_name object="this.ship" name="if $ADD_ORDER_TAG then this.$OldName + '\033#FFA95908# #AEV2-S\033X' else this.$OldName"/>
         <resume label="RESUME"/>
@@ -117,7 +145,7 @@
 
       <do_if value="$Ship.sector != this.$CurrentSector">
         <set_command command="command.move" param="this.$CurrentSector"/>
-        <do_if value="$DEBUG gt 0.0">
+        <do_if value="$DEBUG gt 0">
           <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
           <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'Moving to: ' + this.$CurrentSector.name"/>
           <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
@@ -129,7 +157,7 @@
         </run_script>
       </do_if>
 
-      <do_if value="$DEBUG gt 0.0">
+      <do_if value="$DEBUG gt 0">
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'Exploring Object: [' + $NearestUnknownObject.class + '] ~ ' + $NearestUnknownObject.name"/>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
@@ -153,7 +181,7 @@
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-      <do_if value="$DEBUG gt 0.0">
+      <do_if value="$DEBUG gt 0">
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_AnotherExplorerV2S.xml ~ Finished ~~'"/>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
       </do_if>
