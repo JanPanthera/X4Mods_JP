@@ -2,8 +2,9 @@
 
 <aiscript name="JP_AnotherExplorerV2S" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd">
 
-  <order id="JP_AnotherExplorerV2S" name="AnotherExplorerV2 {20001, 201} JP" category="navigation" infinite="true">
+  <order id="JP_AnotherExplorerV2S" name="_AnotherExplorerV2 {20001, 201} JP" category="navigation" infinite="true">
     <params>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="ADD_ORDER_TAG" text="{8888888, 20}" comment="Add order tag?" type="bool" default="true"/>
       <param name="SECTOR" text="{20001, 201}" comment="Sector" type="object" default="this.sector">
         <input_param name="class" value="[class.sector]"/>
@@ -12,11 +13,12 @@
       <param name="STATIONS" text="{8888888, 22}" comment="Explore stations?" type="bool" default="true"/>
       <param name="ENEMY_STATIONS" text="{8888888, 23}" comment="Explore enemy stations?" type="bool" default="false"/>
       <param name="AUTO_FLEET" text="{8888888, 26}" comment="Automatic Fleet?" type="bool" default="false"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <!-- DEBUG -->
-      <param name="DEBUG" text="DebugText" type="number" default="0.0" advanced="true">
-        <input_param name="min" value="0.0"/>
-        <input_param name="max" value="1.0"/>
-        <input_param name="step" value="0.1"/>
+      <param name="DEBUG" text="DebugText" type="number" default="0" advanced="1">
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="100"/>
+        <input_param name="step" value="100"/>
       </param>
     </params>
     <skill min="0"/>
@@ -134,7 +136,6 @@
       </do_if>
 
       <run_script name="'JP_ExploreObject'">
-        <param name="EXPLORER" value="$Ship"/>
         <param name="OBJECT" value="$NearestUnknownObject"/>
         <param name="DEBUG" value="$DEBUG"/>
       </run_script>

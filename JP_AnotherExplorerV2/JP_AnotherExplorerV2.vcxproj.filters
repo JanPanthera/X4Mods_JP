@@ -67,5 +67,6 @@
     <Xml Include="libraries\icons.xml" />
     <Xml Include="libraries\experiences.xml" />
     <Xml Include="aiscripts\JP_GetNearestUnknownObject.xml" />
+    <Xml Include="t\0001.xml" />
   </ItemGroup>
 </Project>
