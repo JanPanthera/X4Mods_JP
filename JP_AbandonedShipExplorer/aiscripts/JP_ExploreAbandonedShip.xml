@@ -17,6 +17,7 @@
         <input_param name="max" value="100"/>
         <input_param name="step" value="100"/>
       </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     </params>
   </order>
 
@@ -102,7 +103,7 @@
           <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'Deploying a navigation beacon at the abandoned ship.'"/>
         </do_if>
         <launch_navbeacon object="$Ship" category="deployablecategory.navbeacon" name="$NavBeacon"/>
-        <set_object_name object="$NavBeacon" name="'\033#FF00CC66#' + '{8888888, 177}' + ' ~ ' + '\033X' + '\033#FF00CCCC#' + $NavBeacon.sector.knownname + '\033X'"/>
+        <set_object_name object="$NavBeacon" name="'\033#FF00CC66#' + '{8888888, 108}' + ' ~ ' + '\033X' + '\033#FF00CCCC#' + $NavBeacon.sector.knownname + '\033X'"/>
         <do_if value="$DEBUG gt 0">
           <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'%1 [%2] deployed in sector: %3 [%4]'.[{20201, 20801}, $NavBeacon.idcode, $NavBeacon.sector.knownname, $NavBeacon.sector.owner.knownname]"/>
           <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
@@ -113,10 +114,10 @@
 
       <do_if value="$SHOW_MESSAGE">
         <show_help custom="'%1 [%2]\n'.[$Ship.knownname, $Ship.idcode] +
-                           {8888888, 179} + ':\n' +
+                           {8888888, 109} + ':\n' +
                            '%1 [%2]\n'.[$ABANDONED_SHIP.knownname, $ABANDONED_SHIP.idcode] +
                            {20001, 201} + ' %1 ~ %2\n'.[$ABANDONED_SHIP.sector.knownname, $ABANDONED_SHIP.sector.owner.knownname] + 
-                           {8888888, 180} + ' %1s'.[$WAIT_AMOUNT]"
+                           {8888888, 110} + ' %1s'.[$WAIT_AMOUNT]"
                    duration="10s" force="true" position="2" allowclose="true"/>
       </do_if>
 

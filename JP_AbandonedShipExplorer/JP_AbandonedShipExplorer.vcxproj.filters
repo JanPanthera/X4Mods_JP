@@ -45,6 +45,7 @@
     <Xml Include="t\0001-L088.xml" />
     <Xml Include="libraries\icons.xml" />
     <Xml Include="aiscripts\JP_ResupplyNavBeacons_ASE.xml" />
+    <Xml Include="t\0001.xml" />
   </ItemGroup>
   <ItemGroup>
     <Xsd Include="JP_AbandonedShipExplorer\aiscripts\aiscripts.xsd">

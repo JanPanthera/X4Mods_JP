@@ -1,27 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-
 <aiscript name="JP_AbandonedShipExplorer" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd">
 
   <order id="JP_AbandonedShipExplorer" name="_AbandonedShipExplorer JP" category="navigation" infinite="true">
     <params>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="ADD_ORDER_TAG" text="{8888888, 170}" comment="Add order tag?" type="bool" default="true"/>
-      <param name="ENEMY_SECTORS" text="{8888888, 171}" comment="Include enemy sectors?" type="bool" default="false"/>
-      <param name="WAIT_AT_SHIP" text="{8888888, 172}" comment="Wait at the ship?" type="bool" default="true"/>
-      <param name="WAIT_AMOUNT" text="{8888888, 173}" comment="How long to wait?" type="time" default="60s">
+      <param name="ENEMY_SECTORS" text="{8888888, 100}" comment="Include enemy sectors?" type="bool" default="false"/>
+      <param name="SHOW_MESSAGE" text="{8888888, 101}" comment="Message when arrived?" type="bool" default="true"/>
+      <param name="WAIT_AT_SHIP" text="{8888888, 102}" comment="Wait at the ship?" type="bool" default="true"/>
+      <param name="WAIT_AMOUNT" text="{8888888, 103}" comment="How long to wait?" type="time" default="60s">
         <input_param name="step" value="10s"/>
         <input_param name="min" value="10s"/>
         <input_param name="max" value="3600s"/>
       </param>
-      <param name="PLACE_NAVBEACON" text="{8888888, 174}" comment="Place navigation beacons?" type="bool" default="true"/>
-      <param name="RESTOCK_NAV_BEACONS" text="{8888888, 175}" comment="Restock navigation beacons?" type="bool" default="true"/>
-      <param name="RESTOCK_AMOUNT" text="{8888888, 176}" comment="Amount to restock" type="number" default="3">
+      <param name="PLACE_NAVBEACON" text="{8888888, 104}" comment="Place navigation beacons?" type="bool" default="true"/>
+      <param name="RESTOCK_NAV_BEACONS" text="{8888888, 105}" comment="Restock navigation beacons?" type="bool" default="true"/>
+      <param name="RESTOCK_AMOUNT" text="{8888888, 106}" comment="Amount to restock" type="number" default="3">
         <input_param name="step" value="1"/>
         <input_param name="min" value="1"/>
-        <input_param name="max" value="this.ship.ammostorage.deployable.capacity"/>
+        <input_param name="max" value="if this.ship.ammostorage.deployable.free le 0 then 1 else this.ship.ammostorage.deployable.free"/>
       </param>
-      <param name="SHOW_MESSAGE" text="{8888888, 178}" comment="Message when arrived?" type="bool" default="true"/>
+      <param name="ADD_ORDER_TAG" text="{8888888, 107}" comment="Add order tag?" type="bool" default="true"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <!-- DEBUG -->
       <param name="DEBUG" text="DebugText" type="number" default="0" advanced="1">
@@ -29,6 +28,7 @@
         <input_param name="max" value="100"/>
         <input_param name="step" value="100"/>
       </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     </params>
     <skill min="0"/>
     <requires>

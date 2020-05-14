@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<content id="JP_AbandonedShipExplorer" name="JP_AbandonedShipExplorer" description="Finds all abandoned ships in the galaxy and marks them with a navigation beacon." author="JanPanthera" version="111" date="2020-05-10" save="0" enabled="1">
+<!-- Increase version! -->
+<content id="JP_AbandonedShipExplorer" name="JP_AbandonedShipExplorer" description="Finds all abandoned ships in the galaxy and marks them with a navigation beacon." author="JanPanthera" version="111" date="2020-05-14" save="0" enabled="1">
   <dependency version="300"/>
   <text language="7"  name="JP_AbandonedShipExplorer" description="Мод дает возможность осуществлять поиск брошенных кораблей в галактике и отмечать их навигационным маяком." author="JanPanthera"/>
   <text language="33" name="JP_AbandonedShipExplorer" description="Finds all abandoned ships in the galaxy and marks them with a navigation beacon." author="JanPanthera"/>

@@ -3,17 +3,17 @@
 <language>
   <page id="8888888" voice="no">
     <!-- JP_AbandonedShipExplorer -->
-    <t id="170">Ajouter une étiquette de commande?</t>
-    <t id="171">Inclure les secteurs ennemis?</t>
-    <t id="172">Wait at the abandoned ship?</t>
-    <t id="173">How long to wait?</t>
-    <t id="174">Place navigation beacons?</t>
-    <t id="175">Faire le plein de balises de navigations?</t>
-    <t id="176">Quantité à restocker</t>
-    <t id="177">Abandoned Ship</t>
-    <t id="178">Message when arrived?</t>
-    <t id="179">I arrived at the abandoned ship</t>
-    <t id="180">Wait time:</t>
+    <t id="100">Inclure les secteurs ennemis?</t>
+    <t id="101">Message when arrived?</t>
+    <t id="102">Wait at the abandoned ship?</t>
+    <t id="103">How long to wait?</t>
+    <t id="104">Place navigation beacons?</t>
+    <t id="105">Faire le plein de balises de navigations?</t>
+    <t id="106">Quantité à restocker</t>
+    <t id="107">Abandoned Ship</t>
+    <t id="108">Ajouter une étiquette de commande?</t>
+    <t id="109">I arrived at the abandoned ship</t>
+    <t id="110">Wait time:</t>
   </page>
 </language>
 <!-- Thanks to darkslimus / Xchange Guild -->
