@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Russian ~~ Русский -->
+<language>
+  <page id="8888888" voice="no">
+    <!-- JP_TradeSubscriptionExplorer -->
+    <t id="1900">Вкл. вражеские сектора?</t>
+    <t id="1901">Вкл. нейтральные сектора?</t>
+    <t id="1902">Friendly Sectors?</t>
+    <t id="1903">Automatic Fleet?</t>
+    <t id="1920">Idle Time</t>
+    <t id="1921">Следовать?</t>
+    <t id="1922">За кем следовать?</t>
+    <t id="1923">Стыковаться и ждать?</t>
+    <t id="1924">Где стыковаться?</t>
+    <t id="1925">Ждать в секторе?</t>
+    <t id="1926">В каком секторе?</t>
+    <t id="1927">Ждать в?</t>
+    <t id="1928">Где ждать?</t>
+    <t id="1994">Добавить метку заказа?</t>
+    <t id="1995">Save Settings?</t>
+    <t id="1996">Delete Settings?</t>
+    <t id="1997">\033#B600CCCC#</t>
+    <t id="1998">\033#FF00CC66#</t>
+    <t id="1999">\033X</t>
+  </page>
+</language>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- German ~~ Deutsch -->
+<language>
+  <page id="8888888" voice="no">
+    <!-- JP_TradeSubscriptionExplorer -->
+    <t id="1900">Feindliche Sektoren?</t> 
+    <t id="1901">Neutrale Sektoren?</t> 
+    <t id="1902">Befreundete Sektoren?</t> 
+    <t id="1903">Automatische Flotte?</t> 
+    <t id="1920">Leerlauf Zeit</t> 
+    <t id="1921">Leerlauf: Folgen?</t> 
+    <t id="1922">Wem folgen?</t> 
+    <t id="1923">Leerlauf: Andocken?</t> 
+    <t id="1924">Wo andocken?</t> 
+    <t id="1925">Leerlauf: Zufällige bewegung?</t> 
+    <t id="1926">In welchem Sektor?</t> 
+    <t id="1927">Leerlauf: Zu Position bewegen?</t> 
+    <t id="1928">Wohin?</t> 
+    <t id="1994">Befehlskürzel hinzufügen?</t> 
+    <t id="1995">Speichere Einstellungen?</t> 
+    <t id="1996">Lösche Einstellungen?</t> 
+    <t id="1997">\033#B600CCCC#</t>
+    <t id="1998">\033#FF00CC66#</t>
+    <t id="1999">\033X</t>
+  </page>
+</language>

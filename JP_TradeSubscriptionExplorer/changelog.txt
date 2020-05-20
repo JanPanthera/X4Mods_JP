@@ -1,0 +1,6 @@
+~ Added: IdleReturnHome functions like Follow or Dock at..
+~ Added: saving and deleting of the most settings
+~ Added: order name is now colored
+~ Changed: renamed from TradeOrderExplorer to TradeSubscriptionExplorer.. (makes more sense)
+~ Updated: huge refactoring
+~ Updated: language files restructured

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<mdscript name="JP_UpdateTradeSubscriptionExplorerFleet" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="md.xsd">
+  <cues>
+
+    <cue name="JP_UPDATE_TRADE_SUBSCRIPTION_EXPLORER_FLEET" instantiate="true" checkinterval="2s">
+      <conditions>
+        <check_value value="@global.$TradeSubscriptionExplorerShips.count gt 1"/>
+      </conditions>
+      <actions>
+        <do_if value="global.$TradeSubscriptionExplorerShips?">
+          <create_list name="$AutoFleetShips"/>
+          <do_for_each name="$TradeSubscriptionExplorerShip" in="global.$TradeSubscriptionExplorerShips">
+            <do_if value="$TradeSubscriptionExplorerShip.defaultSubscription.$AUTO_FLEET == true">
+              <append_to_list name="$AutoFleetShips" exact="$TradeSubscriptionExplorerShip"/>
+            </do_if>
+          </do_for_each>
+          <do_if value="global.$TradeSubscriptionExplorerFleetLeader?">
+            <do_if value="global.$TradeSubscriptionExplorerFleetLeader.fleet.iscommander == false">
+              <remove_value name="global.$TradeSubscriptionExplorerFleetLeader"/>
+            </do_if>
+          </do_if>
+          <do_if value="$AutoFleetShips.count gt 1">
+            <do_for_each name="$AutoFleetShip" in="$AutoFleetShips" counter="$_it">
+              <do_if value="$_it == 1">
+                <continue/>
+              </do_if>
+              <do_if value="not global.$TradeSubscriptionExplorerFleetLeader?">
+                <set_value name="global.$TradeSubscriptionExplorerFleetLeader" exact="$AutoFleetShips.{1}"/>
+              </do_if>
+              <do_if value="$AutoFleetShip.fleet.commander == null">
+                <set_object_commander object="$AutoFleetShip" commander="global.$TradeSubscriptionExplorerFleetLeader"/>
+              </do_if>
+            </do_for_each>
+            <set_object_fleet_name object="global.$TradeSubscriptionExplorerFleetLeader" name="'TradeSubscriptionExplorer'"/>
+          </do_if>
+          <remove_value name="$AutoFleetShips"/>
+        </do_if>
+      </actions>
+    </cue>
+
+    <cue name="JP_TRADESubscriptionEXPLORER_DEBUG" instantiate="true" checkinterval="1s">
+      <actions>
+        <set_value name="$DEBUG" exact="false"/>
+
+        <do_if value="$DEBUG">
+          <debug_to_file append="false" directory="'JP_TradeSubscriptionExplorer.logs'" name="'JP_TradeSubscriptionExplorer_Debug.log'" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <do_if value="global.$TradeSubscriptionExplorerSectorBlackList?">
+            <do_for_each name="$Sector" in="global.$TradeSubscriptionExplorerSectorBlackList">
+              <debug_to_file directory="'JP_TradeSubscriptionExplorer.logs'" name="'JP_TradeSubscriptionExplorer_Debug.log'" text="'~ Sector: %1 [%2].'.[$Sector.knownname, $Sector.owner.knownname]"/>
+            </do_for_each>
+          </do_if>
+          <debug_to_file directory="'JP_TradeSubscriptionExplorer.logs'" name="'JP_TradeSubscriptionExplorer_Debug.log'" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+
+          <debug_to_file directory="'JP_TradeSubscriptionExplorer.logs'" name="'JP_TradeSubscriptionExplorer_Debug.log'" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <do_if value="global.$TradeSubscriptionExplorerShips?">
+            <do_for_each name="$Ship" in="global.$TradeSubscriptionExplorerShips">
+              <debug_to_file directory="'JP_TradeSubscriptionExplorer.logs'" name="'JP_TradeSubscriptionExplorer_Debug.log'" text="'~ Ship: %1 [%2].'.[$Ship.knownname, $Ship.owner.knownname]"/>
+            </do_for_each>
+          </do_if>
+          <debug_to_file directory="'JP_TradeSubscriptionExplorer.logs'" name="'JP_TradeSubscriptionExplorer_Debug.log'" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        </do_if>
+
+      </actions>
+    </cue>
+
+  </cues>
+</mdscript>

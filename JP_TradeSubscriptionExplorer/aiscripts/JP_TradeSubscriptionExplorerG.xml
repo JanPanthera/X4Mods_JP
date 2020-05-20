@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<aiscript name="JP_TradeSubscriptionExplorerG" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd">
+
+  <order id="JP_TradeSubscriptionExplorerG" name="{8888888, 1997}TradeSubscriptionExplorer - {8888888, 1999}{8888888, 1998}{20001, 901}{8888888, 1999}" category="navigation" infinite="true">
+    <params>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="ENEMY_SECTORS" text="{8888888, 1900}" comment="Enemy Sectors?" type="bool" default="if global.$EnemySectorsTSE? then global.$EnemySectorsTSE else false"/>
+      <param name="NEUTRAL_SECTORS" text="{8888888, 1901}" comment="Neutral Sectors?" type="bool" default="if global.$NeutralSectorsTSE? then global.$NeutralSectorsTSE else true"/>
+      <param name="FRIENDLY_SECTORS" text="{8888888, 1902}" comment="Friendly Sectors?" type="bool" default="if global.$FriendlySectorsTSE? then global.$FriendlySectorsTSE else true"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="ADD_ORDER_TAG" text="{8888888, 1994}" comment="Add order tag?" type="bool" default="if global.$AddOrderTagTSE? then global.$AddOrderTagTSE else true"/>
+      <param name="AUTO_FLEET" text="{8888888, 1903}" comment="Automatic Fleet?" type="bool" default="if global.$AutoFleetTSE? then global.$AutoFleetTSE else false"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="IDLE_TIME" text="{8888888, 1920}" comment="Idle Time" type="time" default="if global.$IdleTimeTSE? then global.$IdleTimeTSE else 600s">
+        <input_param name="min" value="60s"/>
+        <input_param name="max" value="3600s"/>
+        <input_param name="step" value="10s"/>
+      </param>
+      <param name="IDLE_FOLLOW" text="{8888888, 1921}" comment="Idle: Follow?" type="bool" default="if global.$IdleFollowTSE? then global.$IdleFollowTSE else false"/>
+      <param name="WHO_TO_FOLLOW" text="{8888888, 1922}" comment="Who to follow?" type="object" default="if global.$WhoToFollowTSE? then global.$WhoToFollowTSE else null">
+        <input_param name="class" value="[class.ship]"/>
+        <input_param name="owner" value="this.ship.owner"/>
+      </param>
+      <param name="IDLE_DOCKING" text="{8888888, 1923}" comment="Idle: Docking?" type="bool" default="if global.$IdleDockingTSE? then global.$IdleDockingTSE else false"/>
+      <param name="WHERE_TO_DOCK" text="{8888888, 1924}" comment="Where to dock?" type="object" default="if global.$WhereToDockTSE? then global.$WhereToDockTSE? else null">
+        <input_param name="class" value="if this.ship.isclass.[class.ship_s, class.ship_xs] then [class.station, class.ship_m, class.ship_l, class.ship_xl] else [class.station, class.ship_l, class.ship_xl]"/>
+      </param>
+      <param name="IDLE_RANDOM_MOVEMENT" text="{8888888, 1925}" comment="Idle: Movement?" type="bool" default="if global.$IdleRandomMovementTSE? then global.$IdleRandomMovementTSE else false"/>
+      <param name="IN_WHICH_SECTOR" text="{8888888, 1926}" comment="In which sector?" type="position" default="if global.$InWhichSectorTSE? then global.$InWhichSectorTSE else [this.ship.sector, this.ship.position]">
+        <input_param name="class" value="class.sector"/>
+      </param>
+      <param name="IDLE_MOVE_TO" text="{8888888, 1927}" comment="Idle: Move to?" type="bool" default="if global.$IdleMoveToTSE? then global.$IdleMoveToTSE else false"/>
+      <param name="WHERE_TO_MOVE" text="{8888888, 1928}" comment="Where to move?" type="position" default="if global.$WhereToMoveTSE? then global.$WhereToMoveTSE else [this.ship.sector, this.ship.position]">
+        <input_param name="class" value="class.sector"/>
+      </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="SAVE_SETTINGS" text="{8888888, 1995}" comment="SaveSettings" type="bool" default="false"/>
+      <param name="DELETE_SETTINGS" text="{8888888, 1996}" comment="DeleteSettings" type="bool" default="false"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <!-- DEBUG -->
+      <param name="DEBUG" text="DebugText" type="number" default="if global.$DebugTSE? then global.$DebugTSE else 0" advanced="true">
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="100"/>
+        <input_param name="step" value="100"/>
+      </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    </params>
+    <skill min="30"/>
+    <requires>
+      <match shiptype="shiptype.lasertower" negate="true"/>
+    </requires>
+  </order>
+
+  <interrupts>
+    <handler ref="SectorChangeHandler"/>
+    <handler ref="TargetInvalidHandler"/>
+    <handler ref="AttackHandler"/>
+    <handler ref="MissileLockHandler" />
+    <handler ref="ScannedHandler"/>
+    <handler ref="InspectedHandler"/>
+    <handler ref="FoundAbandonedHandler"/>
+    <handler ref="FoundLockboxHandler"/>
+    <handler ref="ResupplyHandler"/>
+    <handler ref="JobRemoveRequestHandler" />
+  </interrupts>
+
+  <init>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <set_value name="$DebugDirectory" exact="'JP_TradeSubscriptionExplorer.logs'"/>
+    <set_value name="$DebugFileName" exact="this.ship.idcode + '.JP_TradeSubscriptionExplorerG.xml.log'"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <set_value name="$Ship" exact="this.ship"/>
+    <set_value name="$ExpMultiplier" exact="0.87"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <do_if value="not global.$TradeSubscriptionExplorerSectorBlackList?">
+      <create_list name="global.$TradeSubscriptionExplorerSectorBlackList"/>
+    </do_if>
+    <do_if value="not global.$TradeSubscriptionExplorerShips?">
+      <create_list name="global.$TradeSubscriptionExplorerShips"/>
+    </do_if>
+    <append_to_list name="global.$TradeSubscriptionExplorerShips" exact="this.ship"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <do_if value="not this.$OldName?">
+      <set_value name="this.$OldName" exact="this.ship.knownname"/>
+    </do_if>
+    <do_if value="$ADD_ORDER_TAG">
+      <set_object_name object="this.ship" name="this.ship.name + '\033#FFA2560B# #TSE-G\033X'"/>
+    </do_if>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <do_if value="$SAVE_SETTINGS">
+      <do_if value="not global.$EnemySectorsTSE? or @global.$EnemySectorsTSE != $ENEMY_SECTORS">
+        <set_value name="global.$EnemySectorsTSE" exact="$ENEMY_SECTORS"/>
+      </do_if>
+      <do_if value="not global.$NeutralSectorsTSE? or @global.$NeutralSectorsTSE != $NEUTRAL_SECTORS">
+        <set_value name="global.$NeutralSectorsTSE" exact="$NEUTRAL_SECTORS"/>
+      </do_if>
+      <do_if value="not global.$FriendlySectorsTSE? or @global.$FriendlySectorsTSE != $FRIENDLY_SECTORS">
+        <set_value name="global.$FriendlySectorsTSE" exact="$FRIENDLY_SECTORS"/>
+      </do_if>
+      <do_if value="not global.$AddOrderTagTSE? or @global.$AddOrderTagTSE != $ADD_ORDER_TAG">
+        <set_value name="global.$AddOrderTagTSE" exact="$ADD_ORDER_TAG"/>
+      </do_if>
+      <do_if value="not global.$AutoFleetTSE? or @global.$AutoFleetTSE != $AUTO_FLEET">
+        <set_value name="global.$AutoFleetTSE" exact="$AUTO_FLEET"/>
+      </do_if>
+      <do_if value="not global.$IdleTimeTSE? or @global.$IdleTimeTSE != $IDLE_TIME">
+        <set_value name="global.$IdleTimeTSE" exact="$IDLE_TIME"/>
+      </do_if>
+      <do_if value="not global.$IdleFollowTSE? or @global.$IdleFollowTSE != $IDLE_FOLLOW">
+        <set_value name="global.$IdleFollowTSE" exact="$IDLE_FOLLOW"/>
+      </do_if>
+      <do_if value="not global.$WhoToFollowTSE? or @global.$WhoToFollowTSE != $WHO_TO_FOLLOW">
+        <set_value name="global.$WhoToFollowTSE" exact="$WHO_TO_FOLLOW"/>
+      </do_if>
+      <do_if value="not global.$IdleDockingTSE? or @global.$IdleDockingTSE != $IDLE_DOCKING">
+        <set_value name="global.$IdleDockingTSE" exact="$IDLE_DOCKING"/>
+      </do_if>
+      <do_if value="not global.$WhereToDockTSE? or @global.$WhereToDockTSE != $WHERE_TO_DOCK">
+        <set_value name="global.$WhereToDockTSE" exact="$WHERE_TO_DOCK"/>
+      </do_if>
+      <do_if value="not global.$IdleRandomMovementTSE? or @global.$IdleRandomMovementTSE != $IDLE_RANDOM_MOVEMENT">
+        <set_value name="global.$IdleRandomMovementTSE" exact="$IDLE_RANDOM_MOVEMENT"/>
+      </do_if>
+      <do_if value="not global.$InWhichSectorTSE? or @global.$InWhichSectorTSE != $IN_WHICH_SECTOR">
+        <set_value name="global.$InWhichSectorTSE" exact="$IN_WHICH_SECTOR"/>
+      </do_if>
+      <do_if value="not global.$IdleMoveToTSE? or @global.$IdleMoveToTSE != $IDLE_MOVE_TO">
+        <set_value name="global.$IdleMoveToTSE" exact="$IDLE_MOVE_TO"/>
+      </do_if>
+      <do_if value="not global.$WhereToMoveTSE? or @global.$WhereToMoveTSE != $WHERE_TO_MOVE">
+        <set_value name="global.$WhereToMoveTSE" exact="$WHERE_TO_MOVE"/>
+      </do_if>
+      <do_if value="not global.$DebugTSE? or @global.$DebugTSE != $DEBUG">
+        <set_value name="global.$DebugTSE" exact="$DEBUG"/>
+      </do_if>
+    </do_if>
+    <do_if value="$DELETE_SETTINGS">
+      <remove_value name="global.$DebugTSE"/>
+      <remove_value name="global.$WhereToMoveTSE"/>
+      <remove_value name="global.$IdleMoveToTSE"/>
+      <remove_value name="global.$InWhichSectorTSE"/>
+      <remove_value name="global.$IdleRandomMovementTSE"/>
+      <remove_value name="global.$WhereToDockTSE"/>
+      <remove_value name="global.$IdleDockingTSE"/>
+      <remove_value name="global.$WhoToFollowTSE"/>
+      <remove_value name="global.$IdleFollowTSE"/>
+      <remove_value name="global.$AddOrderTagTSE"/>
+      <remove_value name="global.$FriendlySectorsTSE"/>
+      <remove_value name="global.$NeutralSectorsTSE"/>
+      <remove_value name="global.$EnemySectorsTSE"/>
+      <!-- cancel order because the settings are invalid now -->
+      <cancel_order order="this.ship.order"/>
+    </do_if>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  </init>
+
+  <attention min="unknown">
+    <actions>
+
+      <wait exact="1ms"/>
+      <label name="START"/>
+
+      <do_if value="$DEBUG gt 0">
+        <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_TradeSubscriptionExplorerG.xml ~ Started ~~' + '\n'"/>
+      </do_if>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <label name="RESUME"/>
+
+      <set_command command="command.explore"/>
+      <set_command_action commandaction="commandaction.calculating"/>
+
+      <run_script name="'JP_GetNearestStationWithExpiredTradeSubscription'">
+        <param name="ENEMY_SECTORS" value="$ENEMY_SECTORS"/>
+        <param name="NEUTRAL_SECTORS" value="$NEUTRAL_SECTORS"/>
+        <param name="FRIENDLY_SECTORS" value="$FRIENDLY_SECTORS"/>
+        <param name="DEBUG" value="$DEBUG"/>
+        <save_retval name="NEAREST_STATION" variable="$NearestStation"/>
+      </run_script>
+
+      <do_if value="$NearestStation == 'NoStationWithExpiredTradeSubscriptionFound'">
+        <run_script name="'JP_IdleReturnHomeTSE'">
+          <param name="IDLE_FOLLOW" value="$IDLE_FOLLOW"/>
+          <param name="WHO_TO_FOLLOW" value="$WHO_TO_FOLLOW"/>
+          <param name="IDLE_DOCKING" value="$IDLE_DOCKING"/>
+          <param name="WHERE_TO_DOCK" value="$WHERE_TO_DOCK"/>
+          <param name="IDLE_RANDOM_MOVEMENT" value="$IDLE_RANDOM_MOVEMENT"/>
+          <param name="IN_WHICH_SECTOR" value="$IN_WHICH_SECTOR"/>
+          <param name="IDLE_MOVE_TO" value="$IDLE_MOVE_TO"/>
+          <param name="WHERE_TO_MOVE" value="$WHERE_TO_MOVE"/>
+          <param name="IDLE_TIME" value="$IDLE_TIME"/>
+          <param name="DEBUG" value="$DEBUG"/>
+        </run_script>
+        <set_object_name object="this.ship" name="if $ADD_ORDER_TAG then this.$OldName + '\033#FFA95908# #TSE-G\033X' else this.$OldName"/>
+        <resume label="RESUME"/>
+      </do_if>
+
+      <set_value name="$Sector" exact="$NearestStation.sector"/>
+      <append_to_list name="global.$TradeSubscriptionExplorerSectorBlackList" exact="$Sector"/>
+
+      <label name="MOVE_TO_SECTOR"/>
+      <do_if value="$Ship.sector != $Sector">
+        <set_command command="command.move" param="$Sector"/>
+        <run_script name="'move.generic'">
+          <param name="destination" value="$Sector"/>
+          <param name="endintargetzone" value="true"/>
+          <param name="recallsubordinates" value="true"/>
+        </run_script>
+        <wait exact="1ms"/>
+        <do_if value="$Ship.sector != $Sector">
+          <resume label="MOVE_TO_SECTOR"/>
+        </do_if>
+      </do_if>
+
+      <label name="UPDATE_TRADE_SUBSCRIPTION"/>
+      <run_script name="'JP_ExploreTradeSubscription'">
+        <param name="STATION" value="$NearestStation"/>
+        <param name="DEBUG" value="$DEBUG"/>
+      </run_script>
+      <apply_experience entity="$Ship.pilot" experience="'JP_SHIP_TRADESUBSCRIPTION_UPDATED'" factor="$ExpMultiplier"/>
+      <apply_experience object="$Ship" experience="'JP_SHIP_TRADESUBSCRIPTION_UPDATED'" role="entityrole.service" factor="$ExpMultiplier"/>
+
+      <remove_from_list name="global.$TradeSubscriptionExplorerSectorBlackList" exact="$Sector"/>
+      <remove_value name="$NearestStation"/>
+      <remove_value name="$Sector"/>
+
+      <wait exact="1s"/>
+      <resume label="RESUME"/>
+
+      <label name="FINISH"/>
+
+      <do_if value="$ADD_ORDER_TAG">
+        <set_object_name object="$Ship" name="this.$OldName"/>
+      </do_if>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <do_if value="$DEBUG gt 0">
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_TradeSubscriptionExplorerG.xml ~ Finished ~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+      </do_if>
+
+      <label name="CLEANUP"/>
+      <remove_from_list name="global.$TradeSubscriptionExplorerSectorBlackList" exact="$Sector"/>
+      <remove_from_list name="global.$TradeSubscriptionExplorerShips" exact="this.ship"/>
+      <do_if value="global.$TradeSubscriptionExplorerShips.count == 0">
+        <remove_value name="global.$TradeSubscriptionExplorerSectorBlackList"/>
+        <remove_value name="global.$TradeSubscriptionExplorerShips"/>
+      </do_if>
+      <remove_value name="$ExpMultiplier"/>
+      <remove_value name="this.$OldName"/>
+      <remove_value name="$Ship"/>
+      <remove_value name="$DebugFileName"/>
+      <remove_value name="$DebugDirectory"/>
+
+      <label name="END"/>
+      <wait exact="1ms"/>
+      <set_order_syncpoint_reached order="this.ship.order"/>
+      <cancel_order order="this.ship.order" />
+
+    </actions>
+  </attention>
+
+  <on_abort>
+    <remove_from_list name="global.$TradeSubscriptionExplorerSectorBlackList" exact="$Sector"/>
+    <remove_from_list name="global.$TradeSubscriptionExplorerShips" exact="this.ship"/>
+    <do_if value="global.$TradeSubscriptionExplorerShips.count == 0">
+      <remove_value name="global.$TradeSubscriptionExplorerSectorBlackList"/>
+      <remove_value name="global.$TradeSubscriptionExplorerShips"/>
+    </do_if>
+    <do_if value="$ADD_ORDER_TAG and this.$OldName?">
+      <set_object_name object="this.ship" name="this.$OldName"/>
+    </do_if>
+    <remove_value name="this.$OldName"/>
+  </on_abort>
+
+</aiscript>
