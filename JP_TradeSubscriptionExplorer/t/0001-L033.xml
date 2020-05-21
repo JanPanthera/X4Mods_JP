@@ -5,14 +5,14 @@
     <!-- JP_TradeSubscriptionExplorer -->
     <t id="1900">Secteurs ennemis?</t>
     <t id="1901">Secteurs neutres?</t>
-    <t id="1902">Friendly Sectors?</t>
-    <t id="1903">Automatic Fleet?</t>
-    <t id="1904">Colorize the name of the "auto" fleet?</t>
+    <t id="1902">Secteurs amis?</t>
+    <t id="1903">Flotte automatique?</t>
+    <t id="1904">Colorier le nom de la flotte "auto"?</t>
     <t id="1916">Transparence</t>
     <t id="1917">Rouge</t>
     <t id="1918">Vert</t>
     <t id="1919">Bleu</t>
-    <t id="1920">Idle Time</t>
+    <t id="1920">Temps d'inactivité</t>
     <t id="1921">Inactif: Suivre?</t>
     <t id="1922">Qui suivre?</t>
     <t id="1923">Inactif: Amarrer?</t>
@@ -22,8 +22,8 @@
     <t id="1927">Inactif: Aller vers?</t>
     <t id="1928">Ou aller?</t>
     <t id="1994">Ajouter une étiquette de commande?</t>
-    <t id="1995">Save Settings?</t>
-    <t id="1996">Delete Settings?</t>
+    <t id="1995">Enregistrer les paramètres?</t>
+    <t id="1996">Supprimer les paramètres?</t>
     <t id="1997">\033#B600CCCC#</t>
     <t id="1998">\033#FF00CC66#</t>
     <t id="1999">\033X</t>

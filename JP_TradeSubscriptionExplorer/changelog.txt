@@ -6,3 +6,4 @@
 ~ Updated: huge refactoring
 ~ Updated: auto fleet refactored
 ~ Updated: language files restructured
+~ Updated: added some translations.. (google translate)
