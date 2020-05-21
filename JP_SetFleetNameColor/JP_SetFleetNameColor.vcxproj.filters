@@ -43,6 +43,7 @@
     <Xml Include="t\0001-L088.xml" />
     <Xml Include="t\0001.xml" />
     <Xml Include="aiscripts\JP_CreateColorString_SFNC.xml" />
+    <Xml Include="libraries\icons.xml" />
   </ItemGroup>
   <ItemGroup>
     <Xsd Include="JP_SetFleetNameColor\aiscripts\aiscripts.xsd">

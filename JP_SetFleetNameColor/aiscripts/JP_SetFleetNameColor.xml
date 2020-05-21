@@ -27,11 +27,11 @@
       </param>
       <param name="RESET_FLEET_NAME" text="{8888888, 1600}" comment="Reset fleet name?" type="bool" default="if global.$ResetFleetNameSFNC? then global.$ResetFleetNameSFNC else false"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="SAVE_SETTINGS" text="{8888888, 1695}" comment="Save Settings?" type="bool" default="if global.$DebugSFNC? then global.$DebugSFNC else false"/>
+      <param name="SAVE_SETTINGS" text="{8888888, 1695}" comment="Save Settings?" type="bool" default="false"/>
       <param name="DELETE_SETTINGS" text="{8888888, 1696}" comment="Delete Settings?" type="bool" default="false"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <!-- DEBUG -->
-      <param name="DEBUG" text="DebugText" type="number" default="if  then  else 0" advanced="true">
+      <param name="DEBUG" text="DebugText" type="number" default="if global.$DebugSFNC? then global.$DebugSFNC else 0" advanced="true">
         <input_param name="min" value="0"/>
         <input_param name="max" value="100"/>
         <input_param name="step" value="100"/>
@@ -63,7 +63,7 @@
     <set_value name="$DebugFileName" exact="this.ship.idcode + '.JP_SetFleetNameColor.xml.log'"/>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <do_if value="not this.$OriginalFleetName?">
-      <set_value name="this.$OriginalFleetName" exact="this.ship.knownname"/>
+      <set_value name="this.$OriginalFleetName" exact="this.ship.fleet.name"/>
     </do_if>
     <set_value name="$Ship" exact="this.ship"/>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -118,7 +118,7 @@
       </do_if>
 
       <do_if value="$RESET_FLEET_NAME">
-        <set_object_fleet_name object="$Ship" name="this.$OriginalFleetNamev"/>
+        <set_object_fleet_name object="$Ship" name="this.$OriginalFleetName"/>
         <remove_value name="this.$OriginalFleetName"/>
         <resume label="FINISH"/>
       </do_if>
@@ -132,7 +132,7 @@
         <save_retval name="COLOR_STRING" variable="$_ColorString"/>
       </run_script>
 
-      <set_object_fleet_name object="$Ship" name="$_ColorString + $Ship.fleet.knownname + '\033X'"/>
+      <set_object_fleet_name object="$Ship" name="$_ColorString + $Ship.fleet.name + '\033X'"/>
       <remove_value name="$_ColorString "/>
 
       <label name="FINISH"/>
