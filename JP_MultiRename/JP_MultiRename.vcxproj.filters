@@ -21,6 +21,9 @@
     <Xsd Include="aiscripts\aiscripts.xsd">
       <Filter>Headerdateien</Filter>
     </Xsd>
+    <Xsd Include="md\md.xsd">
+      <Filter>Headerdateien</Filter>
+    </Xsd>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="JP_MultiRename\aiscripts\JP_MultiRename.xml" />
@@ -57,5 +60,10 @@
     <Xml Include="t\0001-L086.xml" />
     <Xml Include="t\0001-L088.xml" />
     <Xml Include="libraries\icons.xml" />
+    <Xml Include="t\0001.xml" />
+    <Xml Include="aiscripts\JP_CreateColorString_MR.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="changelog.txt" />
   </ItemGroup>
 </Project>

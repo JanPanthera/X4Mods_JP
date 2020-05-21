@@ -3,33 +3,40 @@
 <language>
   <page id="8888888" voice="no">
     <!-- JP_MultiRename -->
-    <t id="101">Nomenclature de désignation?</t>
-    <t id="102">Ajouter tag de classe?</t>
-    <t id="103">Ajouter nom du type?</t>
-    <t id="104">Utilisé nom de model abrégé?</t>
-    <t id="105">Remove Sentinel Tag?</t>
-    <t id="106">Remove Vanguard Tag?</t>
-    <t id="107">Short Sentinel Tag?</t>
-    <t id="108">Short Vanguard Tag?</t>
-    <t id="109">Utilisé un tag au début?</t>
-    <t id="110">Utilisé un tag à la fin?</t>
-    <t id="111">Objet avec votre tag</t>
-    <t id="112">Utilisé la numérotation?</t>
-    <t id="113">Classé de XL à S?</t>
-    <t id="114">Renommer commandant?</t>
-    <t id="115">Renommer flotte?</t>
-    <t id="116">Renommer le sous. Des flottes?</t>
-    <t id="117">Colorier le tag?</t>
-    <t id="118">Colorier le nom?</t>
-    <t id="119">Colorier le ombre?</t>
-    <t id="120">Enregistrer les noms?</t>
-    <t id="121">Charger les noms?</t>
-    <t id="122">Supprimer enregistré?</t>
-    <t id="123">Réinitialiser</t>
-    <!-- Vanguard -->
-    <t id="125">V*</t>
-    <!-- Sentinel -->
-    <t id="126">S*</t>
+    <t id="1101">Variante de dénomination?</t>
+    <t id="1102">Ajouter une balise de classe?</t>
+    <t id="1103">Ajouter un nom de type?</t>
+    <t id="1104">Ajouter un nom de modèle?</t>
+    <t id="1105">Supprimer la balise Sentinel?</t>
+    <t id="1106">Supprimer la balise Vanguard?</t>
+    <t id="1107">Tag sentinelle court?</t>
+    <t id="1108">Tag Vanguard court?</t>
+    <t id="1109">Tag à l'avant?</t>
+    <t id="1110">Tag à la fin?</t>
+    <t id="1111">Objet avec balise comme nom</t>
+    <t id="1112">Utiliser la numérotation?</t>
+    <t id="1113">Trier XL en S?</t>
+    <t id="1114">Renommer commandant?</t>
+    <t id="1115">Renommer flotte?</t>
+    <t id="1116">Rename sub. Fleets?</t>
+    <t id="1117">Utiliser la coloration des étiquettes?</t>
+    <t id="1118">Utiliser la coloration du nom?</t>
+    <t id="1119">Utiliser la coloration des nombres?</t>
+    <t id="1120">Enregistrer les noms?</t>
+    <t id="1121">Charger les noms?</t>
+    <t id="1122">Supprimer enregistré?</t>
+    <t id="1123">Réinitialiser?</t>
+    <t id="1124">V*</t>
+    <t id="1125">S*</t>
+    <t id="1160">Transparence</t>
+    <t id="1161">Rouge</t>
+    <t id="1162">Vert</t>
+    <t id="1163">Bleu</t>
+    <t id="1195">Enregistrer les paramètres?</t>
+    <t id="1196">Supprimer les paramètres?</t>
+    <t id="1197">\033#B600CCCC#</t>
+    <t id="1198">\033#FF00CC66#</t>
+    <t id="1199">\033X</t>
   </page>
 </language>
 <!-- Thanks to darkslimus / Xchange Guild -->

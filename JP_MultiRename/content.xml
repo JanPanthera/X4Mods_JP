@@ -1,8 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 
-<content id="JP_MultiRename" name="JP_MultiRename" description="Multi tool to rename and coloring of fleets." author="JanPanthera" version="100" date="2020-04-07" save="0" enabled="1">
-  <dependency version="300"/>
-  <dependency id="JP_ScriptLibrary" version="100"/>
+<content id="JP_MultiRename" name="JP_MultiRename" description="Multi tool to rename and coloring of fleets." author="JanPanthera" version="101" date="2020-05-21" save="0" enabled="1">
   <text language="7"  name="JP_MultiRename" description="Многофункциональный инструмент для переименования и раскраски флотов." author="JanPanthera" />
   <text language="33" name="JP_MultiRename" description="Multi tool to rename and coloring of fleets." author="JanPanthera" />
   <text language="34" name="JP_MultiRename" description="Multi tool to rename and coloring of fleets." author="JanPanthera" />

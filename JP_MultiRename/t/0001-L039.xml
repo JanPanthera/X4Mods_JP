@@ -3,32 +3,39 @@
 <language>
   <page id="8888888" voice="no">
     <!-- JP_MultiRename -->
-    <t id="101">Naming variant?</t>
-    <t id="102">Add Class tag?</t>
-    <t id="103">Add Type name?</t>
-    <t id="104">Add Model name?</t>
-    <t id="105">Remove Sentinel Tag?</t>
-    <t id="106">Remove Vanguard Tag?</t>
-    <t id="107">Short Sentinel Tag?</t>
-    <t id="108">Short Vanguard Tag?</t>
-    <t id="109">Tag at front?</t>
-    <t id="110">Tag at end?</t>
-    <t id="111">Object with your Tag</t>
-    <t id="112">Use numbering?</t>
-    <t id="113">Sort XL to S?</t>
-    <t id="114">Rename Commander?</t>
-    <t id="115">Rename Fleet?</t>
-    <t id="116">Rename sub. Fleets?</t>
-    <t id="117">Use Tag Coloring?</t>
-    <t id="118">Use Name Coloring?</t>
-    <t id="119">Use Number Coloring?</t>
-    <t id="120">Save names?</t>
-    <t id="121">Load names?</t>
-    <t id="122">Delete saved?</t>
-    <t id="123">Reset</t>
-    <!-- Vanguard -->
-    <t id="125">V*</t>
-    <!-- Sentinel -->
-    <t id="126">S*</t>
+    <t id="1101">Variante di denominazione?</t>
+    <t id="1102">Aggiungi tag di classe?</t>
+    <t id="1103">Aggiungi il nome del tipo?</t>
+    <t id="1104">Aggiungi il nome del modello?</t>
+    <t id="1105">Rimuovere il tag Sentinel?</t>
+    <t id="1106">Rimuovere il tag Vanguard?</t>
+    <t id="1107">Breve tag Sentinel?</t>
+    <t id="1108">Tag Vanguard corto?</t>
+    <t id="1109">Etichetta frontale?</t>
+    <t id="1110">Tag alla fine?</t>
+    <t id="1111">Oggetto con tag come nome</t>
+    <t id="1112">Usa la numerazione?</t>
+    <t id="1113">Ordina da XL a S?</t>
+    <t id="1114">Rinomina comandante?</t>
+    <t id="1115">Rinominare la flotta?</t>
+    <t id="1116">Rinomina sub. Le flotte?</t>
+    <t id="1117">Usa la colorazione dei tag?</t>
+    <t id="1118">Usa il nome da colorare?</t>
+    <t id="1119">Usa la colorazione numerica?</t>
+    <t id="1120">Salva i nomi?</t>
+    <t id="1121">Carica nomi?</t>
+    <t id="1122">Elimina salvato?</t>
+    <t id="1123">Ripristina?</t>
+    <t id="1124">V*</t>
+    <t id="1125">S*</t>
+    <t id="1160">Trasparenza</t>
+    <t id="1161">Rossa</t>
+    <t id="1162">verde</t>
+    <t id="1163">Blu</t>
+    <t id="1195">Salva le impostazioni?</t>
+    <t id="1196">Elimina impostazioni?</t>
+    <t id="1197">\033#B600CCCC#</t>
+    <t id="1198">\033#FF00CC66#</t>
+    <t id="1199">\033X</t>
   </page>
 </language>

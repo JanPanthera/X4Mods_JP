@@ -3,32 +3,39 @@
 <language>
   <page id="8888888" voice="no">
     <!-- JP_MultiRename -->
-    <t id="101">Naming variant?</t>
-    <t id="102">Add Class tag?</t>
-    <t id="103">Add Type name?</t>
-    <t id="104">Add Model name?</t>
-    <t id="105">Remove Sentinel Tag?</t>
-    <t id="106">Remove Vanguard Tag?</t>
-    <t id="107">Short Sentinel Tag?</t>
-    <t id="108">Short Vanguard Tag?</t>
-    <t id="109">Tag at front?</t>
-    <t id="110">Tag at end?</t>
-    <t id="111">Object with your Tag</t>
-    <t id="112">Use numbering?</t>
-    <t id="113">Sort XL to S?</t>
-    <t id="114">Rename Commander?</t>
-    <t id="115">Rename Fleet?</t>
-    <t id="116">Rename sub. Fleets?</t>
-    <t id="117">Use Tag Coloring?</t>
-    <t id="118">Use Name Coloring?</t>
-    <t id="119">Use Number Coloring?</t>
-    <t id="120">Save names?</t>
-    <t id="121">Load names?</t>
-    <t id="122">Delete saved?</t>
-    <t id="123">Reset</t>
-    <!-- Vanguard -->
-    <t id="125">V*</t>
-    <!-- Sentinel -->
-    <t id="126">S*</t>
+    <t id="1101">Naming variant?</t>
+    <t id="1102">Add Class tag?</t>
+    <t id="1103">Add Type name?</t>
+    <t id="1104">Add Model name?</t>
+    <t id="1105">Remove Sentinel Tag?</t>
+    <t id="1106">Remove Vanguard Tag?</t>
+    <t id="1107">Short Sentinel Tag?</t>
+    <t id="1108">Short Vanguard Tag?</t>
+    <t id="1109">Tag at front?</t>
+    <t id="1110">Tag at end?</t>
+    <t id="1111">Object with tag as name</t>
+    <t id="1112">Use numbering?</t>
+    <t id="1113">Sort XL to S?</t>
+    <t id="1114">Rename Commander?</t>
+    <t id="1115">Rename Fleet?</t>
+    <t id="1116">Rename sub. Fleets?</t>
+    <t id="1117">Use Tag Coloring?</t>
+    <t id="1118">Use Name Coloring?</t>
+    <t id="1119">Use Number Coloring?</t>
+    <t id="1120">Save names?</t>
+    <t id="1121">Load names?</t>
+    <t id="1122">Delete saved?</t>
+    <t id="1123">Reset?</t>
+    <t id="1124">V*</t>
+    <t id="1125">S*</t>
+    <t id="1160">Transparency</t>
+    <t id="1161">Red</t>
+    <t id="1162">Green</t>
+    <t id="1163">Blue</t>
+    <t id="1195">Save Settings?</t>
+    <t id="1196">Delete Settings?</t>
+    <t id="1197">\033#B600CCCC#</t>
+    <t id="1198">\033#FF00CC66#</t>
+    <t id="1199">\033X</t>
   </page>
-</language>
+</language>>

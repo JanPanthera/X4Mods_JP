@@ -3,32 +3,39 @@
 <language>
   <page id="8888888" voice="no">
     <!-- JP_MultiRename -->
-    <t id="101">Benennungs Variante?</t>
-    <t id="102">Klassen Tag hinzufügen?</t>
-    <t id="103">Typname hinzufügen?</t>
-    <t id="104">Modellname hinzufügen?</t>
-    <t id="105">Entferne Verteidiger Tag?</t>
-    <t id="106">Entferne Angreifer Tag?</t>
-    <t id="107">Kurzes Verteidiger Tag?</t>
-    <t id="108">Kurzes Angreifer Tag?</t>
-    <t id="109">Tag Vorne?</t>
-    <t id="110">Tag am Ende?</t>
-    <t id="111">Objekt mit dem Tag</t>
-    <t id="112">Benutze Nummerierung?</t>
-    <t id="113">Sortiere XL nach S?</t>
-    <t id="114">Kommanduer umbenennen?</t>
-    <t id="115">Flotte umbenennen?</t>
-    <t id="116">Unterflotten umbenennen?</t>
-    <t id="117">Färbung des Tags?</t>
-    <t id="118">Färbung des Namens?</t>
-    <t id="119">Färbung der Nummerierung?</t>
-    <t id="120">Namen speichern?</t>
-    <t id="121">Namen laden?</t>
-    <t id="122">Gespeicherte löschen?</t>
-    <t id="123">Zurücksetzen?</t>
-    <!-- Vanguard -->
-    <t id="125">A*</t>
-    <!-- Sentinel -->
-    <t id="126">V*</t>
+    <t id="1101">Benennungs Variante?</t>
+    <t id="1102">Klassen Tag hinzufügen?</t>
+    <t id="1103">Typname hinzufügen?</t>
+    <t id="1104">Modellname hinzufügen?</t>
+    <t id="1105">Entferne Verteidiger Tag?</t>
+    <t id="1106">Entferne Angreifer Tag?</t>
+    <t id="1107">Kurzes Verteidiger Tag?</t>
+    <t id="1108">Kurzes Angreifer Tag?</t>
+    <t id="1109">Tag Vorne?</t>
+    <t id="1110">Tag am Ende?</t>
+    <t id="1111">Objekt mit dem Tag</t>
+    <t id="1112">Benutze Nummerierung?</t>
+    <t id="1113">Sortiere XL nach S?</t>
+    <t id="1114">Kommanduer umbenennen?</t>
+    <t id="1115">Flotte umbenennen?</t>
+    <t id="1116">Unterflotten umbenennen?</t>
+    <t id="1117">Färbung des Tags?</t>
+    <t id="1118">Färbung des Namens?</t>
+    <t id="1119">Färbung der Nummerierung?</t>
+    <t id="1120">Namen speichern?</t>
+    <t id="1121">Namen laden?</t>
+    <t id="1122">Gespeicherte löschen?</t>
+    <t id="1123">Zurücksetzen?</t>
+    <t id="1124">A*</t>
+    <t id="1125">V*</t>
+    <t id="1160">Transparenz</t>
+    <t id="1161">Rot</t>
+    <t id="1162">Grün</t>
+    <t id="1163">Blau</t>
+    <t id="1195">Speichere Einstellungen?</t>
+    <t id="1196">Lösche Einstellungen?</t>
+    <t id="1197">\033#B600CCCC#</t>
+    <t id="1198">\033#FF00CC66#</t>
+    <t id="1199">\033X</t>
   </page>
 </language>

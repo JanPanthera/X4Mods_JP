@@ -4,14 +4,14 @@
 
   <order id="JP_RenameShip" name="RenameShip JP" category="internal" infinite="false">
     <params>
-      <!-- Params -->
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="SHIP" text="Ship" type="object" default="null"/>
       <!-- How should "class" "model" and "type" be arranged -->
       <param name="NAMING_VARINAT" text="Naming variant" type="number" default="2"/>
       <!-- How should the generated name look like -->
       <param name="USE_CLASS_TAG" text="Add Class tag?" type="bool" default="true"/>
       <param name="USE_TYPE_NAME" text="Add Type name?" type="bool"  default="true"/>
-      <param name="USE_MODEL_NAME" text="{8888888, 103}" comment="Add Model name?" type="bool" default="true"/>
+      <param name="USE_MODEL_NAME" text="Add Model name?" type="bool" default="true"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="REMOVE_SENTINEL_TAG" text="Remove Sentinel Tag?" comment="Remove Sentinel Tag?" type="bool" default="true"/>
       <param name="REMOVE_VANGUARD_TAG" text="Remove Vanguard Tag?" comment="Remove Vanguard Tag?" type="bool" default="true"/>
@@ -34,11 +34,12 @@
       <param name="NUMBER_COLOR_STRING" text="ColorString" type="internal" default="''"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <!-- DEBUG -->
-      <param name="DEBUG" text="DebugText" type="number" default="1.0" advanced="1">
-        <input_param name="min" value="0.0"/>
-        <input_param name="max" value="1.0"/>
-        <input_param name="step" value="0.1"/>
+      <param name="DEBUG" text="DebugText" type="number" default="0" advanced="true">
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="100"/>
+        <input_param name="step" value="100"/>
       </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     </params>
   </order>
 
@@ -49,7 +50,7 @@
   <init>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <set_value name="$DebugDirectory" exact="'JP_MultiRename.logs'"/>
-    <set_value name="$DebugFileName" exact="'JP_RenameShip.xml.log'"/>
+    <set_value name="$DebugFileName" exact="this.ship.idcode + '.JP_RenameShip.xml.log'"/>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <set_value name="$CreatedName" exact="''"/>
     <set_value name="$ClassTag" exact="''"/>
@@ -66,7 +67,7 @@
       <wait exact="1ms"/>
       <label name="INIT"/>
 
-      <do_if value="$DEBUG gt 0.0">
+      <do_if value="$DEBUG gt 0">
         <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_RenameShip.xml ~ Started ~~' + '\n'"/>
       </do_if>
@@ -87,7 +88,7 @@
         </do_for_each>
         <remove_value name="$ClassTags"/>
         <remove_value name="$ClassNames"/>
-        <do_if value="$DEBUG gt 0.0">
+        <do_if value="$DEBUG gt 0">
           <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
           <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'ClassTag ~~ ' + $ClassTag"/>
           <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
@@ -95,7 +96,7 @@
       </do_if>
 
       <!-- Type name -->
-      <do_if value="$DEBUG gt 0.0">
+      <do_if value="$DEBUG gt 0">
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'TypeName ~~ ' + $TypeName"/>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
@@ -118,16 +119,16 @@
         <!-- Replace Sentinel with S* ? -->
         <do_if value="not $REMOVE_SENTINEL_TAG and $SHORTEN_SENTINEL">
           <substitute_text source="$ModelName" text="$ModelName">
-            <replace string="{20111,1201}" with="{8888888, 126}"/>
+            <replace string="{20111,1201}" with="{8888888, 1125}"/>
           </substitute_text>
         </do_if>
         <!-- Replace Vanguard with V* ? -->
         <do_if value="not $REMOVE_VANGUARD_TAG and $SHORTEN_VANGUARD">
           <substitute_text source="$ModelName" text="$ModelName">
-            <replace string="{20111,1101}" with="{8888888, 125}"/>
+            <replace string="{20111,1101}" with="{8888888, 1124}"/>
           </substitute_text>
         </do_if>
-        <do_if value="$DEBUG gt 0.0">
+        <do_if value="$DEBUG gt 0">
           <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
           <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'ModelName ~~ ' + $ModelName"/>
           <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
@@ -153,7 +154,7 @@
       <do_elseif value="$NAMING_VARINAT" exact="6">
         <set_value name="$CreatedName" exact="( $TypeName + (if $USE_MODEL_NAME and $USE_TYPE_NAME then ' ' else '') + $ModelName + (if $USE_CLASS_NAME and ($USE_MODEL_NAME or $USE_TYPE_NAME) then ' ' else '') + $ClassTag)"/>
       </do_elseif>
-      <do_if value="$DEBUG gt 0.0">
+      <do_if value="$DEBUG gt 0">
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'NamingVariant ~~ ' + $NAMING_VARINAT"/>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
@@ -162,7 +163,7 @@
       <!-- Give the name an Color? -->
       <do_if value="$USE_NAME_COLORING">
         <set_value name="$CreatedName" exact="$NAME_COLOR_STRING + $CreatedName + '\033X'"/>
-        <do_if value="$DEBUG gt 0.0">
+        <do_if value="$DEBUG gt 0">
           <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
           <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'NameColorString ~~ ' + $NAME_COLOR_STRING"/>
           <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
@@ -177,7 +178,7 @@
         <do_if value="$TAG_AT_END">
           <set_value name="$CreatedName" exact="$CreatedName + ' ' + $PlayerTag"/>
         </do_if>
-        <do_if value="$DEBUG gt 0.0">
+        <do_if value="$DEBUG gt 0">
           <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
           <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'PlayerTag ~~ ' + $PlayerTag"/>
           <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
@@ -199,7 +200,7 @@
           <set_value name="$Number" exact="$NUMBER_COLOR_STRING + $Number + '\033X'"/>
         </do_if>
         <set_value name="$CreatedName" exact="$Number + ' -  ' + $CreatedName"/>
-        <do_if value="$DEBUG gt 0.0">
+        <do_if value="$DEBUG gt 0">
           <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
           <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'Number ~~ ' + $Number"/>
           <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
@@ -208,15 +209,17 @@
 
       <set_object_name object="$SHIP" name="$CreatedName"/>
 
-      <do_if value="$DEBUG gt 0.0">
+      <do_if value="$DEBUG gt 0">
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'Renamed the Ship to: ' + $CreatedName"/>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
       </do_if>
 
+      <label name="FINISH"/>
+
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-      <do_if value="$DEBUG gt 0.0">
+      <do_if value="$DEBUG gt 0">
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_RenameShip.xml ~ Finished ~~'"/>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
       </do_if>
@@ -231,7 +234,7 @@
       <remove_value name="$DebugFileName"/>
       <remove_value name="$DebugDirectory"/>
 
-      <label name="FINISH"/>
+      <label name="END"/>
       <wait exact="1ms"/>
 
     </actions>
