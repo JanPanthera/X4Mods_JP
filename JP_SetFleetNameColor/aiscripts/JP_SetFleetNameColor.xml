@@ -2,36 +2,41 @@
 
 <aiscript name="JP_SetFleetNameColor" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd" version="1">
 
-  <order id="JP_SetFleetNameColor" name="JP SetFleetNameColor" description="Gives your fleets name an color." category="navigation" infinite="true">
+  <order id="JP_SetFleetNameColor" name="{8888888, 1697}SetFleetNameColor{8888888, 1699}" category="navigation" infinite="true">
     <params>
-      <!-- Mod Params -->
-      <param name="ALPHA" text="{8888888, 1001}" comment="Transparency" type="number" default="255">
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="ALPHA" text="{8888888, 1650}" comment="Transparency" type="number" default="if global.$AlphaSFNC? then global.$AlphaSFNC else 255">
         <input_param name="step" value="1"/>
         <input_param name="min" value="0"/>
         <input_param name="max" value="255"/>
       </param>
-      <param name="RED" text="{8888888, 1002}" comment="Red" type="number" default="3">
+      <param name="RED" text="{8888888, 1651}" comment="Red" type="number" default="if global.$RedSFNC? then global.$RedSFNC else 3">
         <input_param name="step" value="1"/>
         <input_param name="min" value="0"/>
         <input_param name="max" value="255"/>
       </param>
-      <param name="GREEN" text="{8888888, 1003}" comment="Green" type="number" default="161">
+      <param name="GREEN" text="{8888888, 1652}" comment="Green" type="number" default="if global.$GreenSFNC? then global.$GreenSFNC else 161">
         <input_param name="step" value="1"/>
         <input_param name="min" value="0"/>
         <input_param name="max" value="255"/>
       </param>
-      <param name="BLUE" text="{8888888, 1004}" comment="Blue" type="number" default="252">
+      <param name="BLUE" text="{8888888, 1653}" comment="Blue" type="number" default="if global.$BlueSFNC? then global.$BlueSFNC else 252">
         <input_param name="step" value="1"/>
         <input_param name="min" value="0"/>
         <input_param name="max" value="255"/>
       </param>
-      <param name="RESET_FLEET_NAME" text="{8888888, 61}" comment="Reset fleet name?" type="bool" default="false"/>
+      <param name="RESET_FLEET_NAME" text="{8888888, 1600}" comment="Reset fleet name?" type="bool" default="if global.$ResetFleetNameSFNC? then global.$ResetFleetNameSFNC else false"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="SAVE_SETTINGS" text="{8888888, 1695}" comment="Save Settings?" type="bool" default="if global.$DebugSFNC? then global.$DebugSFNC else false"/>
+      <param name="DELETE_SETTINGS" text="{8888888, 1696}" comment="Delete Settings?" type="bool" default="false"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <!-- DEBUG -->
-      <param name="DEBUG" text="DebugText" type="number" default="0" advanced="1">
-        <input_param name="step" value="50"/>
+      <param name="DEBUG" text="DebugText" type="number" default="if  then  else 0" advanced="true">
         <input_param name="min" value="0"/>
         <input_param name="max" value="100"/>
+        <input_param name="step" value="100"/>
       </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     </params>
     <skill min="0"/>
     <requires>
@@ -40,13 +45,59 @@
   </order>
 
   <interrupts>
-    <handler ref="JobRemoveRequestHandler"/>
+    <handler ref="SectorChangeHandler"/>
+    <handler ref="TargetInvalidHandler"/>
+    <handler ref="AttackHandler"/>
+    <handler ref="MissileLockHandler" />
+    <handler ref="ScannedHandler"/>
+    <handler ref="InspectedHandler"/>
+    <handler ref="FoundAbandonedHandler"/>
+    <handler ref="FoundLockboxHandler"/>
+    <handler ref="ResupplyHandler"/>
+    <handler ref="JobRemoveRequestHandler" />
   </interrupts>
 
   <init>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <set_value name="$DebugDirectory" exact="'JP_SetFleetNameColor.logs'"/>
-    <set_value name="$DebugFileName" exact="this.ship.idcode + '.JP_SetFleetNameColor' + '.log'"/>
-    <set_value name="$Leader" exact="this.ship"/>
+    <set_value name="$DebugFileName" exact="this.ship.idcode + '.JP_SetFleetNameColor.xml.log'"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <do_if value="not this.$OriginalFleetName?">
+      <set_value name="this.$OriginalFleetName" exact="this.ship.knownname"/>
+    </do_if>
+    <set_value name="$Ship" exact="this.ship"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <do_if value="$SAVE_SETTINGS">
+      <do_if value="not global.$AlphaSFNC? or @global.$AlphaSFNC != $ALPHA">
+        <set_value name="global.$AlphaSFNC" exact="$ALPHA"/>
+      </do_if>
+      <do_if value="not global.$RedSFNC? or @global.$RedSFNC != $RED">
+        <set_value name="global.$RedSFNC" exact="$RED"/>
+      </do_if>
+      <do_if value="not global.$GreenSFNC? or @global.$GreenSFNC != $GREEN">
+        <set_value name="global.$GreenSFNC" exact="$GREEN"/>
+      </do_if>
+      <do_if value="not global.$BlueSFNC? or @global.$BlueSFNC != $BLUE">
+        <set_value name="global.$BlueSFNC" exact="$BLUE"/>
+      </do_if>
+      <do_if value="not global.$ResetFleetNameSFNC? or @global.$ResetFleetNameSFNC != $RESET_FLEET_NAME">
+        <set_value name="global.$ResetFleetNameSFNC" exact="$RESET_FLEET_NAME"/>
+      </do_if>
+      <do_if value="not global.$DebugSFNC? or @global.$DebugSFNC != $DEBUG">
+        <set_value name="global.$DebugSFNC" exact="$DEBUG"/>
+      </do_if>
+    </do_if>
+    <do_if value="$DELETE_SETTINGS">
+      <remove_value name="global.$DebugSFNC"/>
+      <remove_value name="global.$ResetFleetNameSFNC"/>
+      <remove_value name="global.$BlueSFNC"/>
+      <remove_value name="global.$GreenSFNC"/>
+      <remove_value name="global.$RedSFNC"/>
+      <remove_value name="global.$AlphaSFNC"/>
+      <!-- cancel order because the settings are invalid now -->
+      <cancel_order order="this.ship.order"/>
+    </do_if>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
   </init>
 
   <attention min="unknown">
@@ -54,75 +105,54 @@
 
       <wait exact="1ms"/>
       <label name="INIT"/>
-      <cancel_all_orders object="$Leader"/>
 
       <do_if value="$DEBUG gt 0">
         <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~ Running JP_SetFleetNameColor with %1 [%2]'.[$Leader.knownname, $Leader.idcode] + '\n'"/>
-      </do_if>
-
-      <do_if value="@this.$OriginalFleetName == null">
-        <set_value name="this.$OriginalFleetName" exact="$Leader.fleet.name"/>
-        <do_if value="$DEBUG gt 50">
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'created this.$OriginalFleetName  ~~  %1'.[this.$OriginalFleetName]"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
-        </do_if>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_SetFleetNameColor.xml ~ Started ~~' + '\n'"/>
       </do_if>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-      <do_if value="$Leader.fleet.iscommander" negate="true">
-        <resume label="END"/>
+      <do_if value="not $Ship.fleet.iscommander">
+        <resume label="FINISH"/>
       </do_if>
 
       <do_if value="$RESET_FLEET_NAME">
-        <set_object_fleet_name object="$Leader" name="this.$OriginalFleetName"/>
-        <do_if value="$DEBUG gt 50">
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'Reset the fleet name to %1 and remove variable this.$OriginalFleetName'.[this.$OriginalFleetName]"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
-        </do_if>
+        <set_object_fleet_name object="$Ship" name="this.$OriginalFleetNamev"/>
         <remove_value name="this.$OriginalFleetName"/>
-        <resume label="END"/>
+        <resume label="FINISH"/>
       </do_if>
 
-      <run_script name="'JP_ToHexadecimalColorString'">
+      <run_script name="'JP_CreateColorString_SFNC'">
         <param name="ALPHA" value="$ALPHA"/>
         <param name="RED" value="$RED"/>
         <param name="GREEN" value="$GREEN"/>
         <param name="BLUE" value="$BLUE"/>
         <param name="DEBUG" value="$DEBUG"/>
-        <save_retval name="HEXA_COLOR_CODE" variable="$HexaColorCode"/>
+        <save_retval name="COLOR_STRING" variable="$_ColorString"/>
       </run_script>
 
-      <set_object_fleet_name object="$Leader" name="$HexaColorCode + $Leader.fleet.name + '\033X'"/>
+      <set_object_fleet_name object="$Ship" name="$_ColorString + $Ship.fleet.knownname + '\033X'"/>
+      <remove_value name="$_ColorString "/>
 
-      <do_if value="$DEBUG gt 0">
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'Fleet name with HexadecimalColorCode  ~~  %1'.[($HexaColorCode + $Leader.fleet.name + '\033X')]"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
-      </do_if>
+      <label name="FINISH"/>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-      <label name="END"/>
-
       <do_if value="$DEBUG gt 0">
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~ Completed JP_SetFleetNameColor with %1 [%2]'.[$Leader.knownname, $Leader.idcode]"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_SetFleetNameColor.xml ~ Finished ~~'"/>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
       </do_if>
 
       <label name="CLEANUP"/>
-      <remove_value name="$HexaColorCode"/>
-      <remove_value name="$Leader"/>
+      <remove_value name="$Ship"/>
       <remove_value name="$DebugFileName"/>
       <remove_value name="$DebugDirectory"/>
 
+      <label name="END"/>
+      <wait exact="1ms"/>
       <set_order_syncpoint_reached order="this.ship.order"/>
       <cancel_order order="this.ship.order" />
-      <label name="FINISH"/>
-      <wait exact="1ms"/>
 
     </actions>
   </attention>

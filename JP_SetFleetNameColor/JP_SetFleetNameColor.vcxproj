@@ -124,6 +124,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <Xml Include="aiscripts\JP_CreateColorString_SFNC.xml" />
     <Xml Include="aiscripts\JP_SetFleetNameColor.xml" />
     <Xml Include="content.xml" />
     <Xml Include="JP_SetFleetNameColor\aiscripts\JP_SetFleetNameColor.xml" />
@@ -150,10 +151,15 @@
     <Xml Include="t\0001-L082.xml" />
     <Xml Include="t\0001-L086.xml" />
     <Xml Include="t\0001-L088.xml" />
+    <Xml Include="t\0001.xml" />
   </ItemGroup>
   <ItemGroup>
     <Xsd Include="aiscripts\aiscripts.xsd" />
     <Xsd Include="JP_SetFleetNameColor\aiscripts\aiscripts.xsd" />
+    <Xsd Include="md\md.xsd" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="changelog.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

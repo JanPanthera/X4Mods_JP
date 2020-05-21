@@ -41,6 +41,8 @@
     <Xml Include="t\0001-L082.xml" />
     <Xml Include="t\0001-L086.xml" />
     <Xml Include="t\0001-L088.xml" />
+    <Xml Include="t\0001.xml" />
+    <Xml Include="aiscripts\JP_CreateColorString_SFNC.xml" />
   </ItemGroup>
   <ItemGroup>
     <Xsd Include="JP_SetFleetNameColor\aiscripts\aiscripts.xsd">
@@ -49,5 +51,11 @@
     <Xsd Include="aiscripts\aiscripts.xsd">
       <Filter>Headerdateien</Filter>
     </Xsd>
+    <Xsd Include="md\md.xsd">
+      <Filter>Headerdateien</Filter>
+    </Xsd>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="changelog.txt" />
   </ItemGroup>
 </Project>
