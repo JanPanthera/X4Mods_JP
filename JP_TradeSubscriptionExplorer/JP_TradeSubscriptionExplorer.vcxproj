@@ -145,9 +145,10 @@
     <Text Include="changelog.txt" />
   </ItemGroup>
   <ItemGroup>
+    <Xml Include="aiscripts\JP_CreateColorString_TSE.xml" />
     <Xml Include="aiscripts\JP_ExploreTradeSubscription.xml" />
     <Xml Include="aiscripts\JP_GetNearestExpiredTradeSubscription.xml" />
-    <Xml Include="aiscripts\JP_IdleReturnHomeTSE.xml" />
+    <Xml Include="aiscripts\JP_IdleReturnHome_TSE.xml" />
     <Xml Include="aiscripts\JP_TradeSubscriptionExplorerG.xml" />
     <Xml Include="aiscripts\JP_TradeSubscriptionExplorerS.xml" />
     <Xml Include="content.xml" />

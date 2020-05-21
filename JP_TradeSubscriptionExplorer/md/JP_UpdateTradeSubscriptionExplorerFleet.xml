@@ -5,60 +5,134 @@
 
     <cue name="JP_UPDATE_TRADE_SUBSCRIPTION_EXPLORER_FLEET" instantiate="true" checkinterval="2s">
       <conditions>
-        <check_value value="@global.$TradeSubscriptionExplorerShips.count gt 1"/>
+        <check_value value="global.$TradeSubscriptionExplorerShips? and @global.$TradeSubscriptionExplorerShips.count gt 1"/>
       </conditions>
       <actions>
-        <do_if value="global.$TradeSubscriptionExplorerShips?">
-          <create_list name="$AutoFleetShips"/>
-          <do_for_each name="$TradeSubscriptionExplorerShip" in="global.$TradeSubscriptionExplorerShips">
-            <do_if value="$TradeSubscriptionExplorerShip.defaultSubscription.$AUTO_FLEET == true">
-              <append_to_list name="$AutoFleetShips" exact="$TradeSubscriptionExplorerShip"/>
+
+        <set_value name="$DEBUG" exact="@global.$TradeSubscriptionExplorerFleetLeader.defaultorder.$DEBUG"/>
+        <set_value name="$DebugDirectory" exact="'JP_TradeSubscriptionExplorer.logs'"/>
+        <set_value name="$DebugFileName" exact="'md.JP_UpdateTradeSubscriptionExplorerFleet.JP_UPDATE_TRADE_SUBSCRIPTION_EXPLORER_FLEET.xml.log'"/>
+
+        <do_if value="$DEBUG gt 0">
+          <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ md.JP_UpdateTradeSubscriptionExplorerFleet.JP_UPDATE_TRADE_SUBSCRIPTION_EXPLORER_FLEET.xml ~ Started ~~' + '\n'"/>
+        </do_if>
+
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+        <create_list name="$_AutoFleetShips"/>
+        <do_for_each name="$_TradeSubscriptionExplorerShip" in="global.$TradeSubscriptionExplorerShips">
+          <do_if value="$_TradeSubscriptionExplorerShip.defaultorder.$AUTO_FLEET">
+            <append_to_list name="$_AutoFleetShips" exact="$_TradeSubscriptionExplorerShip"/>
+          </do_if>
+        </do_for_each>
+        <do_if value="global.$TradeSubscriptionExplorerFleetLeader?">
+          <do_if value="not global.$TradeSubscriptionExplorerFleetLeader.fleet.iscommander">
+            <remove_value name="global.$TradeSubscriptionExplorerFleetLeader"/>
+          </do_if>
+        </do_if>
+
+        <do_if value="$_AutoFleetShips.count gt 1">
+          <!-- Check if one of the ship isn't in the fleet and join the fleet if not in it -->
+          <do_for_each name="$_AutoFleetShip" in="$_AutoFleetShips" counter="$_it">
+            <!-- Skip the leader.. leader is always the ship in first place in the list -->
+            <do_if value="$_it == 1">
+              <continue/>
+            </do_if>
+            <do_if value="not global.$TradeSubscriptionExplorerFleetLeader?">
+              <set_value name="global.$TradeSubscriptionExplorerFleetLeader" exact="$_AutoFleetShips.{1}"/>
+              <set_object_commander object="$_AutoFleetShip" commander="global.$TradeSubscriptionExplorerFleetLeader"/>
+              <!-- Naming the fleet -->
+              <set_object_fleet_name object="global.$TradeSubscriptionExplorerFleetLeader" name="(if global.$TradeSubscriptionExplorerAutoFleetNameColorString? then (global.$TradeSubscriptionExplorerAutoFleetNameColorString + 'TradeSubscriptionExplorer' + '\033X') else 'TradeSubscriptionExplorer')"/>
+              <continue/>
+            </do_if>
+            <do_if value="$_AutoFleetShip.fleet.commander == null">
+              <set_object_commander object="$_AutoFleetShip" commander="global.$TradeSubscriptionExplorerFleetLeader"/>
+            </do_if>
+            <do_if value="global.$TradeSubscriptionExplorerAutoFleetNameColorString? and global.$TradeSubscriptionExplorerFleetLeader?">
+              <do_if value="global.$TradeSubscriptionExplorerFleetLeader.fleet.name != (if global.$TradeSubscriptionExplorerAutoFleetNameColorString? then (global.$TradeSubscriptionExplorerAutoFleetNameColorString + 'TradeSubscriptionExplorer' + '\033X') else 'TradeSubscriptionExplorer')">
+                <set_object_fleet_name object="global.$TradeSubscriptionExplorerFleetLeader" name="(if global.$TradeSubscriptionExplorerAutoFleetNameColorString? then (global.$TradeSubscriptionExplorerAutoFleetNameColorString + 'TradeSubscriptionExplorer' + '\033X') else 'TradeSubscriptionExplorer')"/>
+              </do_if>
             </do_if>
           </do_for_each>
-          <do_if value="global.$TradeSubscriptionExplorerFleetLeader?">
-            <do_if value="global.$TradeSubscriptionExplorerFleetLeader.fleet.iscommander == false">
-              <remove_value name="global.$TradeSubscriptionExplorerFleetLeader"/>
-            </do_if>
-          </do_if>
-          <do_if value="$AutoFleetShips.count gt 1">
-            <do_for_each name="$AutoFleetShip" in="$AutoFleetShips" counter="$_it">
-              <do_if value="$_it == 1">
-                <continue/>
-              </do_if>
-              <do_if value="not global.$TradeSubscriptionExplorerFleetLeader?">
-                <set_value name="global.$TradeSubscriptionExplorerFleetLeader" exact="$AutoFleetShips.{1}"/>
-              </do_if>
-              <do_if value="$AutoFleetShip.fleet.commander == null">
-                <set_object_commander object="$AutoFleetShip" commander="global.$TradeSubscriptionExplorerFleetLeader"/>
-              </do_if>
-            </do_for_each>
-            <set_object_fleet_name object="global.$TradeSubscriptionExplorerFleetLeader" name="'TradeSubscriptionExplorer'"/>
-          </do_if>
-          <remove_value name="$AutoFleetShips"/>
         </do_if>
+        <remove_value name="$_AutoFleetShips"/>
+
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+        <do_if value="$DEBUG gt 0">
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ md.JP_UpdateTradeSubscriptionExplorerFleet.JP_UPDATE_TRADE_SUBSCRIPTION_EXPLORER_FLEET.xml ~ Finished ~~'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+        </do_if>
+
       </actions>
     </cue>
 
-    <cue name="JP_TRADESubscriptionEXPLORER_DEBUG" instantiate="true" checkinterval="1s">
+    <cue name="JP_TRADE_SUBSCRIPTION_EXPLORER_DEBUG" instantiate="true" checkinterval="1s">
       <actions>
-        <set_value name="$DEBUG" exact="false"/>
 
-        <do_if value="$DEBUG">
-          <debug_to_file append="false" directory="'JP_TradeSubscriptionExplorer.logs'" name="'JP_TradeSubscriptionExplorer_Debug.log'" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <set_value name="$DEBUG" exact="@global.$TradeSubscriptionExplorerFleetLeader.defaultorder.$DEBUG"/>
+        <!--<set_value name="$DEBUG" exact="1"/>-->
+        <set_value name="$DebugDirectory" exact="'JP_TradeSubscriptionExplorer.logs'"/>
+        <set_value name="$DebugFileName" exact="'md.JP_UpdateTradeSubscriptionExplorerFleet.JP_TRADE_SUBSCRIPTION_EXPLORER_DEBUG.xml.log'"/>
+
+        <do_if value="$DEBUG gt 0">
+          <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ md.JP_UpdateTradeSubscriptionExplorerFleet.JP_TRADE_SUBSCRIPTION_EXPLORER_DEBUG.xml ~ Started ~~' + '\n'"/>
+        </do_if>
+
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+        <do_if value="$DEBUG gt 0">
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'global.$TradeSubscriptionExplorerAutoFleetNameColorString'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <do_if value="global.$TradeSubscriptionExplorerFleetLeader?">
+            <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="@global.$TradeSubscriptionExplorerAutoFleetNameColorString"/>
+          </do_if>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'global.$TradeSubscriptionExplorerFleetLeader'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <do_if value="global.$TradeSubscriptionExplorerFleetLeader?">
+            <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~ Ship: %1 [%2] ~~ [%3].'.[@global.$TradeSubscriptionExplorerFleetLeader.knownname, @global.$TradeSubscriptionExplorerFleetLeader.idcode, @global.$TradeSubscriptionExplorerFleetLeader.owner.knownname]"/>
+          </do_if>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'global.$TradeSubscriptionExplorerSectorBlackList'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
           <do_if value="global.$TradeSubscriptionExplorerSectorBlackList?">
-            <do_for_each name="$Sector" in="global.$TradeSubscriptionExplorerSectorBlackList">
-              <debug_to_file directory="'JP_TradeSubscriptionExplorer.logs'" name="'JP_TradeSubscriptionExplorer_Debug.log'" text="'~ Sector: %1 [%2].'.[$Sector.knownname, $Sector.owner.knownname]"/>
+            <do_for_each name="$Sector" in="@global.$TradeSubscriptionExplorerSectorBlackList">
+              <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~ Sector: %1 ~~ [%2].'.[@$Sector.knownname, @$Sector.owner.knownname]"/>
             </do_for_each>
           </do_if>
-          <debug_to_file directory="'JP_TradeSubscriptionExplorer.logs'" name="'JP_TradeSubscriptionExplorer_Debug.log'" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
 
-          <debug_to_file directory="'JP_TradeSubscriptionExplorer.logs'" name="'JP_TradeSubscriptionExplorer_Debug.log'" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'global.$TradeSubscriptionExplorerShips'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
           <do_if value="global.$TradeSubscriptionExplorerShips?">
-            <do_for_each name="$Ship" in="global.$TradeSubscriptionExplorerShips">
-              <debug_to_file directory="'JP_TradeSubscriptionExplorer.logs'" name="'JP_TradeSubscriptionExplorer_Debug.log'" text="'~ Ship: %1 [%2].'.[$Ship.knownname, $Ship.owner.knownname]"/>
+            <do_for_each name="$Ship" in="@global.$TradeSubscriptionExplorerShips">
+              <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~ Ship: %1 [%2] ~~ [%3].'.[@$Ship.knownname, @$Ship.idcode, @$Ship.owner.knownname]"/>
             </do_for_each>
           </do_if>
-          <debug_to_file directory="'JP_TradeSubscriptionExplorer.logs'" name="'JP_TradeSubscriptionExplorer_Debug.log'" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+        </do_if>
+
+        <do_if value="0">
+          <remove_value name="global.$TradeSubscriptionExplorerFleetLeader"/>
+          <remove_value name="global.$TradeSubscriptionExplorerSectorBlackList"/>
+          <remove_value name="global.$TradeSubscriptionExplorerShips"/>
+          <remove_value name="global.$TradeSubscriptionExplorerAutoFleetNameColorString"/>
+        </do_if>
+
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+        <do_if value="$DEBUG gt 0">
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ md.JP_UpdateTradeSubscriptionExplorerFleet.JP_TRADE_SUBSCRIPTION_EXPLORER_DEBUG.xml ~ Finished ~~'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
         </do_if>
 
       </actions>

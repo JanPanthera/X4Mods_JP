@@ -46,6 +46,7 @@
     <Xml Include="aiscripts\JP_TradeSubscriptionExplorerG.xml" />
     <Xml Include="aiscripts\JP_GetNearestExpiredTradeSubscription.xml" />
     <Xml Include="md\JP_UpdateTradeSubscriptionExplorerFleet.xml" />
-    <Xml Include="aiscripts\JP_IdleReturnHomeTSE.xml" />
+    <Xml Include="aiscripts\JP_CreateColorString_TSE.xml" />
+    <Xml Include="aiscripts\JP_IdleReturnHome_TSE.xml" />
   </ItemGroup>
 </Project>

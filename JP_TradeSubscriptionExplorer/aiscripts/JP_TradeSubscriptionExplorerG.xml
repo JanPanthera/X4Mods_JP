@@ -10,7 +10,29 @@
       <param name="FRIENDLY_SECTORS" text="{8888888, 1902}" comment="Friendly Sectors?" type="bool" default="if global.$FriendlySectorsTSE? then global.$FriendlySectorsTSE else true"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="ADD_ORDER_TAG" text="{8888888, 1994}" comment="Add order tag?" type="bool" default="if global.$AddOrderTagTSE? then global.$AddOrderTagTSE else true"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="AUTO_FLEET" text="{8888888, 1903}" comment="Automatic Fleet?" type="bool" default="if global.$AutoFleetTSE? then global.$AutoFleetTSE else false"/>
+      <param name="COLOR_AUTOFLEET_NAME" text="{8888888, 1904}" comment="Color Automatic Fleet name?" type="bool" default="if global.$ColorAutoFleetNameTSE? then global.$ColorAutoFleetNameTSE else true"/>
+      <param name="AUTOFLEET_NAME_ALPHA" text="{8888888, 1916}" comment="Transparency" type="number" default="if $AutoFleetNameAlphaTSE? then $AutoFleetNameAlphaTSE else 255">
+        <input_param name="step" value="1"/>
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="255"/>
+      </param>
+      <param name="AUTOFLEET_NAME_RED" text="{8888888, 1917}" comment="Red" type="number" default="if $AutoFleetNameRedTSE? then $AutoFleetNameRedTSE else 3">
+        <input_param name="step" value="1"/>
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="255"/>
+      </param>
+      <param name="AUTOFLEET_NAME_GREEN" text="{8888888, 1918}" comment="Green" type="number" default="if $AutoFleetNameGreenTSE? then $AutoFleetNameGreenTSE else 161">
+        <input_param name="step" value="1"/>
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="255"/>
+      </param>
+      <param name="AUTOFLEET_NAME_BLUE" text="{8888888, 1919}" comment="Blue" type="number" default="if $AutoFleetNameBlueTSE? then $AutoFleetNameBlueTSE else 252">
+        <input_param name="step" value="1"/>
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="255"/>
+      </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="IDLE_TIME" text="{8888888, 1920}" comment="Idle Time" type="time" default="if global.$IdleTimeTSE? then global.$IdleTimeTSE else 600s">
         <input_param name="min" value="60s"/>
@@ -79,7 +101,20 @@
     <do_if value="not global.$TradeSubscriptionExplorerShips?">
       <create_list name="global.$TradeSubscriptionExplorerShips"/>
     </do_if>
-    <append_to_list name="global.$TradeSubscriptionExplorerShips" exact="this.ship"/>
+    <do_if value="global.$TradeSubscriptionExplorerShips.count gt 0">
+      <do_for_each name="$_Ship" in="global.$TradeSubscriptionExplorerShips">
+        <do_if value="$_Ship == this.ship">
+          <set_value name="$_WasInList" exact="true"/>
+          <break/>
+        </do_if>
+      </do_for_each>
+      <do_if value="not $_WasInList?">
+        <append_to_list name="global.$TradeSubscriptionExplorerShips" exact="this.ship"/>
+      </do_if>
+    </do_if>
+    <do_else>
+      <append_to_list name="global.$TradeSubscriptionExplorerShips" exact="this.ship"/>
+    </do_else>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <do_if value="not this.$OldName?">
       <set_value name="this.$OldName" exact="this.ship.knownname"/>
@@ -103,6 +138,21 @@
       </do_if>
       <do_if value="not global.$AutoFleetTSE? or @global.$AutoFleetTSE != $AUTO_FLEET">
         <set_value name="global.$AutoFleetTSE" exact="$AUTO_FLEET"/>
+      </do_if>
+      <do_if value="not global.$ColorAutoFleetNameTSE? or @global.$ColorAutoFleetNameTSE != $COLOR_AUTOFLEET_NAME">
+        <set_value name="global.$ColorAutoFleetNameTSE" exact="$COLOR_AUTOFLEET_NAME"/>
+      </do_if>
+      <do_if value="not global.$AutoFleetNameAlphaTSE? or @global.$AutoFleetNameAlphaTSE != $AUTOFLEET_NAME_ALPHA">
+        <set_value name="global.$AutoFleetNameAlphaTSE" exact="$AUTOFLEET_NAME_ALPHA"/>
+      </do_if>
+      <do_if value="not global.$AutoFleetNameRedTSE? or @global.$AutoFleetNameRedTSE != $AUTOFLEET_NAME_RED">
+        <set_value name="global.$AutoFleetNameRedTSE" exact="$AUTOFLEET_NAME_RED"/>
+      </do_if>
+      <do_if value="not global.$AutoFleetNameGreenTSE? or @global.$AutoFleetNameGreenTSE != $AUTOFLEET_NAME_GREEN">
+        <set_value name="global.$AutoFleetNameGreenTSE" exact="$AUTOFLEET_NAME_GREEN"/>
+      </do_if>
+      <do_if value="not global.$AutoFleetNameBlueTSE? or @global.$AutoFleetNameBlueTSE != $AUTOFLEET_NAME_BLUE">
+        <set_value name="global.$AutoFleetNameBlueTSE" exact="$AUTOFLEET_NAME_BLUE"/>
       </do_if>
       <do_if value="not global.$IdleTimeTSE? or @global.$IdleTimeTSE != $IDLE_TIME">
         <set_value name="global.$IdleTimeTSE" exact="$IDLE_TIME"/>
@@ -145,6 +195,13 @@
       <remove_value name="global.$IdleDockingTSE"/>
       <remove_value name="global.$WhoToFollowTSE"/>
       <remove_value name="global.$IdleFollowTSE"/>
+      <remove_value name="global.$IdleTimeTSE"/>
+      <remove_value name="global.$ColorAutoFleetNameTSE"/>
+      <remove_value name="global.$AutoFleetNameAlphaTSE"/>
+      <remove_value name="global.$AutoFleetNameRedTSE"/>
+      <remove_value name="global.$AutoFleetNameGreenTSE"/>
+      <remove_value name="global.$AutoFleetNameBlueTSE"/>
+      <remove_value name="global.$AutoFleetTSE"/>
       <remove_value name="global.$AddOrderTagTSE"/>
       <remove_value name="global.$FriendlySectorsTSE"/>
       <remove_value name="global.$NeutralSectorsTSE"/>
@@ -168,6 +225,18 @@
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
+      <label name="PRE_SETTING_UP"/>
+      <do_if value="$COLOR_AUTOFLEET_NAME and $Ship == @global.$TradeSubscriptionExplorerFleetLeader or not @global.$TradeSubscriptionExplorerAutoFleetNameColorString">
+        <run_script name="'JP_CreateColorString_TSE'">
+          <param name="ALPHA" value="$AUTOFLEET_NAME_ALPHA"/>
+          <param name="RED" value="$AUTOFLEET_NAME_RED"/>
+          <param name="GREEN" value="$AUTOFLEET_NAME_GREEN"/>
+          <param name="BLUE" value="$AUTOFLEET_NAME_BLUE"/>
+          <param name="DEBUG" value="$DEBUG"/>
+          <save_retval name="COLOR_STRING" variable="global.$TradeSubscriptionExplorerAutoFleetNameColorString"/>
+        </run_script>
+      </do_if>
+
       <label name="RESUME"/>
 
       <set_command command="command.explore"/>
@@ -182,7 +251,7 @@
       </run_script>
 
       <do_if value="$NearestStation == 'NoStationWithExpiredTradeSubscriptionFound'">
-        <run_script name="'JP_IdleReturnHomeTSE'">
+        <run_script name="'JP_IdleReturnHome_TSE'">
           <param name="IDLE_FOLLOW" value="$IDLE_FOLLOW"/>
           <param name="WHO_TO_FOLLOW" value="$WHO_TO_FOLLOW"/>
           <param name="IDLE_DOCKING" value="$IDLE_DOCKING"/>
@@ -198,19 +267,19 @@
         <resume label="RESUME"/>
       </do_if>
 
-      <set_value name="$Sector" exact="$NearestStation.sector"/>
-      <append_to_list name="global.$TradeSubscriptionExplorerSectorBlackList" exact="$Sector"/>
+      <set_value name="this.$CurrentSector" exact="$NearestStation.sector"/>
+      <append_to_list name="global.$TradeSubscriptionExplorerSectorBlackList" exact="this.$CurrentSector"/>
 
       <label name="MOVE_TO_SECTOR"/>
-      <do_if value="$Ship.sector != $Sector">
-        <set_command command="command.move" param="$Sector"/>
+      <do_if value="$Ship.sector != this.$CurrentSector">
+        <set_command command="command.move" param="this.$CurrentSector"/>
         <run_script name="'move.generic'">
-          <param name="destination" value="$Sector"/>
+          <param name="destination" value="this.$CurrentSector"/>
           <param name="endintargetzone" value="true"/>
           <param name="recallsubordinates" value="true"/>
         </run_script>
         <wait exact="1ms"/>
-        <do_if value="$Ship.sector != $Sector">
+        <do_if value="$Ship.sector != this.$CurrentSector">
           <resume label="MOVE_TO_SECTOR"/>
         </do_if>
       </do_if>
@@ -223,18 +292,24 @@
       <apply_experience entity="$Ship.pilot" experience="'JP_SHIP_TRADESUBSCRIPTION_UPDATED'" factor="$ExpMultiplier"/>
       <apply_experience object="$Ship" experience="'JP_SHIP_TRADESUBSCRIPTION_UPDATED'" role="entityrole.service" factor="$ExpMultiplier"/>
 
-      <remove_from_list name="global.$TradeSubscriptionExplorerSectorBlackList" exact="$Sector"/>
+      <do_if value="global.$TradeSubscriptionExplorerSectorBlackList.count gt 0">
+        <do_for_each name="$_Sector" in="global.$TradeSubscriptionExplorerSectorBlackList">
+          <do_if value="$_Sector == this.$CurrentSector">
+            <set_value name="$_WasInList" exact="true"/>
+            <break/>
+          </do_if>
+        </do_for_each>
+        <do_if value="$_WasInList?">
+          <remove_from_list name="global.$TradeSubscriptionExplorerSectorBlackList" exact="this.$CurrentSector"/>
+        </do_if>
+      </do_if>
       <remove_value name="$NearestStation"/>
-      <remove_value name="$Sector"/>
+      <remove_value name="this.$CurrentSector"/>
 
       <wait exact="1s"/>
       <resume label="RESUME"/>
 
       <label name="FINISH"/>
-
-      <do_if value="$ADD_ORDER_TAG">
-        <set_object_name object="$Ship" name="this.$OldName"/>
-      </do_if>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
@@ -244,15 +319,53 @@
       </do_if>
 
       <label name="CLEANUP"/>
-      <remove_from_list name="global.$TradeSubscriptionExplorerSectorBlackList" exact="$Sector"/>
-      <remove_from_list name="global.$TradeSubscriptionExplorerShips" exact="this.ship"/>
-      <do_if value="global.$TradeSubscriptionExplorerShips.count == 0">
-        <remove_value name="global.$TradeSubscriptionExplorerSectorBlackList"/>
+      <do_if value="$ADD_ORDER_TAG and this.$OldName?">
+        <set_object_name object="this.ship" name="this.$OldName"/>
+      </do_if>
+      <do_if value="this.ship == @global.$TradeSubscriptionExplorerFleetLeader">
+        <do_if value="global.$TradeSubscriptionExplorerAutoFleetNameColorString?">
+          <remove_value name="global.$TradeSubscriptionExplorerAutoFleetNameColorString"/>
+        </do_if>
+      </do_if>
+      <do_if value="global.$TradeSubscriptionExplorerSectorBlackList? and this.$CurrentSector?">
+        <do_for_each name="$_Sector" in="global.$TradeSubscriptionExplorerSectorBlackList">
+          <do_if value="$_Sector == this.$CurrentSector">
+            <set_value name="$_WasInList" exact="true"/>
+            <break/>
+          </do_if>
+        </do_for_each>
+        <do_if value="$_WasInList?">
+          <remove_from_list name="global.$TradeSubscriptionExplorerSectorBlackList" exact="this.$CurrentSector"/>
+          <remove_value name="$_WasInList"/>
+        </do_if>
+      </do_if>
+      <do_if value="global.$TradeSubscriptionExplorerShips?">
+        <do_for_each name="$_Ship" in="global.$TradeSubscriptionExplorerShips">
+          <do_if value="$_Ship == this.ship">
+            <set_value name="$_WasInList" exact="true"/>
+            <break/>
+          </do_if>
+        </do_for_each>
+        <do_if value="$_WasInList?">
+          <remove_from_list name="global.$TradeSubscriptionExplorerShips" exact="this.ship"/>
+          <remove_value name="$_WasInList"/>
+        </do_if>
+      </do_if>
+      <do_if value="@global.$TradeSubscriptionExplorerShips.count le 0">
+        <do_if value ="global.$TradeSubscriptionExplorerSectorBlackList?">
+          <remove_value name="global.$TradeSubscriptionExplorerSectorBlackList"/>
+        </do_if>
         <remove_value name="global.$TradeSubscriptionExplorerShips"/>
       </do_if>
-      <remove_value name="$ExpMultiplier"/>
-      <remove_value name="this.$OldName"/>
+      <do_if value="this.$OldName?">
+        <remove_value name="this.$OldName"/>
+      </do_if>
+      <do_if value="this.$CurrentSector?">
+        <remove_value name="this.$CurrentSector"/>
+      </do_if>
+
       <remove_value name="$Ship"/>
+      <remove_value name="$ExpMultiplier"/>
       <remove_value name="$DebugFileName"/>
       <remove_value name="$DebugDirectory"/>
 
@@ -265,16 +378,50 @@
   </attention>
 
   <on_abort>
-    <remove_from_list name="global.$TradeSubscriptionExplorerSectorBlackList" exact="$Sector"/>
-    <remove_from_list name="global.$TradeSubscriptionExplorerShips" exact="this.ship"/>
-    <do_if value="global.$TradeSubscriptionExplorerShips.count == 0">
-      <remove_value name="global.$TradeSubscriptionExplorerSectorBlackList"/>
-      <remove_value name="global.$TradeSubscriptionExplorerShips"/>
-    </do_if>
     <do_if value="$ADD_ORDER_TAG and this.$OldName?">
       <set_object_name object="this.ship" name="this.$OldName"/>
     </do_if>
-    <remove_value name="this.$OldName"/>
+    <do_if value="this.ship == @global.$TradeSubscriptionExplorerFleetLeader">
+      <do_if value="global.$TradeSubscriptionExplorerAutoFleetNameColorString?">
+        <remove_value name="global.$TradeSubscriptionExplorerAutoFleetNameColorString"/>
+      </do_if>
+    </do_if>
+    <do_if value="global.$TradeSubscriptionExplorerSectorBlackList? and this.$CurrentSector?">
+      <do_for_each name="$_Sector" in="global.$TradeSubscriptionExplorerSectorBlackList">
+        <do_if value="$_Sector == this.$CurrentSector">
+          <set_value name="$_WasInList" exact="true"/>
+          <break/>
+        </do_if>
+      </do_for_each>
+      <do_if value="$_WasInList?">
+        <remove_from_list name="global.$TradeSubscriptionExplorerSectorBlackList" exact="this.$CurrentSector"/>
+        <remove_value name="$_WasInList"/>
+      </do_if>
+    </do_if>
+    <do_if value="global.$TradeSubscriptionExplorerShips?">
+      <do_for_each name="$_Ship" in="global.$TradeSubscriptionExplorerShips">
+        <do_if value="$_Ship == this.ship">
+          <set_value name="$_WasInList" exact="true"/>
+          <break/>
+        </do_if>
+      </do_for_each>
+      <do_if value="$_WasInList?">
+        <remove_from_list name="global.$TradeSubscriptionExplorerShips" exact="this.ship"/>
+        <remove_value name="$_WasInList"/>
+      </do_if>
+    </do_if>
+    <do_if value="@global.$TradeSubscriptionExplorerShips.count le 0">
+      <do_if value ="global.$TradeSubscriptionExplorerSectorBlackList?">
+        <remove_value name="global.$TradeSubscriptionExplorerSectorBlackList"/>
+      </do_if>
+      <remove_value name="global.$TradeSubscriptionExplorerShips"/>
+    </do_if>
+    <do_if value="this.$OldName?">
+      <remove_value name="this.$OldName"/>
+    </do_if>
+    <do_if value="this.$CurrentSector?">
+      <remove_value name="this.$CurrentSector"/>
+    </do_if>
   </on_abort>
 
 </aiscript>
