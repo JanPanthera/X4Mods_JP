@@ -3,22 +3,27 @@
 <language>
   <page id="8888888" voice="no">
     <!-- JP_TradeSubscriptionExplorer -->
-    <t id="1900">Enemy Sectors?</t>
-    <t id="1901">Neutral Sectors?</t>
-    <t id="1902">Friendly Sectors?</t>
-    <t id="1903">Automatic Fleet?</t>
-    <t id="1920">Idle Time</t>
-    <t id="1921">Idle: Follow?</t>
-    <t id="1922">Who to follow?</t>
-    <t id="1923">Idle: Docking?</t>
-    <t id="1924">Where to dock?</t>
-    <t id="1925">Idle: Random movement?</t>
-    <t id="1926">In which sector?</t>
-    <t id="1927">Idle: Move to?</t>
-    <t id="1928">Where to move?</t>
-    <t id="1994">Add order tag?</t>
-    <t id="1995">Save Settings?</t>
-    <t id="1996">Delete Settings?</t>
+    <t id="1900">Enemy Sectors?</t> 
+    <t id="1901">Neutral Sectors?</t> 
+    <t id="1902">Friendly Sectors?</t> 
+    <t id="1903">Automatic Fleet?</t> 
+    <t id="1904">Colorize the name of the "auto" fleet?</t> 
+    <t id="1916">Transparency</t> 
+    <t id="1917">Red</t> 
+    <t id="1918">Green</t> 
+    <t id="1919">Blue</t> 
+    <t id="1920">Idle Time</t> 
+    <t id="1921">Idle: Follow?</t> 
+    <t id="1922">Who to follow?</t> 
+    <t id="1923">Idle: Docking?</t> 
+    <t id="1924">Where to dock?</t> 
+    <t id="1925">Idle: Random movement?</t> 
+    <t id="1926">In which sector?</t> 
+    <t id="1927">Idle: Move to?</t> 
+    <t id="1928">Where to move?</t> 
+    <t id="1994">Add order tag?</t> 
+    <t id="1995">Save Settings?</t> 
+    <t id="1996">Delete Settings?</t> 
     <t id="1997">\033#B600CCCC#</t>
     <t id="1998">\033#FF00CC66#</t>
     <t id="1999">\033X</t>
