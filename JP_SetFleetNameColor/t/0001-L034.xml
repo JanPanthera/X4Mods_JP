@@ -3,13 +3,13 @@
 <language>
   <page id="8888888" voice="no">
     <!-- JP_SetFleetNameColor -->
-    <t id="1600">Сброс имени флота?</t>
-    <t id="1650">Прозрачность</t>
-    <t id="1651">Красный</t>
-    <t id="1652">Зеленый</t>
-    <t id="1653">Синий</t>
-    <t id="1695">Сохранить настройки?</t>
-    <t id="1696">Удалить настройки?</t>
+    <t id="1600">Restablecer nombre de flota?</t>
+    <t id="1670">Transparencia</t>
+    <t id="1671">Roja</t>
+    <t id="1672">Verde</t>
+    <t id="1673">Azul</t>
+    <t id="1695">¿Guardar ajustes?</t>
+    <t id="1696">¿Eliminar configuración?</t>
     <t id="1697">\033#B600CCCC#</t>
     <t id="1698">\033#FF00CC66#</t>
     <t id="1699">\033X</t>

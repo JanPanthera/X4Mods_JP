@@ -5,22 +5,22 @@
   <order id="JP_SetFleetNameColor" name="{8888888, 1697}SetFleetNameColor{8888888, 1699}" category="navigation" infinite="true">
     <params>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="ALPHA" text="{8888888, 1650}" comment="Transparency" type="number" default="if global.$AlphaSFNC? then global.$AlphaSFNC else 255">
+      <param name="ALPHA" text="{8888888, 1670}" comment="Transparency" type="number" default="if global.$AlphaSFNC? then global.$AlphaSFNC else 255">
         <input_param name="step" value="1"/>
         <input_param name="min" value="0"/>
         <input_param name="max" value="255"/>
       </param>
-      <param name="RED" text="{8888888, 1651}" comment="Red" type="number" default="if global.$RedSFNC? then global.$RedSFNC else 3">
+      <param name="RED" text="{8888888, 1671}" comment="Red" type="number" default="if global.$RedSFNC? then global.$RedSFNC else 3">
         <input_param name="step" value="1"/>
         <input_param name="min" value="0"/>
         <input_param name="max" value="255"/>
       </param>
-      <param name="GREEN" text="{8888888, 1652}" comment="Green" type="number" default="if global.$GreenSFNC? then global.$GreenSFNC else 161">
+      <param name="GREEN" text="{8888888, 1672}" comment="Green" type="number" default="if global.$GreenSFNC? then global.$GreenSFNC else 161">
         <input_param name="step" value="1"/>
         <input_param name="min" value="0"/>
         <input_param name="max" value="255"/>
       </param>
-      <param name="BLUE" text="{8888888, 1653}" comment="Blue" type="number" default="if global.$BlueSFNC? then global.$BlueSFNC else 252">
+      <param name="BLUE" text="{8888888, 1673}" comment="Blue" type="number" default="if global.$BlueSFNC? then global.$BlueSFNC else 252">
         <input_param name="step" value="1"/>
         <input_param name="min" value="0"/>
         <input_param name="max" value="255"/>

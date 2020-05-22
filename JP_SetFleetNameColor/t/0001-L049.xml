@@ -4,10 +4,10 @@
   <page id="8888888" voice="no">
     <!-- JP_SetFleetNameColor -->
     <t id="1600">Flottenname zurücksetzen?</t>
-    <t id="1650">Transparenz</t>
-    <t id="1651">Rot</t>
-    <t id="1652">Grün</t>
-    <t id="1653">Blau</t>
+    <t id="1670">Transparenz</t>
+    <t id="1671">Rot</t>
+    <t id="1672">Grün</t>
+    <t id="1673">Blau</t>
     <t id="1695">Speichere Einstellungen?</t>
     <t id="1696">Lösche Einstellungen?</t>
     <t id="1697">\033#B600CCCC#</t>

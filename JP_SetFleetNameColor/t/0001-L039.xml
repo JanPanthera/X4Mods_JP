@@ -4,11 +4,11 @@
   <page id="8888888" voice="no">
     <!-- JP_SetFleetNameColor -->
     <t id="1600">Reimpostare il nome della flotta?</t>
-    <t id="1650">Transparency</t>
-    <t id="1651">Rossa</t>
-    <t id="1652">Verde</t>
-    <t id="1653">Blu</t>
-    <t id="1695">Save Settings?</t>
+    <t id="1670">Trasparenza</t>
+    <t id="1671">Rossa</t>
+    <t id="1672">Verde</t>
+    <t id="1673">Blu</t>
+    <t id="1695">Salva le impostazioni?</t>
     <t id="1696">Elimina impostazioni?</t>
     <t id="1697">\033#B600CCCC#</t>
     <t id="1698">\033#FF00CC66#</t>

@@ -4,10 +4,10 @@
   <page id="8888888" voice="no">
     <!-- JP_SetFleetNameColor -->
     <t id="1600">Réinitialiser le nom de la flotte?</t>
-    <t id="1650">Transparence</t>
-    <t id="1651">Rouge</t>
-    <t id="1652">Vert</t>
-    <t id="1653">Blu</t>
+    <t id="1670">Transparence</t>
+    <t id="1671">Rouge</t>
+    <t id="1672">Vert</t>
+    <t id="1673">Bleu</t>
     <t id="1695">Enregistrer les paramètres?</t>
     <t id="1696">Supprimer les paramètres?</t>
     <t id="1697">\033#B600CCCC#</t>
@@ -15,4 +15,3 @@
     <t id="1699">\033X</t>
   </page>
 </language>
-<!-- Thanks to darkslimus / Xchange Guild -->

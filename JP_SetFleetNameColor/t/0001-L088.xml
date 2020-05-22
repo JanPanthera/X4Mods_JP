@@ -4,10 +4,10 @@
   <page id="8888888" voice="no">
     <!-- JP_SetFleetNameColor -->
     <t id="1600">Reset fleet name?</t>
-    <t id="1650">Transparency</t>
-    <t id="1651">Red</t>
-    <t id="1652">Green</t>
-    <t id="1653">Blue</t>
+    <t id="1670">Transparency</t>
+    <t id="1671">Red</t>
+    <t id="1672">Green</t>
+    <t id="1673">Blue</t>
     <t id="1695">Save Settings?</t>
     <t id="1696">Delete Settings?</t>
     <t id="1697">\033#B600CCCC#</t>
