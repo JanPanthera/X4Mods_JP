@@ -2,70 +2,75 @@
 
 <aiscript name="JP_SatelliteDropper" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd">
 
-  <order id="JP_SatelliteDropper" name="_SatelliteDropper JP" category="navigation" infinite="true">
+  <order id="JP_SatelliteDropper" name="{8888888, 1497}SatelliteDropper{8888888, 1499}" category="navigation" infinite="true">
     <params>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="ADD_ORDER_TAG" text="{8888888, 1030}" comment="Add order tag?" type="bool" default="true"/>
-      <param name="MK2_INSTEAD" text="{8888888, 1031}" comment="Advanced satellites?" type="bool" default="false"/>
-      <param name="RESTOCK_SATELLITES" text="{8888888, 1032}" comment="Restock satellites?" type="bool" default="true"/>
-      <param name="RESTOCK_AMOUNT" text="{8888888, 1033}" comment="Restock amount?" type="number" default="10">
+      <param name="MK2_INSTEAD" text="{8888888, 1400}" comment="Advanced satellites?" type="bool" default="if global.$Mk2InsteadSD? then global.$Mk2InsteadSD else false"/>
+      <param name="RESTOCK_SATELLITES" text="{8888888, 1401}" comment="Restock satellites?" type="bool" default="if global.$RestockSatellitesSD? then global.$RestockSatellitesSD else true"/>
+      <param name="RESTOCK_AMOUNT" text="{8888888, 1402}" comment="Restock amount?" type="number" default="if global.$RestockAmountSD? then global.$RestockAmountSD else 10">
         <input_param name="min" value="1"/>
         <input_param name="max" value="this.ship.ammostorage.deployable.capacity"/>
         <input_param name="step" value="1"/>
         <input_param name="startvalue" value="1"/>
       </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="ENEMY_SECTORS" text="{8888888, 1034}" comment="Enemy Sectors?" type="bool" default="false"/>
-      <param name="NEUTRAL_SECTORS" text="{8888888, 1035}" comment="Neutral Sectors?" type="bool" default="true"/>
-      <param name="FRIENDLY_SECTORS" text="{8888888, 1036}" comment="Friendly Sectors?" type="bool" default="true"/>
+      <param name="ENEMY_SECTORS" text="{8888888, 1410}" comment="Enemy Sectors?" type="bool" default="if global.$EnemySectorsSD? then global.$EnemySectorsSD else false"/>
+      <param name="NEUTRAL_SECTORS" text="{8888888, 1411}" comment="Neutral Sectors?" type="bool" default="if global.$NeutralSectorsSD? then global.$NeutralSectorsSD else true"/>
+      <param name="FRIENDLY_SECTORS" text="{8888888, 1412}" comment="Friendly Sectors?" type="bool" default="if global.$FriendlySectorsSD? then global.$FriendlySectorsSD else true"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="GATES" text="{8888888, 1037}" comment="Gates?" type="bool" default="true"/>
-      <param name="ACTIVE_GATES" text="{8888888, 1038}" comment="Active Gates?" type="bool" default="true"/>
-      <param name="INACTIVE_GATES" text="{8888888, 1039}" comment="Inactive Gates?" type="bool" default="true"/>
-      <param name="ACCELERATORS" text="{8888888, 1040}" comment="Accelerators?" type="bool" default="true"/>
-      <param name="ACTIVE_ACCELERATORS" text="{8888888, 1041}" comment="Active Accelerators?" type="bool" default="true"/>
-      <param name="INACTIVE_ACCELERATORS" text="{8888888, 1042}" comment="Inactive Accelerators?" type="bool" default="true"/>
+      <param name="GATES" text="{8888888, 1420}" comment="Gates?" type="bool" default="if global.$GatesSD? then global.$GatesSD else true"/>
+      <param name="ACTIVE_GATES" text="{8888888, 1421}" comment="Active Gates?" type="bool" default="if global.$ActiveGates? then global.$ActiveGates else true"/>
+      <param name="INACTIVE_GATES" text="{8888888, 1422}" comment="Inactive Gates?" type="bool" default="if global.$InactiveGatesSD? then global.$InactiveGatesSD else true"/>
+      <param name="ACCELERATORS" text="{8888888, 1423}" comment="Accelerators?" type="bool" default="if global.$AcceleratorsSD? then global.$AcceleratorsSD else true"/>
+      <param name="ACTIVE_ACCELERATORS" text="{8888888, 1424}" comment="Active Accelerators?" type="bool" default="if global.$ActiveAcceleratorsSD? then global.$ActiveAcceleratorsSD else true"/>
+      <param name="INACTIVE_ACCELERATORS" text="{8888888, 1425}" comment="Inactive Accelerators?" type="bool" default="if global.$InactiveAcceleratorsSD? then global.$InactiveAcceleratorsSD else true"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="STATIONS" text="{8888888, 1043}" comment="Stations?" type="bool" default="true"/>
-      <param name="WHARFS" text="{8888888, 1044}" comment="Wharfs?" type="bool" default="true"/>
-      <param name="SHIPYARDS" text="{8888888, 1045}" comment="Shipyards?" type="bool" default="true"/>
-      <param name="EQUIPMENTDOCKS" text="{8888888, 1046}" comment="Equipmentdocks?" type="bool" default="true"/>
-      <param name="TRADE_STATIONS" text="{8888888, 1047}" comment="Trade Stations?" type="bool" default="true"/>
-      <param name="DEFENCE_STATIONS" text="{8888888, 1048}" comment="Defence Stations?" type="bool" default="true"/>
-      <param name="PIRATE_BASE" text="{8888888, 1049}" comment="Pirate Bases?" type="bool" default="true"/>
-      <param name="FACTION_HEADQUARTERS" text="{8888888, 1050}" comment="Faction Headquarters?" type="bool" default="true"/>
-      <param name="NON_SPECIAL_STATIONS" text="{8888888, 1051}" comment="Non Special Stations?" type="bool" default="false"/>
-      <param name="ENEMY_STATIONS" text="{8888888, 1052}" comment="Enemy Stations?" type="bool" default="false"/>
+      <param name="STATIONS" text="{8888888, 1430}" comment="Stations?" type="bool" default="if global.$StationsSD? then global.$StationsSD else true"/>
+      <param name="ENEMY_STATIONS" text="{8888888, 1431}" comment="Enemy Stations?" type="bool" default="if global.$EnemyStationsSD? then global.$EnemyStationsSD else false"/>
+      <param name="WHARFS" text="{8888888, 1432}" comment="Wharfs?" type="bool" default="if global.$WharfsSD? then global.$WharfsSD else true"/>
+      <param name="SHIPYARDS" text="{8888888, 1433}" comment="Shipyards?" type="bool" default="if global.$ShipyardsSD? then global.$ShipyardsSD else true"/>
+      <param name="EQUIPMENTDOCKS" text="{8888888, 1434}" comment="Equipmentdocks?" type="bool" default="if global.$EquipmentdocksSD? then global.$EquipmentdocksSD else true"/>
+      <param name="TRADE_STATIONS" text="{8888888, 1435}" comment="Trade Stations?" type="bool" default="if global.$TradeStationsSD? then global.$TradeStationsSD else true"/>
+      <param name="DEFENCE_STATIONS" text="{8888888, 1436}" comment="Defence Stations?" type="bool" default="if global.$DefenceStationsSD? then global.$DefenceStationsSD else true"/>
+      <param name="PIRATE_BASE" text="{8888888, 1437}" comment="Pirate Bases?" type="bool" default="if global.$PirateBasesSD? then global.$PirateBasesSD else true"/>
+      <param name="FACTION_HEADQUARTERS" text="{8888888, 1438}" comment="Faction Headquarters?" type="bool" default="if global.$FactionHeadquartersSD? then global.$FactionHeadquartersSD else true"/>
+      <param name="NON_SPECIAL_STATIONS" text="{8888888, 1439}" comment="Non Special Stations?" type="bool" default="if global.$NonSpecialStationsSD? then global.$NonSpecialStationsSD else false"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="IDLE_TIME" text="{8888888, 1053}" comment="Idle Time" type="time" default="600s">
+      <param name="IDLE_TIME" text="{8888888, 1480}" comment="Idle Time" type="time" default="if global.$IdleTimeSD? then global.$IdleTimeSD else 600s">
         <input_param name="min" value="60s"/>
         <input_param name="max" value="3600s"/>
         <input_param name="step" value="10s"/>
       </param>
-      <param name="IDLE_FOLLOW" text="TODO! {8888888, 1054}" comment="Idle: Follow?" type="bool" default="false"/>
-      <param name="WHO_TO_FOLLOW" text="{8888888, 1055}" comment="Who to follow?" type="object" default="null">
+      <param name="IDLE_FOLLOW" text="{8888888, 1481}" comment="Idle: Follow?" type="bool" default="if global.$IdleFollowSD? then global.$IdleFollowSD else false"/>
+      <param name="WHO_TO_FOLLOW" text="{8888888, 1482}" comment="Who to follow?" type="object" default="if global.$WhoToFollowSD? then global.$WhoToFollowSD else null">
         <input_param name="class" value="[class.ship]"/>
         <input_param name="owner" value="this.ship.owner"/>
       </param>
-      <param name="IDLE_DOCKING" text="{8888888, 1056}" comment="Idle: Docking?" type="bool" default="false"/>
-      <param name="WHERE_TO_DOCK" text="{8888888, 1057}" comment="Where to dock?" type="object" default="null">
+      <param name="IDLE_DOCKING" text="{8888888, 1483}" comment="Idle: Docking?" type="bool" default="if global.$IdleDockingSD? then global.$IdleDockingSD else false"/>
+      <param name="WHERE_TO_DOCK" text="{8888888, 1484}" comment="Where to dock?" type="object" default="if global.$WhereToDockSD? then global.$WhereToDockSD else null">
         <input_param name="class" value="if this.ship.isclass.[class.ship_s, class.ship_xs] then [class.station, class.ship_m, class.ship_l, class.ship_xl] else [class.station, class.ship_l, class.ship_xl]"/>
       </param>
-      <param name="IDLE_RANDOM_MOVEMENT" text="{8888888, 1058}" comment="Idle: Movement?" type="bool" default="false"/>
-      <param name="IN_WHICH_SECTOR" text="{8888888, 1059}" comment="In which sector?" type="position" default="[this.ship.sector, this.ship.position]">
+      <param name="IDLE_RANDOM_MOVEMENT" text="{8888888, 1485}" comment="Idle: Movement?" type="bool" default="if global.$IdleRandomMovementSD? then global.$IdleRandomMovementSD else false"/>
+      <param name="IN_WHICH_SECTOR" text="{8888888, 1486}" comment="In which sector?" type="position" default="if global.$InWhichSectorSD? then global.$InWhichSectorSD else [this.ship.sector, this.ship.position]">
         <input_param name="class" value="class.sector"/>
       </param>
-      <param name="IDLE_MOVE_TO" text="{8888888, 1060}" comment="Idle: Move to?" type="bool" default="false"/>
-      <param name="WHERE_TO_MOVE" text="{8888888, 1061}" comment="Where to move?" type="position" default="[this.ship.sector, this.ship.position]">
+      <param name="IDLE_MOVE_TO" text="{8888888, 1487}" comment="Idle: Move to?" type="bool" default="if global.$IdleMoveToSD? then global.$IdleMoveToSD else false"/>
+      <param name="WHERE_TO_MOVE" text="{8888888, 1488}" comment="Where to move?" type="position" default="if global.$WhereToMoveSD? then global.$WhereToMoveSD else [this.ship.sector, this.ship.position]">
         <input_param name="class" value="class.sector"/>
       </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="ADD_ORDER_TAG" text="{8888888, 1494}" comment="Add order tag?" type="bool" default="if global.$AddOrderTagSD? then global.$AddOrderTagSD else true"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="SAVE_SETTINGS" text="{8888888, 1495}" comment="SaveSettings" type="bool" default="false"/>
+      <param name="DELETE_SETTINGS" text="{8888888, 1496}" comment="DeleteSettings" type="bool" default="false"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <!-- DEBUG -->
-      <param name="DEBUG" text="DebugText" type="number" default="0" advanced="1">
+      <param name="DEBUG" text="DebugText" type="number" default="if global.$DebugSD? then global.$DebugSD else 0" advanced="1">
         <input_param name="min" value="0"/>
         <input_param name="max" value="100"/>
         <input_param name="step" value="100"/>
       </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     </params>
     <skill min="0"/>
     <requires>
@@ -99,6 +104,145 @@
       <set_object_name object="this.ship" name="this.ship.name + '\033#FFA95908# #SD\033X'"/>
     </do_if>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <do_if value="$SAVE_SETTINGS">
+      <do_if value="not global.$Mk2InsteadSD? or @global.$Mk2InsteadSD != $MK2_INSTEAD">
+        <set_value name="global.$Mk2InsteadSD" exact="$MK2_INSTEAD"/>
+      </do_if>
+      <do_if value="not global.$RestockSatellitesSD? or @global.$RestockSatellitesSD != $RESTOCK_SATELLITES">
+        <set_value name="global.$RestockSatellitesSD" exact="$RESTOCK_SATELLITES"/>
+      </do_if>
+      <do_if value="not global.$RestockAmountSD? or @global.$RestockAmountSD != $RESTOCK_AMOUNT">
+        <set_value name="global.$RestockAmountSD" exact="$RESTOCK_AMOUNT"/>
+      </do_if>
+      <do_if value="not global.$EnemySectorsSD? or @global.$EnemySectorsSD != $ENEMY_SECTORS">
+        <set_value name="global.$EnemySectorsSD" exact="$ENEMY_SECTORS"/>
+      </do_if>
+      <do_if value="not global.$NeutralSectorsSD? or @global.$NeutralSectorsSD != $NEUTRAL_SECTORS">
+        <set_value name="global.$NeutralSectorsSD" exact="$NEUTRAL_SECTORS"/>
+      </do_if>
+      <do_if value="not global.$FriendlySectorsSD? or @global.$FriendlySectorsSD != $FRIENDLY_SECTORS">
+        <set_value name="global.$FriendlySectorsSD" exact="$FRIENDLY_SECTORS"/>
+      </do_if>
+      <do_if value="not global.$GatesSD? or @global.$GatesSD != $GATES">
+        <set_value name="global.$GatesSD" exact="$GATES"/>
+      </do_if>
+      <do_if value="not global.$ActiveGates? or @global.$ActiveGates != $ACTIVE_GATES">
+        <set_value name="global.$ActiveGates" exact="$ACTIVE_GATES"/>
+      </do_if>
+      <do_if value="not global.$InactiveGatesSD? or @global.$InactiveGatesSD != $INACTIVE_GATES">
+        <set_value name="global.$InactiveGatesSD" exact="$INACTIVE_GATES"/>
+      </do_if>
+      <do_if value="not global.$AcceleratorsSD? or @global.$AcceleratorsSD != $ACCELERATORS">
+        <set_value name="global.$AcceleratorsSD" exact="$ACCELERATORS"/>
+      </do_if>
+      <do_if value="not global.$ActiveAcceleratorsSD? or @global.$ActiveAcceleratorsSD != $ACTIVE_ACCELERATORS">
+        <set_value name="global.$ActiveAcceleratorsSD" exact="$ACTIVE_ACCELERATORS"/>
+      </do_if>
+      <do_if value="not global.$InactiveAcceleratorsSD? or @global.$InactiveAcceleratorsSD != $INACTIVE_ACCELERATORS">
+        <set_value name="global.$InactiveAcceleratorsSD" exact="$INACTIVE_ACCELERATORS"/>
+      </do_if>
+      <do_if value="not global.$StationsSD? or @global.$StationsSD != $STATIONS">
+        <set_value name="global.$StationsSD" exact="$STATIONS"/>
+      </do_if>
+      <do_if value="not global.$EnemyStationsSD? or @global.$EnemyStationsSD != $ENEMY_STATIONS">
+        <set_value name="global.$EnemyStationsSD" exact="$ENEMY_STATIONS"/>
+      </do_if>
+      <do_if value="not global.$WharfsSD? or @global.$WharfsSD != $WHARFS">
+        <set_value name="global.$WharfsSD" exact="$WHARFS"/>
+      </do_if>
+      <do_if value="not global.$ShipyardsSD? or @global.$ShipyardsSD != $SHIPYARDS">
+        <set_value name="global.$ShipyardsSD" exact="$SHIPYARDS"/>
+      </do_if>
+      <do_if value="not global.$EquipmentdocksSD? or @global.$EquipmentdocksSD != $EQUIPMENTDOCKS">
+        <set_value name="global.$EquipmentdocksSD" exact="$EQUIPMENTDOCKS"/>
+      </do_if>
+      <do_if value="not global.$TradeStationsSD? or @global.$TradeStationsSD != $TRADE_STATIONS">
+        <set_value name="global.$TradeStationsSD" exact="$TRADE_STATIONS"/>
+      </do_if>
+      <do_if value="not global.$DefenceStationsSD? or @global.$DefenceStationsSD != $DEFENCE_STATIONS">
+        <set_value name="global.$DefenceStationsSD" exact="$DEFENCE_STATIONS"/>
+      </do_if>
+      <do_if value="not global.$PirateBasesSD? or @global.$PirateBasesSD != $PIRATE_BASE">
+        <set_value name="global.$PirateBasesSD" exact="$PIRATE_BASE"/>
+      </do_if>
+      <do_if value="not global.$FactionHeadquartersSD? or @global.$FactionHeadquartersSD != $FACTION_HEADQUARTERS">
+        <set_value name="global.$FactionHeadquartersSD" exact="$FACTION_HEADQUARTERS"/>
+      </do_if>
+      <do_if value="not global.$NonSpecialStationsSD? or @global.$NonSpecialStationsSD != $NON_SPECIAL_STATIONS">
+        <set_value name="global.$NonSpecialStationsSD" exact="$NON_SPECIAL_STATIONS"/>
+      </do_if>
+      <do_if value="not global.$IdleTimeSD? or @global.$IdleTimeSD != $IDLE_TIME">
+        <set_value name="global.$IdleTimeSD" exact="$IDLE_TIME"/>
+      </do_if>
+      <do_if value="not global.$IdleFollowSD? or @global.$IdleFollowSD != $IDLE_FOLLOW">
+        <set_value name="global.$IdleFollowSD" exact="$IDLE_FOLLOW"/>
+      </do_if>
+      <do_if value="not global.$WhoToFollowSD? or @global.$WhoToFollowSD != $WHO_TO_FOLLOW">
+        <set_value name="global.$WhoToFollowSD" exact="$WHO_TO_FOLLOW"/>
+      </do_if>
+      <do_if value="not global.$IdleDockingSD? or @global.$IdleDockingSD != $IDLE_DOCKING">
+        <set_value name="global.$IdleDockingSD" exact="$IDLE_DOCKING"/>
+      </do_if>
+      <do_if value="not global.$WhereToDockSD? or @global.$WhereToDockSD != $WHERE_TO_DOCK">
+        <set_value name="global.$WhereToDockSD" exact="$WHERE_TO_DOCK"/>
+      </do_if>
+      <do_if value="not global.$IdleRandomMovementSD? or @global.$IdleRandomMovementSD != $IDLE_RANDOM_MOVEMENT">
+        <set_value name="global.$IdleRandomMovementSD" exact="$IDLE_RANDOM_MOVEMENT"/>
+      </do_if>
+      <do_if value="not global.$InWhichSectorSD? or @global.$InWhichSectorSD != $IN_WHICH_SECTOR">
+        <set_value name="global.$InWhichSectorSD" exact="$IN_WHICH_SECTOR"/>
+      </do_if>
+      <do_if value="not global.$IdleMoveToSD? or @global.$IdleMoveToSD != $IDLE_MOVE_TO">
+        <set_value name="global.$IdleMoveToSD" exact="$IDLE_MOVE_TO"/>
+      </do_if>
+      <do_if value="not global.$WhereToMoveSD? or @global.$WhereToMoveSD != $WHERE_TO_MOVE">
+        <set_value name="global.$WhereToMoveSD" exact="$WHERE_TO_MOVE"/>
+      </do_if>
+      <do_if value="not global.$AddOrderTagSD? or @global.$AddOrderTagSD != $ADD_ORDER_TAG">
+        <set_value name="global.$AddOrderTagSD" exact="$ADD_ORDER_TAG"/>
+      </do_if>
+      <do_if value="not global.$DebugSD? or @global.$DebugSD != $DEBUG">
+        <set_value name="global.$DebugSD" exact="$DEBUG"/>
+      </do_if>
+    </do_if>
+    <do_if value="$DELETE_SETTINGS">
+      <remove_value name="global.$DebugSD"/>
+      <remove_value name="global.$AddOrderTagSD"/>
+      <remove_value name="global.$WhereToMoveSD"/>
+      <remove_value name="global.$IdleMoveToSD"/>
+      <remove_value name="global.$InWhichSectorSD"/>
+      <remove_value name="global.$IdleRandomMovementSD"/>
+      <remove_value name="global.$WhereToDockSD"/>
+      <remove_value name="global.$IdleDockingSD"/>
+      <remove_value name="global.$WhoToFollowSD"/>
+      <remove_value name="global.$IdleFollowSD"/>
+      <remove_value name="global.$IdleTimeSD"/>
+      <remove_value name="global.$NonSpecialStationsSD"/>
+      <remove_value name="global.$FactionHeadquartersSD"/>
+      <remove_value name="global.$PirateBasesSD"/>
+      <remove_value name="global.$DefenceStationsSD"/>
+      <remove_value name="global.$TradeStationsSD"/>
+      <remove_value name="global.$EquipmentdocksSD"/>
+      <remove_value name="global.$ShipyardsSD"/>
+      <remove_value name="global.$WharfsSD"/>
+      <remove_value name="global.$EnemyStationsSD"/>
+      <remove_value name="global.$StationsSD"/>
+      <remove_value name="global.$InactiveAcceleratorsSD"/>
+      <remove_value name="global.$ActiveAcceleratorsSD"/>
+      <remove_value name="global.$AcceleratorsSD"/>
+      <remove_value name="global.$InactiveGatesSD"/>
+      <remove_value name="global.$ActiveGates"/>
+      <remove_value name="global.$GatesSD"/>
+      <remove_value name="global.$FriendlySectorsSD"/>
+      <remove_value name="global.$NeutralSectorsSD"/>
+      <remove_value name="global.$EnemySectorsSD"/>
+      <remove_value name="global.$RestockAmountSD"/>
+      <remove_value name="global.$RestockSatellitesSD"/>
+      <remove_value name="global.$Mk2InsteadSD"/>
+      <!-- cancel order because the settings are invalid now -->
+      <cancel_order order="this.ship.order"/>
+    </do_if>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
   </init>
 
   <attention min="unknown">
@@ -108,8 +252,10 @@
       <label name="INIT"/>
       <cancel_all_orders object="this.ship"/>
 
-      <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'" chance="$DEBUG"/>
-      <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_SatelliteDropper.xml ~ Started ~~' + '\n'" chance="$DEBUG"/>
+      <do_if value="$DEBUG gt 0">
+        <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_SatelliteDropper.xml ~ Started ~~' + '\n'"/>
+      </do_if>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
@@ -159,7 +305,7 @@
         <resume label="FINISH"/>
       </do_else>
 
-      <run_script name="'JP_GetNearestSectorWithObjectsToMark'">
+      <run_script name="'JP_GetNearesSDctorWithObjectsToMark'">
         <param name="ENEMY_SECTORS" value="$ENEMY_SECTORS"/>
         <param name="NEUTRAL_SECTORS" value="$NEUTRAL_SECTORS"/>
         <param name="FRIENDLY_SECTORS" value="$FRIENDLY_SECTORS"/>
@@ -181,11 +327,11 @@
         <param name="NON_SPECIAL_STATIONS" value="$NON_SPECIAL_STATIONS"/>
         <param name="DEBUG" value="$DEBUG"/>
         <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-        <save_retval name="NEAREST_SECTOR" variable="$NearestSector"/>
+        <save_retval name="NEAREST_SECTOR" variable="$NearesSDctor"/>
       </run_script>
 
-      <do_if value="$NearestSector == 'NoSectorFound'">
-        <run_script name="'JP_IdleReturnHome'">
+      <do_if value="$NearesSDctor == 'NoSectorFound'">
+        <run_script name="'JP_IdleReturnHome_SD'">
           <param name="IDLE_FOLLOW" value="$IDLE_FOLLOW"/>
           <param name="WHO_TO_FOLLOW" value="$WHO_TO_FOLLOW"/>
           <param name="IDLE_DOCKING" value="$IDLE_DOCKING"/>
@@ -202,7 +348,7 @@
       </do_if>
 
       <run_script name="'JP_GetNearestObjectToMark'">
-        <param name="SECTOR" value="$NearestSector"/>
+        <param name="SECTOR" value="$NearesSDctor"/>
         <param name="ENEMY_STATIONS" value="$ENEMY_STATIONS"/>
         <param name="GATES" value="$GATES"/>
         <param name="ACTIVE_GATES" value="$ACTIVE_GATES"/>
@@ -224,15 +370,17 @@
         <save_retval name="NEAREST_OBJECT" variable="$NearestObject"/>
       </run_script>
 
-      <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'" chance="$DEBUG"/>
-      <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="' - ' + $NearestObject.knownname + ' ~ ' + if @$NearestObject.owner.knownname != null then @$NearestObject.owner.knownname else 'No Owner'" chance="$DEBUG"/>
-      <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'" chance="$DEBUG"/>
+      <do_if value="$DEBUG gt 0">
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="' - ' + $NearestObject.knownname + ' ~ ' + if @$NearestObject.owner.knownname != null then @$NearestObject.owner.knownname else 'No Owner'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+      </do_if>
 
       <!-- Fly to the sector of the $NearestObject -->
-      <do_if value="$Ship.sector != $NearestSector">
-        <set_command command="command.move" param="$NearestSector"/>
+      <do_if value="$Ship.sector != $NearesSDctor">
+        <set_command command="command.move" param="$NearesSDctor"/>
         <run_script name="'move.generic'">
-          <param name="destination" value="$NearestSector"/>
+          <param name="destination" value="$NearesSDctor"/>
           <param name="endintargetzone" value="true"/>
           <param name="recallsubordinates" value="true"/>
         </run_script>
@@ -241,8 +389,8 @@
       <!-- Fly to the $NearestObject -->
       <label name="MOVING"/>
       <set_command command="command.move" param="$NearestObject"/>
-      <get_safe_pos result="$TempPosition" zone="$NearestSector" object="$NearestObject" directionobject="$Ship" radius="$Ship.size / 2"/>
-      <move_to object="$Ship" destination="$NearestSector" finishonapproach="false" forceposition="true" travel="true">
+      <get_safe_pos result="$TempPosition" zone="$NearesSDctor" object="$NearestObject" directionobject="$Ship" radius="$Ship.size / 2"/>
+      <move_to object="$Ship" destination="$NearesSDctor" finishonapproach="false" forceposition="true" travel="true">
         <position value="$TempPosition"/>
       </move_to>
       <remove_value name="$TempPosition"/>
@@ -271,7 +419,7 @@
 
       <remove_value name="$Satellite"/>
       <remove_value name="$NearestGate"/>
-      <remove_value name="$NearestSector"/>
+      <remove_value name="$NearesSDctor"/>
 
       <wait exact="1s"/>
       <resume label="RESUME"/>
@@ -284,8 +432,8 @@
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-      <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_SatelliteDropper.xml ~ Finished ~~'" chance="$DEBUG"/>
-      <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'" chance="$DEBUG"/>
+      <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_SatelliteDropper.xml ~ Finished ~~'"/>
+      <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
 
       <label name="CLEANUP"/>
       <remove_value name="$ExpTotalMultiplier"/>

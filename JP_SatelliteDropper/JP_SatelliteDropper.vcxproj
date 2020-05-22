@@ -140,7 +140,7 @@
   <ItemGroup>
     <Xml Include="aiscripts\JP_GetNearestObjectToMark.xml" />
     <Xml Include="aiscripts\JP_GetNearestSectorWithObjectsToMark.xml" />
-    <Xml Include="aiscripts\JP_IdleReturnHome.xml" />
+    <Xml Include="aiscripts\JP_IdleReturnHome_SD.xml" />
     <Xml Include="aiscripts\JP_SatelliteDropper.xml" />
     <Xml Include="content.xml" />
     <Xml Include="libraries\experiences.xml" />
@@ -161,6 +161,9 @@
   <ItemGroup>
     <Xsd Include="aiscripts\aiscripts.xsd" />
     <Xsd Include="md\md.xsd" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="changelog.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

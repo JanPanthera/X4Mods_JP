@@ -33,7 +33,7 @@
     <Xml Include="t\0001.xml" />
     <Xml Include="aiscripts\JP_GetNearestObjectToMark.xml" />
     <Xml Include="aiscripts\JP_GetNearestSectorWithObjectsToMark.xml" />
-    <Xml Include="aiscripts\JP_IdleReturnHome.xml" />
+    <Xml Include="aiscripts\JP_IdleReturnHome_SD.xml" />
   </ItemGroup>
   <ItemGroup>
     <Xsd Include="md\md.xsd">
@@ -42,5 +42,8 @@
     <Xsd Include="aiscripts\aiscripts.xsd">
       <Filter>Header Files</Filter>
     </Xsd>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="changelog.txt" />
   </ItemGroup>
 </Project>

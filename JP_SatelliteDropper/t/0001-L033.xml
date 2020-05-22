@@ -3,38 +3,42 @@
 <language>
   <page id="8888888" voice="no">
     <!-- JP_SatelliteDropper -->
-    <t id="1030">Ajouter une étiquette de commande?</t>
-    <t id="1031">Satellites avancés?</t>
-    <t id="1032">Réapprovisionner les satellites?</t>
-    <t id="1033">Montant de réapprovisionnement?</t>
-    <t id="1034">Secteurs ennemis?</t>
-    <t id="1035">Secteurs neutres?</t>
-    <t id="1036">Friendly Sectors?</t>
-    <t id="1037">Portails?</t>
-    <t id="1038">Portails actifs?</t>
-    <t id="1039">Portails innactifs?</t>
-    <t id="1040">Accelerators?</t>
-    <t id="1041">Accélérateur actifs?</t>
-    <t id="1042">Accélérateur innactifs?</t>
-    <t id="1043">Stations?</t>
-    <t id="1044">Quais?</t>
-    <t id="1045">Chantiers navals?</t>
-    <t id="1046">Quais d'équipement?</t>
-    <t id="1047">Stations commerciales?</t>
-    <t id="1048">Stations de défense?</t>
-    <t id="1049">Bases pirates?</t>
-    <t id="1050">Quartiers généraux de faction?</t>
-    <t id="1051">Stations non spéciales?</t>
-    <t id="1052">Stations enemies?</t>
-    <t id="1053">Idle Time</t>
-    <t id="1054">Inactif: Suivre?</t>
-    <t id="1055">Qui suivre?</t>
-    <t id="1056">Inactif: Amarrer?</t>
-    <t id="1057">Ou s'ammarer?</t>
-    <t id="1058">Inactif: Mouvement aléatoire?</t>
-    <t id="1059">Dans quel secteur?</t>
-    <t id="1060">Inactif: Aller vers?</t>
-    <t id="1061">Ou aller?</t>
+    <t id="1400">Satellites avancés?</t>
+    <t id="1401">Réapprovisionner les satellites?</t>
+    <t id="1402">Montant de réapprovisionnement</t>
+    <t id="1410">Secteurs ennemis?</t>
+    <t id="1411">Secteurs neutres?</t>
+    <t id="1412">Secteurs amis?</t>
+    <t id="1420">Portes?</t>
+    <t id="1421">Portes actives?</t>
+    <t id="1422">Portes inactives?</t>
+    <t id="1423">Accélérateurs?</t>
+    <t id="1424">Accélérateurs actifs?</t>
+    <t id="1425">Accélérateurs inactifs?</t>
+    <t id="1430">Stations?</t>
+    <t id="1431">Stations ennemies?</t>
+    <t id="1432">Quais?</t>
+    <t id="1433">Chantiers navals?</t>
+    <t id="1434">Quais d'équipement?</t>
+    <t id="1435">Stations commerciales?</t>
+    <t id="1436">Stations de défense?</t>
+    <t id="1437">Bases de pirates?</t>
+    <t id="1438">Quartier général de faction?</t>
+    <t id="1439">Stations non spéciales?</t>
+    <t id="1480">Temps d'inactivité</t>
+    <t id="1481">Inactif: suivre?</t>
+    <t id="1482">Qui suivre?</t>
+    <t id="1483">Inactif: amarrage?</t>
+    <t id="1484">Où accoster?</t>
+    <t id="1485">Inactif: mouvement aléatoire?</t>
+    <t id="1486">Dans quel secteur?</t>
+    <t id="1487">Inactif: passer à?</t>
+    <t id="1488">Où déménager?</t>
+    <t id="1494">Ajouter une étiquette de commande?</t>
+    <t id="1495">Enregistrer les paramètres?</t>
+    <t id="1496">Supprimer les paramètres?</t>
+    <t id="1497">\033#B600CCCC#</t>
+    <t id="1498">\033#FF00CC66#</t>
+    <t id="1499">\033X</t>
   </page>
 </language>
-<!-- Thanks to ZeroBoogie -->

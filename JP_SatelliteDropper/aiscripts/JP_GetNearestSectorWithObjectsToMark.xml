@@ -33,6 +33,7 @@
         <input_param name="max" value="100"/>
         <input_param name="step" value="100"/>
       </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     </params>
   </order>
 
@@ -65,8 +66,10 @@
       <wait exact="1ms"/>
       <label name="INIT"/>
 
-      <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'" chance="$DEBUG"/>
-      <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_GetNearestSectorWithObjectsToMark.xml ~ Started ~~' + '\n'" chance="$DEBUG"/>
+      <do_if value="$DEBUG gt 0">
+        <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_GetNearestSectorWithObjectsToMark.xml ~ Started ~~' + '\n'"/>
+      </do_if>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
@@ -98,15 +101,19 @@
       </do_for_each>
       <remove_value name="$_TempSectors"/>
 
-      <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'" chance="$DEBUG"/>
-      <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="' ~ $_Sectors.count: ' + $_Sectors.count" chance="$DEBUG"/>
-      <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'" chance="$DEBUG"/>
-      <do_for_each name="$_Sector" in="$_Sectors">
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="' - ' + $_Sector.knownname + ' ~ ' + if @$_Sector.owner.knownname != null then @$_Sector.owner.knownname else 'No Owner'" chance="$DEBUG"/>
-      </do_for_each>
-      <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'" chance="$DEBUG"/>
+      <do_if value="$DEBUG gt 0">
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'" chance="$DEBUG"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="' ~ $_Sectors.count: ' + $_Sectors.count" chance="$DEBUG"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'" chance="$DEBUG"/>
+        <do_for_each name="$_Sector" in="$_Sectors">
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="' - ' + $_Sector.knownname + ' ~ ' + if @$_Sector.owner.knownname != null then @$_Sector.owner.knownname else 'No Owner'" chance="$DEBUG"/>
+        </do_for_each>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'" chance="$DEBUG"/>
+      </do_if>
 
-      <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'" chance="$DEBUG"/>
+      <do_if value="$DEBUG gt 0">
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'" chance="$DEBUG"/>
+      </do_if>
       <create_list name="$_SectorsWithObjectsToMark"/>
       <do_for_each name="$_Sector" in="$_Sectors">
         <run_script name="'JP_GetNearestObjectToMark'">
@@ -136,26 +143,34 @@
           <save_retval name="NEAREST_OBJECT" variable="$NearestObject"/>
           <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
         </run_script>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="' - ' + $_Sector.knownname + ' ~ ' + if $NearestObject == 'NoObjectFound' then $NearestObject else $NearestObject.knownname" chance="$DEBUG"/>
+        <do_if value="$DEBUG gt 0">
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="' - ' + $_Sector.knownname + ' ~ ' + if $NearestObject == 'NoObjectFound' then $NearestObject else $NearestObject.knownname"/>
+        </do_if>
         <do_if value="$NearestObject != 'NoObjectFound'">
           <append_to_list name="$_SectorsWithObjectsToMark" exact="$_Sector"/>
         </do_if>
       </do_for_each>
-      <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'" chance="$DEBUG"/>
+      <do_if value="$DEBUG gt 0">
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+      </do_if>
       <remove_value name="$_Sectors"/>
 
-      <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'" chance="$DEBUG"/>
-      <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="' ~ $_SectorsWithObjectsToMark.count: ' + $_SectorsWithObjectsToMark.count" chance="$DEBUG"/>
-      <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'" chance="$DEBUG"/>
-      <do_for_each name="$_Sector" in="$_SectorsWithObjectsToMark">
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="' - ' + $_Sector.knownname + ' ~ ' + if @$_Sector.owner.knownname != null then @$_Sector.owner.knownname else 'No Owner'" chance="$DEBUG"/>
-      </do_for_each>
-      <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'" chance="$DEBUG"/>
+      <do_if value="$DEBUG gt 0">
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="' ~ $_SectorsWithObjectsToMark.count: ' + $_SectorsWithObjectsToMark.count"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <do_for_each name="$_Sector" in="$_SectorsWithObjectsToMark">
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="' - ' + $_Sector.knownname + ' ~ ' + if @$_Sector.owner.knownname != null then @$_Sector.owner.knownname else 'No Owner'"/>
+        </do_for_each>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+      </do_if>
 
       <do_if value="$_SectorsWithObjectsToMark.count le 0">
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'" chance="$DEBUG"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="' ~ No Sectors with objects to mark found'" chance="$DEBUG"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'" chance="$DEBUG"/>
+        <do_if value="$DEBUG gt 0">
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="' ~ No Sectors with objects to mark found'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+        </do_if>
         <remove_value name="$_SectorsWithObjectsToMark"/>
         <resume label="FINISH"/>
       </do_if>
@@ -167,16 +182,20 @@
       <set_value name="$NearestSector" exact="$_SectorsWithObjectsToMark.{1}"/>
       <remove_value name="$_SectorsWithObjectsToMark"/>
 
-      <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'" chance="$DEBUG"/>
-      <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="' ~ $NearestSector: ' + $NearestSector.knownname + ' ~ ' + if @$NearestSector.owner.knownname != null then @$NearestSector.owner.knownname else 'No Owner'" chance="$DEBUG"/>
-      <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'" chance="$DEBUG"/>
+      <do_if value="$DEBUG gt 0">
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="' ~ $NearestSector: ' + $NearestSector.knownname + ' ~ ' + if @$NearestSector.owner.knownname != null then @$NearestSector.owner.knownname else 'No Owner'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+      </do_if>
 
       <label name="FINISH"/>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-      <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_GetNearestSectorWithObjectsToMark.xml ~ Finished ~~'" chance="$DEBUG"/>
-      <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'" chance="$DEBUG"/>
+      <do_if value="$DEBUG gt 0">
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_GetNearestSectorWithObjectsToMark.xml ~ Finished ~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+      </do_if>
 
       <label name="$CLEANUP"/>
       <remove_value name="$Ship"/>
