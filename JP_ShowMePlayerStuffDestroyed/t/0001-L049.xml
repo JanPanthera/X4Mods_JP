@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- German ~~ Deutsch -->
+<language>
+  <page id="8888888" voice="no">
+    <!-- JP_ShowMePlayerStuffDestroyed -->
+    <t id="1700">wird angegriffen!</t>
+    <t id="1701">wurde zerstört!</t>
+  </page>
+</language>

@@ -13,10 +13,10 @@
       </conditions>
       <actions>
 
-        <set_value name="$DEBUG" exact="0.0"/>
+        <set_value name="$DEBUG" exact="0"/>
         <set_value name="$DebugDirectory" exact="'JP_ShowMePlayerStuffDestroyed.logs'"/>
 
-        <do_if value="$DEBUG">
+        <do_if value="$DEBUG gt 0">
           <debug_to_file append="false" directory="$DebugDirectory" name="'IsOurStuffAttacked.log'" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
           <debug_to_file directory="$DebugDirectory" name="'IsOurStuffAttacked.log'" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_ShowMePlayerStuffDestroyed.xml ~ IsOurStuffAttacked ~~' + '\n'"/>
         </do_if>
@@ -31,9 +31,9 @@
                       $AttackedObject.class == class.turret or $AttackedObject.class == class.resourceprobe or
                       $AttackedObject.class == class.station and $AttackedObject.hullpercentage le 90 or 
                       $AttackedObject.maxshield gt 0 and $AttackedObject.shieldpercentage le 40 or
-                      $AttackedObject.maxshield == 0 and $AttackedObject.hullpercentage le 90">
+                      $AttackedObject.maxshield == 0 and $AttackedObject.hullpercentage le 80">
 
-          <do_if value="$DEBUG">
+          <do_if value="$DEBUG gt 0">
             <debug_to_file directory="$DebugDirectory" name="'IsOurStuffAttacked.log'" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
             <debug_to_file directory="$DebugDirectory" name="'IsOurStuffAttacked.log'" text="' ~ $AttackedObject: ' + @$AttackedObject + '[' + @$AttackedObject.idcode + ']'"/>
             <debug_to_file directory="$DebugDirectory" name="'IsOurStuffAttacked.log'" text="' ~ $Attacker: ' + @$Attacker.knownname + '[' + @$Attacker.idcode + ']'"/>
@@ -48,20 +48,20 @@
               <show_help custom="event.object.knownname + '\n' +
                                  '\033#FFFF6600#' + 'ID_CODE ~ (' + $AttackedObject.idcode + ')' + '\n' +
                                  {20001, 201} + ': ' + $AttackedObject.sector.knownname + '\n' +
-                                 'is under attack!' + '\n\n' +
+                                 {8888888, 1700} + '\n\n' +
                                  {1001, 2} + ' ~ ' + $AttackedObject.shieldpercentage + '%' + '\n' +
                                  {1001, 1} + ' ~ ' + $AttackedObject.hullpercentage + '%' + '\033X'"
-                         duration="2s" position="5" allowclose="true"/>
+                         duration="2s" position="5" allowclose="true" timeout="true"/>
             </do_if>
             <do_else>
               <!-- Show Message Critical -->
               <show_help custom="event.object.knownname + '\n' +
                                  '\033#FFFF0000#' + 'ID_CODE ~ (' + $AttackedObject.idcode + ')' + '\n' +
                                  {20001, 201} + ': ' + $AttackedObject.sector.knownname + '\n' +
-                                 'is under attack!' + '\n\n' +
+                                 {8888888, 1700} + '\n\n' +
                                  {1001, 2} + ' ~ ' + $AttackedObject.shieldpercentage + '%' + '\n' +
                                  {1001, 1} + ' ~ ' + $AttackedObject.hullpercentage + '%' + '\033X'"
-               duration="2s" position="5" allowclose="true"/>
+               duration="2s" position="5" allowclose="true" timeout="true"/>
             </do_else>
             <set_value name="$TimeMessageWasShown" exact="player.age"/>
           </do_if>
@@ -75,7 +75,7 @@
 
         <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-        <do_if value="$DEBUG">
+        <do_if value="$DEBUG gt 0">
           <debug_to_file directory="$DebugDirectory" name="'IsOurStuffAttacked.log'" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_ShowMePlayerStuffDestroyed.xml ~ IsOurStuffAttacked ~~'"/>
           <debug_to_file directory="$DebugDirectory" name="'IsOurStuffAttacked.log'" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
         </do_if>
@@ -95,10 +95,10 @@
       </conditions>
       <actions>
 
-        <set_value name="$DEBUG" exact="0.0"/>
+        <set_value name="$DEBUG" exact="0"/>
         <set_value name="$DebugDirectory" exact="'JP_ShowMePlayerStuffDestroyed.logs'"/>
 
-        <do_if value="$DEBUG">
+        <do_if value="$DEBUG gt 0">
           <debug_to_file append="false" directory="$DebugDirectory" name="'WasAnythingDestroyed.log'" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
           <debug_to_file directory="$DebugDirectory" name="'WasAnythingDestroyed.log'" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_ShowMePlayerStuffDestroyed.xml ~ WasAnythingDestroyed ~~' + '\n'"/>
         </do_if>
@@ -109,7 +109,7 @@
         <set_value name="$KillerObject" exact="event.param2"/>
         <set_value name="$KillMethod" exact="event.param3"/>
 
-        <do_if value="$DEBUG">
+        <do_if value="$DEBUG gt 0">
           <debug_to_file directory="$DebugDirectory" name="'WasAnythingDestroyed.log'" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
           <debug_to_file directory="$DebugDirectory" name="'WasAnythingDestroyed.log'" text="' ~ $KilledObject: ' + @$KilledObject + '[' + @$KilledObject.idcode + ']'"/>
           <debug_to_file directory="$DebugDirectory" name="'WasAnythingDestroyed.log'" text="' ~ $KillerObject: ' + @$KillerObject + '[' + @$KillerObject.idcode + ']'"/>
@@ -120,7 +120,7 @@
         <do_if value="$KillMethod != killmethod.removed and $KillMethod != killmethod.collected and $KilledObject != player.controlled">
           <show_help custom="event.param.knownname + '\n' +
                              '\033#FFFF0000#' + 'ID_CODE ~ (' + event.param.idcode + ')' + '\n' +
-                             'was destroyed!\n\n' +
+                             {8888888, 1700} + '\n\n' +
                              {20001, 201} + ': ' + event.param2.sector.knownname + '\033X'"
                      duration="6s" log="true" position="8" allowclose="true"/>
         </do_if>
@@ -131,7 +131,7 @@
 
         <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-        <do_if value="$DEBUG">
+        <do_if value="$DEBUG gt 0">
           <debug_to_file directory="$DebugDirectory" name="'WasAnythingDestroyed.log'" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_ShowMePlayerStuffDestroyed.xml ~ WasAnythingDestroyed ~~'"/>
           <debug_to_file directory="$DebugDirectory" name="'WasAnythingDestroyed.log'" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
         </do_if>

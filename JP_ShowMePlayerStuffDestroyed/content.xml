@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 
-<content id="JP_ShowMePlayerStuffDestroyed" name="JP_ShowMePlayerStuffDestroyed" description="Shows a notification when player objects are attacked or destroyed!" author="JanPanthera" version="120" date="2020-05-03" save="0" enabled="1">
-  <dependency version="300"/>
+<content id="JP_ShowMePlayerStuffDestroyed" name="JP_ShowMePlayerStuffDestroyed" description="Shows a notification when player objects are attacked or destroyed!" author="JanPanthera" version="121" date="2020-05-22" save="0" enabled="1">
   <text language="7"  name="JP_ShowMePlayerStuffDestroyed" description="Shows a notification when player objects are attacked or destroyed!" author="JanPanthera" />
   <text language="33" name="JP_ShowMePlayerStuffDestroyed" description="Shows a notification when player objects are attacked or destroyed!" author="JanPanthera" />
   <text language="34" name="JP_ShowMePlayerStuffDestroyed" description="Shows a notification when player objects are attacked or destroyed!" author="JanPanthera" />
