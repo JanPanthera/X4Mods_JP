@@ -3,11 +3,20 @@
 <language>
   <page id="8888888" voice="no">
     <!-- JP_NumberMyShips -->
-    <t id="191">Subordinate fleets?</t>
-    <t id="192">Number at front?</t>
-    <t id="193">Number at end?</t>
-    <t id="194">Sort XL to S?</t>
-    <t id="195">Colorize Number?</t>
-    <t id="196">Colorize Name?</t>
+    <t id="1200">Flotte subordinate?</t>
+    <t id="1201">Numero davanti?</t>
+    <t id="1202">Numero alla fine?</t>
+    <t id="1203">Ordina da XL a S?</t>
+    <t id="1204">Colorare il numero?</t>
+    <t id="1205">Colora il nome?</t>
+    <t id="1270">Trasparenza</t>
+    <t id="1271">Rossa</t>
+    <t id="1272">Verde</t>
+    <t id="1273">Blu</t>
+    <t id="1295">Salva le impostazioni?</t>
+    <t id="1296">Elimina impostazioni?</t>
+    <t id="1297">\033#B600CCCC#</t>
+    <t id="1298">\033#FF00CC66#</t>
+    <t id="1299">\033X</t>
   </page>
 </language>

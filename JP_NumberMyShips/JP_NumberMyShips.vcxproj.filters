@@ -21,6 +21,9 @@
     <Xsd Include="aiscripts\aiscripts.xsd">
       <Filter>Header Files</Filter>
     </Xsd>
+    <Xsd Include="md\md.xsd">
+      <Filter>Header Files</Filter>
+    </Xsd>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="JP_NumberMyShips\t\0001-L007.xml" />
@@ -39,7 +42,6 @@
     <Xml Include="JP_NumberMyShips\aiscripts\JP_SetNewName.xml" />
     <Xml Include="content.xml" />
     <Xml Include="aiscripts\JP_NumberMyShips.xml" />
-    <Xml Include="aiscripts\JP_SetNewName.xml" />
     <Xml Include="t\0001-L007.xml" />
     <Xml Include="t\0001-L033.xml" />
     <Xml Include="t\0001-L034.xml" />
@@ -51,5 +53,13 @@
     <Xml Include="t\0001-L082.xml" />
     <Xml Include="t\0001-L086.xml" />
     <Xml Include="t\0001-L088.xml" />
+    <Xml Include="t\0001.xml" />
+    <Xml Include="aiscripts\JP_CreateColorString_NMS.xml" />
+    <Xml Include="aiscripts\JP_GetSubsSortedForNumbering_NMS.xml" />
+    <Xml Include="libraries\icons.xml" />
+    <Xml Include="aiscripts\JP_CreateName_NMS.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="changelog.txt" />
   </ItemGroup>
 </Project>

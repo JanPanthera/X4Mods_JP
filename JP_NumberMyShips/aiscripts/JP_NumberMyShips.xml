@@ -2,63 +2,68 @@
 
 <aiscript name="JP_NumberMyShips" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd">
 
-  <order id="JP_NumberMyShips" name="NumberMyShips JP" description="Numerates your ships." category="navigation" infinite="true">
+  <order id="JP_NumberMyShips" name="{8888888, 1297}NumberMyShips{8888888, 1299}" category="navigation" infinite="true">
     <params>
-      <!-- Mod Params -->
-      <param name="SUB_FLEETS" text="{8888888, 191}" comment="Subordinate fleets?" type="bool" default="true"/>
-      <param name="NUMBER_AT_FRONT" text="{8888888, 192}" comment="Number at front?" type="bool" default="true"/>
-      <param name="NUMBER_AT_END" text="{8888888, 193}" comment="Number at end?" type="bool" default="false"/>
-      <param name="REVERSE_SORTING" text="{8888888, 194}" comment="Sort XL to S?" type="bool" default="false"/>
-      <!-- Coloring of the numbers -->
-      <param name="COLORIZE_NUMBER" text="{8888888, 195}" comment="Colorize Number?" type="bool" default="true"/>
-      <param name="NUMBER_ALPHA" text="{8888888, 1001}" comment="Transparency" type="number" default="162">
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="SUB_FLEETS" text="{8888888, 1200}" comment="Subordinate fleets?" type="bool" default="if global.$SubFleetsNMS? then global.$SubFleetsNMS else true"/>
+      <param name="NUMBER_AT_FRONT" text="{8888888, 1201}" comment="Number at front?" type="bool" default="if global.$NumberAtFrontNMS? then global.$NumberAtFrontNMS else true"/>
+      <param name="NUMBER_AT_END" text="{8888888, 1202}" comment="Number at end?" type="bool" default="if global.$NumberAtEndNMS? then global.$NumberAtEndNMS else false"/>
+      <param name="REVERSE_SORTING" text="{8888888, 1203}" comment="Sort XL to S?" type="bool" default="if global.$ReverseSortingNMS? then global.$ReverseSortingNMS else false"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="COLORIZE_NUMBER" text="{8888888, 1204}" comment="Colorize Number?" type="bool" default="if global.$ColorizeNumberNMS? then global.$ColorizeNumberNMS else true"/>
+      <param name="NUMBER_ALPHA" text="{8888888, 1270}" comment="Transparency" type="number" default="if global.$NumberAlphaNMS? then global.$NumberAlphaNMS else 162">
         <input_param name="step" value="1"/>
         <input_param name="min" value="0"/>
         <input_param name="max" value="255"/>
       </param>
-      <param name="NUMBER_RED" text="{8888888, 1002}" comment="Red" type="number" default="0">
+      <param name="NUMBER_RED" text="{8888888, 1271}" comment="Red" type="number" default="if global.$NumberRedNMS? then global.$NumberRedNMS else 0">
         <input_param name="step" value="1"/>
         <input_param name="min" value="0"/>
         <input_param name="max" value="255"/>
       </param>
-      <param name="NUMBER_GREEN" text="{8888888, 1003}" comment="Green" type="number" default="0">
+      <param name="NUMBER_GREEN" text="{8888888, 1272}" comment="Green" type="number" default="if global.$NumberGreenNMS? then global.$NumberGreenNMS else 0">
         <input_param name="step" value="1"/>
         <input_param name="min" value="0"/>
         <input_param name="max" value="255"/>
       </param>
-      <param name="NUMBER_BLUE" text="{8888888, 1004}" comment="Blue" type="number" default="255">
+      <param name="NUMBER_BLUE" text="{8888888, 1273}" comment="Blue" type="number" default="if global.$NumberBlueNMS? then global.$NumberBlueNMS else 255">
         <input_param name="step" value="1"/>
         <input_param name="min" value="0"/>
         <input_param name="max" value="255"/>
       </param>
-      <!-- Coloring of the name -->
-      <param name="COLORIZE_NAME" text="{8888888, 196}" comment="Colorize Name?" type="bool" default="true"/>
-      <param name="NAME_ALPHA" text="{8888888, 1001}" comment="Transparency" type="number" default="182">
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="COLORIZE_NAME" text="{8888888, 1205}" comment="Colorize Name?" type="bool" default="if global.$ColorizeNameNMS? then global.$ColorizeNameNMS else true"/>
+      <param name="NAME_ALPHA" text="{8888888, 1270}" comment="Transparency" type="number" default="if global.$NameAlphaNMS? then global.$NameAlphaNMS else 182">
         <input_param name="step" value="1"/>
         <input_param name="min" value="0"/>
         <input_param name="max" value="255"/>
       </param>
-      <param name="NAME_RED" text="{8888888, 1002}" comment="Red" type="number" default="0">
+      <param name="NAME_RED" text="{8888888, 1271}" comment="Red" type="number" default="if global.$NameRedNMS? then global.$NameRedNMS else 0">
         <input_param name="step" value="1"/>
         <input_param name="min" value="0"/>
         <input_param name="max" value="255"/>
       </param>
-      <param name="NAME_GREEN" text="{8888888, 1003}" comment="Green" type="number" default="204">
+      <param name="NAME_GREEN" text="{8888888, 1272}" comment="Green" type="number" default="if global.$NameGreenNMS? then global.$NameGreenNMS else 204">
         <input_param name="step" value="1"/>
         <input_param name="min" value="0"/>
         <input_param name="max" value="255"/>
       </param>
-      <param name="NAME_BLUE" text="{8888888, 1004}" comment="Blue" type="number" default="204">
+      <param name="NAME_BLUE" text="{8888888, 1273}" comment="Blue" type="number" default="if global.$NameBlueNMS? then global.$NameBlueNMS else 204">
         <input_param name="step" value="1"/>
         <input_param name="min" value="0"/>
         <input_param name="max" value="255"/>
       </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="SAVE_SETTINGS" text="{8888888, 1295}" comment="SaveSettings" type="bool" default="false"/>
+      <param name="DELETE_SETTINGS" text="{8888888, 1296}" comment="DeleteSettings" type="bool" default="false"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <!-- DEBUG -->
-      <param name="DEBUG" text="DebugText" type="number" default="0" advanced="1">
-        <input_param name="step" value="50"/>
+      <param name="DEBUG" text="DebugText" type="number" default="if global.$DebugNMS? then global.$DebugNMS else 0" advanced="true">
         <input_param name="min" value="0"/>
         <input_param name="max" value="100"/>
+        <input_param name="step" value="100"/>
       </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     </params>
     <skill min="0"/>
     <requires>
@@ -80,11 +85,80 @@
   </interrupts>
 
   <init>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <set_value name="$DebugDirectory" exact="'JP_NumberMyShips.logs'"/>
-    <set_value name="$DebugFileName" exact="this.ship.idcode + '.JP_NumberMyShips' + '.log'"/>
+    <set_value name="$DebugFileName" exact="this.ship.idcode + '.JP_NumberMyShips.xml.log'"/>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <set_value name="$Commander" exact="this.assignedcontrolled"/>
     <create_list name="$SubCommanders"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <do_if value="$SAVE_SETTINGS">
+      <do_if value="not global.$SubFleetsNMS? or @global.$SubFleetsNMS != $SUB_FLEETS">
+        <set_value name="global.$SubFleetsNMS" exact="$SUB_FLEETS"/>
+      </do_if>
+      <do_if value="not global.$NumberAtFrontNMS? or @global.$NumberAtFrontNMS != $NUMBER_AT_FRONT">
+        <set_value name="global.$NumberAtFrontNMS" exact="$NUMBER_AT_FRONT"/>
+      </do_if>
+      <do_if value="not global.$NumberAtEndNMS? or @global.$NumberAtEndNMS != $NUMBER_AT_END">
+        <set_value name="global.$NumberAtEndNMS" exact="$NUMBER_AT_END"/>
+      </do_if>
+      <do_if value="not global.$ReverseSortingNMS? or @global.$ReverseSortingNMS != $REVERSE_SORTING">
+        <set_value name="global.$ReverseSortingNMS" exact="$REVERSE_SORTING"/>
+      </do_if>
+      <do_if value="not global.$ColorizeNumberNMS? or @global.$ColorizeNumberNMS != $COLORIZE_NUMBER">
+        <set_value name="global.$ColorizeNumberNMS" exact="$COLORIZE_NUMBER"/>
+      </do_if>
+      <do_if value="not global.$NumberAlphaNMS? or @global.$NumberAlphaNMS != $NUMBER_ALPHA">
+        <set_value name="global.$NumberAlphaNMS" exact="$NUMBER_ALPHA"/>
+      </do_if>
+      <do_if value="not global.$NumberRedNMS? or @global.$NumberRedNMS != $NUMBER_RED">
+        <set_value name="global.$NumberRedNMS" exact="$NUMBER_RED"/>
+      </do_if>
+      <do_if value="not global.$NumberGreenNMS? or @global.$NumberGreenNMS != $NUMBER_GREEN">
+        <set_value name="global.$NumberGreenNMS" exact="$NUMBER_GREEN"/>
+      </do_if>
+      <do_if value="not global.$NumberBlueNMS? or @global.$NumberBlueNMS != $NUMBER_BLUE">
+        <set_value name="global.$NumberBlueNMS" exact="$NUMBER_BLUE"/>
+      </do_if>
+      <do_if value="not global.$ColorizeNameNMS? or @global.$ColorizeNameNMS != $COLORIZE_NAME">
+        <set_value name="global.$ColorizeNameNMS" exact="$COLORIZE_NAME"/>
+      </do_if>
+      <do_if value="not global.$NameAlphaNMS? or @global.$NameAlphaNMS != $NAME_ALPHA">
+        <set_value name="global.$NameAlphaNMS" exact="$NAME_ALPHA"/>
+      </do_if>
+      <do_if value="not global.$NameRedNMS? or @global.$NameRedNMS != $NAME_RED">
+        <set_value name="global.$NameRedNMS" exact="$NAME_RED"/>
+      </do_if>
+      <do_if value="not global.$NameGreenNMS? or @global.$NameGreenNMS != $NAME_GREEN">
+        <set_value name="global.$NameGreenNMS" exact="$NAME_GREEN"/>
+      </do_if>
+      <do_if value="not global.$NameBlueNMS? or @global.$NameBlueNMS != $NAME_BLUE">
+        <set_value name="global.$NameBlueNMS" exact="$NAME_BLUE"/>
+      </do_if>
+      <do_if value="not global.$DebugNMS? or @global.$DebugNMS != $DEBUG">
+        <set_value name="global.$DebugNMS" exact="$DEBUG"/>
+      </do_if>
+    </do_if>
+    <do_if value="$DELETE_SETTINGS">
+      <remove_value name="global.$DebugNMS"/>
+      <remove_value name="global.$NameBlueNMS"/>
+      <remove_value name="global.$NameGreenNMS"/>
+      <remove_value name="global.$NameRedNMS"/>
+      <remove_value name="global.$NameAlphaNMS"/>
+      <remove_value name="global.$ColorizeNameNMS"/>
+      <remove_value name="global.$NumberBlueNMS"/>
+      <remove_value name="global.$NumberGreenNMS"/>
+      <remove_value name="global.$NumberRedNMS"/>
+      <remove_value name="global.$NumberAlphaNMS"/>
+      <remove_value name="global.$ColorizeNumberNMS"/>
+      <remove_value name="global.$ReverseSortingNMS"/>
+      <remove_value name="global.$NumberAtEndNMS"/>
+      <remove_value name="global.$NumberAtFrontNMS"/>
+      <remove_value name="global.$SubFleetsNMS"/>
+      <!-- cancel order because the settings are invalid now -->
+      <cancel_order order="this.ship.order"/>
+    </do_if>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
   </init>
 
   <attention min="unknown">
@@ -92,11 +166,10 @@
 
       <wait exact="1ms"/>
       <label name="INIT"/>
-      <cancel_all_orders object="$Commander"/>
-
+      
       <do_if value="$DEBUG gt 0">
         <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ Running JP_NumberMyShips ~~ %1 [%2]'.[$Commander.knownname, $Commander.idcode] + '\n'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_NumberMyShips.xml ~ Started ~~' + '\n'"/>
       </do_if>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -118,7 +191,7 @@
             <append_to_list name="$SubCommanderSubordinates" exact="$Subordinate"/>
           </do_if>
         </do_for_each>
-        
+
         <create_list name="$Groups"/>
         <set_value name="$GroupID" exact="1"/>
         <do_while value="$SubCommanderSubordinates.count gt 0">
@@ -136,18 +209,18 @@
           <set_value name="$GroupID" operation="add" exact="1"/>
           <wait exact="1ms"/>
         </do_while>
-        
+
         <remove_value name="$SubCommanderSubordinates"/>
         <do_for_each name="$Group" in="$Groups">
           <create_list name="$SortedGroup"/>
-          <run_script name="'JP_GetSubsSortedForNumbering'">
+          <run_script name="'JP_GetSubsSortedForNumbering_NMS'">
             <param name="SUBORDINATES" value="$Group"/>
             <param name="REVERSED_NUMBERING" value="$REVERSE_SORTING"/>
             <param name="DEBUG" value="$DEBUG"/>
             <save_retval name="SORTED_SUBORDINATES" variable="$SortedGroup"/>
           </run_script>
           <do_for_each name="$Ship" in="$SortedGroup" counter="$_it">
-            <run_script name="'JP_SetNewName'">
+            <run_script name="'JP_CreateName_NMS'">
               <param name="SHIP" value="$Ship"/>
               <param name="NUMBER_TO_ADD" value="$_it"/>
               <param name="NUMBER_AT_FRONT" value="$NUMBER_AT_FRONT"/>
@@ -163,7 +236,10 @@
               <param name="NAME_GREEN" value="$NAME_GREEN"/>
               <param name="NAME_BLUE" value="$NAME_BLUE"/>
               <param name="DEBUG" value="$DEBUG"/>
+              <save_retval name="CREATED_NAME" variable="$_CreatedName"/>
             </run_script>
+            <set_object_name object="$Ship" name="$_CreatedName"/>
+            <remove_value name="$_CreatedName"/>
           </do_for_each>
           <remove_value name="$SortedGroup"/>
         </do_for_each>
@@ -206,7 +282,7 @@
           <save_retval name="SORTED_SUBORDINATES" variable="$SortedGroup"/>
         </run_script>
         <do_for_each name="$Ship" in="$SortedGroup" counter="$_it">
-          <run_script name="'JP_SetNewName'">
+          <run_script name="'JP_CreateName_NMS'">
             <param name="SHIP" value="$Ship"/>
             <param name="NUMBER_TO_ADD" value="$_it"/>
             <param name="NUMBER_AT_FRONT" value="$NUMBER_AT_FRONT"/>
@@ -222,14 +298,17 @@
             <param name="NAME_GREEN" value="$NAME_GREEN"/>
             <param name="NAME_BLUE" value="$NAME_BLUE"/>
             <param name="DEBUG" value="$DEBUG"/>
+            <save_retval name="CREATED_NAME" variable="$_CreatedName"/>
           </run_script>
+          <set_object_name object="$Ship" name="$_CreatedName"/>
+          <remove_value name="$_CreatedName"/>
         </do_for_each>
         <remove_value name="$SortedGroup"/>
       </do_for_each>
       <remove_value name="$Groups"/>
 
       <!-- Commander -->
-      <run_script name="'JP_SetNewName'">
+      <run_script name="'JP_CreateName_NMS'">
         <param name="SHIP" value="$Commander"/>
         <param name="NUMBER_TO_ADD" value="0"/>
         <param name="NUMBER_AT_FRONT" value="false"/>
@@ -245,12 +324,17 @@
         <param name="NAME_GREEN" value="$NAME_GREEN"/>
         <param name="NAME_BLUE" value="$NAME_BLUE"/>
         <param name="DEBUG" value="$DEBUG"/>
+        <save_retval name="CREATED_NAME" variable="$_CreatedName"/>
       </run_script>
-
+      <set_object_name object="$Commander" name="$_CreatedName"/>
+      <remove_value name="$_CreatedName"/>
+      
+      <label name="FINISH"/>
+      
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
       <do_if value="$DEBUG gt 0">
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ Completed JP_NumberMyShips ~~ %1 [%2]'.[$Commander.knownname, $Commander.idcode]"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_NumberMyShips.xml ~ Finished ~~'"/>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
       </do_if>
 
@@ -260,10 +344,10 @@
       <remove_value name="$DebugFileName"/>
       <remove_value name="$DebugDirectory"/>
 
-      <label name="FINISH"/>
+      <label name="END"/>
+      <wait exact="1ms"/>
       <set_order_syncpoint_reached order="this.ship.order"/>
       <cancel_order order="this.ship.order" />
-      <wait exact="1ms"/>
 
     </actions>
   </attention>
