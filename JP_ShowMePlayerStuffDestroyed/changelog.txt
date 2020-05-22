@@ -1,1 +1,2 @@
 ~ Added: language files
+~ Updated: added some translations.. (google translate)

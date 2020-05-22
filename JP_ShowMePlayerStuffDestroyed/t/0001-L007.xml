@@ -3,7 +3,7 @@
 <language>
   <page id="8888888" voice="no">
     <!-- JP_ShowMePlayerStuffDestroyed -->
-    <t id="1700">is under attack!</t>
-    <t id="1701">was destroyed!</t>
+    <t id="1700">находится под атакой!</t>
+    <t id="1701">был уничтожен!</t>
   </page>
 </language>

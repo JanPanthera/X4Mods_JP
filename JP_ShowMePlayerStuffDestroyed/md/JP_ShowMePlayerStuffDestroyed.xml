@@ -120,7 +120,7 @@
         <do_if value="$KillMethod != killmethod.removed and $KillMethod != killmethod.collected and $KilledObject != player.controlled">
           <show_help custom="event.param.knownname + '\n' +
                              '\033#FFFF0000#' + 'ID_CODE ~ (' + event.param.idcode + ')' + '\n' +
-                             {8888888, 1700} + '\n\n' +
+                             {8888888, 1701} + '\n\n' +
                              {20001, 201} + ': ' + event.param2.sector.knownname + '\033X'"
                      duration="6s" log="true" position="8" allowclose="true"/>
         </do_if>
