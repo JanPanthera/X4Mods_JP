@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <content id="JP_TradeSubscriptionExplorer" name="TradeSubscriptionExplorer" description="Updates trade subscriptions." author="JanPanthera" version="100" date="2020-05-22" save="0" enabled="1">
-  <text language="7"  name="TradeSubscriptionExplorer" description="Обновление торговых предложений." author="JanPanthera"/>
+  <text language="7"  name="TradeSubscriptionExplorer" description="Updates trade subscriptions." author="JanPanthera"/>
   <text language="33" name="TradeSubscriptionExplorer" description="Updates trade subscriptions." author="JanPanthera"/>
   <text language="34" name="TradeSubscriptionExplorer" description="Updates trade subscriptions." author="JanPanthera"/>
   <text language="39" name="TradeSubscriptionExplorer" description="Updates trade subscriptions." author="JanPanthera"/>
   <text language="44" name="TradeSubscriptionExplorer" description="Updates trade subscriptions." author="JanPanthera"/>
-  <text language="49" name="TradeSubscriptionExplorer" description="Aktualisiert Handelsabonnements" author="JanPanthera"/>
+  <text language="49" name="TradeSubscriptionExplorer" description="Updates trade subscriptions." author="JanPanthera"/>
   <text language="55" name="TradeSubscriptionExplorer" description="Updates trade subscriptions." author="JanPanthera"/>
   <text language="81" name="TradeSubscriptionExplorer" description="Updates trade subscriptions." author="JanPanthera"/>
   <text language="82" name="TradeSubscriptionExplorer" description="Updates trade subscriptions." author="JanPanthera"/>
