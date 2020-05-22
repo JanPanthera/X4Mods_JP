@@ -11,11 +11,11 @@
 
         <set_value name="$DEBUG" exact="@global.$TradeSubscriptionExplorerFleetLeader.defaultorder.$DEBUG"/>
         <set_value name="$DebugDirectory" exact="'JP_TradeSubscriptionExplorer.logs'"/>
-        <set_value name="$DebugFileName" exact="'md.JP_UpdateTradeSubscriptionExplorerFleet.JP_UPDATE_TRADE_SUBSCRIPTION_EXPLORER_FLEET.xml.log'"/>
+        <set_value name="$DebugFileName" exact="'JP_UPDATE_TRADE_SUBSCRIPTION_EXPLORER_FLEET.xml.log'"/>
 
         <do_if value="$DEBUG gt 0">
           <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ md.JP_UpdateTradeSubscriptionExplorerFleet.JP_UPDATE_TRADE_SUBSCRIPTION_EXPLORER_FLEET.xml ~ Started ~~' + '\n'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_UPDATE_TRADE_SUBSCRIPTION_EXPLORER_FLEET.xml ~ Started ~~' + '\n'"/>
         </do_if>
 
         <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -61,7 +61,7 @@
         <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
         <do_if value="$DEBUG gt 0">
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ md.JP_UpdateTradeSubscriptionExplorerFleet.JP_UPDATE_TRADE_SUBSCRIPTION_EXPLORER_FLEET.xml ~ Finished ~~'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_UPDATE_TRADE_SUBSCRIPTION_EXPLORER_FLEET.xml ~ Finished ~~'"/>
           <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
         </do_if>
 
@@ -74,11 +74,11 @@
         <set_value name="$DEBUG" exact="@global.$TradeSubscriptionExplorerFleetLeader.defaultorder.$DEBUG"/>
         <!--<set_value name="$DEBUG" exact="1"/>-->
         <set_value name="$DebugDirectory" exact="'JP_TradeSubscriptionExplorer.logs'"/>
-        <set_value name="$DebugFileName" exact="'md.JP_UpdateTradeSubscriptionExplorerFleet.JP_TRADE_SUBSCRIPTION_EXPLORER_DEBUG.xml.log'"/>
+        <set_value name="$DebugFileName" exact="'JP_TRADE_SUBSCRIPTION_EXPLORER_DEBUG.xml.log'"/>
 
         <do_if value="$DEBUG gt 0">
           <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ md.JP_UpdateTradeSubscriptionExplorerFleet.JP_TRADE_SUBSCRIPTION_EXPLORER_DEBUG.xml ~ Started ~~' + '\n'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_TRADE_SUBSCRIPTION_EXPLORER_DEBUG.xml ~ Started ~~' + '\n'"/>
         </do_if>
 
         <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -131,7 +131,7 @@
         <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
         <do_if value="$DEBUG gt 0">
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ md.JP_UpdateTradeSubscriptionExplorerFleet.JP_TRADE_SUBSCRIPTION_EXPLORER_DEBUG.xml ~ Finished ~~'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_TRADE_SUBSCRIPTION_EXPLORER_DEBUG.xml ~ Finished ~~'"/>
           <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
         </do_if>
 
