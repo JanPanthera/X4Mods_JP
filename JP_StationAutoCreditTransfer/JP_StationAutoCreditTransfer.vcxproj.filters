@@ -41,6 +41,7 @@
     <Xml Include="t\0001-L082.xml" />
     <Xml Include="t\0001-L086.xml" />
     <Xml Include="t\0001-L088.xml" />
+    <Xml Include="t\0001.xml" />
   </ItemGroup>
   <ItemGroup>
     <Xsd Include="JP_StationAutoCreditTransfer\md\md.xsd">
@@ -49,5 +50,8 @@
     <Xsd Include="md\md.xsd">
       <Filter>Header Files</Filter>
     </Xsd>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="changelog.txt" />
   </ItemGroup>
 </Project>

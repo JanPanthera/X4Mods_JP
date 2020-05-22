@@ -3,7 +3,6 @@
 <language>
   <page id="8888888" voice="no">
     <!-- JP_StationAutoCreditTransfer -->
-    <t id="211">Geld überwiesen an</t>
-    <t id="212">Baulager</t>
+    <t id="1800">Geld überwiesen an</t>
   </page>
 </language>
