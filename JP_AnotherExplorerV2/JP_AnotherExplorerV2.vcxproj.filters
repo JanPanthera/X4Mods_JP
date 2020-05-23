@@ -69,4 +69,7 @@
     <Xml Include="aiscripts\JP_IdleReturnHome_AEV2.xml" />
     <Xml Include="aiscripts\JP_GetNearestUnknownObject.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="changelog.txt" />
+  </ItemGroup>
 </Project>

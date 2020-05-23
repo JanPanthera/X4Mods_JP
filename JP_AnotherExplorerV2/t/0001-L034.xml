@@ -3,13 +3,29 @@
 <language>
   <page id="8888888" voice="no">
     <!--  JP_AnotherExplorerV2 -->
-    <t id="20">Add order tag?</t>
-    <t id="21">Explorar puertas?</t>
-    <t id="22">Explorar estaciones?</t>
-    <t id="23">Explorar estaciones enemigas?</t>
-    <t id="24">Explorar sectores enemigos?</t>
-    <t id="25">Unknown sectors?</t>
-    <t id="26">Automatic Fleet?</t>
+    <t id="400">¿Sectores enemigos?</t> 
+    <t id="401">Sectores neutros?</t> 
+    <t id="402">¿Sectores amigables?</t> 
+    <t id="403">Sectores desconocidos?</t> 
+    <t id="410">¿Puertas?</t> 
+    <t id="411">Estaciones?</t> 
+    <t id="412">¿Sectores enemigos?</t> 
+    <t id="413">¿Estaciones Amigas?</t> 
+    <t id="420">¿Flota Automática?</t> 
+    <t id="480">Tiempo de inactividad</t> 
+    <t id="481">Inactiva: Seguir?</t> 
+    <t id="482">¿A quién seguir?</t> 
+    <t id="483">Inactivo: ¿Atraque?</t> 
+    <t id="484">¿Dónde atracar?</t> 
+    <t id="485">Inactivo: ¿movimiento aleatorio?</t> 
+    <t id="486">En que sector?</t> 
+    <t id="487">Inactivo: ¿Mover a?</t> 
+    <t id="488">Hacia donde moverse</t> 
+    <t id="494">Añadir etiqueta de pedido?</t> 
+    <t id="495">¿Guardar ajustes?</t> 
+    <t id="496">¿Eliminar configuración?</t> 
+    <t id="497">\033#B600CCCC#</t>
+    <t id="498">\033#FF00CC66#</t>
+    <t id="499">\033X</t>
   </page>
 </language>
-<!-- Thanks ~ orekpolar -->

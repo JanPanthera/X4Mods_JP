@@ -170,6 +170,9 @@
     <Xml Include="t\0001-L088.xml" />
     <Xml Include="t\0001.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="changelog.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

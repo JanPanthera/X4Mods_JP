@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<aiscript name="JP_IdleReturnHome" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd">
+<aiscript name="JP_IdleReturnHome_AEV2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd">
 
-  <order id="JP_IdleReturnHome" name="IdleReturnHome JP" category="navigation" infinite="false">
+  <order id="JP_IdleReturnHome_AEV2" name="IdleReturnHome_AEV2 JP" category="navigation" infinite="false">
     <params>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="IDLE_TIME" text="IdleTime" comment="IdleTime" type="time" default="60s">
@@ -30,11 +30,12 @@
       </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <!-- DEBUG -->
-      <param name="DEBUG" text="DebugText" type="number" default="0" advanced="1">
+      <param name="DEBUG" text="DebugText" type="number" default="0" advanced="true">
         <input_param name="min" value="0"/>
         <input_param name="max" value="100"/>
         <input_param name="step" value="100"/>
       </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     </params>
     <skill min="0"/>
     <requires>
@@ -57,8 +58,8 @@
 
   <init>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-    <set_value name="$DebugDirectory" exact="'JP_SatelliteDropper.logs'"/>
-    <set_value name="$DebugFileName" exact="this.ship.idcode + '.JP_IdleReturnHome.xml.log'"/>
+    <set_value name="$DebugDirectory" exact="'JP_AnotherExplorerV2.logs'"/>
+    <set_value name="$DebugFileName" exact="this.ship.idcode + '.JP_IdleReturnHome_AEV2.xml.log'"/>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <set_value name="$Ship" exact="this.ship"/>
     <set_value name="$Sector" exact="this.ship.sector"/>
@@ -73,7 +74,7 @@
 
       <do_if value="$DEBUG">
         <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_IdleReturnHome.xml ~ Started ~~' + '\n'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_IdleReturnHome_AEV2.xml ~ Started ~~' + '\n'"/>
       </do_if>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -220,7 +221,7 @@
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
       <do_if value="$DEBUG">
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_IdleReturnHome.xml ~ Finished ~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_IdleReturnHome_AEV2.xml ~ Finished ~~'"/>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
       </do_if>
 

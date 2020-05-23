@@ -20,7 +20,7 @@
       </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <!-- DEBUG -->
-      <param name="DEBUG" text="DebugText" type="number" default="0" advanced="1">
+      <param name="DEBUG" text="DebugText" type="number" default="0" advanced="true">
         <input_param name="min" value="0"/>
         <input_param name="max" value="100"/>
         <input_param name="step" value="100"/>
@@ -68,6 +68,8 @@
       <find_sector name="$_TempSectors" space="player.galaxy" multiple="true">
       </find_sector>
 
+      <remove_from_list name="$_TempSectors" list="global.$AnotherExplorerV2SectorBlackList"/>
+      
       <include_interrupt_actions ref="GetBlacklistgroup"/>
 
       <create_list name="$_Sectors"/>
@@ -110,7 +112,7 @@
 
         <do_if value="$STATIONS">
           <create_list name="$_Stations"/>
-          <find_station name="$_Stations" space="$SECTOR" multiple="true">
+          <find_station name="$_Stations" space="$_Sector" multiple="true">
             <match knownto="$Ship.owner" negate="true"/>
           </find_station>
           <do_for_each name="$_Station" in="$_Stations">

@@ -3,12 +3,29 @@
 <language>
   <page id="8888888" voice="no">
     <!--  JP_AnotherExplorerV2 -->
-    <t id="20">Add order tag?</t>
-    <t id="21">Explore gates?</t>
-    <t id="22">Explore stations?</t>
-    <t id="23">Enemy stations?</t>
-    <t id="24">Enemy sectors?</t>
-    <t id="25">Unknown sectors?</t>
-    <t id="26">Automatic Fleet?</t>
+    <t id="400">Enemy Sectors?</t> 
+    <t id="401">Neutral Sectors?</t> 
+    <t id="402">Friendly Sectors?</t> 
+    <t id="403">Unknown Sectors?</t> 
+    <t id="410">Gates?</t> 
+    <t id="411">Stations?</t> 
+    <t id="412">Enemy Stations?</t> 
+    <t id="413">Friendly Stations?</t> 
+    <t id="420">Automatic Fleet?</t> 
+    <t id="480">Idle Time</t> 
+    <t id="481">Idle: Follow?</t> 
+    <t id="482">Who to follow?</t> 
+    <t id="483">Idle: Docking?</t> 
+    <t id="484">Where to dock?</t> 
+    <t id="485">Idle: Random movement?</t> 
+    <t id="486">In which Sector?</t> 
+    <t id="487">Idle: Move to?</t> 
+    <t id="488">Where to move?</t> 
+    <t id="494">Add order tag?</t> 
+    <t id="495">Save Settings?</t> 
+    <t id="496">Delete Settings?</t> 
+    <t id="497">\033#B600CCCC#</t>
+    <t id="498">\033#FF00CC66#</t>
+    <t id="499">\033X</t>
   </page>
 </language>

@@ -1,0 +1,6 @@
+~ Added: IdleReturnHome functions like Follow or Dock at..
+~ Added: saving and deleting of the most settings
+~ Added: order name is now colored
+~ Updated: refactoring
+~ Updated: language files restructuring
+~ Updated: added some translations.. (google translate)

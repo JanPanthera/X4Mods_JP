@@ -2,48 +2,54 @@
 
 <aiscript name="JP_AnotherExplorerV2S" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd">
 
-  <order id="JP_AnotherExplorerV2S" name="_AnotherExplorerV2 {20001, 201} JP" category="navigation" infinite="true">
+  <order id="JP_AnotherExplorerV2S" name="{8888888, 497}AnotherExplorerV2 - {8888888, 499}{8888888, 498}{20001, 201}{8888888, 499}" category="navigation" infinite="true">
     <params>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="ADD_ORDER_TAG" text="{8888888, 20}" comment="Add order tag?" type="bool" default="true"/>
-      <param name="SECTOR" text="{20001, 201}" comment="Sector" type="object" default="this.sector">
+      <param name="SECTOR" text="{20001, 201}" comment="Sector" type="object" default="if global.$SectorAEV2? then global.$SectorAEV2 else this.sector">
         <input_param name="class" value="[class.sector]"/>
       </param>
-      <param name="GATES" text="{8888888, 21}" comment="Explore gates?" type="bool" default="true"/>
-      <param name="STATIONS" text="{8888888, 22}" comment="Explore stations?" type="bool" default="true"/>
-      <param name="ENEMY_STATIONS" text="{8888888, 23}" comment="Explore enemy stations?" type="bool" default="false"/>
-      <param name="FRIENDLY_STATIONS" text="Friendly Stations?" type="bool" default="true"/>
-      <param name="AUTO_FLEET" text="{8888888, 26}" comment="Automatic Fleet?" type="bool" default="false"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="IDLE_TIME" text="{8888888, 1053}" comment="Idle Time" type="time" default="600s">
+      <param name="GATES" text="{8888888, 410}" comment="Gates?" type="bool" default="if global.$GatesAEV2? then global.$GatesAEV2 else true"/>
+      <param name="STATIONS" text="{8888888, 411}" comment="Stations?" type="bool" default="if global.$StationsAEV2? then global.$StationsAEV2 else true"/>
+      <param name="ENEMY_STATIONS" text="{8888888, 412}" comment="Enemy Stations?" type="bool" default="if global.$EnemyStationsAEV2? then global.$EnemyStationsAEV2 else false"/>
+      <param name="FRIENDLY_STATIONS" text="{8888888, 413}" comment="Friendly Stations?" type="bool" default="if global.$FriendlyStationsAEV2? then global.$FriendlyStationsAEV2 else true"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="AUTO_FLEET" text="{8888888, 420}" comment="Automatic Fleet?" type="bool" default="if global.$AutoFleetAEV2? then global.$AutoFleetAEV2 else false"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="IDLE_TIME" text="{8888888, 480}" comment="Idle Time" type="time" default="if global.$IdleTimeAEV2? then global.$IdleTimeAEV2 else 600s">
         <input_param name="min" value="60s"/>
         <input_param name="max" value="3600s"/>
         <input_param name="step" value="10s"/>
       </param>
-      <param name="IDLE_FOLLOW" text="TODO! {8888888, 1054}" comment="Idle: Follow?" type="bool" default="false"/>
-      <param name="WHO_TO_FOLLOW" text="{8888888, 1055}" comment="Who to follow?" type="object" default="null">
+      <param name="IDLE_FOLLOW" text="{8888888, 481}" comment="Idle: Follow?" type="bool" default="if global.$IdleFollowAEV2? then global.$IdleFollowAEV2 else false"/>
+      <param name="WHO_TO_FOLLOW" text="{8888888, 482}" comment="Who to follow?" type="object" default="if global.$WhoToFollowAEV2? then global.$WhoToFollowAEV2 else null">
         <input_param name="class" value="[class.ship]"/>
         <input_param name="owner" value="this.ship.owner"/>
       </param>
-      <param name="IDLE_DOCKING" text="{8888888, 1056}" comment="Idle: Docking?" type="bool" default="false"/>
-      <param name="WHERE_TO_DOCK" text="{8888888, 1057}" comment="Where to dock?" type="object" default="null">
+      <param name="IDLE_DOCKING" text="{8888888, 483}" comment="Idle: Docking?" type="bool" default="if global.$IdleDockingAEV2? then global.$IdleDockingAEV2 else false"/>
+      <param name="WHERE_TO_DOCK" text="{8888888, 484}" comment="Where to dock?" type="object" default="if global.$WhereToDockAEV2? then global.$WhereToDockAEV2 else null">
         <input_param name="class" value="if this.ship.isclass.[class.ship_s, class.ship_xs] then [class.station, class.ship_m, class.ship_l, class.ship_xl] else [class.station, class.ship_l, class.ship_xl]"/>
       </param>
-      <param name="IDLE_RANDOM_MOVEMENT" text="{8888888, 1058}" comment="Idle: Movement?" type="bool" default="false"/>
-      <param name="IN_WHICH_SECTOR" text="{8888888, 1059}" comment="In which sector?" type="position" default="[this.ship.sector, this.ship.position]">
+      <param name="IDLE_RANDOM_MOVEMENT" text="{8888888, 485}" comment="Idle: Movement?" type="bool" default="if global.$IdleRandomMovementAEV2? then global.$IdleRandomMovementAEV2 else false"/>
+      <param name="IN_WHICH_SECTOR" text="{8888888, 486}" comment="In which sector?" type="position" default="if global.$InWhichSectorAEV2? then global.$InWhichSectorAEV2 else [this.ship.sector, this.ship.position]">
         <input_param name="class" value="class.sector"/>
       </param>
-      <param name="IDLE_MOVE_TO" text="{8888888, 1060}" comment="Idle: Move to?" type="bool" default="false"/>
-      <param name="WHERE_TO_MOVE" text="{8888888, 1061}" comment="Where to move?" type="position" default="[this.ship.sector, this.ship.position]">
+      <param name="IDLE_MOVE_TO" text="{8888888, 487}" comment="Idle: Move to?" type="bool" default="if global.$IdleMoveToAEV2? then global.$IdleMoveToAEV2 else false"/>
+      <param name="WHERE_TO_MOVE" text="{8888888, 488}" comment="Where to move?" type="position" default="if global.$WhereToMoveAEV2? then global.$WhereToMoveAEV2 else [this.ship.sector, this.ship.position]">
         <input_param name="class" value="class.sector"/>
       </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="ADD_ORDER_TAG" text="{8888888, 494}" comment="Add order tag?" type="bool" default="if global.$AddOrderTagAEV2? then global.$AddOrderTagAEV2 else true"/>
+      <param name="SAVE_SETTINGS" text="{8888888, 495}" comment="SaveSettings" type="bool" default="false"/>
+      <param name="DELETE_SETTINGS" text="{8888888, 496}" comment="DeleteSettings" type="bool" default="false"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <!-- DEBUG -->
-      <param name="DEBUG" text="DebugText" type="number" default="0" advanced="1">
+      <param name="DEBUG" text="DebugText" type="number" default="if global.$DebugAEV2? then global.$DebugAEV2 else 0" advanced="true">
         <input_param name="min" value="0"/>
         <input_param name="max" value="100"/>
         <input_param name="step" value="100"/>
       </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     </params>
     <skill min="0"/>
     <requires>
@@ -82,9 +88,84 @@
     <append_to_list name="global.$AnotherExplorerV2Ships" exact="this.ship"/>
     <append_to_list name="global.$AnotherExplorerV2SectorBlackList" exact="$SECTOR"/>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <set_value name="this.$OldName" exact="this.ship.name"/>
     <do_if value="$ADD_ORDER_TAG">
-      <set_value name="this.$OldName" exact="this.ship.name"/>
       <set_object_name object="this.ship" name="this.ship.name + '\033#FFA2560B# #AEV2-S\033X'"/>
+    </do_if>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <do_if value="$SAVE_SETTINGS">
+      <do_if value="not global.$SectorAEV2? or @global.$SectorAEV2 != $SECTOR">
+        <set_value name="global.$SectorAEV2" exact="$SECTOR"/>
+      </do_if>
+      <do_if value="not global.$GatesAEV2? or @global.$GatesAEV2 != $GATES">
+        <set_value name="global.$GatesAEV2" exact="$GATES"/>
+      </do_if>
+      <do_if value="not global.$StationsAEV2? or @global.$StationsAEV2 != $STATIONS">
+        <set_value name="global.$StationsAEV2" exact="$STATIONS"/>
+      </do_if>
+      <do_if value="not global.$EnemyStationsAEV2? or @global.$EnemyStationsAEV2 != $ENEMY_STATIONS">
+        <set_value name="global.$EnemyStationsAEV2" exact="$ENEMY_STATIONS"/>
+      </do_if>
+      <do_if value="not global.$FriendlyStationsAEV2? or @global.$FriendlyStationsAEV2 != $FRIENDLY_STATIONS">
+        <set_value name="global.$FriendlyStationsAEV2" exact="$FRIENDLY_STATIONS"/>
+      </do_if>
+      <do_if value="not global.$AddOrderTagAEV2? or @global.$AddOrderTagAEV2 != $ADD_ORDER_TAG">
+        <set_value name="global.$AddOrderTagAEV2" exact="$ADD_ORDER_TAG"/>
+      </do_if>
+      <do_if value="not global.$AutoFleetAEV2? or @global.$AutoFleetAEV2 != $AUTO_FLEET">
+        <set_value name="global.$AutoFleetAEV2" exact="$AUTO_FLEET"/>
+      </do_if>
+      <do_if value="not global.$IdleTimeAEV2? or @global.$IdleTimeAEV2 != $IDLE_TIME">
+        <set_value name="global.$IdleTimeAEV2" exact="$IDLE_TIME"/>
+      </do_if>
+      <do_if value="not global.$IdleFollowAEV2? or @global.$IdleFollowAEV2 != $IDLE_FOLLOW">
+        <set_value name="global.$IdleFollowAEV2" exact="$IDLE_FOLLOW"/>
+      </do_if>
+      <do_if value="not global.$WhoToFollowAEV2? or @global.$WhoToFollowAEV2 != $WHO_TO_FOLLOW">
+        <set_value name="global.$WhoToFollowAEV2" exact="$WHO_TO_FOLLOW"/>
+      </do_if>
+      <do_if value="not global.$IdleDockingAEV2? or @global.$IdleDockingAEV2 != $IDLE_DOCKING">
+        <set_value name="global.$IdleDockingAEV2" exact="$IDLE_DOCKING"/>
+      </do_if>
+      <do_if value="not global.$WhereToDockAEV2? or @global.$WhereToDockAEV2 != $WHERE_TO_DOCK">
+        <set_value name="global.$WhereToDockAEV2" exact="$WHERE_TO_DOCK"/>
+      </do_if>
+      <do_if value="not global.$IdleRandomMovementAEV2? or @global.$IdleRandomMovementAEV2 != $IDLE_RANDOM_MOVEMENT">
+        <set_value name="global.$IdleRandomMovementAEV2" exact="$IDLE_RANDOM_MOVEMENT"/>
+      </do_if>
+      <do_if value="not global.$InWhichSectorAEV2? or @global.$InWhichSectorAEV2 != $IN_WHICH_SECTOR">
+        <set_value name="global.$InWhichSectorAEV2" exact="$IN_WHICH_SECTOR"/>
+      </do_if>
+      <do_if value="not global.$IdleMoveToAEV2? or @global.$IdleMoveToAEV2 != $IDLE_MOVE_TO">
+        <set_value name="global.$IdleMoveToAEV2" exact="$IDLE_MOVE_TO"/>
+      </do_if>
+      <do_if value="not global.$WhereToMoveAEV2? or @global.$WhereToMoveAEV2 != $WHERE_TO_MOVE">
+        <set_value name="global.$WhereToMoveAEV2" exact="$WHERE_TO_MOVE"/>
+      </do_if>
+      <do_if value="not global.$DebugAEV2? or @global.$DebugAEV2 != $DEBUG">
+        <set_value name="global.$DebugAEV2" exact="$DEBUG"/>
+      </do_if>
+    </do_if>
+    <do_if value="$DELETE_SETTINGS">
+      <remove_value name="global.$DebugAEV2"/>
+      <remove_value name="global.$WhereToMoveAEV2"/>
+      <remove_value name="global.$IdleMoveToAEV2"/>
+      <remove_value name="global.$InWhichSectorAEV2"/>
+      <remove_value name="global.$IdleRandomMovementAEV2"/>
+      <remove_value name="global.$WhereToDockAEV2"/>
+      <remove_value name="global.$IdleDockingAEV2"/>
+      <remove_value name="global.$WhoToFollowAEV2"/>
+      <remove_value name="global.$IdleFollowAEV2"/>
+      <remove_value name="global.$IdleTimeAEV2"/>
+      <remove_value name="global.$AutoFleetAEV2"/>
+      <remove_value name="global.$AddOrderTagAEV2"/>
+      <remove_value name="global.$FriendlyStationsAEV2"/>
+      <remove_value name="global.$EnemyStationsAEV2"/>
+      <remove_value name="global.$StationsAEV2"/>
+      <remove_value name="global.$GatesAEV2"/>
+      <remove_value name="global.$SectorAEV2"/>
+      <!-- Cancel order because the settings are invalid.. because they were deleted -->
+      <cancel_order order="this.ship.order"/>
     </do_if>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
   </init>
@@ -94,7 +175,6 @@
 
       <wait exact="1ms"/>
       <label name="INIT"/>
-      <cancel_all_orders object="this.ship"/>
 
       <do_if value="$DEBUG gt 0">
         <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
@@ -107,14 +187,6 @@
 
       <set_command command="command.explore"/>
       <set_command_action commandaction="commandaction.calculating"/>
-
-      <append_to_list name="global.$AnotherExplorerV2SectorBlackList" exact="this.$CurrentSector"/>
-
-      <do_if value="$DEBUG gt 0">
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'this.$CurrentSector: ' + this.$CurrentSector.name + ' ~ ' + '[' + this.$CurrentSector.owner.knownname + ']'"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
-      </do_if>
 
       <run_script name="'JP_GetNearestUnknownObject'">
         <param name="GATES" value="$GATES"/>
@@ -142,12 +214,15 @@
         <set_object_name object="this.ship" name="if $ADD_ORDER_TAG then this.$OldName + '\033#FFA95908# #AEV2-S\033X' else this.$OldName"/>
         <resume label="RESUME"/>
       </do_if>
+      <do_else>
+        <append_to_list name="global.$AnotherExplorerV2SectorBlackList" exact="this.$CurrentSector"/>
+      </do_else>
 
       <do_if value="$Ship.sector != this.$CurrentSector">
         <set_command command="command.move" param="this.$CurrentSector"/>
         <do_if value="$DEBUG gt 0">
           <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'Moving to: ' + this.$CurrentSector.name"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'Moving to: ' + this.$CurrentSector.knownname"/>
           <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
         </do_if>
         <run_script name="'move.generic'">
@@ -159,7 +234,7 @@
 
       <do_if value="$DEBUG gt 0">
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'Exploring Object: [' + $NearestUnknownObject.class + '] ~ ' + $NearestUnknownObject.name"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'Exploring Object: [' + $NearestUnknownObject.class + '] ~ ' + $NearestUnknownObject.knownname"/>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
       </do_if>
 

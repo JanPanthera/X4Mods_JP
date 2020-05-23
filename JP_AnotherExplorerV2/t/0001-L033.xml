@@ -3,13 +3,29 @@
 <language>
   <page id="8888888" voice="no">
     <!--  JP_AnotherExplorerV2 -->
-    <t id="20">Add order tag?</t>
-    <t id="21">Explorer portails?</t>
-    <t id="22">Explorer stations?</t>
-    <t id="23">Explorer stations ennemies?</t>
-    <t id="24">Explorer secteurs ennemis?</t>
-    <t id="25">Unknown sectors?</t>
-    <t id="26">Automatic Fleet?</t>
+    <t id="400">Secteurs ennemis?</t>
+    <t id="401">Secteurs neutres?</t>
+    <t id="402">Secteurs amis?</t>
+    <t id="403">Secteurs inconnus?</t>
+    <t id="410">Portes?</t>
+    <t id="411">Stations?</t>
+    <t id="412">Stations ennemies?</t>
+    <t id="413">Secteurs amis?</t>
+    <t id="420">Flotte automatique?</t>
+    <t id="480">Temps d'inactivité</t>
+    <t id="481">Inactif: suivre?</t>
+    <t id="482">Qui suivre?</t>
+    <t id="483">Inactif: amarrage?</t>
+    <t id="484">Où accoster?</t>
+    <t id="485">Inactif: mouvement aléatoire?</t>
+    <t id="486">Dans quel secteur?</t>
+    <t id="487">Inactif: passer à?</t>
+    <t id="488">Où déménager?</t>
+    <t id="494">Ajouter une étiquette de commande?</t>
+    <t id="495">Enregistrer les paramètres?</t>
+    <t id="496">Supprimer les paramètres?</t>
+    <t id="497">\033#B600CCCC#</t>
+    <t id="498">\033#FF00CC66#</t>
+    <t id="499">\033X</t>
   </page>
 </language>
-<!-- Thanks to darkslimus / Xchange Guild -->

@@ -13,6 +13,7 @@
         <input_param name="max" value="100"/>
         <input_param name="step" value="100"/>
       </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     </params>
     <requires>
       <match shiptype="shiptype.lasertower" negate="true"/>
