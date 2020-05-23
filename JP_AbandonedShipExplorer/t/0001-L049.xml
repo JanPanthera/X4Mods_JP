@@ -4,15 +4,20 @@
   <page id="8888888" voice="no">
     <!-- JP_AbandonedShipExplorer -->
     <t id="100">Feindliche Sektoren?</t>
-    <t id="101">Nachricht wenn angekommen?</t>
-    <t id="102">Warte am verlassenen Schiff?</t>
-    <t id="103">Wie lange Warten?</t>
-    <t id="104">Navigationsbake aufstellen?</t>
-    <t id="105">Navigationsbaken aufstocken?</t>
-    <t id="106">Anzahl zum aufstocken</t>
-    <t id="107">Befehlskürzel hinzufügen?</t>
-    <t id="108">Verlassenes Schiff</t>
-    <t id="109">Ich bin am verlassenen Schiff angekommen</t>
-    <t id="110">Wartezeit:</t>
+    <t id="110">Nachricht wenn angekommen?</t>
+    <t id="111">Warte am verlassenen Schiff?</t>
+    <t id="112">Wie lange Warten?</t>
+    <t id="113">Navigationsbake aufstellen?</t>
+    <t id="114">Navigationsbaken auffüllen?</t>
+    <t id="115">Anzahl zum aufstocken</t>
+    <t id="116">Verlassenes Schiff</t>
+    <t id="117">Ich bin am verlassenen Schiff angekommen.</t>
+    <t id="118">Wartezeit:</t>
+    <t id="194">Befehlskürzel hinzufügen?</t>
+    <t id="195">Speichere Einstellungen?</t>
+    <t id="196">Lösche Einstellungen?</t>
+    <t id="197">\033#B600CCCC#</t>
+    <t id="198">\033#FF00CC66#</t>
+    <t id="199">\033X</t>
   </page>
 </language>

@@ -2,17 +2,17 @@
 
 <aiscript name="JP_ResupplyNavBeacons_ASE" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd">
 
-  <order id="JP_ResupplyNavBeacons_ASE" name="ResupplyNavBeacons_ASE JP" category="internal" infinite="false">
+  <order id="JP_ResupplyNavBeacons_ASE" name="_ResupplyNavBeacons_ASE JP" category="internal" infinite="false">
     <params>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="RESTOCK_AMOUNT" text="{8888888, 176}" comment="Amount to restock" type="number" default="3">
+      <param name="RESTOCK_AMOUNT" text="Amount to restock" type="number" default="3">
         <input_param name="step" value="1"/>
         <input_param name="min" value="1"/>
         <input_param name="max" value="10"/>
       </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <!-- DEBUG -->
-      <param name="DEBUG" text="DebugText" type="number" default="0" advanced="1">
+      <param name="DEBUG" text="DebugText" type="number" default="0" advanced="true">
         <input_param name="min" value="0"/>
         <input_param name="max" value="100"/>
         <input_param name="step" value="100"/>

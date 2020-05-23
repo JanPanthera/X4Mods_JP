@@ -2,7 +2,7 @@
 
 <aiscript name="JP_ExploreAbandonedShip" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd">
 
-  <order id="JP_ExploreAbandonedShip" name="JP ExploreAbandonedShip" category="internal" infinite="false">
+  <order id="JP_ExploreAbandonedShip" name="_ExploreAbandonedShip JP" category="internal" infinite="false">
     <params>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="ABANDONED_SHIP" text="AbandonedShip" type="object" required="true"/>
@@ -12,7 +12,7 @@
       <param name="SHOW_MESSAGE" text="'Message when arrived?'" type="bool" default="true"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <!-- DEBUG -->
-      <param name="DEBUG" text="DebugText" type="number" default="0" advanced="1">
+      <param name="DEBUG" text="DebugText" type="number" default="0" advanced="true">
         <input_param name="min" value="0"/>
         <input_param name="max" value="100"/>
         <input_param name="step" value="100"/>
@@ -59,11 +59,6 @@
       <!-- Are we in the right sector? -->
       <do_if value="$Ship.sector != $ABANDONED_SHIP.sector">
         <set_command command="command.move" param="$ABANDONED_SHIP.sector"/>
-        <do_if value="$DEBUG gt 0">
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'Moving to: ' + $ABANDONED_SHIP.sector.knownname"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
-        </do_if>
         <run_script name="'move.generic'">
           <param name="destination" value="$ABANDONED_SHIP.sector"/>
           <param name="endintargetzone" value="true"/>
@@ -71,64 +66,39 @@
         </run_script>
       </do_if>
 
-      <do_if value="$DEBUG gt 0">
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'Moving to the abandoned ship..'"/>
-      </do_if>
 
       <label name="MOVING"/>
-      <get_safe_pos result="$TempPosition" zone="$ABANDONED_SHIP.sector" object="$ABANDONED_SHIP" directionobject="$Ship" radius="$Ship.size" ignored="$Ship"/>
-      <move_to object="$Ship" destination="$ABANDONED_SHIP.sector" finishonapproach="false" forceposition="true" travel="true">
-        <position value="$TempPosition"/>
-        <interrupt_after_time time="2s"/>
+      <get_safe_pos result="$_TempPosition" zone="$ABANDONED_SHIP.sector" object="$ABANDONED_SHIP" directionobject="$Ship" radius="(($Ship.size / 2) + 2km)"/>
+      <move_to object="$Ship" destination="$ABANDONED_SHIP.sector" travel="true" forceposition="true">
+        <position value="$_TempPosition"/>
       </move_to>
       <wait exact="1ms"/>
-      <do_if value="$Ship.distanceto.{$ABANDONED_SHIP} gt 1000m">
-        <resume label="MOVING"/>
-      </do_if>
-      <remove_value name="$TempPosition"/>
+      <remove_value name="$_TempPosition"/>
       <stop_moving object="$Ship"/>
-
       <!-- Wait here a bit that the ship stops completely first... -->
       <wait min="3s" max="6s"/>
-      <do_if value="$DEBUG gt 0">
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'Arrived at the abandoned ship.'"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
-      </do_if>
+
 
       <!-- Deploying a nav beacon besides the data vault -->
       <do_if value="$PLACE_NAVBEACON">
-        <do_if value="$DEBUG gt 0">
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'Deploying a navigation beacon at the abandoned ship.'"/>
-        </do_if>
         <launch_navbeacon object="$Ship" category="deployablecategory.navbeacon" name="$NavBeacon"/>
-        <set_object_name object="$NavBeacon" name="'\033#FF00CC66#' + '{8888888, 108}' + ' ~ ' + '\033X' + '\033#FF00CCCC#' + $NavBeacon.sector.knownname + '\033X'"/>
-        <do_if value="$DEBUG gt 0">
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'%1 [%2] deployed in sector: %3 [%4]'.[{20201, 20801}, $NavBeacon.idcode, $NavBeacon.sector.knownname, $NavBeacon.sector.owner.knownname]"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
-        </do_if>
+        <set_object_name object="$NavBeacon" name="'\033#FF00CC66#{8888888, 116}\033X\033#FF00CCCC# ~ ' + $NavBeacon.sector.knownname + '\033X'"/>
         <remove_value name="$NavBeacon"/>
         <wait min="3s" max="6s"/>
       </do_if>
 
       <do_if value="$SHOW_MESSAGE">
         <show_help custom="'%1 [%2]\n'.[$Ship.knownname, $Ship.idcode] +
-                           {8888888, 109} + ':\n' +
+                           {8888888, 117} + ':\n' +
                            '%1 [%2]\n'.[$ABANDONED_SHIP.knownname, $ABANDONED_SHIP.idcode] +
                            {20001, 201} + ' %1 ~ %2\n'.[$ABANDONED_SHIP.sector.knownname, $ABANDONED_SHIP.sector.owner.knownname] + 
-                           {8888888, 110} + ' %1s'.[$WAIT_AMOUNT]"
+                           {8888888, 118} + ' %1s'.[$WAIT_AMOUNT]"
                    duration="10s" force="true" position="2" allowclose="true"/>
       </do_if>
 
       <!-- Wait there.. so the player can teleport there and can occupie it.. -->
       <!-- But the player has to wait exact that amount.. so he can't continue if he was to fast... -->
       <do_if value="$WAIT_AT_SHIP">
-        <do_if value="$DEBUG gt 0">
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'I will wait %1s'.[$WAIT_AMOUNT]"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
-        </do_if>
         <wait exact="$WAIT_AMOUNT"/>
       </do_if>
 

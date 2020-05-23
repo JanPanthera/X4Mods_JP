@@ -2,28 +2,32 @@
 
 <aiscript name="JP_AbandonedShipExplorer" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd">
 
-  <order id="JP_AbandonedShipExplorer" name="_AbandonedShipExplorer JP" category="navigation" infinite="true">
+  <order id="JP_AbandonedShipExplorer" name="{8888888, 197}AbandonedShipExplorer{8888888, 199}" category="navigation" infinite="true">
     <params>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="ENEMY_SECTORS" text="{8888888, 100}" comment="Include enemy sectors?" type="bool" default="false"/>
-      <param name="SHOW_MESSAGE" text="{8888888, 101}" comment="Message when arrived?" type="bool" default="true"/>
-      <param name="WAIT_AT_SHIP" text="{8888888, 102}" comment="Wait at the ship?" type="bool" default="true"/>
-      <param name="WAIT_AMOUNT" text="{8888888, 103}" comment="How long to wait?" type="time" default="60s">
+      <param name="ENEMY_SECTORS" text="{8888888, 100}" comment="Include enemy sectors?" type="bool" default="if global.$EnemySectorsASE? then global.$EnemySectorsASE else false"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="SHOW_MESSAGE" text="{8888888, 110}" comment="Message when arrived?" type="bool" default="if global.$ShowMessageASE? then global.$ShowMessageASE else true"/>
+      <param name="WAIT_AT_SHIP" text="{8888888, 111}" comment="Wait at the ship?" type="bool" default="if global.$WaitAtShipASE? then global.$WaitAtShipASE else true"/>
+      <param name="WAIT_AMOUNT" text="{8888888, 112}" comment="How long to wait?" type="time" default="if global.$WaitAmountASE? then global.$WaitAmountASE else 60s">
         <input_param name="step" value="10s"/>
         <input_param name="min" value="10s"/>
         <input_param name="max" value="3600s"/>
       </param>
-      <param name="PLACE_NAVBEACON" text="{8888888, 104}" comment="Place navigation beacons?" type="bool" default="true"/>
-      <param name="RESTOCK_NAV_BEACONS" text="{8888888, 105}" comment="Restock navigation beacons?" type="bool" default="true"/>
-      <param name="RESTOCK_AMOUNT" text="{8888888, 106}" comment="Amount to restock" type="number" default="3">
+      <param name="PLACE_NAVBEACON" text="{8888888, 113}" comment="Place navigation beacons?" type="bool" default="if global.$PlaceNavbeaconASE? then global.$PlaceNavbeaconASE else true"/>
+      <param name="RESTOCK_NAV_BEACONS" text="{8888888, 114}" comment="Restock navigation beacons?" type="bool" default="if global.$RestockNavBeaconsASE? then global.$RestockNavBeaconsASE else true"/>
+      <param name="RESTOCK_AMOUNT" text="{8888888, 115}" comment="Amount to restock" type="number" default="3">
         <input_param name="step" value="1"/>
         <input_param name="min" value="1"/>
         <input_param name="max" value="if this.ship.ammostorage.deployable.free le 0 then 1 else this.ship.ammostorage.deployable.free"/>
       </param>
-      <param name="ADD_ORDER_TAG" text="{8888888, 107}" comment="Add order tag?" type="bool" default="true"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="ADD_ORDER_TAG" text="{8888888, 194}" comment="Add order tag?" type="bool" default="if global.$AddOrderTagASE? then global.$AddOrderTagASE else true"/>
+      <param name="SAVE_SETTINGS" text="{8888888, 195}" comment="SaveSettings" type="bool" default="false"/>
+      <param name="DELETE_SETTINGS" text="{8888888, 196}" comment="DeleteSettings" type="bool" default="false"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <!-- DEBUG -->
-      <param name="DEBUG" text="DebugText" type="number" default="0" advanced="1">
+      <param name="DEBUG" text="DebugText" type="number" default="if global.$DebugASE? then global.$DebugASE else 0" advanced="true">
         <input_param name="min" value="0"/>
         <input_param name="max" value="100"/>
         <input_param name="step" value="100"/>
@@ -58,6 +62,45 @@
     <set_value name="this.$OldName" exact="this.ship.name"/>
     <do_if value="$ADD_ORDER_TAG">
       <set_object_name object="this.ship" name="this.ship.name + '\033#FFA2560B# #ASE\033X'"/>
+    </do_if>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <do_if value="$SAVE_SETTINGS">
+      <do_if value="not global.$EnemySectorsASE? or @global.$EnemySectorsASE != $ENEMY_SECTORS">
+        <set_value name="global.$EnemySectorsASE" exact="$ENEMY_SECTORS"/>
+      </do_if>
+      <do_if value="not global.$ShowMessageASE? or @global.$ShowMessageASE != $SHOW_MESSAGE">
+        <set_value name="global.$ShowMessageASE" exact="$SHOW_MESSAGE"/>
+      </do_if>
+      <do_if value="not global.$WaitAtShipASE? or @global.$WaitAtShipASE != $WAIT_AT_SHIP">
+        <set_value name="global.$WaitAtShipASE" exact="$WAIT_AT_SHIP"/>
+      </do_if>
+      <do_if value="not global.$WaitAmountASE? or @global.$WaitAmountASE != $WAIT_AMOUNT">
+        <set_value name="global.$WaitAmountASE" exact="$WAIT_AMOUNT"/>
+      </do_if>
+      <do_if value="not global.$PlaceNavbeaconASE? or @global.$PlaceNavbeaconASE != $PLACE_NAVBEACON">
+        <set_value name="global.$PlaceNavbeaconASE" exact="$PLACE_NAVBEACON"/>
+      </do_if>
+      <do_if value="not global.$RestockNavBeaconsASE? or @global.$RestockNavBeaconsASE != $RESTOCK_NAV_BEACONS">
+        <set_value name="global.$RestockNavBeaconsASE" exact="$RESTOCK_NAV_BEACONS"/>
+      </do_if>
+      <do_if value="not global.$AddOrderTagASE? or @global.$AddOrderTagASE != $ADD_ORDER_TAG">
+        <set_value name="global.$AddOrderTagASE" exact="$ADD_ORDER_TAG"/>
+      </do_if>
+      <do_if value="not global.$DebugASE? or @global.$DebugASE != $DEBUG">
+        <set_value name="global.$DebugASE" exact="$DEBUG"/>
+      </do_if>
+    </do_if>
+    <do_if value="$DELETE_SETTINGS">
+      <remove_value name="global.$EnemySectorsASE"/>
+      <remove_value name="global.$ShowMessageASE"/>
+      <remove_value name="global.$WaitAtShipASE"/>
+      <remove_value name="global.$WaitAmountASE"/>
+      <remove_value name="global.$PlaceNavbeaconASE"/>
+      <remove_value name="global.$RestockNavBeaconsASE"/>
+      <remove_value name="global.$AddOrderTagASE"/>
+      <remove_value name="global.$DebugASE"/>
+      <!-- Cancel order because the settings are invalid.. because they were deleted -->
+      <cancel_order order="this.ship.order"/>
     </do_if>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
   </init>

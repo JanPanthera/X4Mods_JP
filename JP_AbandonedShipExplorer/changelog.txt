@@ -1,0 +1,4 @@
+~ Added: saving and deleting of the most settings
+~ Added: order name is now colored
+~ Updated: language files restructuring
+~ Updated: added some translations.. (google translate)
