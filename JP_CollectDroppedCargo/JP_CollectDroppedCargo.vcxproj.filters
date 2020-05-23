@@ -21,6 +21,9 @@
     <Xsd Include="aiscripts\aiscripts.xsd">
       <Filter>Headerdateien</Filter>
     </Xsd>
+    <Xsd Include="md\md.xsd">
+      <Filter>Headerdateien</Filter>
+    </Xsd>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="JP_CollectDroppedCargo\aiscripts\JP_CollectDroppedCargo.xml" />
@@ -52,5 +55,9 @@
     <Xml Include="t\0001-L088.xml" />
     <Xml Include="libraries\icons.xml" />
     <Xml Include="aiscripts\JP_EmptyCargoBay.xml" />
+    <Xml Include="t\0001.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="changelog.txt" />
   </ItemGroup>
 </Project>

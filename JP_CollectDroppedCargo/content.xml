@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<content id="JP_CollectDroppedCargo" name="JP_CollectDroppedCargo" description="Collects dropped cargo and inventory items." author="JanPanthera" version="120" date="2020-04-12" save="0" enabled="1">
-  <dependency version="300"/>
-  <dependency id="JP_ScriptLibrary" version="100"/>
+<content id="JP_CollectDroppedCargo" name="JP_CollectDroppedCargo" description="Collects dropped cargo and inventory items." author="JanPanthera" version="121" date="2020-05-23" save="0" enabled="1">
   <text language="7"  name="JP_CollectDroppedCargo" description="Мод добавляет опции кораблям для сбора сброшенного груза и инвентаря." author="JanPanthera"/>
   <text language="33" name="JP_CollectDroppedCargo" description="Collects dropped cargo and inventory items." author="JanPanthera"/>
   <text language="34" name="JP_CollectDroppedCargo" description="Collects dropped cargo and inventory items." author="JanPanthera"/>
@@ -15,6 +13,3 @@
   <text language="86" name="JP_CollectDroppedCargo" description="Collects dropped cargo and inventory items." author="JanPanthera"/>
   <text language="88" name="JP_CollectDroppedCargo" description="Collects dropped cargo and inventory items." author="JanPanthera"/>
 </content>
-
-<!-- Russian ~~ Русский (language=7) translation by alexalsp -->
-<!-- French ~~ Français (language=33) translation by darkslimus / Xchange Guild -->

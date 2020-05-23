@@ -3,12 +3,12 @@
 <language>
   <page id="8888888" voice="no">
     <!--  JP_CollectDroppedCargo -->
-    <t id="1">Collecter items de cargaison?</t>
-    <t id="2">Collect items d'inventaire?</t>
-    <t id="3">Vendre la cargaison quand la soute est pleine?</t>
-    <t id="4">Rechercher indéfiniment?</t>
-    <t id="5">instantané?</t>
-    <t id="6">Collecter dans l'inventaire du joueur?</t>
+    <t id="700">Collecter items de cargaison?</t>
+    <t id="701">Collect items d'inventaire?</t>
+    <t id="702">Vendre la cargaison quand la soute est pleine?</t>
+    <t id="703">instantané?</t>
+    <t id="797">\033#B600CCCC#</t>
+    <t id="798">\033#FF00CC66#</t>
+    <t id="799">\033X</t>
   </page>
 </language>
-<!-- Thanks to darkslimus / Xchange Guild -->

@@ -126,6 +126,7 @@
   <ItemGroup>
     <Xsd Include="aiscripts\aiscripts.xsd" />
     <Xsd Include="JP_CollectDroppedCargo\aiscripts\aiscripts.xsd" />
+    <Xsd Include="md\md.xsd" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="aiscripts\JP_EmptyCargoBay.xml" />
@@ -157,6 +158,10 @@
     <Xml Include="t\0001-L082.xml" />
     <Xml Include="t\0001-L086.xml" />
     <Xml Include="t\0001-L088.xml" />
+    <Xml Include="t\0001.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="changelog.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

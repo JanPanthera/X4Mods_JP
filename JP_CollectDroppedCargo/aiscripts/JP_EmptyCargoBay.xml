@@ -4,21 +4,22 @@
 
   <order id="JP_EmptyCargoBay" name="EmptyCargoBay JP" category="internal" infinite="false">
     <params>
-      <param name="SECTOR" text="{20001, 201}" type="object" default="this.sector">
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="SECTOR" text="Sector" type="object" default="this.sector">
         <input_param name="class" value="[class.sector]"/>
       </param>
-      <param name="COLLECT_CARGO" text="{8888888,1}" comment="Collect Cargo items?" type="bool" default="true"/>
-      <param name="SELL_CARGO" text="{8888888,3}" comment="Sell cargo when full?" type="bool" default="true"/>
-      <param name="COLLECT_INVENTORY" text="{8888888,2}" comment="Collect Inventory items?" type="bool" default="true"/>
-      <param name="TO_PLAYER_INV" text="{8888888,6}" comment="Collect to Player inventory?" type="bool" default="false"/>
-      <!-- Cheaty Version ~ collects without flying to the object ~ (/thereshallbewings) -->
-      <param name="INSTANT" text="{8888888,5}" comment="Instant?" type="bool" default="false" advanced="true"/>
+      <param name="COLLECT_CARGO" text="Collect Cargo items?" type="bool" default="true"/>
+      <param name="COLLECT_INVENTORY" text="Collect Inventory items?" type="bool" default="true"/>
+      <param name="SELL_CARGO" text="Sell cargo when full?" type="bool" default="true"/>
+      <param name="INSTANT" text="Instant?" type="bool" default="false" advanced="true"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <!-- DEBUG -->
-      <param name="DEBUG" text="DebugText" type="number" default="0.0" advanced="1">
-        <input_param name="min" value="0.0"/>
-        <input_param name="max" value="1.0"/>
-        <input_param name="step" value="0.1"/>
+      <param name="DEBUG" text="DebugText" type="number" default="0" advanced="true">
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="100"/>
+        <input_param name="step" value="100"/>
       </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     </params>
     <skill min="0"/>
     <requires>
@@ -41,8 +42,8 @@
 
   <init>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-    <set_value name="$DebugDirectory" exact="'JP_EmptyCargoBay.logs'"/>
-    <set_value name="$DebugFileName" exact="'JP_EmptyCargoBay.xml.log'"/>
+    <set_value name="$DebugDirectory" exact="'JP_CollectDroppedCargo.logs'"/>
+    <set_value name="$DebugFileName" exact="this.ship.idcode + '.JP_EmptyCargoBay.xml.log'"/>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <set_value name="$Ship" exact="this.ship"/>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -55,7 +56,7 @@
       <label name="INIT"/>
       <cancel_all_orders object="this.ship"/>
 
-      <do_if value="$DEBUG gt 0.0">
+      <do_if value="$DEBUG gt 0">
         <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_EmptyCargoBay.xml ~ Started ~~' + '\n'"/>
       </do_if>
@@ -63,7 +64,7 @@
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
       <label name="RESUME"/>
-      
+
       <!-- When all wares are sold we will create the CollectDroppedCargo order again.. with the user specified settings -->
       <do_if value="$Ship.cargo.free.container == $Ship.cargo.capacity.container">
         <create_order default="true" id="'JP_CollectDroppedCargo'" object="$Ship">
@@ -71,7 +72,6 @@
           <param name="COLLECT_CARGO" value="$COLLECT_CARGO"/>
           <param name="SELL_CARGO" value="$SELL_CARGO"/>
           <param name="COLLECT_INVENTORY" value="$COLLECT_INVENTORY"/>
-          <param name="TO_PLAYER_INV" value="$TO_PLAYER_INV"/>
           <param name="INSTANT" value="$INSTANT"/>
         </create_order>
       </do_if>
@@ -93,7 +93,7 @@
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-      <do_if value="$DEBUG gt 0.0">
+      <do_if value="$DEBUG gt 0">
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_EmptyCargoBay.xml ~ Finished ~~'"/>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
       </do_if>

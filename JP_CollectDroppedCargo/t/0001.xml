@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- German ~~ Deutsch -->
+<!-- Default ~~ English -->
 <language>
   <page id="8888888" voice="no">
     <!--  JP_CollectDroppedCargo -->
-    <t id="700">Frachtgut sammeln?</t>
-    <t id="701">Inventargegenstände sammeln?</t>
-    <t id="702">Ladung verkaufen, wenn voll?</t>
-    <t id="720">Instantan aufsammeln?</t>
+    <t id="700">Collect Cargo items?</t>
+    <t id="701">Collect Inventory items?</t>
+    <t id="702">Sell cargo when full?</t>
+    <t id="720">Instant Collect?</t>
     <t id="797">\033#B600CCCC#</t>
     <t id="798">\033#FF00CC66#</t>
     <t id="799">\033X</t>
