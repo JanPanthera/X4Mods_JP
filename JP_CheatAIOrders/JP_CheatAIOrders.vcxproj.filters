@@ -43,4 +43,7 @@
       <Filter>Header Files</Filter>
     </Xsd>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="changelog.txt" />
+  </ItemGroup>
 </Project>

@@ -1,0 +1,3 @@
+~ Added: order name is now colored..
+~ Added: translation files..
+~ Updated: added some translations.. (google translate)

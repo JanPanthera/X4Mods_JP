@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<content id="JP_SatelliteDropper" name="JP_SatelliteDropper" description="Drops near every Gate or Station a satellite." author="JanPanthera" version="110" date="2020-04-24" save="0" enabled="1">
-  <dependency version="300"/>
-  <text language="7"  name="JP_SatelliteDropper" description="Drops near every Gate or Station a satellite." author="JanPanthera"/>
-  <text language="33" name="JP_SatelliteDropper" description="Place un satellite près de toutes stations ou portes spatiales." author="JanPanthera"/>
-  <text language="34" name="JP_SatelliteDropper" description="Drops near every Gate or Station a satellite." author="JanPanthera"/>
-  <text language="39" name="JP_SatelliteDropper" description="Drops near every Gate or Station a satellite." author="JanPanthera"/>
-  <text language="44" name="JP_SatelliteDropper" description="Drops near every Gate or Station a satellite." author="JanPanthera"/>
-  <text language="49" name="JP_SatelliteDropper" description="Lässt in der Nähe jedes Tores oder jeder Station einen Satelliten fallen." author="JanPanthera"/>
-  <text language="55" name="JP_SatelliteDropper" description="Drops near every Gate or Station a satellite." author="JanPanthera"/>
-  <text language="81" name="JP_SatelliteDropper" description="Drops near every Gate or Station a satellite." author="JanPanthera"/>
-  <text language="82" name="JP_SatelliteDropper" description="Drops near every Gate or Station a satellite." author="JanPanthera"/>
-  <text language="86" name="JP_SatelliteDropper" description="Drops near every Gate or Station a satellite." author="JanPanthera"/>
-  <text language="88" name="JP_SatelliteDropper" description="Drops near every Gate or Station a satellite." author="JanPanthera"/>
+<content id="JP_CheatAIOrders" name="JP_CheatAIOrders" description="Just a collection of AI order based cheats like GiveMeMoney or TeleportThatShipOrFleetThere" author="JanPanthera" version="101" date="2020-05-23" save="0" enabled="1">
+  <text language="7"  name="JP_CheatAIOrders" description="Just a collection of AI order based cheats like GiveMeMoney or TeleportThatShipOrFleetThere" author="JanPanthera"/>
+  <text language="33" name="JP_CheatAIOrders" description="Just a collection of AI order based cheats like GiveMeMoney or TeleportThatShipOrFleetThere" author="JanPanthera"/>
+  <text language="34" name="JP_CheatAIOrders" description="Just a collection of AI order based cheats like GiveMeMoney or TeleportThatShipOrFleetThere" author="JanPanthera"/>
+  <text language="39" name="JP_CheatAIOrders" description="Just a collection of AI order based cheats like GiveMeMoney or TeleportThatShipOrFleetThere" author="JanPanthera"/>
+  <text language="44" name="JP_CheatAIOrders" description="Just a collection of AI order based cheats like GiveMeMoney or TeleportThatShipOrFleetThere" author="JanPanthera"/>
+  <text language="49" name="JP_CheatAIOrders" description="Just a collection of AI order based cheats like GiveMeMoney or TeleportThatShipOrFleetThere" author="JanPanthera"/>
+  <text language="55" name="JP_CheatAIOrders" description="Just a collection of AI order based cheats like GiveMeMoney or TeleportThatShipOrFleetThere" author="JanPanthera"/>
+  <text language="81" name="JP_CheatAIOrders" description="Just a collection of AI order based cheats like GiveMeMoney or TeleportThatShipOrFleetThere" author="JanPanthera"/>
+  <text language="82" name="JP_CheatAIOrders" description="Just a collection of AI order based cheats like GiveMeMoney or TeleportThatShipOrFleetThere" author="JanPanthera"/>
+  <text language="86" name="JP_CheatAIOrders" description="Just a collection of AI order based cheats like GiveMeMoney or TeleportThatShipOrFleetThere" author="JanPanthera"/>
+  <text language="88" name="JP_CheatAIOrders" description="Just a collection of AI order based cheats like GiveMeMoney or TeleportThatShipOrFleetThere" author="JanPanthera"/>
 </content>

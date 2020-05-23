@@ -2,24 +2,25 @@
 
 <aiscript name="JP_TeleportThatShipOrFleetThere" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd">
 
-  <order id="JP_TeleportThatShipOrFleetThere" name="Cheat TeleportThatShipOrFleetThere JP" category="navigation" infinite="true">
+  <order id="JP_TeleportThatShipOrFleetThere" name="{8888888, 697}TeleportThatShipOrFleetThere - {8888888, 699}{8888888, 698}Cheat{8888888, 699}" category="navigation" infinite="true">
     <params>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="WHOLE_FLEET" text="Whole Fleet?" type="bool" default="false"/>
-      <param name="OBJECT" text="Object" comment="Object" type="object" default="this.ship">
+      <param name="WHOLE_FLEET" text="{8888888, 620}" comment="Whole Fleet?" type="bool" default="false"/>
+      <param name="OBJECT" text="{1001, 23}" comment="Object" type="object" default="this.ship">
         <input_param name="owner" value="this.ship.owner"/>
         <input_param name="class" value="[class.ship]"/>
       </param>
-      <param name="DESTINATION" text="{1041, 10027}" comment="Targed" type="position" required="true">
+      <param name="DESTINATION" text="{1041, 10027}" comment="Destination" type="position" required="true">
         <input_param name="class" value="class.sector"/>
       </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <!-- DEBUG -->
-      <param name="DEBUG" text="DebugText" type="number" default="0.0" advanced="1">
-        <input_param name="min" value="0.0"/>
-        <input_param name="max" value="1.0"/>
-        <input_param name="step" value="0.1"/>
+      <param name="DEBUG" text="DebugText" type="number" default="0" advanced="true">
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="100"/>
+        <input_param name="step" value="100"/>
       </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     </params>
     <skill min="0"/>
     <requires>
@@ -56,7 +57,7 @@
       <label name="INIT"/>
       <cancel_all_orders object="this.ship"/>
 
-      <do_if value="$DEBUG gt 0.0">
+      <do_if value="$DEBUG gt 0">
         <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_TeleportThatShipOrFleetThere.xml ~ Started ~~' + '\n'"/>
       </do_if>
@@ -90,7 +91,7 @@
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-      <do_if value="$DEBUG gt 0.0">
+      <do_if value="$DEBUG gt 0">
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_TeleportThatShipOrFleetThere.xml ~ Finished ~~'"/>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
       </do_if>

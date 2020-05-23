@@ -2,5 +2,15 @@
 <!-- Portuguese (Brazil) ~~ Português (Brasil) -->
 <language>
   <page id="8888888" voice="no">
+    <!-- JP_CheatAIOrders -->
+    <t id="600">Experiência de embarque?</t>
+    <t id="601">Experiência em engenharia?</t>
+    <t id="602">Experiência administrativa?</t>
+    <t id="603">Experiência moral?</t>
+    <t id="604">Experiência de pilotagem?</t>
+    <t id="620">Frota inteira?</t>
+    <t id="697">\033#B600CCCC#</t>
+    <t id="698">\033#FF00CC66#</t>
+    <t id="699">\033X</t>
   </page>
 </language>
