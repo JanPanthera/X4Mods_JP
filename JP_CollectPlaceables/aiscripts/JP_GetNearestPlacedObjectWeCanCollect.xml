@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<aiscript name="JP_GetNearestPlacedObjectWeCanCollect" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd">
+
+  <order id="JP_GetNearestPlacedObjectWeCanCollect" name="GetNearestPlacedObjectWeCanCollect JP" category="internal" infinite="false">
+    <params>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="ENEMY_SECTORS" text="EnemySectors" comment="EnemySectors?" type="bool" default="false"/>
+      <param name="NEUTRAL_SECTORS" text="NeutralSectors" comment="NeutralSectors?" type="bool" default="true"/>
+      <param name="FRIENDLY_SECTORS" text="FriendlySectors" comment="FriendlySectors?" type="bool" default="true"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="MINES" text="Collect Mines?" type="bool" default="false"/>
+      <param name="SATELLITES" text="Collect Satellites?" type="bool" default="false"/>
+      <param name="NAVBEACONS" text="Collect Navigation Beacons?" type="bool" default="false"/>
+      <param name="RESOURCEPROBES" text="Collect Resource Probes?" type="bool" default="false"/>
+      <param name="LASERTOWERS" text="Collect Laser Towers?" type="bool" default="false"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <!-- If not specified the script will search the galaxy for sectors with placed objects.. if not.. it simply searches in SECTOR -->
+      <param name="SECTOR" text="{20001, 201}" comment="Sector" type="object" default="null" required="false">
+        <input_param name="class" value="[class.sector]"/>
+      </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <!-- DEBUG -->
+      <param name="DEBUG" text="DebugText" type="number" default="0" advanced="true">
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="100"/>
+        <input_param name="step" value="100"/>
+      </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    </params>
+    <requires>
+      <match shiptype="shiptype.lasertower" negate="true"/>
+    </requires>
+  </order>
+
+  <interrupts>
+  </interrupts>
+
+  <init>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <set_value name="$DebugDirectory" exact="'JP_CollectPlaceables.logs'"/>
+    <set_value name="$DebugFileName" exact="this.ship.idcode + '.JP_GetNearestPlacedObjectWeCanCollect.xml.log'"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <set_value name="$Ship" exact="this.ship"/>
+    <set_value name="$NearestPlacedObject" exact="'NoCollectablePlacedObjectFound'"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  </init>
+
+  <attention min="unknown">
+    <actions>
+
+      <wait exact="1ms"/>
+      <label name="INIT"/>
+
+      <do_if value="$DEBUG gt 0">
+        <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_GetNearestPlacedObjectWeCanCollect.xml ~ Started ~~' + '\n'"/>
+      </do_if>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <create_list name="$_Sectors"/>
+      <do_if value="$SECTOR != null">
+        <append_to_list name="$_Sectors" exact="$SECTOR"/>
+        <resume label="FIND_OBJECTS"/>
+      </do_if>
+
+      <create_list name="$_TempSectors"/>
+      <find_sector name="$_TempSectors" space="player.galaxy" multiple="true">
+      </find_sector>
+
+      <include_interrupt_actions ref="GetBlacklistgroup"/>
+
+      <do_for_each name="$_Sector" in="$_TempSectors">
+        <do_if value="$Ship.gatedistance.{$_Sector} lt 0">
+          <continue/>
+        </do_if>
+        <do_if value="$_Sector.isblacklisted.{blacklisttype.sectortravel}.{$blacklistgroup}.{$Ship} or $_Sector.isblacklisted.{blacklisttype.objectactivity}.{$blacklistgroup}.{$Ship}">
+          <continue/>
+        </do_if>
+        <do_if value="$_Sector.owner.mayattack.{$Ship} and not $ENEMY_SECTORS">
+          <continue/>
+        </do_if>
+        <do_if value="$_Sector.owner == faction.ownerless and not $NEUTRAL_SECTORS">
+          <continue/>
+        </do_if>
+        <do_if value="not $_Sector.owner.mayattack.{$Ship} and not $FRIENDLY_SECTORS">
+          <continue/>
+        </do_if>
+        <append_to_list name="$_Sectors" exact="$_Sector"/>
+      </do_for_each>
+
+      <remove_value name="$_TempSectors"/>
+
+      <do_if value="$_Sectors.count gt 1">
+        <sort_list list="$_Sectors" sortbyvalue="$Ship.gatedistance.{loop.element}"/>
+      </do_if>
+
+      <label name="FIND_OBJECTS"/>
+
+      <do_for_each name="$_Sector" in="$_Sectors">
+
+        <create_list name="$_Objects"/>
+
+        <do_if value="$MINES">
+          <find_object name="$_Objects" space="$_Sector" multiple="true" append="true">
+            <match class="class.mine"/>
+            <match owner="$Ship.owner"/>
+          </find_object>
+        </do_if>
+
+        <do_if value="$SATELLITES">
+          <find_object name="$_Objects" space="$_Sector" multiple="true" append="true">
+            <match class="class.satellite"/>
+            <match owner="$Ship.owner"/>
+          </find_object>
+        </do_if>
+
+        <do_if value="$NAVBEACONS">
+          <find_object name="$_Objects" space="$_Sector" multiple="true" append="true">
+            <match class="class.navbeacon"/>
+            <match owner="$Ship.owner"/>
+          </find_object>
+        </do_if>
+
+        <do_if value="$RESOURCEPROBES">
+          <find_object name="$_Objects" space="$_Sector" multiple="true" append="true">
+            <match class="class.resourceprobe"/>
+            <match owner="$Ship.owner"/>
+          </find_object>
+        </do_if>
+
+        <do_if value="$LASERTOWERS">
+          <find_object name="$_Objects" space="$_Sector" multiple="true" append="true">
+            <match shiptype="shiptype.lasertower"/>
+            <match owner="$Ship.owner"/>
+          </find_object>
+        </do_if>
+
+        <do_if value="$_Objects.count gt 0">
+          <do_if value="$_Objects.count gt 1">
+            <sort_list list="$_Objects" sortbyvalue="$Ship.distanceto.{loop.element}"/>
+          </do_if>
+          <set_value name="$NearestPlacedObject" exact="$_Objects.{1}"/>
+          <remove_value name="$_Objects"/>
+          <break/>
+        </do_if>
+        <remove_value name="$_Objects"/>
+
+      </do_for_each>
+
+      <label name="FINISH"/>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <do_if value="$DEBUG gt 0">
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_GetNearestPlacedObjectWeCanCollect.xml ~ Finished ~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+      </do_if>
+
+      <label name="CLEANUP"/>
+      <remove_value name="$Ship"/>
+      <remove_value name="$DebugFileName"/>
+      <remove_value name="$DebugDirectory"/>
+
+      <label name="END"/>
+      <wait exact="1ms"/>
+
+      <label name="RETURN"/>
+      <return>
+        <retval name="NEAREST_PLACED_OBJECT" value="$NearestPlacedObject"/>
+      </return>
+
+    </actions>
+  </attention>
+
+  <on_abort>
+  </on_abort>
+
+</aiscript>

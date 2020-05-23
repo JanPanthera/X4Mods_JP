@@ -3,14 +3,20 @@
 <language>
   <page id="8888888" voice="no">
     <!-- JP_CollectPlaceables -->
-    <t id="131">Add order tag?</t>
-    <t id="132">Enemy Sectors?</t>
-    <t id="133">Collecter les Mines?</t>
-    <t id="134">Collecter les Satellites?</t>
-    <t id="135">Collecter les Balises de Navigation?</t>
-    <t id="136">Collecter les Sondes de Ressources?</t>
-    <t id="137">Collecter les Tours Laser?</t>
-    <t id="138">Collecter instantanément?</t>
+    <t id="800">Secteurs ennemis?</t> 
+    <t id="801">Secteurs neutres?</t> 
+    <t id="802">Secteurs amis?</t> 
+    <t id="810">Collectionner des mines?</t> 
+    <t id="811">Collectionner des satellites?</t> 
+    <t id="812">Récupérer des balises de navigation?</t> 
+    <t id="813">Collecter des sondes de ressources?</t> 
+    <t id="814">Collectionner des tours laser?</t> 
+    <t id="820">Collecte instantanée?</t> 
+    <t id="894">Ajouter une étiquette de commande?</t> 
+    <t id="895">Enregistrer les paramètres?</t> 
+    <t id="896">Supprimer les paramètres?</t> 
+    <t id="897">\033#B600CCCC#</t>
+    <t id="898">\033#FF00CC66#</t>
+    <t id="899">\033X</t>
   </page>
 </language>
-<!-- Thanks to darkslimus / Xchange Guild -->

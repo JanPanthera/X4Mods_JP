@@ -54,10 +54,12 @@
     <Xml Include="aiscripts\JP_CollectPlaceablesG.xml" />
     <Xml Include="aiscripts\JP_CollectPlaceablesS.xml" />
     <Xml Include="aiscripts\JP_CollectPlaced.xml" />
-    <Xml Include="aiscripts\JP_GetNearestPlacedObjectToCollect.xml" />
     <Xml Include="libraries\icons.xml" />
     <Xml Include="libraries\experiences.xml" />
     <Xml Include="t\0001.xml" />
-    <Xml Include="aiscripts\JP_GetNearestSectorWithPlacedObjectsToCollect.xml" />
+    <Xml Include="aiscripts\JP_GetNearestPlacedObjectWeCanCollect.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="changelog.txt" />
   </ItemGroup>
 </Project>

@@ -2,28 +2,31 @@
 
 <aiscript name="JP_CollectPlaceablesS" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd">
 
-  <order id="JP_CollectPlaceablesS" name="CollectPlaceables {20001, 201} JP" category="navigation" infinite="true">
+  <order id="JP_CollectPlaceablesS" name="{8888888, 897}CollectPlaceables - {8888888, 899}{8888888, 898}{20001, 201}{8888888, 899}" category="navigation" infinite="true">
     <params>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="ADD_ORDER_TAG" text="{8888888, 131}" comment="Add order tag?" type="bool" default="true"/>
-      <param name="SECTOR" text="{20001, 201}" comment="Sector" type="object" default="this.sector">
+      <param name="SECTOR" text="{20001, 201}" comment="Sector" type="object" default="if global.$SectorCP? then global.$SectorCP else this.sector">
         <input_param name="class" value="[class.sector]"/>
       </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="MINES" text="{8888888, 133}" comment="Collect Mines?" type="bool" default="false"/>
-      <param name="SATELLITES" text="{8888888, 134}" comment="Collect Satellites?" type="bool" default="false"/>
-      <param name="NAVBEACONS" text="{8888888, 135}" comment="Collect Navigation Beacons?" type="bool" default="false"/>
-      <param name="RESOURCEPROBES" text="{8888888, 136}" comment="Collect Resource Probes?" type="bool" default="false"/>
-      <param name="LASERTOWERS" text="{8888888, 137}" comment="Collect Laser Towers?" type="bool" default="false"/>
+      <param name="MINES" text="{8888888, 810}" comment="Collect Mines?" type="bool" default="if global.$MinesCP? then global.$MinesCP else false"/>
+      <param name="SATELLITES" text="{8888888, 811}" comment="Collect Satellites?" type="bool" default="if global.$SatellitesCP? then global.$SatellitesCP else false"/>
+      <param name="NAVBEACONS" text="{8888888, 812}" comment="Collect Navigation Beacons?" type="bool" default="if global.$NavbeaconsCP? then global.$NavbeaconsCP else false"/>
+      <param name="RESOURCEPROBES" text="{8888888, 813}" comment="Collect Resource Probes?" type="bool" default="if global.$ResourceprobesCP? then global.$ResourceprobesCP else false"/>
+      <param name="LASERTOWERS" text="{8888888, 814}" comment="Collect Laser Towers?" type="bool" default="if global.$LaserTowersCP? then global.$LaserTowersCP else false"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="ADD_ORDER_TAG" text="{8888888, 894}" comment="Add order tag?" type="bool" default="if global.$AddOrderTagCP? then global.$AddOrderTagCP else true"/>
+      <param name="SAVE_SETTINGS" text="{8888888, 895}" comment="SaveSettings" type="bool" default="false"/>
+      <param name="DELETE_SETTINGS" text="{8888888, 896}" comment="DeleteSettings" type="bool" default="false"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <!-- Cheaty Version ~ collects without flying to the object ~ (/thereshallbewings) -->
-      <param name="INSTANT" text="{8888888, 138}" comment="Instant Collect?" type="bool" default="false" advanced="true"/>
+      <param name="INSTANT" text="{8888888, 820}" comment="Instant Collect?" type="bool" default="if global.$InstantCP? then global.$InstantCP else false" advanced="true"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <!-- DEBUG -->
-      <param name="DEBUG" text="DebugText" type="number" default="0.0" advanced="1">
-        <input_param name="min" value="0.0"/>
-        <input_param name="max" value="1.0"/>
-        <input_param name="step" value="0.1"/>
+      <param name="DEBUG" text="DebugText" type="number" default="if global.$DebugCP? then global.$DebugCP else 0" advanced="true">
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="100"/>
+        <input_param name="step" value="100"/>
       </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     </params>
@@ -59,6 +62,49 @@
       <set_object_name object="this.ship" name="this.ship.name + '\033#FFA95908# #CP-S\033X'"/>
     </do_if>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <do_if value="$SAVE_SETTINGS">
+      <do_if value="not global.$AddOrderTagCP? or @global.$AddOrderTagCP != $ADD_ORDER_TAG">
+        <set_value name="global.$AddOrderTagCP" exact="$ADD_ORDER_TAG"/>
+      </do_if>
+      <do_if value="not global.$SectorCP? or @global.$SectorCP != $SECTOR">
+        <set_value name="global.$SectorCP" exact="$SECTOR"/>
+      </do_if>
+      <do_if value="not global.$MinesCP? or @global.$MinesCP != $MINES">
+        <set_value name="global.$MinesCP" exact="$MINES"/>
+      </do_if>
+      <do_if value="not global.$SatellitesCP? or @global.$SatellitesCP != $SATELLITES">
+        <set_value name="global.$SatellitesCP" exact="$SATELLITES"/>
+      </do_if>
+      <do_if value="not global.$NavbeaconsCP? or @global.$NavbeaconsCP != $NAVBEACONS">
+        <set_value name="global.$NavbeaconsCP" exact="$NAVBEACONS"/>
+      </do_if>
+      <do_if value="not global.$ResourceprobesCP? or @global.$ResourceprobesCP != $RESOURCEPROBES">
+        <set_value name="global.$ResourceprobesCP" exact="$RESOURCEPROBES"/>
+      </do_if>
+      <do_if value="not global.$LaserTowersCP? or @global.$LaserTowersCP != $LASERTOWERS">
+        <set_value name="global.$LaserTowersCP" exact="$LASERTOWERS"/>
+      </do_if>
+      <do_if value="not global.$InstantCP? or @global.$InstantCP != $INSTANT">
+        <set_value name="global.$InstantCP" exact="$INSTANT"/>
+      </do_if>
+      <do_if value="not global.$DebugCP? or @global.$DebugCP != $DEBUG">
+        <set_value name="global.$DebugCP" exact="$DEBUG"/>
+      </do_if>
+    </do_if>
+    <do_if value="$DELETE_SETTINGS">
+      <remove_value name="global.$DebugCP"/>
+      <remove_value name="global.$InstantCP"/>
+      <remove_value name="global.$LaserTowersCP"/>
+      <remove_value name="global.$ResourceprobesCP"/>
+      <remove_value name="global.$NavbeaconsCP"/>
+      <remove_value name="global.$SatellitesCP"/>
+      <remove_value name="global.$MinesCP"/>
+      <remove_value name="global.$SectorCP"/>
+      <remove_value name="global.$AddOrderTagCP"/>
+      <!-- Cancel order because the settings are invalid.. because they were deleted -->
+      <cancel_order order="this.ship.order"/>
+    </do_if>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
   </init>
 
   <attention min="unknown">
@@ -81,53 +127,50 @@
       <set_command_action commandaction="commandaction.calculating"/>
 
       <do_if value="$Ship.ammostorage.deployable.free le 0">
-        <show_help custom="'Ship ' + $Ship.knownname + ' cannot collect deployables because there is no place in cargo for them.\nTODO: Some idle functions will follow.'" log="true"/>
-        <!-- TODO: IdleReturn -->
-        <resume label="FINISH"/>
+        <set_command command="command.move" param="$SECTOR"/>
+        <set_object_name object="$Ship" name="$Ship.knownname + ' \033#FFCEFBA1#~ no free storage available for deployables!\033X'"/>
+        <run_script name="'move.random'">
+          <param name="TimeOut" value="60s"/>
+          <param name="Anchor" value="$SECTOR"/>
+          <param name="Offset" value="$SECTOR.coreposition"/>
+          <param name="MaxDistance" value="10km"/>
+        </run_script>
+        <set_object_name object="this.ship" name="if $ADD_ORDER_TAG then this.$OldName + '\033#FFA95908# #CP-S\033X' else this.$OldName"/>
+        <resume label="RESUME"/>
       </do_if>
-      
-      <run_script name="'JP_GetNearestPlacedObjectToCollect'">
-        <param name="SECTOR" value="$SECTOR"/>
+
+      <run_script name="'JP_GetNearestPlacedObjectWeCanCollect'">
         <param name="MINES" value="$MINES"/>
         <param name="SATELLITES" value="$SATELLITES"/>
         <param name="NAVBEACONS" value="$NAVBEACONS"/>
         <param name="RESOURCEPROBES" value="$RESOURCEPROBES"/>
         <param name="LASERTOWERS" value="$LASERTOWERS"/>
+        <param name="SECTOR" value="$SECTOR"/>
         <param name="DEBUG" value="$DEBUG"/>
         <save_retval name="NEAREST_PLACED_OBJECT" variable="$NearestPlacedObject"/>
       </run_script>
 
       <!-- TODO: IDLE STUFF -->
-      <do_if value="$NearestPlacedObject == 'NoPlacedObjectFound'">
+      <do_if value="$NearestPlacedObject == 'NoCollectablePlacedObjectFound'">
         <set_command command="command.move" param="$SECTOR"/>
-        <set_object_name object="$Ship" name="$Ship.name + ' \033#FFCEFBA1#~ nothing to do - moving randomly ~ TODO!\033X'"/>
+        <set_object_name object="$Ship" name="$Ship.knownname + ' \033#FFCEFBA1#~ nothing to do - moving randomly ~ TODO!\033X'"/>
         <run_script name="'move.random'">
           <param name="TimeOut" value="60s"/>
           <param name="Anchor" value="$SECTOR"/>
-          <param name="Offset" value="$SECTOR"/>
+          <param name="Offset" value="$SECTOR.coreposition"/>
           <param name="MaxDistance" value="10km"/>
         </run_script>
+        <set_object_name object="this.ship" name="if $ADD_ORDER_TAG then this.$OldName + '\033#FFA95908# #CP-S\033X' else this.$OldName"/>
         <resume label="RESUME"/>
       </do_if>
 
       <do_if value="$Ship.sector != $NearestPlacedObject.sector">
         <set_command command="command.move" param="$NearestPlacedObject.sector"/>
-        <do_if value="$DEBUG gt 0.0">
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'Moving to: ' + $NearestPlacedObject.sector.name"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
-        </do_if>
         <run_script name="'move.generic'">
           <param name="destination" value="$NearestPlacedObject.sector"/>
           <param name="endintargetzone" value="true"/>
           <param name="recallsubordinates" value="true"/>
         </run_script>
-      </do_if>
-
-      <do_if value="$DEBUG gt 0.0">
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'Collecting Object: [' + $NearestPlacedObject.class + '] ~ ' + $NearestPlacedObject.name"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
       </do_if>
 
       <run_script name="'JP_CollectPlaced'">

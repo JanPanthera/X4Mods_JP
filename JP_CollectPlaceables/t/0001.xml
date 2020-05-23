@@ -1,14 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Default ~ English -->
 <language>
   <page id="8888888" voice="no">
     <!-- JP_CollectPlaceables -->
-    <t id="131">Add order tag?</t>
-    <t id="132">Enemy Sectors?</t>
-    <t id="133">Collect Mines?</t>
-    <t id="134">Collect Satellites?</t>
-    <t id="135">Collect Navigation Beacons?</t>
-    <t id="136">Collect Resource Probes?</t>
-    <t id="137">Collect Laser Towers?</t>
-    <t id="138">Instant Collect?</t>
+    <t id="800">Enemy Sectors?</t>
+    <t id="801">Neutral Sectors?</t>
+    <t id="802">Friendly Sectors?</t>
+    <t id="810">Collect Mines?</t>
+    <t id="811">Collect Satellites?</t>
+    <t id="812">Collect Navigation Beacons?</t>
+    <t id="813">Collect Resource Probes?</t>
+    <t id="814">Collect Laser Towers?</t>
+    <t id="820">Instant Collect?</t>
+    <t id="894">Add order tag?</t>
+    <t id="895">Save Settings?</t>
+    <t id="896">Delete Settings?</t>
+    <t id="897">\033#B600CCCC#</t>
+    <t id="898">\033#FF00CC66#</t>
+    <t id="899">\033X</t>
   </page>
 </language>
