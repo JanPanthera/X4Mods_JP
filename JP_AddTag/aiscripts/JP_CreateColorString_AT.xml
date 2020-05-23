@@ -5,22 +5,23 @@
 <!-- Return value -->
 <!--<retval name="COLOR_STRING" value="$ColorString"/>-->
 
-<aiscript name="JP_GetColorStringAT" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd" version="1">
+<aiscript name="JP_CreateColorString_AT" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd" version="1">
 
-  <order id="JP_GetColorStringAT" name="GetColorStringAT JP" category="internal" infinite="false">
+  <order id="JP_CreateColorString_AT" name="_CreateColorString_AT JP" category="internal" infinite="false">
     <params>
-      <!-- Params -->
-      <param name="ALPHA" text="Alpha" comment="Alpha" type="number" default="255"/>
-      <param name="RED" text="Red" comment="Red" type="number" default="3"/>
-      <param name="GREEN" text="Green" comment="Green" type="number" default="161"/>
-      <param name="BLUE" text="Blue" comment="Blue" type="number" default="252"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="ALPHA" text="Alpha" type="number" default="255"/>
+      <param name="RED" text="Red" type="number" default="3"/>
+      <param name="GREEN" text="Green" type="number" default="161"/>
+      <param name="BLUE" text="Blue" type="number" default="252"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <!-- DEBUG -->
-      <param name="DEBUG" text="DebugText" type="number" default="0" advanced="1">
+      <param name="DEBUG" text="DebugText" type="number" default="0" advanced="true">
         <input_param name="min" value="0"/>
         <input_param name="max" value="100"/>
         <input_param name="step" value="100"/>
       </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     </params>
     <skill min="0"/>
     <requires>
@@ -29,12 +30,22 @@
   </order>
 
   <interrupts>
+    <handler ref="SectorChangeHandler"/>
+    <handler ref="TargetInvalidHandler"/>
+    <handler ref="AttackHandler"/>
+    <handler ref="MissileLockHandler"/>
+    <handler ref="ScannedHandler"/>
+    <handler ref="InspectedHandler"/>
+    <handler ref="FoundAbandonedHandler"/>
+    <handler ref="FoundLockboxHandler"/>
+    <handler ref="ResupplyHandler"/>
+    <handler ref="JobRemoveRequestHandler"/>
   </interrupts>
 
   <init>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <set_value name="$DebugDirectory" exact="'JP_AddTag.logs'"/>
-    <set_value name="$DebugFileName" exact="this.ship.idcode + '.JP_GetColorStringAT.xml.log'"/>
+    <set_value name="$DebugFileName" exact="this.ship.idcode + '.JP_CreateColorString_AT.xml.log'"/>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
   </init>
 
@@ -44,22 +55,25 @@
       <wait exact="1ms"/>
       <label name="INIT"/>
 
-      <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'" chance="$DEBUG"/>
-      <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_GetColorStringAT.xml ~ Started ~~' + '\n'" chance="$DEBUG"/>
+      <do_if value="$DEBUG gt 0">
+        <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_CreateColorString_AT.xml ~ Started ~~' + '\n'"/>
+      </do_if>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
       <create_list name="$TempDecimalNumbers"/>
       <append_list_elements name="$TempDecimalNumbers" other="[$ALPHA, $RED, $GREEN, $BLUE]"/>
       <create_list name="$ConstructedHexNumber"/>
-      <do_all exact="$TempDecimalNumbers.count" counter="$_it">
-        <do_if value="$TempDecimalNumbers.{$_it} != 0">
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'" chance="$DEBUG"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'Converting %1 to hexadecimal...'.[$TempDecimalNumbers.{$_it}]" chance="$DEBUG"/>
-          <set_value name="$ActualDecimal" exact="($TempDecimalNumbers.{$_it})i"/>
+
+      <do_for_each name="$_DecimalNumber" in="$TempDecimalNumbers">
+        <do_if value="$_DecimalNumber != 0">
+          <set_value name="$ActualDecimal" exact="($_DecimalNumber)i"/>
           <create_list name="$TempHexNumber"/>
           <do_while value="$ActualDecimal != 0">
-            <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'In do while:  ~ ' + $ActualDecimal"/>
+            <do_if value="$DEBUG gt 0">
+              <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'In do while:  ~ ' + $ActualDecimal"/>
+            </do_if>
             <set_value name="$Remainder" exact="$ActualDecimal % 16"/>
             <do_if value="$Remainder le 9">
               <append_to_list name="$TempHexNumber" exact="'%1'.[$Remainder]"/>
@@ -84,31 +98,36 @@
             </do_elseif>
             <remove_value name="$Remainder"/>
             <set_value name="$ActualDecimal" exact="$ActualDecimal / 16"/>
+            <wait exact="1ms"/>
           </do_while>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'Converted to %1'.[$TempHexNumber]" chance="$DEBUG"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'" chance="$DEBUG"/>
+          <do_if value="$DEBUG gt 0">
+            <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'Converted to %1'.[$TempHexNumber]"/>
+            <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+          </do_if>
           <do_if value="$TempHexNumber.count == 0">
             <append_list_elements name="$TempHexNumber" other="['0', '0']"/>
           </do_if>
           <do_elseif value="$TempHexNumber.count == 1">
             <append_to_list name="$TempHexNumber" exact="'0'"/>
           </do_elseif>
-          <do_all exact="$TempHexNumber.count" counter="$_jt" reverse="true">
-            <append_to_list name="$ConstructedHexNumber" exact="$TempHexNumber.{$_jt}"/>
-          </do_all>
+          <do_for_each name="$Number" in="$TempHexNumber" reverse="true">
+            <append_to_list name="$ConstructedHexNumber" exact="$Number"/>
+          </do_for_each>
           <remove_value name="$TempHexNumber"/>
           <remove_value name="$ActualDecimal"/>
         </do_if>
         <do_else>
           <append_list_elements name="$ConstructedHexNumber" other="['0', '0']"/>
         </do_else>
-      </do_all>
+      </do_for_each>
 
       <set_value name="$ColorString" exact="'\033#%1%2%3%4%5%6%7%8#'.[$ConstructedHexNumber.{1}, $ConstructedHexNumber.{2}, $ConstructedHexNumber.{3}, $ConstructedHexNumber.{4}, $ConstructedHexNumber.{5}, $ConstructedHexNumber.{6}, $ConstructedHexNumber.{7}, $ConstructedHexNumber.{8}]"/>
 
-      <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'" chance="$DEBUG"/>
-      <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'Created List: %1  ~~ Created ColorCode: %2'.[$ConstructedHexNumber, $ColorString]" chance="$DEBUG"/>
-      <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'" chance="$DEBUG"/>
+      <do_if value="$DEBUG gt 0">
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'Created List: %1  ~~ Created ColorCode: %2'.[$ConstructedHexNumber, $ColorString]"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+      </do_if>
 
       <remove_value name="$ConstructedHexNumber"/>
       <remove_value name="$TempDecimalNumbers"/>
@@ -117,20 +136,22 @@
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-      <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_GetColorStringAT.xml ~ Finished ~~'" chance="$DEBUG"/>
-      <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'" chance="$DEBUG"/>
+      <do_if value="$DEBUG gt 0">
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_CreateColorString_AT.xml ~ Finished ~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+      </do_if>
 
       <label name="CLEANUP"/>
       <remove_value name="$DebugFileName"/>
       <remove_value name="$DebugDirectory"/>
 
+      <label name="END"/>
+      <wait exact="1ms"/>
+
       <label name="RETURN"/>
       <return>
         <retval name="COLOR_STRING" value="$ColorString"/>
       </return>
-
-      <label name="END"/>
-      <wait exact="1ms"/>
 
     </actions>
   </attention>

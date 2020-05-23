@@ -44,7 +44,7 @@
     <Xml Include="t\0001-L088.xml" />
     <Xml Include="libraries\icons.xml" />
     <Xml Include="t\0001.xml" />
-    <Xml Include="aiscripts\JP_GetColorStringAT.xml" />
+    <Xml Include="aiscripts\JP_CreateColorString_AT.xml" />
   </ItemGroup>
   <ItemGroup>
     <Xsd Include="JP_AddTag\aiscripts\aiscripts.xsd">
@@ -53,5 +53,11 @@
     <Xsd Include="aiscripts\aiscripts.xsd">
       <Filter>Headerdateien</Filter>
     </Xsd>
+    <Xsd Include="md\md.xsd">
+      <Filter>Headerdateien</Filter>
+    </Xsd>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="changelog.txt" />
   </ItemGroup>
 </Project>

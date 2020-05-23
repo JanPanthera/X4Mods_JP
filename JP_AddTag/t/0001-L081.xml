@@ -3,24 +3,29 @@
 <language>
   <page id="8888888" voice="no">
     <!-- JP_AddTag -->
-    <t id="81">At the beginning of the name?</t>
-    <t id="82">At the end of the name?</t>
-    <t id="83">Add to Commanders name?</t>
-    <t id="84">Add to Subordinates names?</t>
-    <t id="85">Add to Subordinates fleets names?</t>
-    <t id="86">Object with tag as name</t>
-    <t id="87">Use Tag Coloring?</t>
-    <t id="88">Use Name Coloring?</t>
-    <t id="89">Save Commanders name?</t>
-    <t id="90">Save Subordinates names?</t>
-    <t id="91">Save Subordinate fleets names?</t>
-    <t id="92">Load Commanders name?</t>
-    <t id="93">Load Subordinates names?</t>
-    <t id="94">Load Subordinate fleets names?</t>
-    <t id="95">Delete all saved names?</t>
-    <t id="96">Transparency</t>
-    <t id="97">Red</t>
-    <t id="98">Green</t>
-    <t id="99">Blue</t>
+    <t id="200">Tag at Front?</t>
+    <t id="201">Tag at End?</t>
+    <t id="202">Include Commander?</t>
+    <t id="203">Include Subordinates?</t>
+    <t id="204">Include Subordinates of subordinated fleets?</t>
+    <t id="205">Object with tag as name</t>
+    <t id="206">Colorize Tag?</t>
+    <t id="207">Colorize Name?</t>
+    <t id="208">Save Commanders name?</t>
+    <t id="209">Save names of Subordinates?</t>
+    <t id="210">Save names of Subordinates of subordinated fleets?</t>
+    <t id="211">Load Commanders name?</t>
+    <t id="212">Load names of Subordinates?</t>
+    <t id="213">Load names of Subordinates of subordinated fleets?</t>
+    <t id="214">Delete saved names?</t>
+    <t id="270">Transparency</t>
+    <t id="271">Red</t>
+    <t id="272">Green</t>
+    <t id="273">Blue</t>
+    <t id="295">Save Settings?</t>
+    <t id="296">Delete Settings?</t>
+    <t id="297">\033#B600CCCC#</t>
+    <t id="298">\033#FF00CC66#</t>
+    <t id="299">\033X</t>
   </page>
 </language>

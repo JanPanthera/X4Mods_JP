@@ -2,70 +2,73 @@
 
 <aiscript name="JP_AddTag" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd" version="1">
 
-  <order id="JP_AddTag" name="AddTag JP" description="This AI default order script adds your own tag to the name of one of your ships and/or to the whole fleet." category="navigation" infinite="true">
+  <order id="JP_AddTag" name="{8888888, 297}AddTag{8888888, 299}" category="navigation" infinite="true">
     <params>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="AT_THE_BEGINNING_OF_THE_NAME" text="{8888888, 81}" comment="At the beginning of the name?" type="bool" default="true"/>
-      <param name="AT_THE_END_OF_THE_NAME" text="{8888888, 82}" comment="At the end of the name?" type="bool" default="false"/>
-      <param name="ADD_TO_COMMANDERS_NAME" text="{8888888, 83}" comment="Add to Commanders name?" type="bool" default="true"/>
-      <param name="ADD_TO_SUBORDINATES_NAMES" text="{8888888, 84}" comment="Add to Subordinates names?" type="bool" default="true"/>
-      <param name="ADD_TO_SUBORDINATES_FLEETS_NAMES" text="{8888888, 85}" comment="Add to Subordinates fleets names?" type="bool" default="true"/>
-      <param name="OBJECT_WITH_TAG_AS_NAME" text="{8888888, 86}" comment="Object with tag as name" type="object" default="this.ship"/>
-      <!-- Coloring of the tag -->
-      <param name="USE_TAG_COLORING" text="{8888888, 87}" comment="Use Tag Coloring?" type="bool" default="true"/>
-      <param name="TAG_ALPHA" text="{8888888, 96}" comment="Transparency" type="number" default="255">
+      <param name="AT_THE_BEGINNING_OF_THE_NAME" text="{8888888, 200}" comment="At the beginning of the name?" type="bool" default="if global.$AtTheBeginningOfTheNameAT? then global.$AtTheBeginningOfTheNameAT else true"/>
+      <param name="AT_THE_END_OF_THE_NAME" text="{8888888, 201}" comment="At the end of the name?" type="bool" default="if global.$AtTheEndOfTheNameAT? then global.$AtTheEndOfTheNameAT else false"/>
+      <param name="ADD_TO_COMMANDERS_NAME" text="{8888888, 202}" comment="Add to Commanders name?" type="bool" default="if global.$AddToCommandersNameAT? then global.$AddToCommandersNameAT else true"/>
+      <param name="ADD_TO_SUBORDINATES_NAMES" text="{8888888, 203}" comment="Add to Subordinates names?" type="bool" default="if global.$AddToSubordinatesNamesAT? then global.$AddToSubordinatesNamesAT else true"/>
+      <param name="ADD_TO_SUBORDINATES_FLEETS_NAMES" text="{8888888, 204}" comment="Add to Subordinates fleets names?" type="bool" default="if global.$AddToSubordinatesFleetsNamesAT? then global.$AddToSubordinatesFleetsNamesAT else true"/>
+      <param name="OBJECT_WITH_TAG_AS_NAME" text="{8888888, 205}" comment="Object with tag as name" type="object" default="if global.$ObjectWithTagAsNameAT? then global.$ObjectWithTagAsNameAT else this.ship"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="USE_TAG_COLORING" text="{8888888, 206}" comment="Use Tag Coloring?" type="bool" default="if global.$UseTagColoringAT? then global.$UseTagColoringAT else true"/>
+      <param name="TAG_ALPHA" text="{8888888, 270}" comment="Transparency" type="number" default="if global.$UseTagColoringAlphaAT? then global.$UseTagColoringAlphaAT else 255">
         <input_param name="step" value="1"/>
         <input_param name="min" value="0"/>
         <input_param name="max" value="255"/>
       </param>
-      <param name="TAG_RED" text="{8888888, 97}" comment="Red" type="number" default="0">
+      <param name="TAG_RED" text="{8888888, 271}" comment="Red" type="number" default="if global.$UseTagColoringRedAT? then global.$UseTagColoringRedAT else 0">
         <input_param name="step" value="1"/>
         <input_param name="min" value="0"/>
         <input_param name="max" value="255"/>
       </param>
-      <param name="TAG_GREEN" text="{8888888, 98}" comment="Green" type="number" default="204">
+      <param name="TAG_GREEN" text="{8888888, 272}" comment="Green" type="number" default="if global.$UseTagColoringGreenAT? then global.$UseTagColoringGreenAT else 204">
         <input_param name="step" value="1"/>
         <input_param name="min" value="0"/>
         <input_param name="max" value="255"/>
       </param>
-      <param name="TAG_BLUE" text="{8888888, 99}" comment="Blue" type="number" default="102">
-        <input_param name="step" value="1"/>
-        <input_param name="min" value="0"/>
-        <input_param name="max" value="255"/>
-      </param>
-      <!-- Coloring of the name -->
-      <param name="USE_NAME_COLORING" text="{8888888, 88}" comment="Use Name Coloring?" type="bool" default="true"/>
-      <param name="NAME_ALPHA" text="{8888888, 96}" comment="Transparency" type="number" default="182">
-        <input_param name="step" value="1"/>
-        <input_param name="min" value="0"/>
-        <input_param name="max" value="255"/>
-      </param>
-      <param name="NAME_RED" text="{8888888, 97}" comment="Red" type="number" default="0">
-        <input_param name="step" value="1"/>
-        <input_param name="min" value="0"/>
-        <input_param name="max" value="255"/>
-      </param>
-      <param name="NAME_GREEN" text="{8888888, 98}" comment="Green" type="number" default="204">
-        <input_param name="step" value="1"/>
-        <input_param name="min" value="0"/>
-        <input_param name="max" value="255"/>
-      </param>
-      <param name="NAME_BLUE" text="{8888888, 99}" comment="Blue" type="number" default="204">
+      <param name="TAG_BLUE" text="{8888888, 273}" comment="Blue" type="number" default="if global.$UseTagColoringBlueAT? then global.$UseTagColoringBlueAT else 102">
         <input_param name="step" value="1"/>
         <input_param name="min" value="0"/>
         <input_param name="max" value="255"/>
       </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="SAVE_COMMANDERS_NAME" text="{8888888, 89}" comment="Save Commanders name?" type="bool" default="false"/>
-      <param name="SAVE_SUBORDINATES_NAMES" text="{8888888, 90}" comment="Save Subordinates names?" type="bool" default="false"/>
-      <param name="SAVE_SUBORDINATE_FLEETS_NAMES" text="{8888888, 91}" comment="Save Subordinate fleets names?" type="bool" default="false"/>
-      <param name="LOAD_COMMANDERS_NAME" text="{8888888, 92}" comment="Load Commanders name?" type="bool" default="false"/>
-      <param name="LOAD_SUBORDINATES_NAMES" text="{8888888, 93}" comment="Load Subordinates names?" type="bool" default="false"/>
-      <param name="LOAD_SUBORDINATE_FLEETS_NAMES" text="{8888888, 94}" comment="Load Subordinate fleets names?" type="bool" default="false"/>
-      <param name="DELETE_ALL_SAVED_NAMES" text="{8888888, 95}" comment="Delete All Saved names?" type="bool" default="false"/>
+      <param name="USE_NAME_COLORING" text="{8888888, 207}" comment="Use Name Coloring?" type="bool" default="if global.$UseNameColoringAT? then global.$UseNameColoringAT else true"/>
+      <param name="NAME_ALPHA" text="{8888888, 270}" comment="Transparency" type="number" default="if global.$UseNameColoringAlphaAT? then global.$UseNameColoringAlphaAT else 182">
+        <input_param name="step" value="1"/>
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="255"/>
+      </param>
+      <param name="NAME_RED" text="{8888888, 271}" comment="Red" type="number" default="if global.$UseNameColoringRedAT? then global.$UseNameColoringRedAT else 0">
+        <input_param name="step" value="1"/>
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="255"/>
+      </param>
+      <param name="NAME_GREEN" text="{8888888, 272}" comment="Green" type="number" default="if global.$UseNameColoringGreenAT? then global.$UseNameColoringGreenAT else 204">
+        <input_param name="step" value="1"/>
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="255"/>
+      </param>
+      <param name="NAME_BLUE" text="{8888888, 273}" comment="Blue" type="number" default="if global.$UseNameColoringBlueAT? then global.$UseNameColoringBlueAT else 204">
+        <input_param name="step" value="1"/>
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="255"/>
+      </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="SAVE_COMMANDERS_NAME" text="{8888888, 208}" comment="Save Commanders name?" type="bool" default="false"/>
+      <param name="SAVE_SUBORDINATES_NAMES" text="{8888888, 209}" comment="Save Subordinates names?" type="bool" default="false"/>
+      <param name="SAVE_SUBORDINATE_FLEETS_NAMES" text="{8888888, 210}" comment="Save Subordinate fleets names?" type="bool" default="false"/>
+      <param name="LOAD_COMMANDERS_NAME" text="{8888888, 211}" comment="Load Commanders name?" type="bool" default="false"/>
+      <param name="LOAD_SUBORDINATES_NAMES" text="{8888888, 212}" comment="Load Subordinates names?" type="bool" default="false"/>
+      <param name="LOAD_SUBORDINATE_FLEETS_NAMES" text="{8888888, 213}" comment="Load Subordinate fleets names?" type="bool" default="false"/>
+      <param name="DELETE_ALL_SAVED_NAMES" text="{8888888, 214}" comment="Delete All Saved names?" type="bool" default="false"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="SAVE_SETTINGS" text="{8888888, 219}" comment="SaveSettings" type="bool" default="false"/>
+      <param name="DELETE_SETTINGS" text="{8888888, 220}" comment="DeleteSettings" type="bool" default="false"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <!-- DEBUG -->
-      <param name="DEBUG" text="DebugText" type="number" default="0" advanced="1">
+      <param name="DEBUG" text="DebugText" type="number" default="if global.$DebugAT? then global.$DebugAT else 0" advanced="true">
         <input_param name="min" value="0"/>
         <input_param name="max" value="100"/>
         <input_param name="step" value="100"/>
@@ -103,6 +106,81 @@
       <create_list name="global.$AddTagSavedNames"/>
     </do_if>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <do_if value="$SAVE_SETTINGS">
+      <do_if value="not global.$AtTheBeginningOfTheNameAT? or @global.$AtTheBeginningOfTheNameAT != $AT_THE_BEGINNING_OF_THE_NAME">
+        <set_value name="global.$AtTheBeginningOfTheNameAT" exact="$AT_THE_BEGINNING_OF_THE_NAME"/>
+      </do_if>
+      <do_if value="not global.$AtTheEndOfTheNameAT? or @global.$AtTheEndOfTheNameAT != $AT_THE_END_OF_THE_NAME">
+        <set_value name="global.$AtTheEndOfTheNameAT" exact="$AT_THE_END_OF_THE_NAME"/>
+      </do_if>
+      <do_if value="not global.$AddToCommandersNameAT? or @global.$AddToCommandersNameAT != $ADD_TO_COMMANDERS_NAME">
+        <set_value name="global.$AddToCommandersNameAT" exact="$ADD_TO_COMMANDERS_NAME"/>
+      </do_if>
+      <do_if value="not global.$AddToSubordinatesNamesAT? or @global.$AddToSubordinatesNamesAT != $ADD_TO_SUBORDINATES_NAMES">
+        <set_value name="global.$AddToSubordinatesNamesAT" exact="$ADD_TO_SUBORDINATES_NAMES"/>
+      </do_if>
+      <do_if value="not global.$AddToSubordinatesFleetsNamesAT? or @global.$AddToSubordinatesFleetsNamesAT != $ADD_TO_SUBORDINATES_FLEETS_NAMES">
+        <set_value name="global.$AddToSubordinatesFleetsNamesAT" exact="$ADD_TO_SUBORDINATES_FLEETS_NAMES"/>
+      </do_if>
+      <do_if value="not global.$ObjectWithTagAsNameAT? or @global.$ObjectWithTagAsNameAT != $OBJECT_WITH_TAG_AS_NAME">
+        <set_value name="global.$ObjectWithTagAsNameAT" exact="$OBJECT_WITH_TAG_AS_NAME"/>
+      </do_if>
+      <do_if value="not global.$UseTagColoringAT? or @global.$UseTagColoringAT != $USE_TAG_COLORING">
+        <set_value name="global.$UseTagColoringAT" exact="$USE_TAG_COLORING"/>
+      </do_if>
+      <do_if value="not global.$UseTagColoringAlphaAT? or @global.$UseTagColoringAlphaAT != $TAG_ALPHA">
+        <set_value name="global.$UseTagColoringAlphaAT" exact="$TAG_ALPHA"/>
+      </do_if>
+      <do_if value="not global.$UseTagColoringRedAT? or @global.$UseTagColoringRedAT != $TAG_RED">
+        <set_value name="global.$UseTagColoringRedAT" exact="$TAG_RED"/>
+      </do_if>
+      <do_if value="not global.$UseTagColoringGreenAT? or @global.$UseTagColoringGreenAT != $TAG_GREEN">
+        <set_value name="global.$UseTagColoringGreenAT" exact="$TAG_GREEN"/>
+      </do_if>
+      <do_if value="not global.$UseTagColoringBlueAT? or @global.$UseTagColoringBlueAT != $TAG_BLUE">
+        <set_value name="global.$UseTagColoringBlueAT" exact="$TAG_BLUE"/>
+      </do_if>
+      <do_if value="not global.$UseNameColoringAT? or @global.$UseNameColoringAT != $USE_NAME_COLORING">
+        <set_value name="global.$UseNameColoringAT" exact="$USE_NAME_COLORING"/>
+      </do_if>
+      <do_if value="not global.$UseNameColoringAlphaAT? or @global.$UseNameColoringAlphaAT != $NAME_ALPHA">
+        <set_value name="global.$UseNameColoringAlphaAT" exact="$NAME_ALPHA"/>
+      </do_if>
+      <do_if value="not global.$UseNameColoringRedAT? or @global.$UseNameColoringRedAT != $NAME_RED">
+        <set_value name="global.$UseNameColoringRedAT" exact="$NAME_RED"/>
+      </do_if>
+      <do_if value="not global.$UseNameColoringGreenAT? or @global.$UseNameColoringGreenAT != $NAME_GREEN">
+        <set_value name="global.$UseNameColoringGreenAT" exact="$NAME_GREEN"/>
+      </do_if>
+      <do_if value="not global.$UseNameColoringBlueAT? or @global.$UseNameColoringBlueAT != $NAME_BLUE">
+        <set_value name="global.$UseNameColoringBlueAT" exact="$NAME_BLUE"/>
+      </do_if>
+      <do_if value="not global.$DebugAT? or @global.$DebugAT != $DEBUG">
+        <set_value name="global.$DebugAT" exact="$DEBUG"/>
+      </do_if>
+    </do_if>
+    <do_if value="$DELETE_SETTINGS">
+      <remove_value name="global.$DebugAT"/>
+      <remove_value name="global.$UseNameColoringBlueAT"/>
+      <remove_value name="global.$UseNameColoringGreenAT"/>
+      <remove_value name="global.$UseNameColoringRedAT"/>
+      <remove_value name="global.$UseNameColoringAlphaAT"/>
+      <remove_value name="global.$UseNameColoringAT"/>
+      <remove_value name="global.$UseTagColoringBlueAT"/>
+      <remove_value name="global.$UseTagColoringGreenAT"/>
+      <remove_value name="global.$UseTagColoringRedAT"/>
+      <remove_value name="global.$UseTagColoringAlphaAT"/>
+      <remove_value name="global.$UseTagColoringAT"/>
+      <remove_value name="global.$ObjectWithTagAsNameAT"/>
+      <remove_value name="global.$AddToSubordinatesFleetsNamesAT"/>
+      <remove_value name="global.$AddToSubordinatesNamesAT"/>
+      <remove_value name="global.$AddToCommandersNameAT"/>
+      <remove_value name="global.$AtTheEndOfTheNameAT"/>
+      <remove_value name="global.$AtTheBeginningOfTheNameAT"/>
+      <!-- Cancel order because the settings are invalid.. because they were deleted -->
+      <cancel_order order="this.ship.order"/>
+    </do_if>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
   </init>
 
   <attention min="unknown">
@@ -111,8 +189,10 @@
       <wait exact="1ms"/>
       <label name="INIT"/>
 
-      <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'" chance="$DEBUG"/>
-      <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_AddTag.xml ~ Started ~~' + '\n'" chance="$DEBUG"/>
+      <do_if value="$DEBUG gt 0">
+        <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_AddTag.xml ~ Started ~~' + '\n'"/>
+      </do_if>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
@@ -203,7 +283,7 @@
 
       <!-- Create tag with color if used -->
       <do_if value="$USE_TAG_COLORING">
-        <run_script name="'JP_GetColorStringAT'">
+        <run_script name="'JP_CreateColorString_AT'">
           <param name="ALPHA" value="$TAG_ALPHA"/>
           <param name="RED" value="$TAG_RED"/>
           <param name="GREEN" value="$TAG_GREEN"/>
@@ -220,7 +300,7 @@
 
       <!-- Create name color start string -->
       <do_if value="$USE_NAME_COLORING">
-        <run_script name="'JP_GetColorStringAT'">
+        <run_script name="'JP_CreateColorString_AT'">
           <param name="ALPHA" value="$NAME_ALPHA"/>
           <param name="RED" value="$NAME_RED"/>
           <param name="GREEN" value="$NAME_GREEN"/>
@@ -301,8 +381,10 @@
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-      <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_AddTag.xml ~ Finished ~~'" chance="$DEBUG"/>
-      <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'" chance="$DEBUG"/>
+      <do_if value="$DEBUG gt 0">
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_AddTag.xml ~ Finished ~~'" chance="$DEBUG"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'" chance="$DEBUG"/>
+      </do_if>
 
       <label name="CLEANUP"/>
       <remove_value name="$SubordinateFleetsSubordinates"/>

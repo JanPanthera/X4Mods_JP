@@ -3,24 +3,29 @@
 <language>
   <page id="8888888" voice="no">
     <!-- JP_AddTag -->
-    <t id="81">Am Anfang des Namens?</t>
-    <t id="82">Am Ende des Namens?</t>
-    <t id="83">Zum Namen des Kommandanten hinzufügen?</t>
-    <t id="84">Zu Name von Untergebenen hinzufügen?</t>
-    <t id="85">Zu Name von untergeordneten Flotten hinzufügen?</t>
-    <t id="86">Objekt mit dem Tag als Name</t>
-    <t id="87">Tag einfärben?</t>
-    <t id="88">Namen einfärben?</t>
-    <t id="89">Kommandantennamen speichern?</t>
-    <t id="90">Untergebene Namen speichern?</t>
-    <t id="91">Namen untergeordneter Flotten speichern?</t>
-    <t id="92">Kommandantennamen laden?</t>
-    <t id="93">Untergebene Namen laden?</t>
-    <t id="94">Namen untergeordneter Flotten laden?</t>
-    <t id="95">Alle gespeicherten Namen löschen?</t>
-    <t id="96">Transparenz</t>
-    <t id="97">Rot</t>
-    <t id="98">Grün</t>
-    <t id="99">Blau</t>
+    <t id="200">Zum Anfang des Namens hinzufügen?</t>
+    <t id="201">Tag am Ende?</t>
+    <t id="202">Komandanten einbeziehen?</t>
+    <t id="203">Untergebene einbeziehen?</t>
+    <t id="204">Untergebene untergeordneter Flotten einbeziehen?</t>
+    <t id="205">Objekt mit dem Tag als Name</t>
+    <t id="206">Tag einfärben?</t>
+    <t id="207">Namen einfärben?</t>
+    <t id="208">Namen des Kommandanten speichern?</t>
+    <t id="209">Namen Untergebener speichern?</t>
+    <t id="210">Namen Untergebener aus untergeordneten Flotten speichern?</t>
+    <t id="211">Namen des Kommandanten laden?</t>
+    <t id="212">Namen Untergebener laden?</t>
+    <t id="213">Namen Untergebener aus untergeordneten Flotten laden?</t>
+    <t id="214">Gespeicherte Namen löschen?</t>
+    <t id="270">Transparenz</t>
+    <t id="271">Rot</t>
+    <t id="272">Grün</t>
+    <t id="273">Blau</t>
+    <t id="295">Speichere Einstellungen?</t>
+    <t id="296">Lösche Einstellungen?</t>
+    <t id="297">\033#B600CCCC#</t>
+    <t id="298">\033#FF00CC66#</t>
+    <t id="299">\033X</t>
   </page>
 </language>
