@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<aiscript name="JP_GetNearestDataVaultToMark" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd">
+
+  <order id="JP_GetNearestDataVaultToMark" name="GetNearestDataVaultToMark JP" category="internal" infinite="false">
+    <params>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="ENEMY_SECTORS" text="EnemySectors" comment="EnemySectors" type="bool" default="false"/>
+      <param name="NEUTRAL_SECTORS" text="NeutralSectors" comment="NeutralSectors" type="bool" default="true"/>
+      <param name="FRIENDLY_SECTORS" text="FriendlySectors" comment="FriendlySectors" type="bool" default="true"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <!-- DEBUG -->
+      <param name="DEBUG" text="DebugText" type="number" default="0" advanced="true">
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="100"/>
+        <input_param name="step" value="100"/>
+      </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    </params>
+    <requires>
+      <match shiptype="shiptype.lasertower" negate="true"/>
+    </requires>
+  </order>
+
+  <interrupts>
+  </interrupts>
+
+  <init>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <set_value name="$DebugDirectory" exact="'JP_DataVaultExplorer.logs'"/>
+    <set_value name="$DebugFileName" exact="this.ship.idcode + '.JP_GetNearestDataVaultToMark.xml.log'"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <set_value name="$Ship" exact="this.ship"/>
+    <set_value name="$NearestDataVault" exact="'NoDataVaultToMarkFound'"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  </init>
+
+  <attention min="unknown">
+    <actions>
+
+      <wait exact="1ms"/>
+      <label name="INIT"/>
+
+      <do_if value="$DEBUG gt 0">
+        <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_GetNearestDataVaultToMark.xml ~ Started ~~' + '\n'"/>
+      </do_if>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <create_list name="$_TempDataVaults"/>
+      <find_object name="$_TempDataVaults" space="player.galaxy" multiple="true">
+        <match macro="[macro.landmarks_vault_01_macro, macro.landmarks_vault_02_macro, macro.landmarks_vault_03_macro, macro.landmarks_vault_04_macro]"/>
+      </find_object>
+
+      <include_interrupt_actions ref="GetBlacklistgroup"/>
+
+      <create_list name="$_DataVaults"/>
+      <do_for_each name="$_DataVault" in="$_TempDataVaults">
+        <do_if value="$Ship.gatedistance.{$_DataVault.sector} lt 0">
+          <continue/>
+        </do_if>
+        <do_if value="$_DataVault.sector.isblacklisted.{blacklisttype.sectortravel}.{$blacklistgroup}.{$Ship} or $_DataVault.sector.isblacklisted.{blacklisttype.objectactivity}.{$blacklistgroup}.{$Ship}">
+          <continue/>
+        </do_if>
+        <do_if value="$_DataVault.sector.owner.mayattack.{$Ship} and not $ENEMY_SECTORS">
+          <continue/>
+        </do_if>
+        <do_if value="$_DataVault.sector.owner == faction.ownerless and not $NEUTRAL_SECTORS">
+          <continue/>
+        </do_if>
+        <do_if value="not $_DataVault.sector.owner.mayattack.{$Ship} and not $FRIENDLY_SECTORS">
+          <continue/>
+        </do_if>
+        <append_to_list name="$_DataVaults" exact="$_DataVault"/>
+      </do_for_each>
+
+      <create_list name="$_MarkedDataVaults"/>
+      <do_for_each name="$_DataVault" in="$_DataVaults">
+        <create_list name="$_NavBeacons"/>
+
+        <find_object name="$_NavBeacons" space="$_DataVault.sector" multiple="true">
+          <match_distance object="$_DataVault" max="4000km"/>
+          <match class="class.navbeacon"/>
+        </find_object>
+
+        <do_if value="$_NavBeacons.count gt 0">
+          <append_to_list name="$_MarkedDataVaults" exact="$_DataVault"/>
+        </do_if>
+
+        <remove_value name="$_NavBeacons"/>
+      </do_for_each>
+      <remove_from_list name="$_DataVaults" list="$_MarkedDataVaults"/>
+      <remove_value name="$_MarkedDataVaults"/>
+
+      <do_if value="$_DataVaults.count gt 0">
+        <do_if value="$_DataVaults.count gt 1">
+          <sort_list list="$_DataVaults" sortbyvalue="$Ship.gatedistance.{loop.element}"/>
+        </do_if>
+        <set_value name="$NearestDataVault" exact="$_DataVaults.{1}"/>
+      </do_if>
+
+      <remove_value name="$_DataVaults"/>
+
+      <label name="FINISH"/>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <do_if value="$DEBUG gt 0">
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_GetNearestDataVaultToMark.xml ~ Finished ~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+      </do_if>
+
+      <label name="CLEANUP"/>
+      <remove_value name="$Ship"/>
+      <remove_value name="$DebugFileName"/>
+      <remove_value name="$DebugDirectory"/>
+
+      <label name="END"/>
+      <wait exact="1ms"/>
+
+      <label name="RETURN"/>
+      <return>
+        <retval name="NEAREST_DATA_VAULT" value="$NearestDataVault"/>
+      </return>
+
+    </actions>
+  </attention>
+
+  <on_abort>
+  </on_abort>
+
+</aiscript>

@@ -2,12 +2,18 @@
 
 <aiscript name="JP_ExploreDataVault" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd">
 
-  <order id="JP_ExploreDataVault" name="JP ExploreDataVault" description="Flys to an datavault and puts a nav beacon besides him." category="internal" infinite="false">
+  <order id="JP_ExploreDataVault" name="ExploreDataVault JP" category="internal" infinite="false">
     <params>
-      <param name="EXPLORER" text="Explorer" type="object" required="true"/>
-      <param name="DATA_VAULT" text="DataVault" type="object" required="true"/>
-      <!-- Debug -->
-      <param name="DEBUG" text="DebugText" type="number" default="0" advanced="1"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="DATA_VAULT" text="DataVault" type="object" default="null"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <!-- DEBUG -->
+      <param name="DEBUG" text="DebugText" type="number" default="0" advanced="true">
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="100"/>
+        <input_param name="step" value="100"/>
+      </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     </params>
     <skill min="0"/>
     <requires>
@@ -29,8 +35,12 @@
   </interrupts>
 
   <init>
-    <set_value name="$DebugDirectory" exact="'JP_ExploreDataVault.logs'"/>
-    <set_value name="$DebugFileName" exact="$EXPLORER.idcode + '.JP_ExploreDataVault' + '.log'"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <set_value name="$DebugDirectory" exact="'JP_DataVaultExplorer.logs'"/>
+    <set_value name="$DebugFileName" exact="this.ship.idcode + '.JP_ExploreDataVault.xml.log'"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <set_value name="$Ship" exact="this.ship"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
   </init>
 
   <attention min="unknown">
@@ -41,73 +51,48 @@
 
       <do_if value="$DEBUG gt 0">
         <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ Running JP_ExploreDataVault with %1 [%2]'.[$EXPLORER.knownname, $EXPLORER.idcode] + '\n'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_ExploreDataVault.xml ~ Started ~~' + '\n'"/>
       </do_if>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-      <!-- Are we in the right sector? -->
-      <do_if value="$EXPLORER.sector != $DATA_VAULT.sector">
-        <do_if value="$DEBUG gt 0">
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'Moving to sector: %1 [%2]'.[$DATA_VAULT.sector.knownname, $DATA_VAULT.sector.owner.knownname]"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
-        </do_if>
-        <run_script name="'move.generic'">
-          <param name="destination" value="$DATA_VAULT.sector" />
-          <param name="endintargetzone" value="true"/>
-          <param name="recallsubordinates" value="false"/>
-        </run_script>
-      </do_if>
-
-      <!-- Moving to the data vault -->
-      <do_if value="$DEBUG gt 0">
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'Moving to the data vault.'"/>
-      </do_if>
-      <label name="MOVING"/>
-      <do_if value="$DEBUG gt 50">
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'Moving...'"/>
-      </do_if>
-      <get_safe_pos result="$TempPosition" zone="$DATA_VAULT.sector" object="$DATA_VAULT" directionobject="$EXPLORER" radius="$EXPLORER.size" ignored="$EXPLORER"/>
-      <move_to object="$EXPLORER" destination="$DATA_VAULT.sector" finishonapproach="false" forceposition="true" travel="true">
-        <position value="$TempPosition"/>
+      <set_command command="command.move" param="$DATA_VAULT"/>
+      <label name="MOVE"/>
+      <get_safe_pos result="$_TempPosition" zone="$DATA_VAULT.sector" object="$DATA_VAULT" directionobject="$Ship" radius="(($Ship.size / 2) + 2km)"/>
+      <move_to object="$Ship" destination="$DATA_VAULT.sector" travel="true" forceposition="true">
+        <position value="$_TempPosition"/>
         <interrupt_after_time time="2s"/>
       </move_to>
-      <wait exact="1ms"/>
-      <do_if value="$EXPLORER.distanceto.{this.$CurrentDataVault} gt 1000m">
-        <resume label="MOVING"/>
+      <wait exact="1s"/>
+
+      <do_if value="$Ship.distanceto.{$DATA_VAULT} gt 4000">
+        <resume label="MOVE"/>
       </do_if>
-      <remove_value name="$TempPosition"/>
-      <stop_moving object="$EXPLORER"/>
-      <do_if value="$DEBUG gt 0">
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'Arrived at the data vault.'"/>
-      </do_if>
+
+      <stop_moving object="$Ship" immediate="false"/>
+      <remove_value name="$_TempPosition"/>
       <wait min="3s" max="5s"/>
 
-      <!-- Deploying a nav beacon besides the data vault -->
-      <do_if value="$DEBUG gt 0">
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'Deploying an nav beacon at the data vault.'"/>
-      </do_if>
-      <launch_navbeacon object="$EXPLORER" category="deployablecategory.navbeacon" name="$NavBeacon"/>
-      <set_object_name object="$NavBeacon" name="'{20109,8901}  ~~  [' + $NavBeacon.sector.knownname + ']'"/>
-      <do_if value="$DEBUG gt 0">
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'%1 [%2] deployed in sector: %3 [%4]'.[{20109,8901}, $NavBeacon.idcode, $NavBeacon.sector.knownname, $NavBeacon.sector.owner.knownname]"/>
-      </do_if>
+      <launch_navbeacon object="$Ship" category="deployablecategory.navbeacon" name="$NavBeacon"/>
+      <set_object_name object="$NavBeacon" name="'\033#FF00CC66#' + '{20109,8901}\033X\033#FF00CCCC# ~ ' + $NavBeacon.sector.knownname + '\033X'"/>
       <remove_value name="$NavBeacon"/>
       <wait min="3s" max="6s"/>
 
+      <label name="FINISH"/>
+
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
       <do_if value="$DEBUG gt 0">
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ Completed JP_ExploreDataVault with %1 [%2]'.[$EXPLORER.knownname, $EXPLORER.idcode]"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_ExploreDataVault.xml ~ Finished ~~'"/>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
       </do_if>
 
       <label name="CLEANUP"/>
+      <remove_value name="$Ship"/>
       <remove_value name="$DebugFileName"/>
       <remove_value name="$DebugDirectory"/>
 
-      <label name="FINISH"/>
+      <label name="END"/>
       <wait exact="1ms"/>
 
     </actions>

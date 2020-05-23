@@ -3,9 +3,14 @@
 <language>
   <page id="8888888" voice="no">
     <!-- JP_DataVaultExplorer -->
-    <t id="41">Restock navigation beacons?</t>
-    <t id="42">Amount to restock</t>
-    <t id="43">Include enemy sectors?</t>
-    <t id="44">Include unknown sectors?</t>
+    <t id="900">Вражеские сектора?</t>
+    <t id="901">Нейтральные сектора?</t>
+    <t id="902">Дружественные Секторы?</t>
+    <t id="910">Пополнить навигационные маяки?</t>
+    <t id="911">Сумма для пополнения</t>
+    <t id="994">Добавить тег заказа?</t>
+    <t id="997">\033#B600CCCC#</t>
+    <t id="998">\033#FF00CC66#</t>
+    <t id="999">\033X</t>
   </page>
 </language>

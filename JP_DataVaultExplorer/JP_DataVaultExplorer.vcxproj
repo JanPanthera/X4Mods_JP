@@ -126,8 +126,10 @@
   <ItemGroup>
     <Xsd Include="aiscripts\aiscripts.xsd" />
     <Xsd Include="JP_DataVaultExplorer\aiscripts\aiscripts.xsd" />
+    <Xsd Include="md\md.xsd" />
   </ItemGroup>
   <ItemGroup>
+    <Xml Include="aiscripts\JP_GetNearestDataVaultToMark.xml" />
     <Xml Include="aiscripts\JP_DataVaultExplorer.xml" />
     <Xml Include="aiscripts\JP_ExploreDataVault.xml" />
     <Xml Include="content.xml" />
@@ -145,6 +147,7 @@
     <Xml Include="JP_DataVaultExplorer\t\0001-L082.xml" />
     <Xml Include="JP_DataVaultExplorer\t\0001-L086.xml" />
     <Xml Include="JP_DataVaultExplorer\t\0001-L088.xml" />
+    <Xml Include="libraries\icons.xml" />
     <Xml Include="t\0001-L007.xml" />
     <Xml Include="t\0001-L033.xml" />
     <Xml Include="t\0001-L034.xml" />
@@ -156,6 +159,10 @@
     <Xml Include="t\0001-L082.xml" />
     <Xml Include="t\0001-L086.xml" />
     <Xml Include="t\0001-L088.xml" />
+    <Xml Include="t\0001.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="changelog.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

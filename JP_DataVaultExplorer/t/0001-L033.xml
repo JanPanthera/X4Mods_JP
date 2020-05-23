@@ -3,10 +3,14 @@
 <language>
   <page id="8888888" voice="no">
     <!-- JP_DataVaultExplorer -->
-    <t id="41">Faire le plein de balises de navigations?</t>
-    <t id="42">Quantité à restocker</t>
-    <t id="43">Inclure les secteurs ennemis?</t>
-    <t id="44">Inclure les secteurs inconnus?</t>
+    <t id="900">Secteurs ennemis?</t>
+    <t id="901">Secteurs neutres?</t>
+    <t id="902">Secteurs amis?</t>
+    <t id="910">Réapprovisionner les balises de navigation?</t>
+    <t id="911">Montant à réapprovisionner</t>
+    <t id="994">Ajouter une étiquette de commande?</t>
+    <t id="997">\033#B600CCCC#</t>
+    <t id="998">\033#FF00CC66#</t>
+    <t id="999">\033X</t>
   </page>
 </language>
-<!-- Thanks to darkslimus / Xchange Guild -->
