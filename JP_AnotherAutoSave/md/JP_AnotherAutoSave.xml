@@ -3,18 +3,18 @@
 <mdscript name="JP_AnotherAutoSave_MD" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="md.xsd">
   <cues>
 
-    <cue name="JP_ANOTHER_AUTO_SAVE_900" instantiate="true" checkinterval="900s">
+    <cue name="JP_ANOTHER_AUTO_SAVE_900" instantiate="true" checktime="player.age + 900s" checkinterval="900s">
       <conditions>
-        <check_value value="player.autosave.active == true and player.autosave.factor == 1"/>
+        <check_value value="player.autosave.active and player.autosave.factor == 1"/>
       </conditions>
       <actions>
         <set_value name="$AutoSaveTriggered" exact="true"/>
       </actions>
     </cue>
 
-    <cue name="JP_ANOTHER_AUTO_SAVE_1800" instantiate="true" checkinterval="1800s">
+    <cue name="JP_ANOTHER_AUTO_SAVE_1800" instantiate="true" checktime="player.age + 1800s" checkinterval="1800s">
       <conditions>
-        <check_value value="player.autosave.active == true and player.autosave.factor == 2"/>
+        <check_value value="player.autosave.active and player.autosave.factor == 2"/>
       </conditions>
       <actions>
         <set_value name="$AutoSaveTriggered" exact="true"/>
@@ -23,24 +23,74 @@
 
     <cue name="JP_ANOTHER_AUTO_SAVE_TRIGGERED" instantiate="true" checkinterval="1s">
       <conditions>
-        <check_value value="if player.autosave.factor == 1 then JP_ANOTHER_AUTO_SAVE_900.$AutoSaveTriggered == true else JP_ANOTHER_AUTO_SAVE_1800.$AutoSaveTriggered == true"/>
+        <check_all>
+          <check_value value="player.autosave.active"/>
+          <check_value value="JP_ANOTHER_AUTO_SAVE_900.$AutoSaveTriggered? or JP_ANOTHER_AUTO_SAVE_1800.$AutoSaveTriggered?"/>
+          <check_value value="if player.autosave.factor == 1 then JP_ANOTHER_AUTO_SAVE_900.$AutoSaveTriggered else JP_ANOTHER_AUTO_SAVE_1800.$AutoSaveTriggered"/>
+        </check_all>
       </conditions>
       <actions>
-        <do_if value="player.timewarp.active">
-          <toggle_timewarp/>
+        <set_value name="$DEBUG" exact="0"/>
+        <set_value name="$DebugDirectory" exact="'JP_AnotherAutoSave.logs'"/>
+        <set_value name="$DebugFileName" exact="'JP_AnotherAutoSave.xml.log'"/>
+
+        <do_if value="$DEBUG gt 0">
+          <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_TestScript_MD_03.xml ~ Started ~~' + '\n'"/>
         </do_if>
-        <set_value name="$COUNTER" exact="1" operation="subtract"/>
-        <show_help custom="'Autosave in \033#FFA95908#%1\033X seconds.'.[$COUNTER]" duration="1s"/>
-        <do_if value="$COUNTER le 0">
+
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+        <do_if value="not $_Counter?">
+          <set_value name="$_Counter" exact="10"/>
+        </do_if>
+
+        <do_if value="$_Counter == 10">
+          <do_if value="player.timewarp.active">
+            <toggle_timewarp/>
+            <set_value name="$SetaWasActive" exact="true"/>
+          </do_if>
+        </do_if>
+
+        <do_if value="$_Counter ge 0">
+          <do_if value="$_Counter == 1">
+            <show_help custom="{8888888, 301}.[$_Counter]" duration="1s" allowclose="true"/>
+          </do_if>
+          <do_else>
+            <show_help custom="{8888888, 300}.[$_Counter]" duration="1s" allowclose="true"/>
+          </do_else>
+        </do_if>
+        <set_value name="$_Counter" exact="1" operation="subtract"/>
+
+        <do_if value="$_Counter == -3">
+          <show_help custom="{8888888, 302}" duration="2s" allowclose="true"/>
+        </do_if>
+
+        <do_if value="$_Counter == -4">
           <do_if value="player.autosave.factor == 1">
             <set_value name="JP_ANOTHER_AUTO_SAVE_900.$AutoSaveTriggered" exact="false"/>
           </do_if>
           <do_else>
             <set_value name="JP_ANOTHER_AUTO_SAVE_1800.$AutoSaveTriggered" exact="false"/>
           </do_else>
-          <set_value name="$COUNTER" exact="11"/>
+          <do_if value="$SetaWasActive">
+            <toggle_timewarp/>
+            <set_value name="$SetaWasActive" exact="false"/>
+          </do_if>
           <trigger_autosave/>
+          <remove_value name="$_Counter"/>
         </do_if>
+
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+        <do_if value="$DEBUG gt 0">
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_TestScript_MD_03.xml ~ Finished ~~'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+        </do_if>
+
+        <remove_value name="$DebugFileName"/>
+        <remove_value name="$DebugDirectory"/>
+        <remove_value name="$DEBUG"/>
       </actions>
     </cue>
 

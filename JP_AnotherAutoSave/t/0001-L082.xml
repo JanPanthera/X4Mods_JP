@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Korean ~~ 한국어 -->
+<language>
+  <page id="8888888" voice="no">
+    <!-- JP_AnotherAutoSave -->
+    <t id="300">Automatic saving in \033#FFA95908#%1\033X seconds.</t> 
+    <t id="301">Automatic saving in \033#FFA95908#%1\033X second.</t> 
+    <t id="302">Saving...</t> 
+  </page>
+</language>

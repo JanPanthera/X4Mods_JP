@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<content id="JP_AnotherAutoSave" name="JP_AnotherAutoSave" description="Will do an automatic save in constant interval and shows you a 10 seconds timer before the save." author="JanPanthera" version="101" date="2020-05-03" save="0" enabled="1">
-  <dependency version="300"/>
+<content id="JP_AnotherAutoSave" name="JP_AnotherAutoSave" description="Will do an automatic save in constant interval and shows you a 10 seconds timer before the save." author="JanPanthera" version="102" date="2020-05-23" save="0" enabled="1">
   <text language="7"  name="JP_AnotherAutoSave" description="Will do an automatic save in constant interval and shows you a 10 seconds timer before the save." author="JanPanthera"/>
   <text language="33" name="JP_AnotherAutoSave" description="Will do an automatic save in constant interval and shows you a 10 seconds timer before the save." author="JanPanthera"/>
   <text language="34" name="JP_AnotherAutoSave" description="Will do an automatic save in constant interval and shows you a 10 seconds timer before the save." author="JanPanthera"/>

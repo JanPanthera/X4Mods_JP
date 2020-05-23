@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Portuguese (Brazil) ~~ Português (Brasil) -->
+<language>
+  <page id="8888888" voice="no">
+    <!-- JP_AnotherAutoSave -->
+    <t id="300">Economia automática em \033#FFA95908#%1\033X segundos.</t> 
+    <t id="301">Economia automática em \033#FFA95908#%1\033X segundo.</t> 
+    <t id="302">Salvando ...</t> 
+  </page>
+</language>

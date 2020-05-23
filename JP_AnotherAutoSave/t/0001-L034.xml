@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Spanish ~~ Español -->
+<language>
+  <page id="8888888" voice="no">
+    <!-- JP_AnotherAutoSave -->
+    <t id="300">Guardado automático en \033#FFA95908#%1\033X segundos.</t> 
+    <t id="301">Guardado automático en \033#FFA95908#%1\033X segundo.</t> 
+    <t id="302">Ahorro...</t> 
+  </page>
+</language>

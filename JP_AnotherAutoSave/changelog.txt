@@ -1,0 +1,4 @@
+~ Added: translation files..
+~ Updated: Counter logic optimized.. it counts now till 0.. then comes a message Saving.. and then the game will be saved.
+~ Updated: When Seta is active while the script starts.. it will turned temporarily off.. if saving is done it will be turned on again.
+~ Updated: added some translations.. (google translate)
