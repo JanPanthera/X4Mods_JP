@@ -130,9 +130,9 @@
   </ItemGroup>
   <ItemGroup>
     <Xml Include="aiscripts\JP_CreateColorString_MR.xml" />
+    <Xml Include="aiscripts\JP_CreateName_MR.xml" />
     <Xml Include="aiscripts\JP_MultiRename.xml" />
-    <Xml Include="aiscripts\JP_RenameFleet.xml" />
-    <Xml Include="aiscripts\JP_RenameShip.xml" />
+    <Xml Include="aiscripts\JP_SaveLoadReset_MR.xml" />
     <Xml Include="content.xml" />
     <Xml Include="JP_MultiRename\aiscripts\JP_CreateNewNameMR.xml" />
     <Xml Include="JP_MultiRename\aiscripts\JP_GetShipClassName.xml" />

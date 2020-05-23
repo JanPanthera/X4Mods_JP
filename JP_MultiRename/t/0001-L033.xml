@@ -18,20 +18,28 @@
     <t id="1113">Trier XL en S?</t>
     <t id="1114">Renommer commandant?</t>
     <t id="1115">Renommer flotte?</t>
-    <t id="1116">Rename sub. Fleets?</t>
-    <t id="1117">Utiliser la coloration des étiquettes?</t>
-    <t id="1118">Utiliser la coloration du nom?</t>
-    <t id="1119">Utiliser la coloration des nombres?</t>
-    <t id="1120">Enregistrer les noms?</t>
-    <t id="1121">Charger les noms?</t>
-    <t id="1122">Supprimer enregistré?</t>
-    <t id="1123">Réinitialiser?</t>
-    <t id="1124">V*</t>
-    <t id="1125">S*</t>
-    <t id="1160">Transparence</t>
-    <t id="1161">Rouge</t>
-    <t id="1162">Vert</t>
-    <t id="1163">Bleu</t>
+    <t id="1116">Renommer les flottes subordonnées?</t>
+    <t id="1117">Coloriser la balise?</t>
+    <t id="1118">Coloriser le nom?</t>
+    <t id="1119">Coloriser le numéro?</t>
+    <t id="1120">V*</t>
+    <t id="1121">S*</t>
+    <t id="1130">Enregistrer le nom du commandant?</t>
+    <t id="1131">Enregistrer les noms des subordonnés?</t>
+    <t id="1132">Enregistrer les noms des subordonnés sous. Des flottes?</t>
+    <t id="1133">Charger le nom des commandants?</t>
+    <t id="1134">Charger les noms des subordonnés?</t>
+    <t id="1135">Charger les noms des subordonnés sous. Des flottes?</t>
+    <t id="1136">Réinitialiser le nom des commandants?</t>
+    <t id="1137">Réinitialiser les noms des subordonnés?</t>
+    <t id="1138">Réinitialiser les noms des subordonnés Des flottes?</t>
+    <t id="1139">Supprimer le nom du commandant?</t>
+    <t id="1140">Supprimer les noms des subordonnés?</t>
+    <t id="1141">Supprimer les sous-noms des sous-noms. Des flottes?</t>
+    <t id="1170">Transparence</t>
+    <t id="1171">Rouge</t>
+    <t id="1172">Vert</t>
+    <t id="1173">Bleu</t>
     <t id="1195">Enregistrer les paramètres?</t>
     <t id="1196">Supprimer les paramètres?</t>
     <t id="1197">\033#B600CCCC#</t>
@@ -39,4 +47,3 @@
     <t id="1199">\033X</t>
   </page>
 </language>
-<!-- Thanks to darkslimus / Xchange Guild -->

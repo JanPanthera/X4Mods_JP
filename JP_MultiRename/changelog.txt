@@ -1,5 +1,6 @@
 ~ Added: saving and deleting of the most settings
 ~ Added: order name is now colored
+~ Updated: huge refactoring
 ~ Updated: language files restructured
 ~ Updated: added some translations.. (google translate)
 ~ Removed: JP_ScriptLibrary dependencie
