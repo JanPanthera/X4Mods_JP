@@ -10,7 +10,7 @@
       </param>
       <param name="COLLECT_CARGO" text="{8888888, 700}" comment="Collect Cargo items?" type="bool" default="true"/>
       <param name="COLLECT_INVENTORY" text="{8888888, 701}" comment="Collect Inventory items?" type="bool" default="true"/>
-      <param name="SELL_CARGO" text="{8888888, 702}" comment="Sell cargo when full?" type="bool" default="true"/>
+      <param name="SELL_CARGO" text="{8888888, 702}" comment="Sell cargo when full?" type="bool" default="false"/>
       <!-- Cheaty Version ~ collects without flying to the object ~ (/thereshallbewings) -->
       <param name="INSTANT" text="{8888888, 720}" comment="Instant?" type="bool" default="false" advanced="true"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->

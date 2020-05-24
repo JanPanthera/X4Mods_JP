@@ -2,7 +2,7 @@
 
 <aiscript name="JP_EmptyCargoBay" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd" version="1">
 
-  <order id="JP_EmptyCargoBay" name="EmptyCargoBay JP" category="internal" infinite="false">
+  <order id="JP_EmptyCargoBay" name="EmptyCargoBay JP" category="internal" infinite="true">
     <params>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="SECTOR" text="Sector" type="object" default="this.sector">
