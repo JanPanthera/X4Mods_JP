@@ -48,11 +48,11 @@
   <init>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <set_value name="$DebugDirectory" exact="'JP_MultiRename.logs'"/>
-    <set_value name="$DebugFileName" exact="this.ship.fleet.commander.idcode + 'JP_SaveLoadReset_MR.xml.log'"/>
+    <set_value name="$DebugFileName" exact="this.ship.idcode + '.JP_SaveLoadReset_MR.xml.log'"/>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <set_value name="$Commander" exact="this.assignedcontrolled"/>
     <do_if value="$SAVE_COMMANDERS_NAME or $SAVE_SUBORDINATES_NAMES or $SAVE_NAMES_OF_SUBORDINATES_SUB_FLEETS">
-      <do_if value="not global.$SavedNames_MR">
+      <do_if value="not global.$SavedNames_MR?">
         <create_list name="global.$SavedNames_MR"/>
       </do_if>
     </do_if>

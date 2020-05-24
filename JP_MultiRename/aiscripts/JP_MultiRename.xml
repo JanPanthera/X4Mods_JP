@@ -38,66 +38,66 @@
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <!-- Coloring of the tag -->
       <param name="USE_TAG_COLORING" text="{8888888, 1117}" comment="Use Tag Coloring?" type="bool" default="if global.$UseTagColoringMR? then global.$UseTagColoringMR else true"/>
-      <param name="TAG_ALPHA" text=" {8888888, 1170}" comment="Transparency" type="number" default="if global.$TagAlphaMR? then global.$TagAlphaMR else 255">
+      <param name="TAG_ALPHA" text="- {8888888, 1170}" comment="Transparency" type="number" default="if global.$TagAlphaMR? then global.$TagAlphaMR else 255">
         <input_param name="step" value="1"/>
         <input_param name="min" value="0"/>
         <input_param name="max" value="255"/>
       </param>
-      <param name="TAG_RED" text=" {8888888, 1171}" comment="Red" type="number" default="if global.$TagRedMR? then global.$TagRedMR else 0">
+      <param name="TAG_RED" text="- {8888888, 1171}" comment="Red" type="number" default="if global.$TagRedMR? then global.$TagRedMR else 0">
         <input_param name="step" value="1"/>
         <input_param name="min" value="0"/>
         <input_param name="max" value="255"/>
       </param>
-      <param name="TAG_GREEN" text=" {8888888, 1172}" comment="Green" type="number" default="if global.$TagGreenMR? then global.$TagGreenMR else 204">
+      <param name="TAG_GREEN" text="- {8888888, 1172}" comment="Green" type="number" default="if global.$TagGreenMR? then global.$TagGreenMR else 204">
         <input_param name="step" value="1"/>
         <input_param name="min" value="0"/>
         <input_param name="max" value="255"/>
       </param>
-      <param name="TAG_BLUE" text=" {8888888, 1173}" comment="Blue" type="number" default="if global.$TagBlueMR? then global.$TagBlueMR else 102">
+      <param name="TAG_BLUE" text="- {8888888, 1173}" comment="Blue" type="number" default="if global.$TagBlueMR? then global.$TagBlueMR else 102">
         <input_param name="step" value="1"/>
         <input_param name="min" value="0"/>
         <input_param name="max" value="255"/>
       </param>
       <!-- Coloring of the name -->
       <param name="USE_NAME_COLORING" text="{8888888, 1118}" comment="Use Name Coloring?" type="bool" default="if global.$UseNameColoringMR? then global.$UseNameColoringMR else true"/>
-      <param name="NAME_ALPHA" text=" {8888888, 1170}" comment="Transparency" type="number" default="if global.$NameAlphaMR? then global.$NameAlphaMR else 182">
+      <param name="NAME_ALPHA" text="- {8888888, 1170}" comment="Transparency" type="number" default="if global.$NameAlphaMR? then global.$NameAlphaMR else 182">
         <input_param name="step" value="1"/>
         <input_param name="min" value="0"/>
         <input_param name="max" value="255"/>
       </param>
-      <param name="NAME_RED" text=" {8888888, 1171}" comment="Red" type="number" default="if global.$NameRedMR? then global.$NameRedMR else 0">
+      <param name="NAME_RED" text="- {8888888, 1171}" comment="Red" type="number" default="if global.$NameRedMR? then global.$NameRedMR else 0">
         <input_param name="step" value="1"/>
         <input_param name="min" value="0"/>
         <input_param name="max" value="255"/>
       </param>
-      <param name="NAME_GREEN" text=" {8888888, 1172}" comment="Green" type="number" default="if global.$NameGreenMR? then global.$NameGreenMR else 204">
+      <param name="NAME_GREEN" text="- {8888888, 1172}" comment="Green" type="number" default="if global.$NameGreenMR? then global.$NameGreenMR else 204">
         <input_param name="step" value="1"/>
         <input_param name="min" value="0"/>
         <input_param name="max" value="255"/>
       </param>
-      <param name="NAME_BLUE" text=" {8888888, 1173}" comment="Blue" type="number" default="if global.$NameBlueMR? then global.$NameBlueMR else 204">
+      <param name="NAME_BLUE" text="- {8888888, 1173}" comment="Blue" type="number" default="if global.$NameBlueMR? then global.$NameBlueMR else 204">
         <input_param name="step" value="1"/>
         <input_param name="min" value="0"/>
         <input_param name="max" value="255"/>
       </param>
       <!-- Coloring of the generated number of numbering -->
       <param name="USE_NUMBER_COLORING" text="{8888888, 1119}" comment="Use Number Coloring?" type="bool" default="if global.$UseNumberColoringMR? then global.$UseNumberColoringMR? else true"/>
-      <param name="NUMBER_ALPHA" text=" {8888888, 1170}" comment="Transparency" type="number" default="if global.$NumberAlphaMR? then global.$NumberAlphaMR else 162">
+      <param name="NUMBER_ALPHA" text="- {8888888, 1170}" comment="Transparency" type="number" default="if global.$NumberAlphaMR? then global.$NumberAlphaMR else 162">
         <input_param name="step" value="1"/>
         <input_param name="min" value="0"/>
         <input_param name="max" value="255"/>
       </param>
-      <param name="NUMBER_RED" text=" {8888888, 1171}" comment="Red" type="number" default="if global.$NumberRedMR? then global.$NumberRedMR else 0">
+      <param name="NUMBER_RED" text="- {8888888, 1171}" comment="Red" type="number" default="if global.$NumberRedMR? then global.$NumberRedMR else 0">
         <input_param name="step" value="1"/>
         <input_param name="min" value="0"/>
         <input_param name="max" value="255"/>
       </param>
-      <param name="NUMBER_GREEN" text=" {8888888, 1172}" comment="Green" type="number" default="if global.$NumberGreenMR? then global.$NumberGreenMR else 0">
+      <param name="NUMBER_GREEN" text="- {8888888, 1172}" comment="Green" type="number" default="if global.$NumberGreenMR? then global.$NumberGreenMR else 0">
         <input_param name="step" value="1"/>
         <input_param name="min" value="0"/>
         <input_param name="max" value="255"/>
       </param>
-      <param name="NUMBER_BLUE" text=" {8888888, 1173}" comment="Blue" type="number" default="if global.$NumberBlueMR? then global.$NumberBlueMR else 255">
+      <param name="NUMBER_BLUE" text="- {8888888, 1173}" comment="Blue" type="number" default="if global.$NumberBlueMR? then global.$NumberBlueMR else 255">
         <input_param name="step" value="1"/>
         <input_param name="min" value="0"/>
         <input_param name="max" value="255"/>
@@ -149,7 +149,7 @@
   <init>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <set_value name="$DebugDirectory" exact="'JP_MultiRename.logs'"/>
-    <set_value name="$DebugFileName" exact="this.ship.fleet.commander.idcode + 'JP_MultiRename.xml.log'"/>
+    <set_value name="$DebugFileName" exact="this.ship.idcode + '.JP_MultiRename.xml.log'"/>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <set_value name="$Commander" exact="this.assignedcontrolled"/>
     <set_value name="$Tag" exact="''"/>

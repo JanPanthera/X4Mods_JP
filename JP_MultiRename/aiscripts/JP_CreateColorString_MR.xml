@@ -45,7 +45,7 @@
   <init>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <set_value name="$DebugDirectory" exact="'JP_MultiRename.logs'"/>
-    <set_value name="$DebugFileName" exact="this.ship.fleet.commander.idcode + '.JP_CreateColorString_MR.xml.log'"/>
+    <set_value name="$DebugFileName" exact="this.ship.idcode + '.JP_CreateColorString_MR.xml.log'"/>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
   </init>
 

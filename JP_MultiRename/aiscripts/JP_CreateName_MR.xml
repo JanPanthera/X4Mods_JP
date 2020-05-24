@@ -61,7 +61,7 @@
   <init>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <set_value name="$DebugDirectory" exact="'JP_NumberMyShips.logs'"/>
-    <set_value name="$DebugFileName" exact="this.ship.fleet.commander.idcode + '.JP_CreateName_MR.xml.log'"/>
+    <set_value name="$DebugFileName" exact="this.ship.idcode + '.JP_CreateName_MR.xml.log'"/>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <set_value name="$Ship" exact="$SHIP"/>
     <set_value name="$CreatedName" exact="''"/>
@@ -118,6 +118,7 @@
       <!-- Model name -->
       <do_if value="$USE_MODEL_NAME">
         <!-- Remove the Sentinel Tag from the name ? -->
+        <set_value name="$ModelName" exact="$SHIP.macro.name"/>
         <do_if value="$REMOVE_SENTINEL_TAG">
           <substitute_text source="$ModelName" text="$ModelName">
             <replace string="' ' + {20111,1201}" with="''"/>
