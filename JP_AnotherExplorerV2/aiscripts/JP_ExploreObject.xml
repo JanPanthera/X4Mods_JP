@@ -45,6 +45,10 @@
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
+      <do_if value="not $OBJECT.sector?">
+        <resume label="FINISH"/>
+      </do_if>
+      
       <set_command command="command.move" param="$OBJECT"/>
       <label name="MOVE"/>
       <get_safe_pos result="$_TempPosition" zone="$OBJECT.sector" object="$OBJECT" directionobject="$Ship" radius="(($Ship.size / 2) + 2km)"/>

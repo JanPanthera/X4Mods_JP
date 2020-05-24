@@ -254,7 +254,7 @@
       </do_if>
 
       <label name="EXPLORE_SECTOR"/>
-      <run_script name="'JP_GetNearestUnknownObject'">
+      <run_script name="'JP_GetNearestUnknownObject_AEV2'">
         <param name="GATES" value="$GATES"/>
         <param name="STATIONS" value="$STATIONS"/>
         <param name="ENEMY_STATIONS" value="$ENEMY_STATIONS"/>

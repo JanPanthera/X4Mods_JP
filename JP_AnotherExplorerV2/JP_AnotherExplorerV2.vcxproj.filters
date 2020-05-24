@@ -67,7 +67,7 @@
     <Xml Include="libraries\experiences.xml" />
     <Xml Include="t\0001.xml" />
     <Xml Include="aiscripts\JP_IdleReturnHome_AEV2.xml" />
-    <Xml Include="aiscripts\JP_GetNearestUnknownObject.xml" />
+    <Xml Include="aiscripts\JP_GetNearestUnknownObject_AEV2.xml" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="changelog.txt" />

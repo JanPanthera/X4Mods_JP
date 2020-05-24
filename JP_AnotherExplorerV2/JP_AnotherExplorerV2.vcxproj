@@ -133,7 +133,7 @@
     <Xml Include="aiscripts\JP_AnotherExplorerV2G.xml" />
     <Xml Include="aiscripts\JP_AnotherExplorerV2S.xml" />
     <Xml Include="aiscripts\JP_ExploreObject.xml" />
-    <Xml Include="aiscripts\JP_GetNearestUnknownObject.xml" />
+    <Xml Include="aiscripts\JP_GetNearestUnknownObject_AEV2.xml" />
     <Xml Include="aiscripts\JP_IdleReturnHome_AEV2.xml" />
     <Xml Include="content.xml" />
     <Xml Include="JP_AnotherExplorerV2\aiscripts\JP_AnotherExplorerV2G.xml" />
