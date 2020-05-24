@@ -11,14 +11,14 @@
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="SHOW_MESSAGE" text="{8888888, 110}" comment="Message when arrived?" type="bool" default="if global.$ShowMessageASE? then global.$ShowMessageASE else true"/>
       <param name="WAIT_AT_SHIP" text="{8888888, 111}" comment="Wait at the ship?" type="bool" default="if global.$WaitAtShipASE? then global.$WaitAtShipASE else true"/>
-      <param name="WAIT_AMOUNT" text="  {8888888, 112}" comment="How long to wait?" type="time" default="if global.$WaitAmountASE? then global.$WaitAmountASE else 60s">
+      <param name="WAIT_AMOUNT" text="- {8888888, 112}" comment="How long to wait?" type="time" default="if global.$WaitAmountASE? then global.$WaitAmountASE else 60s">
         <input_param name="step" value="10s"/>
         <input_param name="min" value="10s"/>
         <input_param name="max" value="3600s"/>
       </param>
       <param name="PLACE_NAVBEACON" text="{8888888, 113}" comment="Place navigation beacons?" type="bool" default="if global.$PlaceNavbeaconASE? then global.$PlaceNavbeaconASE else true"/>
       <param name="RESTOCK_NAV_BEACONS" text="{8888888, 114}" comment="Restock navigation beacons?" type="bool" default="if global.$RestockNavBeaconsASE? then global.$RestockNavBeaconsASE else true"/>
-      <param name="RESTOCK_AMOUNT" text="  {8888888, 115}" comment="Amount to restock" type="number" default="3">
+      <param name="RESTOCK_AMOUNT" text="- {8888888, 115}" comment="Amount to restock" type="number" default="3">
         <input_param name="step" value="1"/>
         <input_param name="min" value="1"/>
         <input_param name="max" value="if this.ship.ammostorage.deployable.free le 0 then 1 else this.ship.ammostorage.deployable.free"/>
@@ -30,20 +30,20 @@
         <input_param name="step" value="10s"/>
       </param>
       <param name="IDLE_FOLLOW" text="{8888888, 181}" comment="Idle: Follow?" type="bool" default="if global.$IdleFollowASE? then global.$IdleFollowASE else false"/>
-      <param name="WHO_TO_FOLLOW" text="  {8888888, 182}" comment="Who to follow?" type="object" default="if global.$WhoToFollowASE? then global.$WhoToFollowASE else null">
+      <param name="WHO_TO_FOLLOW" text="- {8888888, 182}" comment="Who to follow?" type="object" default="if global.$WhoToFollowASE? then global.$WhoToFollowASE else null">
         <input_param name="class" value="[class.ship]"/>
         <input_param name="owner" value="this.ship.owner"/>
       </param>
       <param name="IDLE_DOCKING" text="{8888888, 183}" comment="Idle: Docking?" type="bool" default="if global.$IdleDockingASE? then global.$IdleDockingASE else false"/>
-      <param name="WHERE_TO_DOCK" text="  {8888888, 184}" comment="Where to dock?" type="object" default="if global.$WhereToDockASE? then global.$WhereToDockASE else null">
+      <param name="WHERE_TO_DOCK" text="- {8888888, 184}" comment="Where to dock?" type="object" default="if global.$WhereToDockASE? then global.$WhereToDockASE else null">
         <input_param name="class" value="if this.ship.isclass.[class.ship_s, class.ship_xs] then [class.station, class.ship_m, class.ship_l, class.ship_xl] else [class.station, class.ship_l, class.ship_xl]"/>
       </param>
       <param name="IDLE_RANDOM_MOVEMENT" text="{8888888, 185}" comment="Idle: Movement?" type="bool" default="if global.$IdleRandomMovementASE? then global.$IdleRandomMovementASE else false"/>
-      <param name="IN_WHICH_SECTOR" text="  {8888888, 186}" comment="In which sector?" type="position" default="if global.$InWhichSectorASE? then global.$InWhichSectorASE else [this.ship.sector, this.ship.position]">
+      <param name="IN_WHICH_SECTOR" text="- {8888888, 186}" comment="In which sector?" type="position" default="if global.$InWhichSectorASE? then global.$InWhichSectorASE else [this.ship.sector, this.ship.position]">
         <input_param name="class" value="class.sector"/>
       </param>
       <param name="IDLE_MOVE_TO" text="{8888888, 187}" comment="Idle: Move to?" type="bool" default="if global.$IdleMoveToASE? then global.$IdleMoveToASE else false"/>
-      <param name="WHERE_TO_MOVE" text="  {8888888, 188}" comment="Where to move?" type="position" default="if global.$WhereToMoveASE? then global.$WhereToMoveASE else [this.ship.sector, this.ship.position]">
+      <param name="WHERE_TO_MOVE" text="- {8888888, 188}" comment="Where to move?" type="position" default="if global.$WhereToMoveASE? then global.$WhereToMoveASE else [this.ship.sector, this.ship.position]">
         <input_param name="class" value="class.sector"/>
       </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
