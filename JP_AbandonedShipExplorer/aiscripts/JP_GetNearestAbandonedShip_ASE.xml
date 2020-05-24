@@ -57,12 +57,6 @@
       <create_list name="$_TempSectors"/>
       <find_sector name="$_TempSectors" space="player.galaxy" multiple="true"/>
 
-      <do_if value="$DEBUG gt 0">
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="' ~ ' + $NEUTRAL_SECTORS"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
-      </do_if>
-
       <include_interrupt_actions ref="GetBlacklistgroup"/>
 
       <create_list name="$_Sectors"/>
@@ -79,10 +73,12 @@
         <do_if value="$_Sector.owner == faction.ownerless and not $NEUTRAL_SECTORS">
           <continue/>
         </do_if>
-        <do_if value="$_Sector.owner != faction.ownerless">
-          <do_if value="not $_Sector.owner.mayattack.{$Ship} and not $FRIENDLY_SECTORS">
-            <continue/>
-          </do_if>
+        <!-- TODO: own boolean for own sectors -->
+        <do_if value="$_Sector.owner == faction.player and not $FRIENDLY_SECTORS">
+          <continue/>
+        </do_if>
+        <do_if value="$_Sector.owner != faction.ownerless and $_Sector.owner != faction.player and not $_Sector.owner.mayattack.{$Ship} and not $FRIENDLY_SECTORS">
+          <continue/>
         </do_if>
         <append_to_list name="$_Sectors" exact="$_Sector"/>
       </do_for_each>
