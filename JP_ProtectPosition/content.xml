@@ -2,7 +2,6 @@
 
 <content id="JP_ProtectPosition" name="JP_ProtectPosition" description="Protects a position." author="JanPanthera" version="010" date="2019-12-18" save="0" enabled="1">
   <dependency version="300"/>
-  <dependency id="JP_ScriptLibrary" version="100"/>
   <text language="7"  name="JP_ProtectPosition" description="Protects a position." author="JanPanthera"/>
   <text language="33" name="JP_ProtectPosition" description="Protects a position." author="JanPanthera"/>
   <text language="34" name="JP_ProtectPosition" description="Protects a position." author="JanPanthera"/>
