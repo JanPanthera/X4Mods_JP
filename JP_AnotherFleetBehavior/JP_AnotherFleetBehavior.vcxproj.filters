@@ -40,6 +40,7 @@
     <Xml Include="aiscripts\JP_Fighter_Defend.xml" />
     <Xml Include="aiscripts\JP_GetEnemyInRange.xml" />
     <Xml Include="aiscripts\JP_UpdateFleetOrders.xml" />
+    <Xml Include="t\0001.xml" />
   </ItemGroup>
   <ItemGroup>
     <Xsd Include="aiscripts\aiscripts.xsd">
