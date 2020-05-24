@@ -15,44 +15,44 @@
       <param name="TAG_OBJECT" text="{8888888, 205}" comment="Object with tag as name" type="object" default="if global.$ObjectWithTagAsNameAT? then global.$ObjectWithTagAsNameAT else this.ship"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="USE_TAG_COLORING" text="{8888888, 206}" comment="Use Tag Coloring?" type="bool" default="if global.$UseTagColoringAT? then global.$UseTagColoringAT else true"/>
-      <param name="TAG_ALPHA" text=" {8888888, 270}" comment="Transparency" type="number" default="if global.$UseTagColoringAlphaAT? then global.$UseTagColoringAlphaAT else 255">
+      <param name="TAG_ALPHA" text="- {8888888, 270}" comment="Transparency" type="number" default="if global.$UseTagColoringAlphaAT? then global.$UseTagColoringAlphaAT else 255">
         <input_param name="step" value="1"/>
         <input_param name="min" value="0"/>
         <input_param name="max" value="255"/>
       </param>
-      <param name="TAG_RED" text=" {8888888, 271}" comment="Red" type="number" default="if global.$UseTagColoringRedAT? then global.$UseTagColoringRedAT else 0">
+      <param name="TAG_RED" text="- {8888888, 271}" comment="Red" type="number" default="if global.$UseTagColoringRedAT? then global.$UseTagColoringRedAT else 0">
         <input_param name="step" value="1"/>
         <input_param name="min" value="0"/>
         <input_param name="max" value="255"/>
       </param>
-      <param name="TAG_GREEN" text=" {8888888, 272}" comment="Green" type="number" default="if global.$UseTagColoringGreenAT? then global.$UseTagColoringGreenAT else 204">
+      <param name="TAG_GREEN" text="- {8888888, 272}" comment="Green" type="number" default="if global.$UseTagColoringGreenAT? then global.$UseTagColoringGreenAT else 204">
         <input_param name="step" value="1"/>
         <input_param name="min" value="0"/>
         <input_param name="max" value="255"/>
       </param>
-      <param name="TAG_BLUE" text=" {8888888, 273}" comment="Blue" type="number" default="if global.$UseTagColoringBlueAT? then global.$UseTagColoringBlueAT else 102">
+      <param name="TAG_BLUE" text="- {8888888, 273}" comment="Blue" type="number" default="if global.$UseTagColoringBlueAT? then global.$UseTagColoringBlueAT else 102">
         <input_param name="step" value="1"/>
         <input_param name="min" value="0"/>
         <input_param name="max" value="255"/>
       </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="USE_NAME_COLORING" text="{8888888, 207}" comment="Use Name Coloring?" type="bool" default="if global.$UseNameColoringAT? then global.$UseNameColoringAT else true"/>
-      <param name="NAME_ALPHA" text=" {8888888, 270}" comment="Transparency" type="number" default="if global.$UseNameColoringAlphaAT? then global.$UseNameColoringAlphaAT else 182">
+      <param name="NAME_ALPHA" text="- {8888888, 270}" comment="Transparency" type="number" default="if global.$UseNameColoringAlphaAT? then global.$UseNameColoringAlphaAT else 182">
         <input_param name="step" value="1"/>
         <input_param name="min" value="0"/>
         <input_param name="max" value="255"/>
       </param>
-      <param name="NAME_RED" text=" {8888888, 271}" comment="Red" type="number" default="if global.$UseNameColoringRedAT? then global.$UseNameColoringRedAT else 0">
+      <param name="NAME_RED" text="- {8888888, 271}" comment="Red" type="number" default="if global.$UseNameColoringRedAT? then global.$UseNameColoringRedAT else 0">
         <input_param name="step" value="1"/>
         <input_param name="min" value="0"/>
         <input_param name="max" value="255"/>
       </param>
-      <param name="NAME_GREEN" text=" {8888888, 272}" comment="Green" type="number" default="if global.$UseNameColoringGreenAT? then global.$UseNameColoringGreenAT else 204">
+      <param name="NAME_GREEN" text="- {8888888, 272}" comment="Green" type="number" default="if global.$UseNameColoringGreenAT? then global.$UseNameColoringGreenAT else 204">
         <input_param name="step" value="1"/>
         <input_param name="min" value="0"/>
         <input_param name="max" value="255"/>
       </param>
-      <param name="NAME_BLUE" text=" {8888888, 273}" comment="Blue" type="number" default="if global.$UseNameColoringBlueAT? then global.$UseNameColoringBlueAT else 204">
+      <param name="NAME_BLUE" text="- {8888888, 273}" comment="Blue" type="number" default="if global.$UseNameColoringBlueAT? then global.$UseNameColoringBlueAT else 204">
         <input_param name="step" value="1"/>
         <input_param name="min" value="0"/>
         <input_param name="max" value="255"/>
