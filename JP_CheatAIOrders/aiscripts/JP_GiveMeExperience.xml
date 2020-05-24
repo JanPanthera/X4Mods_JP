@@ -7,7 +7,7 @@
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="OBJECT" text="{1001, 23}" comment="Object" type="object" default="this.ship">
         <input_param name="owner" value="this.ship.owner"/>
-        <input_param name="class" value="[class.ship, class.station]"/>
+        <input_param name="class" value="[class.ship]"/>
         <input_param name="excludeself" value="false"/>
       </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
