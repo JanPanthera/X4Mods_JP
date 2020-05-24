@@ -8,6 +8,7 @@
       <param name="ENEMY_SECTORS" text="EnemySectors" comment="EnemySectors" type="bool" default="false"/>
       <param name="NEUTRAL_SECTORS" text="NeutralSectors" comment="NeutralSectors" type="bool" default="true"/>
       <param name="FRIENDLY_SECTORS" text="FriendlySectors" comment="FriendlySectors" type="bool" default="true"/>
+      <param name="OWN_SECTORS" text="OwnSectors" comment="OwnSectors?" type="bool" default="true"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="GATES" text="Gates" comment="Gates" type="bool" default="true"/>
       <param name="ACTIVE_GATES" text="ActiveGates" comment="ActiveGates" type="bool" default="true"/>
@@ -85,16 +86,19 @@
         <do_if value="$Ship.gatedistance.{$_Sector} lt 0">
           <continue/>
         </do_if>
-        <do_if value="$_Sector.isblacklisted.{blacklisttype.sectortravel}.{$blacklistgroup}.{$Ship}">
+        <do_if value="$_Sector.isblacklisted.{blacklisttype.sectortravel}.{$blacklistgroup}.{$Ship} or $_Sector.isblacklisted.{blacklisttype.objectactivity}.{$blacklistgroup}.{$Ship}">
+          <continue/>
+        </do_if>
+        <do_if value="$_Sector.owner.mayattack.{$Ship} and not $ENEMY_SECTORS">
           <continue/>
         </do_if>
         <do_if value="$_Sector.owner == faction.ownerless and not $NEUTRAL_SECTORS">
           <continue/>
         </do_if>
-        <do_if value="($_Sector.owner.mayattack.{$Ship} and not $ENEMY_SECTORS)">
+        <do_if value="$_Sector.owner == faction.player and not $OWN_SECTORS">
           <continue/>
         </do_if>
-        <do_if value="$_Sector.owner.mayattack.{$Ship} == false and not $FRIENDLY_SECTORS">
+        <do_if value="$_Sector.owner != faction.ownerless and $_Sector.owner != faction.player and not $_Sector.owner.mayattack.{$Ship} and not $FRIENDLY_SECTORS">
           <continue/>
         </do_if>
         <append_to_list name="$_Sectors" exact="$_Sector"/>
