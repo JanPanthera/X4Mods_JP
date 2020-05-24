@@ -88,12 +88,33 @@
       </do_if>
 
       <do_if value="$SHOW_MESSAGE">
-        <show_help custom="'%1 [%2]\n'.[$Ship.knownname, $Ship.idcode] +
-                           {8888888, 117} + ':\n' +
-                           '%1 [%2]\n'.[$ABANDONED_SHIP.knownname, $ABANDONED_SHIP.idcode] +
-                           {20001, 201} + ' %1 ~ %2\n'.[$ABANDONED_SHIP.sector.knownname, $ABANDONED_SHIP.sector.owner.knownname] + 
-                           {8888888, 118} + ' %1s'.[$WAIT_AMOUNT]"
-                   duration="10s" force="true" position="2" allowclose="true"/>
+        <do_if value="$WAIT_AT_SHIP">
+          <!-- ($Ship.knownname) [($Ship.idcode)]
+               I arrived at the abandoned ship:
+               ($ABANDONED_SHIP.knownname) [($ABANDONED_SHIP.idcode)]
+               Sector ($ABANDONED_SHIP.sector.knownname) ~ ($ABANDONED_SHIP.sector.owner.knownname)
+               Wait time: ($WAIT_AMOUNT)s
+               -->
+          <show_help custom="$Ship.knownname + ' [' + $Ship.idcode + ']' + '\n' +
+                             {8888888, 117} + ':\n' +
+                             $ABANDONED_SHIP.knownname + ' [' + $ABANDONED_SHIP.idcode + ']' + '\n' +
+                             {20001, 201} + ' ' + $ABANDONED_SHIP.sector.knownname + ' ~ ' + $ABANDONED_SHIP.sector.owner.knownname + '\n' + 
+                             {8888888, 118} + ' ' + $WAIT_AMOUNT + 's'"
+                     duration="10s" force="true" position="2" allowclose="true"/>
+        </do_if>
+        <do_else>
+          <!-- ($Ship.knownname) [($Ship.idcode)]
+               I arrived at the abandoned ship:
+               ($ABANDONED_SHIP.knownname) [($ABANDONED_SHIP.idcode)]
+               Sector ($ABANDONED_SHIP.sector.knownname) ~ ($ABANDONED_SHIP.sector.owner.knownname)
+               -->
+          <show_help custom="$Ship.knownname + ' [' + $Ship.idcode + ']' + '\n' +
+                             {8888888, 117} + ':\n' +
+                             $ABANDONED_SHIP.knownname + ' [' + $ABANDONED_SHIP.idcode + ']' + '\n' +
+                             {20001, 201} + ' ' + $ABANDONED_SHIP.sector.knownname + ' ~ ' + $ABANDONED_SHIP.sector.owner.knownname + '\n' +
+                             {8888888, 118} + ' 0' + 's'"
+           duration="10s" force="true" position="2" allowclose="true"/>
+        </do_else>
       </do_if>
 
       <!-- Wait there.. so the player can teleport there and can occupie it.. -->

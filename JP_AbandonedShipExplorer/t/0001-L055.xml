@@ -4,6 +4,8 @@
   <page id="8888888" voice="no">
     <!-- JP_AbandonedShipExplorer -->
     <t id="100">Setores inimigos?</t>
+    <t id="101">Setores neutros?</t>
+    <t id="102">Setores Amigáveis?</t>
     <t id="110">Mensagem quando chegou?</t>
     <t id="111">Espera no navio?</t>
     <t id="112">Quanto tempo esperar?</t>
@@ -13,6 +15,17 @@
     <t id="116">Navio abandonado</t>
     <t id="117">Cheguei ao navio abandonado.</t>
     <t id="118">Tempo de espera:</t>
+    <t id="119">Não há armazenamento gratuito para reabastecer os faróis de navegação!</t>
+    <t id="120">Nenhum sinalizador de navegação a bordo e reabastecimento desligado, ocioso ...</t>
+    <t id="180">Tempo ocioso</t>
+    <t id="181">Inativo: Seguir?</t>
+    <t id="182">Quem seguir?</t>
+    <t id="183">Inativo: Ancoragem?</t>
+    <t id="184">Onde atracar?</t>
+    <t id="185">Ocioso: movimento aleatório?</t>
+    <t id="186">Em qual setor?</t>
+    <t id="187">Inativo: Mover para?</t>
+    <t id="188">Para onde ir?</t>
     <t id="194">Adicionar etiqueta de pedido?</t>
     <t id="195">Salvar configurações?</t>
     <t id="196">Excluir configurações?</t>

@@ -140,8 +140,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <Xml Include="aiscripts\JP_AbandonedShipExplorer.xml" />
-    <Xml Include="aiscripts\JP_ExploreAbandonedShip.xml" />
-    <Xml Include="aiscripts\JP_ResupplyNavBeacons_ASE.xml" />
+    <Xml Include="aiscripts\JP_ExploreAbandonedShip_ASE.xml" />
+    <Xml Include="aiscripts\JP_GetNearestAbandonedShip_ASE.xml" />
+    <Xml Include="aiscripts\JP_IdleReturnHome_ASE.xml" />
+    <Xml Include="aiscripts\JP_RestockNavBeacons_ASE.xml" />
     <Xml Include="content.xml" />
     <Xml Include="JP_AbandonedShipExplorer\aiscripts\JP_AbandonedShipExplorer.xml" />
     <Xml Include="JP_AbandonedShipExplorer\aiscripts\JP_ExploreAbandonedShip.xml" />

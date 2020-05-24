@@ -3,19 +3,32 @@
 <language>
   <page id="8888888" voice="no">
     <!-- JP_AbandonedShipExplorer -->
-    <t id="100">¿Sectores enemigos?</t> 
-    <t id="110">Mensaje cuando llegaste?</t> 
-    <t id="111">¿Esperar en el barco?</t> 
-    <t id="112">¿Cuánto tiempo hay que esperar?</t> 
-    <t id="113">Colocar balizas de navegación?</t> 
-    <t id="114">¿Reponer balizas de navegación?</t> 
-    <t id="115">Cantidad a reponer</t> 
-    <t id="116">Barco abandonado</t> 
-    <t id="117">Llegué al barco abandonado.</t> 
-    <t id="118">Tiempo de espera:</t> 
-    <t id="194">Añadir etiqueta de pedido?</t> 
-    <t id="195">¿Guardar ajustes?</t> 
-    <t id="196">¿Eliminar configuración?</t> 
+    <t id="100">¿Sectores enemigos?</t>
+    <t id="101">Sectores neutros?</t>
+    <t id="102">¿Sectores amigables?</t>
+    <t id="110">Mensaje cuando llegaste?</t>
+    <t id="111">¿Esperar en el barco?</t>
+    <t id="112">¿Cuánto tiempo hay que esperar?</t>
+    <t id="113">Colocar balizas de navegación?</t>
+    <t id="114">¿Reponer balizas de navegación?</t>
+    <t id="115">Cantidad a reponer</t>
+    <t id="116">Barco abandonado</t>
+    <t id="117">Llegué al barco abandonado.</t>
+    <t id="118">Tiempo de espera:</t>
+    <t id="119">¡No hay almacenamiento gratuito para reponer balizas de navegación!</t>
+    <t id="120">No hay balizas de navegación a bordo y la reposición se apaga, queda inactiva ...</t>
+    <t id="180">Tiempo de inactividad</t>
+    <t id="181">Inactiva: Seguir?</t>
+    <t id="182">¿A quién seguir?</t>
+    <t id="183">Inactivo: ¿Atraque?</t>
+    <t id="184">¿Dónde atracar?</t>
+    <t id="185">Inactivo: ¿movimiento aleatorio?</t>
+    <t id="186">En que sector?</t>
+    <t id="187">Inactivo: ¿Mover a?</t>
+    <t id="188">Hacia donde moverse</t>
+    <t id="194">Añadir etiqueta de pedido?</t>
+    <t id="195">¿Guardar ajustes?</t>
+    <t id="196">¿Eliminar configuración?</t>
     <t id="197">\033#B600CCCC#</t>
     <t id="198">\033#FF00CC66#</t>
     <t id="199">\033X</t>

@@ -31,7 +31,6 @@
     <Xml Include="JP_AbandonedShipExplorer\content.xml" />
     <Xml Include="content.xml" />
     <Xml Include="aiscripts\JP_AbandonedShipExplorer.xml" />
-    <Xml Include="aiscripts\JP_ExploreAbandonedShip.xml" />
     <Xml Include="t\0001-L007.xml" />
     <Xml Include="t\0001-L033.xml" />
     <Xml Include="t\0001-L034.xml" />
@@ -44,8 +43,11 @@
     <Xml Include="t\0001-L086.xml" />
     <Xml Include="t\0001-L088.xml" />
     <Xml Include="libraries\icons.xml" />
-    <Xml Include="aiscripts\JP_ResupplyNavBeacons_ASE.xml" />
     <Xml Include="t\0001.xml" />
+    <Xml Include="aiscripts\JP_GetNearestAbandonedShip_ASE.xml" />
+    <Xml Include="aiscripts\JP_ExploreAbandonedShip_ASE.xml" />
+    <Xml Include="aiscripts\JP_IdleReturnHome_ASE.xml" />
+    <Xml Include="aiscripts\JP_RestockNavBeacons_ASE.xml" />
   </ItemGroup>
   <ItemGroup>
     <Xsd Include="JP_AbandonedShipExplorer\aiscripts\aiscripts.xsd">

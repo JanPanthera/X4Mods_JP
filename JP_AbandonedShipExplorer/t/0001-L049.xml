@@ -4,6 +4,8 @@
   <page id="8888888" voice="no">
     <!-- JP_AbandonedShipExplorer -->
     <t id="100">Feindliche Sektoren?</t>
+    <t id="101">Neutrale Sektoren?</t>
+    <t id="102">Befreundete Sektoren?</t>
     <t id="110">Nachricht wenn angekommen?</t>
     <t id="111">Warte am verlassenen Schiff?</t>
     <t id="112">Wie lange Warten?</t>
@@ -13,6 +15,17 @@
     <t id="116">Verlassenes Schiff</t>
     <t id="117">Ich bin am verlassenen Schiff angekommen.</t>
     <t id="118">Wartezeit:</t>
+    <t id="119">Nicht genug Platz für die Wiederauffüllung von Navigationsbaken!</t>
+    <t id="120">Keine Navigationsbaken an Bord und Wiederauffüllung ausgeschaltet, im Leerlauf ...</t>
+    <t id="180">Leerlauf Zeit</t>
+    <t id="181">Leerlauf: Folgen?</t>
+    <t id="182">Wem folgen?</t>
+    <t id="183">Leerlauf: Andocken?</t>
+    <t id="184">Wo andocken?</t>
+    <t id="185">Leerlauf: Zufällige bewegung?</t>
+    <t id="186">In welchem Sektor?</t>
+    <t id="187">Leerlauf: Zu Position bewegen?</t>
+    <t id="188">Wohin?</t>
     <t id="194">Befehlskürzel hinzufügen?</t>
     <t id="195">Speichere Einstellungen?</t>
     <t id="196">Lösche Einstellungen?</t>

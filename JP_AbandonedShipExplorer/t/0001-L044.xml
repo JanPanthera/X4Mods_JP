@@ -4,6 +4,8 @@
   <page id="8888888" voice="no">
     <!-- JP_AbandonedShipExplorer -->
     <t id="100">Enemy Sectors?</t>
+    <t id="101">Neutral Sectors?</t>
+    <t id="102">Friendly Sectors?</t>
     <t id="110">Message when arrived?</t>
     <t id="111">Wait at the ship?</t>
     <t id="112">How long to wait?</t>
@@ -13,6 +15,17 @@
     <t id="116">Abandoned Ship</t>
     <t id="117">I arrived at the abandoned ship.</t>
     <t id="118">Wait time:</t>
+    <t id="119">No free storage for restocking navigation beacons!</t>
+    <t id="120">No navigation beacons on board and restocking turned off, going idle...</t>
+    <t id="180">Idle Time</t>
+    <t id="181">Idle: Follow?</t>
+    <t id="182">Who to follow?</t>
+    <t id="183">Idle: Docking?</t>
+    <t id="184">Where to dock?</t>
+    <t id="185">Idle: Random movement?</t>
+    <t id="186">In which sector?</t>
+    <t id="187">Idle: Move to?</t>
+    <t id="188">Where to move?</t>
     <t id="194">Add order tag?</t>
     <t id="195">Save Settings?</t>
     <t id="196">Delete Settings?</t>
