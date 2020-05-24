@@ -2,9 +2,10 @@
 
 <aiscript name="JP_TestScript_AI_03" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd">
 
-  <order id="JP_TestScript_AI_03" name="TestScript_AI_03 JP" category="navigation" infinite="true">
+  <order id="JP_TestScript_AI_03" name="_TestScript_AI_03 JP" category="navigation" infinite="true">
     <params>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="TEST_VAL" text="{8888888, 81}" comment="TestVal" type="bool" default="true" advanced="false"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <!-- DEBUG -->
       <param name="DEBUG" text="DebugText" type="number" default="1.0" advanced="1">

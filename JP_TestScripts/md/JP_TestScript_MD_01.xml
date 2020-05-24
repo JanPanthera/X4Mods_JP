@@ -3,33 +3,17 @@
 <mdscript name="JP_TestScript_MD_01" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="md.xsd">
   <cues>
 
-    <cue name="JP_TestScript_MD_01_OnNewGameStarted" instantiate="true">
-      <conditions>
-        <event_game_started/>
-      </conditions>
-      <actions>
-        <signal_cue_instantly cue="JP_TestScript_MD_01_INIT"/>
-      </actions>
-    </cue>
-
-    <cue name="JP_TestScript_MD_01_OnGameLoaded" instantiate="true">
-      <conditions>
-        <event_game_loaded/>
-      </conditions>
-      <actions>
-        <signal_cue_instantly cue="JP_TestScript_MD_01_INIT"/>
-      </actions>
-    </cue>
-
     <cue name="JP_TestScript_MD_01_INIT" instantiate="true">
       <conditions>
-        <event_cue_signalled/>
+        <check_any>
+          <event_game_started/>
+          <event_game_loaded/>
+        </check_any>
       </conditions>
       <actions>
-        <show_help custom="'JP_TestScript_MD_01 initialized...'" duration="2s"/>
+        <show_help custom="'JP_TestScript_MD_01 initialized...'" duration="2s" allowclose="true"/>
       </actions>
     </cue>
-
 
     <cue name="JP_TestScript_MD_01_LOOP" instantiate="true" checkinterval="1s">
       <conditions>
@@ -42,6 +26,14 @@
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_TestScript_MD_01.xml ~ Started ~~' + '\n'"/>
 
         <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <do_if value="global.$SavedNames_MR?">
+          <do_for_each name="$_ListEntry" in="global.$SavedNames_MR">
+            <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + $_ListEntry.{1} + '] ~ ' + $_ListEntry.{2}"/>
+          </do_for_each>
+        </do_if>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
 
         <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 

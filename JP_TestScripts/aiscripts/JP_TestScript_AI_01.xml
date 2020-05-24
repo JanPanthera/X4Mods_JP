@@ -2,7 +2,7 @@
 
 <aiscript name="JP_TestScript_AI_01" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd">
 
-  <order id="JP_TestScript_AI_01" name="TestScript_AI_01 JP" category="navigation" infinite="true">
+  <order id="JP_TestScript_AI_01" name="_TestScript_AI_01 JP" category="navigation" infinite="true">
     <params>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -60,9 +60,14 @@
       <set_command command="command.wait"/>
       <set_command_action commandaction="commandaction.calculating"/>
 
+      <add_inventory entity="player.entity" ware="ware.inv_fluxcapacitor" exact="1"/>
+      <resume label="FINISH"/>
+      
       <wait exact="2s"/>
       <resume label="RESUME"/>
 
+      <label name="FINISH"/>
+      
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
       <do_if value="$DEBUG gt 0.0">
