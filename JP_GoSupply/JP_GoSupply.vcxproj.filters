@@ -30,6 +30,7 @@
     <Xml Include="t\0001-L082.xml" />
     <Xml Include="t\0001-L086.xml" />
     <Xml Include="aiscripts\JP_SupplyStation.xml" />
+    <Xml Include="t\0001.xml" />
   </ItemGroup>
   <ItemGroup>
     <Xsd Include="md\md.xsd">

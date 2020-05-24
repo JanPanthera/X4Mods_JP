@@ -2,7 +2,7 @@
 
 <aiscript name="JP_SupplyStation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd">
 
-  <order id="JP_SupplyStation" name="SupplyStation JP" category="trade" infinite="true">
+  <order id="JP_SupplyStation" name="_SupplyStation JP" category="trade" infinite="true">
     <params>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="ADD_ORDER_TAG" text="{8888888, 1030}" comment="Add order tag?" type="bool" default="true"/>
