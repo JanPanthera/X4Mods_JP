@@ -11,44 +11,44 @@
       <param name="REVERSE_SORTING" text="{8888888, 1203}" comment="Sort XL to S?" type="bool" default="if global.$ReverseSortingNMS? then global.$ReverseSortingNMS else false"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="COLORIZE_NUMBER" text="{8888888, 1204}" comment="Colorize Number?" type="bool" default="if global.$ColorizeNumberNMS? then global.$ColorizeNumberNMS else true"/>
-      <param name="NUMBER_ALPHA" text="{8888888, 1270}" comment="Transparency" type="number" default="if global.$NumberAlphaNMS? then global.$NumberAlphaNMS else 162">
+      <param name="NUMBER_ALPHA" text="- {8888888, 1270}" comment="Transparency" type="number" default="if global.$NumberAlphaNMS? then global.$NumberAlphaNMS else 162">
         <input_param name="step" value="1"/>
         <input_param name="min" value="0"/>
         <input_param name="max" value="255"/>
       </param>
-      <param name="NUMBER_RED" text="{8888888, 1271}" comment="Red" type="number" default="if global.$NumberRedNMS? then global.$NumberRedNMS else 0">
+      <param name="NUMBER_RED" text="- {8888888, 1271}" comment="Red" type="number" default="if global.$NumberRedNMS? then global.$NumberRedNMS else 0">
         <input_param name="step" value="1"/>
         <input_param name="min" value="0"/>
         <input_param name="max" value="255"/>
       </param>
-      <param name="NUMBER_GREEN" text="{8888888, 1272}" comment="Green" type="number" default="if global.$NumberGreenNMS? then global.$NumberGreenNMS else 0">
+      <param name="NUMBER_GREEN" text="- {8888888, 1272}" comment="Green" type="number" default="if global.$NumberGreenNMS? then global.$NumberGreenNMS else 0">
         <input_param name="step" value="1"/>
         <input_param name="min" value="0"/>
         <input_param name="max" value="255"/>
       </param>
-      <param name="NUMBER_BLUE" text="{8888888, 1273}" comment="Blue" type="number" default="if global.$NumberBlueNMS? then global.$NumberBlueNMS else 255">
+      <param name="NUMBER_BLUE" text="- {8888888, 1273}" comment="Blue" type="number" default="if global.$NumberBlueNMS? then global.$NumberBlueNMS else 255">
         <input_param name="step" value="1"/>
         <input_param name="min" value="0"/>
         <input_param name="max" value="255"/>
       </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="COLORIZE_NAME" text="{8888888, 1205}" comment="Colorize Name?" type="bool" default="if global.$ColorizeNameNMS? then global.$ColorizeNameNMS else true"/>
-      <param name="NAME_ALPHA" text="{8888888, 1270}" comment="Transparency" type="number" default="if global.$NameAlphaNMS? then global.$NameAlphaNMS else 182">
+      <param name="NAME_ALPHA" text="- {8888888, 1270}" comment="Transparency" type="number" default="if global.$NameAlphaNMS? then global.$NameAlphaNMS else 182">
         <input_param name="step" value="1"/>
         <input_param name="min" value="0"/>
         <input_param name="max" value="255"/>
       </param>
-      <param name="NAME_RED" text="{8888888, 1271}" comment="Red" type="number" default="if global.$NameRedNMS? then global.$NameRedNMS else 0">
+      <param name="NAME_RED" text="- {8888888, 1271}" comment="Red" type="number" default="if global.$NameRedNMS? then global.$NameRedNMS else 0">
         <input_param name="step" value="1"/>
         <input_param name="min" value="0"/>
         <input_param name="max" value="255"/>
       </param>
-      <param name="NAME_GREEN" text="{8888888, 1272}" comment="Green" type="number" default="if global.$NameGreenNMS? then global.$NameGreenNMS else 204">
+      <param name="NAME_GREEN" text="- {8888888, 1272}" comment="Green" type="number" default="if global.$NameGreenNMS? then global.$NameGreenNMS else 204">
         <input_param name="step" value="1"/>
         <input_param name="min" value="0"/>
         <input_param name="max" value="255"/>
       </param>
-      <param name="NAME_BLUE" text="{8888888, 1273}" comment="Blue" type="number" default="if global.$NameBlueNMS? then global.$NameBlueNMS else 204">
+      <param name="NAME_BLUE" text="- {8888888, 1273}" comment="Blue" type="number" default="if global.$NameBlueNMS? then global.$NameBlueNMS else 204">
         <input_param name="step" value="1"/>
         <input_param name="min" value="0"/>
         <input_param name="max" value="255"/>
@@ -275,7 +275,7 @@
 
       <do_for_each name="$Group" in="$Groups">
         <create_list name="$SortedGroup"/>
-        <run_script name="'JP_GetSubsSortedForNumbering'">
+        <run_script name="'JP_GetSubsSortedForNumbering_NMS'">
           <param name="SUBORDINATES" value="$Group"/>
           <param name="REVERSED_NUMBERING" value="$REVERSE_SORTING"/>
           <param name="DEBUG" value="$DEBUG"/>
