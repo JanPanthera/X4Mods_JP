@@ -71,6 +71,7 @@
 
       <include_interrupt_actions ref="GetBlacklistgroup"/>
 
+      <create_list name="$_Sectors"/>
       <do_for_each name="$_Sector" in="$_TempSectors">
         <do_if value="$Ship.gatedistance.{$_Sector} lt 0">
           <continue/>
@@ -84,12 +85,15 @@
         <do_if value="$_Sector.owner == faction.ownerless and not $NEUTRAL_SECTORS">
           <continue/>
         </do_if>
-        <do_if value="not $_Sector.owner.mayattack.{$Ship} and not $FRIENDLY_SECTORS">
+        <!-- TODO: own boolean for own sectors -->
+        <do_if value="$_Sector.owner == faction.player and not $FRIENDLY_SECTORS">
+          <continue/>
+        </do_if>
+        <do_if value="$_Sector.owner != faction.ownerless and $_Sector.owner != faction.player and not $_Sector.owner.mayattack.{$Ship} and not $FRIENDLY_SECTORS">
           <continue/>
         </do_if>
         <append_to_list name="$_Sectors" exact="$_Sector"/>
       </do_for_each>
-
       <remove_value name="$_TempSectors"/>
 
       <do_if value="$_Sectors.count gt 1">
