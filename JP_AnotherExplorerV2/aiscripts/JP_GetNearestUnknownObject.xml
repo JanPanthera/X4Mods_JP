@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<aiscript name="JP_GetNearestUnknownObject" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd">
+<aiscript name="JP_GetNearestUnknownObject_AEV2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd">
 
-  <order id="JP_GetNearestUnknownObject" name="GetNearestUnknownObject JP" category="internal" infinite="false">
+  <order id="JP_GetNearestUnknownObject_AEV2" name="GetNearestUnknownObject_AEV2 JP" category="internal" infinite="false">
     <params>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="ENEMY_SECTORS" text="EnemySectors" comment="EnemySectors" type="bool" default="false"/>
@@ -38,7 +38,7 @@
   <init>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <set_value name="$DebugDirectory" exact="'JP_AnotherExplorerV2.logs'"/>
-    <set_value name="$DebugFileName" exact="this.ship.idcode + '.JP_GetNearestUnknownObject.xml.log'"/>
+    <set_value name="$DebugFileName" exact="this.ship.idcode + '.JP_GetNearestUnknownObject_AEV2.xml.log'"/>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <set_value name="$Ship" exact="this.ship"/>
     <set_value name="$NearestUnknownObject" exact="'NoUnknownObjectFound'"/>
@@ -53,7 +53,7 @@
 
       <do_if value="$DEBUG gt 0">
         <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_GetNearestUnknownObject.xml ~ Started ~~' + '\n'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_GetNearestUnknownObject_AEV2.xml ~ Started ~~' + '\n'"/>
       </do_if>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -144,7 +144,7 @@
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
       <do_if value="$DEBUG gt 0">
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_GetNearestUnknownObject.xml ~ Finished ~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_GetNearestUnknownObject_AEV2.xml ~ Finished ~~'"/>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
       </do_if>
 

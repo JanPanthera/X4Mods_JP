@@ -5,15 +5,15 @@
   <order id="JP_AnotherExplorerV2G" name="{8888888, 497}AnotherExplorerV2 - {8888888, 499}{8888888, 498}{20001, 901}{8888888, 499}" category="navigation" infinite="true">
     <params>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="ENEMY_SECTORS" text="{8888888, 400}" comment="Enemy Sectors?" type="bool" default="if global.$EnemySectorsAEV2? then global.$EnemySectorsAEV else false"/>
+      <param name="ENEMY_SECTORS" text="{8888888, 400}" comment="Enemy Sectors?" type="bool" default="if global.$EnemySectorsAEV2? then global.$EnemySectorsAEV2 else false"/>
       <param name="NEUTRAL_SECTORS" text="{8888888, 401}" comment="Neutral Sectors?" type="bool" default="if global.$NeutralSectorsAEV2? then global.$NeutralSectorsAEV2 else true"/>
       <param name="FRIENDLY_SECTORS" text="{8888888, 402}" comment="Friendly Sectors?" type="bool" default="if global.$FrienlySectorsAEV2? then global.$FrienlySectorsAEV2 else true"/>
       <param name="UNKNOWN_SECTORS" text="{8888888, 403}" comment="Unknown Sectors?" type="bool" default="if global.$UnknownSectorsAEV2? then global.$UnknownSectorsAEV2 else true"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="GATES" text="{8888888, 410}" comment="Gates?" type="bool" default="if global.$GatesAEV2? then global.$GatesAEV2 else true"/>
       <param name="STATIONS" text="{8888888, 411}" comment="Stations?" type="bool" default="if global.$StationsAEV2? then global.$StationsAEV2 else true"/>
-      <param name="ENEMY_STATIONS" text="{8888888, 412}" comment="Enemy Stations?" type="bool" default="if global.$EnemyStationsAEV2? then global.$EnemyStationsAEV2 else false"/>
-      <param name="FRIENDLY_STATIONS" text="{8888888, 413}" comment="Friendly Stations?" type="bool" default="if global.$FriendlyStationsAEV2? then global.$FriendlyStationsAEV2 else true"/>
+      <param name="ENEMY_STATIONS" text="- {8888888, 412}" comment="Enemy Stations?" type="bool" default="if global.$EnemyStationsAEV2? then global.$EnemyStationsAEV2 else false"/>
+      <param name="FRIENDLY_STATIONS" text="- {8888888, 413}" comment="Friendly Stations?" type="bool" default="if global.$FriendlyStationsAEV2? then global.$FriendlyStationsAEV2 else true"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="AUTO_FLEET" text="{8888888, 420}" comment="Automatic Fleet?" type="bool" default="if global.$AutoFleetAEV2? then global.$AutoFleetAEV2 else false"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -23,20 +23,20 @@
         <input_param name="step" value="10s"/>
       </param>
       <param name="IDLE_FOLLOW" text="{8888888, 481}" comment="Idle: Follow?" type="bool" default="if global.$IdleFollowAEV2? then global.$IdleFollowAEV2 else false"/>
-      <param name="WHO_TO_FOLLOW" text="{8888888, 482}" comment="Who to follow?" type="object" default="if global.$WhoToFollowAEV2? then global.$WhoToFollowAEV2 else null">
+      <param name="WHO_TO_FOLLOW" text="- {8888888, 482}" comment="Who to follow?" type="object" default="if global.$WhoToFollowAEV2? then global.$WhoToFollowAEV2 else null">
         <input_param name="class" value="[class.ship]"/>
         <input_param name="owner" value="this.ship.owner"/>
       </param>
       <param name="IDLE_DOCKING" text="{8888888, 483}" comment="Idle: Docking?" type="bool" default="if global.$IdleDockingAEV2? then global.$IdleDockingAEV2 else false"/>
-      <param name="WHERE_TO_DOCK" text="{8888888, 484}" comment="Where to dock?" type="object" default="if global.$WhereToDockAEV2? then global.$WhereToDockAEV2 else null">
+      <param name="WHERE_TO_DOCK" text="- {8888888, 484}" comment="Where to dock?" type="object" default="if global.$WhereToDockAEV2? then global.$WhereToDockAEV2 else null">
         <input_param name="class" value="if this.ship.isclass.[class.ship_s, class.ship_xs] then [class.station, class.ship_m, class.ship_l, class.ship_xl] else [class.station, class.ship_l, class.ship_xl]"/>
       </param>
       <param name="IDLE_RANDOM_MOVEMENT" text="{8888888, 485}" comment="Idle: Movement?" type="bool" default="if global.$IdleRandomMovementAEV2? then global.$IdleRandomMovementAEV2 else false"/>
-      <param name="IN_WHICH_SECTOR" text="{8888888, 486}" comment="In which sector?" type="position" default="if global.$InWhichSectorAEV2? then global.$InWhichSectorAEV2 else [this.ship.sector, this.ship.position]">
+      <param name="IN_WHICH_SECTOR" text="- {8888888, 486}" comment="In which sector?" type="position" default="if global.$InWhichSectorAEV2? then global.$InWhichSectorAEV2 else [this.ship.sector, this.ship.position]">
         <input_param name="class" value="class.sector"/>
       </param>
       <param name="IDLE_MOVE_TO" text="{8888888, 487}" comment="Idle: Move to?" type="bool" default="if global.$IdleMoveToAEV2? then global.$IdleMoveToAEV2 else false"/>
-      <param name="WHERE_TO_MOVE" text="{8888888, 488}" comment="Where to move?" type="position" default="if global.$WhereToMoveAEV2? then global.$WhereToMoveAEV2 else [this.ship.sector, this.ship.position]">
+      <param name="WHERE_TO_MOVE" text="- {8888888, 488}" comment="Where to move?" type="position" default="if global.$WhereToMoveAEV2? then global.$WhereToMoveAEV2 else [this.ship.sector, this.ship.position]">
         <input_param name="class" value="class.sector"/>
       </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -151,16 +151,12 @@
       <do_if value="not global.$WhereToMoveAEV2? or @global.$WhereToMoveAEV2 != $WHERE_TO_MOVE">
         <set_value name="global.$WhereToMoveAEV2" exact="$WHERE_TO_MOVE"/>
       </do_if>
-      <do_if value="not global.$SaveSettingsAEV2? or @global.$SaveSettingsAEV2 != $SAVE_SETTINGS">
-        <set_value name="global.$SaveSettingsAEV2" exact="$SAVE_SETTINGS"/>
-      </do_if>
       <do_if value="not global.$DebugAEV2? or @global.$DebugAEV2 != $DEBUG">
         <set_value name="global.$DebugAEV2" exact="$DEBUG"/>
       </do_if>
     </do_if>
     <do_if value="$DELETE_SETTINGS">
       <remove_value name="global.$DebugAEV2"/>
-      <remove_value name="global.$SaveSettingsAEV2"/>
       <remove_value name="global.$WhereToMoveAEV2"/>
       <remove_value name="global.$IdleMoveToAEV2"/>
       <remove_value name="global.$InWhichSectorAEV2"/>
@@ -204,7 +200,7 @@
       <set_command command="command.explore"/>
       <set_command_action commandaction="commandaction.calculating"/>
 
-      <run_script name="'JP_GetNearestUnknownObject'">
+      <run_script name="'JP_GetNearestUnknownObject_AEV2'">
         <param name="ENEMY_SECTORS" value="$ENEMY_SECTORS"/>
         <param name="NEUTRAL_SECTORS" value="$NEUTRAL_SECTORS"/>
         <param name="FRIENDLY_SECTORS" value="$FRIENDLY_SECTORS"/>
