@@ -11,22 +11,22 @@
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="AUTO_FLEET" text="{8888888, 1910}" comment="Automatic Fleet?" type="bool" default="if global.$AutoFleetTSE? then global.$AutoFleetTSE else false"/>
       <param name="COLOR_AUTOFLEET_NAME" text="{8888888, 1911}" comment="Color Automatic Fleet name?" type="bool" default="if global.$ColorAutoFleetNameTSE? then global.$ColorAutoFleetNameTSE else true"/>
-      <param name="AUTOFLEET_NAME_ALPHA" text="{8888888, 1970}" comment="Transparency" type="number" default="if $AutoFleetNameAlphaTSE? then $AutoFleetNameAlphaTSE else 255">
+      <param name="AUTOFLEET_NAME_ALPHA" text="- {8888888, 1970}" comment="Transparency" type="number" default="if $AutoFleetNameAlphaTSE? then $AutoFleetNameAlphaTSE else 255">
         <input_param name="step" value="1"/>
         <input_param name="min" value="0"/>
         <input_param name="max" value="255"/>
       </param>
-      <param name="AUTOFLEET_NAME_RED" text="{8888888, 1971}" comment="Red" type="number" default="if $AutoFleetNameRedTSE? then $AutoFleetNameRedTSE else 3">
+      <param name="AUTOFLEET_NAME_RED" text="- {8888888, 1971}" comment="Red" type="number" default="if $AutoFleetNameRedTSE? then $AutoFleetNameRedTSE else 3">
         <input_param name="step" value="1"/>
         <input_param name="min" value="0"/>
         <input_param name="max" value="255"/>
       </param>
-      <param name="AUTOFLEET_NAME_GREEN" text="{8888888, 1972}" comment="Green" type="number" default="if $AutoFleetNameGreenTSE? then $AutoFleetNameGreenTSE else 161">
+      <param name="AUTOFLEET_NAME_GREEN" text="- {8888888, 1972}" comment="Green" type="number" default="if $AutoFleetNameGreenTSE? then $AutoFleetNameGreenTSE else 161">
         <input_param name="step" value="1"/>
         <input_param name="min" value="0"/>
         <input_param name="max" value="255"/>
       </param>
-      <param name="AUTOFLEET_NAME_BLUE" text="{8888888, 1973}" comment="Blue" type="number" default="if $AutoFleetNameBlueTSE? then $AutoFleetNameBlueTSE else 252">
+      <param name="AUTOFLEET_NAME_BLUE" text="- {8888888, 1973}" comment="Blue" type="number" default="if $AutoFleetNameBlueTSE? then $AutoFleetNameBlueTSE else 252">
         <input_param name="step" value="1"/>
         <input_param name="min" value="0"/>
         <input_param name="max" value="255"/>
@@ -38,20 +38,20 @@
         <input_param name="step" value="10s"/>
       </param>
       <param name="IDLE_FOLLOW" text="{8888888, 1981}" comment="Idle: Follow?" type="bool" default="if global.$IdleFollowTSE? then global.$IdleFollowTSE else false"/>
-      <param name="WHO_TO_FOLLOW" text="{8888888, 1982}" comment="Who to follow?" type="object" default="if global.$WhoToFollowTSE? then global.$WhoToFollowTSE else null">
+      <param name="WHO_TO_FOLLOW" text="- {8888888, 1982}" comment="Who to follow?" type="object" default="if global.$WhoToFollowTSE? then global.$WhoToFollowTSE else null">
         <input_param name="class" value="[class.ship]"/>
         <input_param name="owner" value="this.ship.owner"/>
       </param>
       <param name="IDLE_DOCKING" text="{8888888, 1983}" comment="Idle: Docking?" type="bool" default="if global.$IdleDockingTSE? then global.$IdleDockingTSE else false"/>
-      <param name="WHERE_TO_DOCK" text="{8888888, 1984}" comment="Where to dock?" type="object" default="if global.$WhereToDockTSE? then global.$WhereToDockTSE? else null">
+      <param name="WHERE_TO_DOCK" text="- {8888888, 1984}" comment="Where to dock?" type="object" default="if global.$WhereToDockTSE? then global.$WhereToDockTSE? else null">
         <input_param name="class" value="if this.ship.isclass.[class.ship_s, class.ship_xs] then [class.station, class.ship_m, class.ship_l, class.ship_xl] else [class.station, class.ship_l, class.ship_xl]"/>
       </param>
       <param name="IDLE_RANDOM_MOVEMENT" text="{8888888, 1985}" comment="Idle: Movement?" type="bool" default="if global.$IdleRandomMovementTSE? then global.$IdleRandomMovementTSE else false"/>
-      <param name="IN_WHICH_SECTOR" text="{8888888, 1986}" comment="In which sector?" type="position" default="if global.$InWhichSectorTSE? then global.$InWhichSectorTSE else [this.ship.sector, this.ship.position]">
+      <param name="IN_WHICH_SECTOR" text="- {8888888, 1986}" comment="In which sector?" type="position" default="if global.$InWhichSectorTSE? then global.$InWhichSectorTSE else [this.ship.sector, this.ship.position]">
         <input_param name="class" value="class.sector"/>
       </param>
       <param name="IDLE_MOVE_TO" text="{8888888, 1987}" comment="Idle: Move to?" type="bool" default="if global.$IdleMoveToTSE? then global.$IdleMoveToTSE else false"/>
-      <param name="WHERE_TO_MOVE" text="{8888888, 1988}" comment="Where to move?" type="position" default="if global.$WhereToMoveTSE? then global.$WhereToMoveTSE else [this.ship.sector, this.ship.position]">
+      <param name="WHERE_TO_MOVE" text="- {8888888, 1988}" comment="Where to move?" type="position" default="if global.$WhereToMoveTSE? then global.$WhereToMoveTSE else [this.ship.sector, this.ship.position]">
         <input_param name="class" value="class.sector"/>
       </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
