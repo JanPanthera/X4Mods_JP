@@ -10,7 +10,7 @@
       <param name="FRIENDLY_SECTORS" text="{8888888, 902}" comment="Friendly Sectors?" type="bool" default="true"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="RESTOCK_NAV_BEACONS" text="{8888888, 910}" comment="Restock navigation beacons?" type="bool" default="true"/>
-      <param name="RESTOCK_AMOUNT" text="{8888888, 911}" comment="Amount to restock" type="number" default="3">
+      <param name="RESTOCK_AMOUNT" text="- {8888888, 911}" comment="Amount to restock" type="number" default="3">
         <input_param name="step" value="1"/>
         <input_param name="min" value="1"/>
         <input_param name="max" value="10"/>
