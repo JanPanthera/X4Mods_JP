@@ -77,7 +77,11 @@
         <do_if value="$_Sector.owner == faction.ownerless and not $NEUTRAL_SECTORS">
           <continue/>
         </do_if>
-        <do_if value="$_Sector.owner != faction.ownerless and not $_Sector.owner.mayattack.{$Ship} and not $FRIENDLY_SECTORS">
+        <!-- TODO: own boolean for own sectors -->
+        <do_if value="$_Sector.owner == faction.player and not $FRIENDLY_SECTORS">
+          <continue/>
+        </do_if>
+        <do_if value="$_Sector.owner != faction.ownerless and $_Sector.owner != faction.player and not $_Sector.owner.mayattack.{$Ship} and not $FRIENDLY_SECTORS">
           <continue/>
         </do_if>
         <append_to_list name="$_Sectors" exact="$_Sector"/>
