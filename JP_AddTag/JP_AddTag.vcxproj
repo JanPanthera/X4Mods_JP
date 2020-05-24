@@ -126,6 +126,8 @@
   <ItemGroup>
     <Xml Include="aiscripts\JP_AddTag.xml" />
     <Xml Include="aiscripts\JP_CreateColorString_AT.xml" />
+    <Xml Include="aiscripts\JP_CreateName_AT.xml" />
+    <Xml Include="aiscripts\JP_SaveLoadReset_AT.xml" />
     <Xml Include="content.xml" />
     <Xml Include="JP_AddTag\aiscripts\JP_AddTag.xml" />
     <Xml Include="JP_AddTag\aiscripts\JP_SetNewNameAT.xml" />

@@ -45,6 +45,8 @@
     <Xml Include="libraries\icons.xml" />
     <Xml Include="t\0001.xml" />
     <Xml Include="aiscripts\JP_CreateColorString_AT.xml" />
+    <Xml Include="aiscripts\JP_SaveLoadReset_AT.xml" />
+    <Xml Include="aiscripts\JP_CreateName_AT.xml" />
   </ItemGroup>
   <ItemGroup>
     <Xsd Include="JP_AddTag\aiscripts\aiscripts.xsd">

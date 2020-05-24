@@ -3,7 +3,7 @@
 <language>
   <page id="8888888" voice="no">
     <!-- JP_AddTag -->
-    <t id="200">Zum Anfang des Namens hinzufügen?</t>
+    <t id="200">Tag am Anfang?</t>
     <t id="201">Tag am Ende?</t>
     <t id="202">Komandanten einbeziehen?</t>
     <t id="203">Untergebene einbeziehen?</t>
@@ -11,13 +11,18 @@
     <t id="205">Objekt mit dem Tag als Name</t>
     <t id="206">Tag einfärben?</t>
     <t id="207">Namen einfärben?</t>
-    <t id="208">Namen des Kommandanten speichern?</t>
-    <t id="209">Namen Untergebener speichern?</t>
-    <t id="210">Namen Untergebener aus untergeordneten Flotten speichern?</t>
-    <t id="211">Namen des Kommandanten laden?</t>
-    <t id="212">Namen Untergebener laden?</t>
-    <t id="213">Namen Untergebener aus untergeordneten Flotten laden?</t>
-    <t id="214">Gespeicherte Namen löschen?</t>
+    <t id="230">Kommandantennamen speichern?</t>
+    <t id="231">Namen Untergebener speichern?</t>
+    <t id="232">Namen Untergebener aus untergeordneten Flotten speichern?</t>
+    <t id="233">Kommandantennamen laden?</t>
+    <t id="234">Namen Untergebener laden?</t>
+    <t id="235">Namen Untergebener aus untergeordneten Flotten laden?</t>
+    <t id="236">Kommandantennamen zurücksetzen?</t>
+    <t id="237">Namen Untergebener zurücksetzen?</t>
+    <t id="238">Namen Untergebener aus untergeordneten Flotten zurücksetzen?</t>
+    <t id="239">Kommandantennamen löschen?</t>
+    <t id="240">Namen Untergebener löschen?</t>
+    <t id="241">Namen Untergebener aus untergeordneten Flotten löschen</t>
     <t id="270">Transparenz</t>
     <t id="271">Rot</t>
     <t id="272">Grün</t>
