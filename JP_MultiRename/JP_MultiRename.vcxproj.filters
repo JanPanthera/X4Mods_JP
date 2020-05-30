@@ -45,7 +45,6 @@
     <Xml Include="JP_MultiRename\aiscripts\JP_CreateNewNameMR.xml" />
     <Xml Include="JP_MultiRename\aiscripts\JP_RenameFleet.xml" />
     <Xml Include="content.xml" />
-    <Xml Include="aiscripts\JP_MultiRename.xml" />
     <Xml Include="t\0001-L007.xml" />
     <Xml Include="t\0001-L033.xml" />
     <Xml Include="t\0001-L034.xml" />
@@ -60,8 +59,10 @@
     <Xml Include="libraries\icons.xml" />
     <Xml Include="t\0001.xml" />
     <Xml Include="aiscripts\JP_CreateColorString_MR.xml" />
-    <Xml Include="aiscripts\JP_CreateName_MR.xml" />
     <Xml Include="aiscripts\JP_SaveLoadReset_MR.xml" />
+    <Xml Include="aiscripts\JP_GetSubsSortedForNumbering_MR.xml" />
+    <Xml Include="aiscripts\JP_CreateName_MR.xml" />
+    <Xml Include="aiscripts\JP_MultiRename.xml" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="changelog.txt" />

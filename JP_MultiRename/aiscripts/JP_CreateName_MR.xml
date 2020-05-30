@@ -12,25 +12,14 @@
     <params>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="SHIP" text="Ship" type="object" default="null"/>
-      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="NAMING_VARINAT" text="Naming variant" type="number" default="2"/>
-      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="USE_CLASS_TAG" text="Add Class tag?" type="bool" default="true"/>
-      <param name="USE_TYPE_NAME" text="Add Type name?" type="bool"  default="true"/>
-      <param name="USE_MODEL_NAME" text="Add Model name?" type="bool" default="true"/>
+      <param name="NAME_TILES_ARRANGEMENT" text="NameTilesArrangement" type="internal" default="[]"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="REMOVE_SENTINEL_TAG" text="Remove Sentinel Tag?" comment="Remove Sentinel Tag?" type="bool" default="true"/>
       <param name="REMOVE_VANGUARD_TAG" text="Remove Vanguard Tag?" comment="Remove Vanguard Tag?" type="bool" default="true"/>
       <param name="SHORTEN_SENTINEL" text="" comment="Short Sentinel Tag" type="bool" default="true"/>
       <param name="SHORTEN_VANGUARD" text="" comment="Short Vanguard Tag" type="bool" default="true"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="TAG_AT_END" text="TagAtEnd" type="internal" default="''"/>
-      <param name="TAG_AT_FRONT" text="TagAtFront" type="internal" default="''"/>
-      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="NUMBER_TO_ADD" text="NumberToAdd" type="number" default="''"/>
-      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="NAME_COLOR_STRING" text="ColorString" type="internal" default="''"/>
-      <param name="NUMBER_COLOR_STRING" text="ColorString" type="internal" default="''"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <!-- DEBUG -->
       <param name="DEBUG" text="DebugText" type="number" default="0" advanced="true">
@@ -60,7 +49,7 @@
 
   <init>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-    <set_value name="$DebugDirectory" exact="'JP_NumberMyShips.logs'"/>
+    <set_value name="$DebugDirectory" exact="'JP_MultiRenameTest.logs'"/>
     <set_value name="$DebugFileName" exact="this.ship.idcode + '.JP_CreateName_MR.xml.log'"/>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <set_value name="$Ship" exact="$SHIP"/>
@@ -84,133 +73,113 @@
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-      <!-- Get Class name as string if turned on -->
-      <do_if value="$USE_CLASS_TAG">
-        <create_list name="$_ClassNames"/>
-        <create_list name="$_ClassTags"/>
-        <append_list_elements name="$_ClassNames" other="[class.ship_s, class.ship_m, class.ship_l, class.ship_xl]"/>
-        <append_list_elements name="$_ClassTags" other="['~S~', '~M~', '~L~', '~XL~']"/>
-        <do_for_each name="$_ClassName" in="$_ClassNames" counter="$_it">
-          <do_if value="$SHIP.class == $_ClassNames.{$_it}">
-            <set_value name="$ClassTag" exact="$_ClassTags.{$_it}"/>
-            <break/>
+      <do_for_each name="$_NameTile" in="$NAME_TILES_ARRANGEMENT" counter="$_it">
+
+        <!-- ['TAG', $TAG_POSITION, $_ColorString, $TAG_OBJECT.knownname] -->
+        <do_if value="$_NameTile.{1} == 'TAG'">
+          <do_if value="$_NameTile.{3} != ''">
+            <set_value name="$CreatedName" exact="$_NameTile.{3} + $_NameTile.{4} + '\033X'" operation="add"/>
           </do_if>
-        </do_for_each>
-        <remove_value name="$ClassTags"/>
-        <remove_value name="$ClassNames"/>
-        <do_if value="$DEBUG gt 0">
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'ClassTag ~~ ' + $ClassTag"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+          <do_else>
+            <set_value name="$CreatedName" exact="$_NameTile.{4}" operation="add"/>
+          </do_else>
         </do_if>
-      </do_if>
 
-      <!-- Type name -->
-      <do_if value="$USE_TYPE_NAME">
-        <set_value name="$TypeName" exact="$SHIP.typename"/>
-        <do_if value="$DEBUG gt 0">
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'TypeName ~~ ' + $TypeName"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+        <!-- ['CLASS_TAG', $CLASS_TAG_POSITION, $_ColorString] -->
+        <do_if value="$_NameTile.{1} == 'CLASS_TAG'">
+          <do_if value="$Ship.class == class.ship_s">
+            <set_value name="$_ClassTag" exact="'~S~'"/>
+          </do_if>
+          <do_if value="$Ship.class == class.ship_m">
+            <set_value name="$_ClassTag" exact="'~M~'"/>
+          </do_if>
+          <do_if value="$Ship.class == class.ship_l">
+            <set_value name="$_ClassTag" exact="'~L~'"/>
+          </do_if>
+          <do_if value="$Ship.class == class.ship_xl">
+            <set_value name="$_ClassTag" exact="'~XL~'"/>
+          </do_if>
+          <do_if value="$_NameTile.{3} != ''">
+            <set_value name="$CreatedName" exact="$_NameTile.{3} + $_ClassTag + '\033X'" operation="add"/>
+          </do_if>
+          <do_else>
+            <set_value name="$CreatedName" exact="$_ClassTag" operation="add"/>
+          </do_else>
+          <remove_value name="$_ClassTag"/>
         </do_if>
-      </do_if>
 
-      <!-- Model name -->
-      <do_if value="$USE_MODEL_NAME">
-        <!-- Remove the Sentinel Tag from the name ? -->
-        <set_value name="$ModelName" exact="$SHIP.macro.name"/>
-        <do_if value="$REMOVE_SENTINEL_TAG">
-          <substitute_text source="$ModelName" text="$ModelName">
-            <replace string="' ' + {20111,1201}" with="''"/>
-          </substitute_text>
+        <!-- ['TYPE_NAME', $TYPE_NAME_POSITION, $_ColorString] -->
+        <do_if value="$_NameTile.{1} == 'TYPE_NAME'">
+          <do_if value="$_NameTile.{3} != ''">
+            <set_value name="$CreatedName" exact="$_NameTile.{3} + $SHIP.typename + '\033X'" operation="add"/>
+          </do_if>
+          <do_else>
+            <set_value name="$CreatedName" exact="$SHIP.typename" operation="add"/>
+          </do_else>
         </do_if>
-        <!-- Remove the Vanguard Tag from the name ? -->
-        <do_if value="$REMOVE_VANGUARD_TAG">
-          <substitute_text source="$ModelName" text="$ModelName">
-            <replace string="' ' + {20111,1101}" with="''"/>
-          </substitute_text>
-        </do_if>
-        <!-- Replace Sentinel with S* ? -->
-        <do_if value="not $REMOVE_SENTINEL_TAG and $SHORTEN_SENTINEL">
-          <substitute_text source="$ModelName" text="$ModelName">
-            <replace string="{20111,1201}" with="{8888888, 1121}"/>
-          </substitute_text>
-        </do_if>
-        <!-- Replace Vanguard with V* ? -->
-        <do_if value="not $REMOVE_VANGUARD_TAG and $SHORTEN_VANGUARD">
-          <substitute_text source="$ModelName" text="$ModelName">
-            <replace string="{20111,1101}" with="{8888888, 1120}"/>
-          </substitute_text>
-        </do_if>
-        <do_if value="$DEBUG gt 0">
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'ModelName ~~ ' + $ModelName"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
-        </do_if>
-      </do_if>
 
-      <!-- Naming variant -->
-      <do_if value="$NAMING_VARINAT" exact="1">
-        <set_value name="$CreatedName" exact="( $ClassTag + (if $USE_MODEL_NAME and $USE_CLASS_TAG then ' ' else '') + $ModelName + (if $USE_TYPE_NAME and ($USE_MODEL_NAME or $USE_CLASS_TAG) then ' ' else '') + $TypeName)"/>
-      </do_if>
-      <do_elseif value="$NAMING_VARINAT" exact="2">
-        <set_value name="$CreatedName" exact="( $ClassTag + (if $USE_TYPE_NAME and $USE_CLASS_TAG then ' ' else '') + $TypeName + (if $USE_MODEL_NAME and ($USE_TYPE_NAME or $USE_CLASS_TAG) then ' ' else '') + $ModelName)"/>
-      </do_elseif>
-      <do_elseif value="$NAMING_VARINAT" exact="3">
-        <set_value name="$CreatedName" exact="( $ModelName + (if $USE_CLASS_TAG and $USE_MODEL_NAME then ' ' else '') + $ClassTag + (if $USE_TYPE_NAME and ($USE_CLASS_TAG or $USE_MODEL_NAME) then ' ' else '') + $TypeName)"/>
-      </do_elseif>
-      <do_elseif value="$NAMING_VARINAT" exact="4">
-        <set_value name="$CreatedName" exact="( $ModelName + (if $USE_TYPE_NAME and $USE_MODEL_NAME then ' ' else '') + $TypeName + (if $USE_CLASS_TAG and ($USE_TYPE_NAME or $USE_MODEL_NAME) then ' ' else '') + $ClassTag)"/>
-      </do_elseif>
-      <do_elseif value="$NAMING_VARINAT" exact="5">
-        <set_value name="$CreatedName" exact="( $TypeName + (if $USE_CLASS_TAG and $USE_TYPE_NAME then ' ' else '') + $ClassTag + (if $USE_MODEL_NAME and ($USE_CLASS_TAG or $USE_TYPE_NAME) then ' ' else '') + $ModelName)"/>
-      </do_elseif>
-      <do_elseif value="$NAMING_VARINAT" exact="6">
-        <set_value name="$CreatedName" exact="( $TypeName + (if $USE_MODEL_NAME and $USE_TYPE_NAME then ' ' else '') + $ModelName + (if $USE_CLASS_TAG and ($USE_MODEL_NAME or $USE_TYPE_NAME) then ' ' else '') + $ClassTag)"/>
-      </do_elseif>
+        <!-- ['MODEL_NAME', $MODEL_NAME_POSITION, $_ColorString] -->
+        <do_if value="$_NameTile.{1} == 'MODEL_NAME'">
+          <set_value name="$_ModelName" exact="$SHIP.macro.name"/>
+          <do_if value="$REMOVE_SENTINEL_TAG">
+            <substitute_text source="$_ModelName" text="$_ModelName">
+              <replace string="' ' + {20111,1201}" with="''"/>
+            </substitute_text>
+          </do_if>
+          <!-- Remove the Vanguard Tag from the name ? -->
+          <do_if value="$REMOVE_VANGUARD_TAG">
+            <substitute_text source="$_ModelName" text="$_ModelName">
+              <replace string="' ' + {20111,1101}" with="''"/>
+            </substitute_text>
+          </do_if>
+          <!-- Replace Sentinel with S* ? -->
+          <do_if value="not $REMOVE_SENTINEL_TAG and $SHORTEN_SENTINEL">
+            <substitute_text source="$_ModelName" text="$_ModelName">
+              <replace string="{20111,1201}" with="{8888888, 1121}"/>
+            </substitute_text>
+          </do_if>
+          <!-- Replace Vanguard with V* ? -->
+          <do_if value="not $REMOVE_VANGUARD_TAG and $SHORTEN_VANGUARD">
+            <substitute_text source="$_ModelName" text="$_ModelName">
+              <replace string="{20111,1101}" with="{8888888, 1120}"/>
+            </substitute_text>
+          </do_if>
+          <do_if value="$_NameTile.{3} != ''">
+            <set_value name="$CreatedName" exact="$_NameTile.{3} + $_ModelName + '\033X'" operation="add"/>
+          </do_if>
+          <do_else>
+            <set_value name="$CreatedName" exact="$_ModelName" operation="add"/>
+          </do_else>
+          <remove_value name="$_ModelName"/>
+        </do_if>
 
-      <!-- Give the name an Color? -->
-      <do_if value="$NAME_COLOR_STRING != ''">
-        <set_value name="$CreatedName" exact="$NAME_COLOR_STRING + $CreatedName + '\033X'"/>
-        <do_if value="$DEBUG gt 0">
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'NameColorString ~~ ' + $NAME_COLOR_STRING"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+        <!-- ['NUMBER', $NUMBER_POSITION, $_ColorString] -->
+        <do_if value="$_NameTile.{1} == 'NUMBER'">
+          <do_if value="$NUMBER_TO_ADD != ''">
+            <do_if value="$NUMBER_TO_ADD lt 10">
+              <set_value name="$_Number" exact="'00' + $NUMBER_TO_ADD"/>
+            </do_if>
+            <do_elseif value="$NUMBER_TO_ADD ge 10 and $NUMBER_TO_ADD lt 100">
+              <set_value name="$_Number" exact="'0' + $NUMBER_TO_ADD"/>
+            </do_elseif>
+            <do_else>
+              <set_value name="$_Number" exact="'%1'.[$NUMBER_TO_ADD]"/>
+            </do_else>
+            <do_if value="$_NameTile.{3} != ''">
+              <set_value name="$CreatedName" exact="$_NameTile.{3} + $_NameTile.{4}.[$_Number] + '\033X'" operation="add"/>
+            </do_if>
+            <do_else>
+              <set_value name="$CreatedName" exact="$_NameTile.{4}.[$_Number]" operation="add"/>
+            </do_else>
+            <remove_value name="$_Number"/>
+          </do_if>
         </do_if>
-      </do_if>
 
-      <!-- Add Players own Tag to the name? -->
-      <do_if value="$TAG_AT_FRONT != '' or $TAG_AT_END != ''">
-        <set_value name="$CreatedName" exact="$TAG_AT_FRONT + (if $TAG_AT_FRONT != '' then ' ' else '') + $CreatedName + (if $TAG_AT_END != '' then ' ' else '') + $TAG_AT_END"/>
-        <do_if value="$DEBUG gt 0">
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'$TAG_AT_FRONT ~~ ' + $TAG_AT_FRONT"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'$TAG_AT_END ~~ ' + $TAG_AT_END"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+        <do_if value="$_it lt $NAME_TILES_ARRANGEMENT.count">
+          <set_value name="$CreatedName" exact="' '" operation="add"/>
         </do_if>
-      </do_if>
 
-      <!-- Add a number to the ships name?-->
-      <do_if value="$NUMBER_TO_ADD != ''">
-        <do_if value="$NUMBER_TO_ADD lt 10">
-          <set_value name="$Number" exact="'00' + $NUMBER_TO_ADD"/>
-        </do_if>
-        <do_elseif value="$NUMBER_TO_ADD ge 10 and $NUMBER_TO_ADD lt 100">
-          <set_value name="$Number" exact="'0' + $NUMBER_TO_ADD"/>
-        </do_elseif>
-        <do_else>
-          <set_value name="$Number" exact="'%1'.[$NUMBER_TO_ADD]"/>
-        </do_else>
-        <do_if value="$NUMBER_COLOR_STRING != ''">
-          <set_value name="$Number" exact="$NUMBER_COLOR_STRING + $Number + '\033X'"/>
-        </do_if>
-        <set_value name="$CreatedName" exact="$Number + ' -  ' + $CreatedName"/>
-        <do_if value="$DEBUG gt 0">
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'Number ~~ ' + $Number"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
-        </do_if>
-      </do_if>
+      </do_for_each>
 
       <do_if value="$DEBUG gt 0">
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>

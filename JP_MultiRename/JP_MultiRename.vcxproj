@@ -131,6 +131,7 @@
   <ItemGroup>
     <Xml Include="aiscripts\JP_CreateColorString_MR.xml" />
     <Xml Include="aiscripts\JP_CreateName_MR.xml" />
+    <Xml Include="aiscripts\JP_GetSubsSortedForNumbering_MR.xml" />
     <Xml Include="aiscripts\JP_MultiRename.xml" />
     <Xml Include="aiscripts\JP_SaveLoadReset_MR.xml" />
     <Xml Include="content.xml" />

@@ -5,103 +5,157 @@
   <order id="JP_MultiRename" name="{8888888, 1197}MultiRename{8888888, 1199}" category="navigation" infinite="true">
     <params>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <!-- How should "class" "model" and "type" be arranged -->
-      <param name="NAMING_VARINAT" text="{8888888, 1101}" comment="Naming variant" type="number" default="if global.$NamingVariantMR? then global.$NamingVariantMR else 2">
-        <input_param name="startvalue" value="2"/>
-        <input_param name="min" value="1"/>
-        <input_param name="max" value="6"/>
+      <param name="ADD_TAG" text="UseTag" comment="Add Tag?" type="bool" default="if global.$AddTagMR? then global.$AddTagMR else true"/>
+      <param name="TAG_POSITION" text="- TagPosition" comment="Tag position" type="number" default="if global.$TagPositionMR? then global.$TagPositionMR else 1">
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="99"/>
         <input_param name="step" value="1"/>
       </param>
-      <!-- How should the generated name look like -->
-      <param name="USE_CLASS_TAG" text="{8888888, 1102}" comment="Add Class tag?" type="bool" default="if global.$UseClassTagMR? then global.$UseClassTagMR else true"/>
-      <param name="USE_TYPE_NAME" text="{8888888, 1103}" comment="Add Type name?" type="bool"  default="if global.$UseTypeNameMR? then global.$UseTypeNameMR else true"/>
-      <param name="USE_MODEL_NAME" text="{8888888, 1104}" comment="Add Model name?" type="bool" default="if global.$UseModelNameMR? then global.$UseModelNameMR else true"/>
+      <param name="TAG_OBJECT" text="- {8888888, 1111}" comment="Object with your Tag" type="object" default="if global.$TagObjectMR? then global.$TagObjectMR else this.ship"/>
+      <param name="COLORIZE_TAG" text="- {8888888, 1117}" comment="Colorize Tag?" type="bool" default="if global.$ColorizeTagMR? then global.$ColorizeTagMR else true"/>
+      <param name="TAG_ALPHA" text=" ~ {8888888, 1170}" comment="Transparency" type="number" default="if global.$TagAlphaMR? then global.$TagAlphaMR else 255">
+        <input_param name="step" value="1"/>
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="255"/>
+      </param>
+      <param name="TAG_RED" text=" ~ {8888888, 1171}" comment="Red" type="number" default="if global.$TagRedMR? then global.$TagRedMR else 0">
+        <input_param name="step" value="1"/>
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="255"/>
+      </param>
+      <param name="TAG_GREEN" text=" ~ {8888888, 1172}" comment="Green" type="number" default="if global.$TagGreenMR? then global.$TagGreenMR else 204">
+        <input_param name="step" value="1"/>
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="255"/>
+      </param>
+      <param name="TAG_BLUE" text=" ~ {8888888, 1173}" comment="Blue" type="number" default="if global.$TagBlueMR? then global.$TagBlueMR else 102">
+        <input_param name="step" value="1"/>
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="255"/>
+      </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="REMOVE_SENTINEL_TAG" text="{8888888, 1105}" comment="Remove Sentinel Tag?" type="bool" default="if global.$RemoveSentinelTagMR? then global.$RemoveSentinelTagMR else false"/>
-      <param name="REMOVE_VANGUARD_TAG" text="{8888888, 1106}" comment="Remove Vanguard Tag?" type="bool" default="if global.$RemoveVanguardTagMR? then global.$RemoveVanguardTagMR else false"/>
-      <param name="SHORTEN_SENTINEL" text="{8888888, 1107}" comment="Short Sentinel Tag" type="bool" default="if global.$ShortenSentinelMR? then global.$ShortenSentinelMR else true"/>
-      <param name="SHORTEN_VANGUARD" text="{8888888, 1108}" comment="Short Vanguard Tag" type="bool" default="if global.$ShortenVanguardMR? then global.$ShortenVanguardMR else true"/>
+      <param name="ADD_CLASS_TAG" text="{8888888, 1102}" comment="Add Class Tag?" type="bool" default="if global.$AddClassTagMR? then global.$AddClassTagMR else true"/>
+      <param name="CLASS_TAG_POSITION" text="- ClassTagPosition" comment="Class Tag position" type="number" default="if global.$ClassTagPositionMR? then global.$ClassTagPositionMR else 2">
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="99"/>
+        <input_param name="step" value="1"/>
+      </param>
+      <param name="COLORIZE_CLASS_TAG" text="- {8888888, 1118}" comment="Colorize Class Tag?" type="bool" default="if global.$ColorizeClassTagMR? then global.$ColorizeClassTagMR else true"/>
+      <param name="CLASS_TAG_ALPHA" text=" ~ {8888888, 1170}" comment="Transparency" type="number" default="if global.$ClassTagAlphaMR? then global.$ClassTagAlphaMR else 182">
+        <input_param name="step" value="1"/>
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="255"/>
+      </param>
+      <param name="CLASS_TAG_RED" text=" ~ {8888888, 1171}" comment="Red" type="number" default="if global.$ClassTagRedMR? then global.$ClassTagRedMR else 0">
+        <input_param name="step" value="1"/>
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="255"/>
+      </param>
+      <param name="CLASS_TAG_GREEN" text=" ~ {8888888, 1172}" comment="Green" type="number" default="if global.$ClassTagGreenMR? then global.$ClassTagGreenMR else 204">
+        <input_param name="step" value="1"/>
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="255"/>
+      </param>
+      <param name="CLASS_TAG_BLUE" text=" ~ {8888888, 1173}" comment="Blue" type="number" default="if global.$ClassTagBlueMR? then global.$ClassTagBlueMR else 204">
+        <input_param name="step" value="1"/>
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="255"/>
+      </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <!-- Players own Tag -->
-      <param name="TAG_AT_FRONT" text="{8888888, 1109}" comment="Tag at front?" type="bool" default="if global.$TagAtFrontMR? then global.$TagAtFrontMR else true"/>
-      <param name="TAG_AT_END" text="{8888888, 1110}" comment="Tag at end?" type="bool" default="if global.$TagAtEndMR? then global.$TagAtEndMR else false"/>
-      <param name="TAG_OBJECT" text="{8888888, 1111}" comment="Object with your Tag" type="object" default="if global.$TagObjectMR? then global.$TagObjectMR else this.ship"/>
+      <param name="ADD_TYPE_NAME" text="{8888888, 1103}" comment="Add Type name?" type="bool"  default="if global.$AddTypeNameMR? then global.$AddTypeNameMR else true"/>
+      <param name="TYPE_NAME_POSITION" text="- TypeNamePosition" comment="Type name position" type="number" default="if global.$TypeNamePositionMR? then global.$TypeNamePositionMR else 3">
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="99"/>
+        <input_param name="step" value="1"/>
+      </param>
+      <param name="COLORIZE_TYPE_NAME" text="- {8888888, 1118}" comment="Colorize type name?" type="bool" default="if global.$ColorizeTypeNameMR? then global.$ColorizeTypeNameMR else true"/>
+      <param name="TYPE_NAME_ALPHA" text=" ~ {8888888, 1170}" comment="Transparency" type="number" default="if global.$TypeNameAlphaMR? then global.$TypeNameAlphaMR else 182">
+        <input_param name="step" value="1"/>
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="255"/>
+      </param>
+      <param name="TYPE_NAME_RED" text=" ~ {8888888, 1171}" comment="Red" type="number" default="if global.$TypeNameRedMR? then global.$TypeNameRedMR else 0">
+        <input_param name="step" value="1"/>
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="255"/>
+      </param>
+      <param name="TYPE_NAME_GREEN" text=" ~ {8888888, 1172}" comment="Green" type="number" default="if global.$TypeNameGreenMR? then global.$TypeNameGreenMR else 204">
+        <input_param name="step" value="1"/>
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="255"/>
+      </param>
+      <param name="TYPE_NAME_BLUE" text=" ~ {8888888, 1173}" comment="Blue" type="number" default="if global.$TypeNameBlueMR? then global.$TypeNameBlueMR else 204">
+        <input_param name="step" value="1"/>
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="255"/>
+      </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <!-- Numbering -->
+      <param name="ADD_MODEL_NAME" text="{8888888, 1104}" comment="Add Model name?" type="bool" default="if global.$AddModelNameMR? then global.$AddModelNameMR else true"/>
+      <param name="MODEL_NAME_POSITION" text="- ModelNamePosition" comment="Model name position" type="number" default="if global.$ModelNamePositionMR? then global.$ModelNamePositionMR else 4">
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="99"/>
+        <input_param name="step" value="1"/>
+      </param>
+      <param name="REMOVE_SENTINEL_TAG" text="- {8888888, 1105}" comment="Remove Sentinel Tag?" type="bool" default="if global.$RemoveSentinelTagMR? then global.$RemoveSentinelTagMR else false"/>
+      <param name="REMOVE_VANGUARD_TAG" text="- {8888888, 1106}" comment="Remove Vanguard Tag?" type="bool" default="if global.$RemoveVanguardTagMR? then global.$RemoveVanguardTagMR else false"/>
+      <param name="SHORTEN_SENTINEL" text="- {8888888, 1107}" comment="Short Sentinel Tag" type="bool" default="if global.$ShortenSentinelMR? then global.$ShortenSentinelMR else true"/>
+      <param name="SHORTEN_VANGUARD" text="- {8888888, 1108}" comment="Short Vanguard Tag" type="bool" default="if global.$ShortenVanguardMR? then global.$ShortenVanguardMR else true"/>
+      <param name="COLORIZE_MODEL_NAME" text="- {8888888, 1118}" comment="Colorize Model name?" type="bool" default="if global.$ColorizeModelNameMR? then global.$ColorizeModelNameMR else true"/>
+      <param name="MODEL_NAME_ALPHA" text=" ~ {8888888, 1170}" comment="Transparency" type="number" default="if global.$ModelNameAlphaMR? then global.$ModelNameAlphaMR else 182">
+        <input_param name="step" value="1"/>
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="255"/>
+      </param>
+      <param name="MODEL_NAME_RED" text=" ~ {8888888, 1171}" comment="Red" type="number" default="if global.$ModelNameRedMR? then global.$ModelNameRedMR else 0">
+        <input_param name="step" value="1"/>
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="255"/>
+      </param>
+      <param name="MODEL_NAME_GREEN" text=" ~ {8888888, 1172}" comment="Green" type="number" default="if global.$ModelNameGreenMR? then global.$ModelNameGreenMR else 204">
+        <input_param name="step" value="1"/>
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="255"/>
+      </param>
+      <param name="MODEL_NAME_BLUE" text=" ~ {8888888, 1173}" comment="Blue" type="number" default="if global.$ModelNameBlueMR? then global.$ModelNameBlueMR else 204">
+        <input_param name="step" value="1"/>
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="255"/>
+      </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="USE_NUMBERING" text="{8888888, 1112}" comment="Use numbering?" type="bool" default="if global.$UseNumberingMR? then global.$UseNumberingMR else true"/>
-      <param name="REVERSED_NUMBERING" text="{8888888, 1113}" comment="Sort XL to S?" type="bool" default="if global.$ReversedNumberingMR? then global.$ReversedNumberingMR else false"/>
+      <param name="NUMBER_POSITION" text="- NumberPosition" comment="Number position" type="number" default="if global.$NumberingPositionMR? then global.$NumberingPositionMR else 5">
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="99"/>
+        <input_param name="step" value="1"/>
+      </param>
+      <param name="REVERSED_NUMBERING" text="- {8888888, 1113}" comment="Sort XL to S?" type="bool" default="if global.$ReversedNumberingMR? then global.$ReversedNumberingMR else false"/>
+      <param name="NUMBER_SURROUNDINGS_TAG" text="- NumberSurroundings" comment="Number surroundings" type="object" default="if global.$NumberSurroundingsTagMR? then global.$NumberSurroundingsTagMR else this.ship"/>
+      <param name="COLORIZE_NUMBERING" text="- {8888888, 1119}" comment="Colorize Numbering?" type="bool" default="if global.$ColorizeNumberingMR? then global.$ColorizeNumberingMR else true"/>
+      <param name="NUMBERING_ALPHA" text=" ~ {8888888, 1170}" comment="Transparency" type="number" default="if global.$NumberingAlphaMR? then global.$NumberingAlphaMR else 162">
+        <input_param name="step" value="1"/>
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="255"/>
+      </param>
+      <param name="NUMBERING_RED" text=" ~ {8888888, 1171}" comment="Red" type="number" default="if global.$NumberingRedMR? then global.$NumberingRedMR else 0">
+        <input_param name="step" value="1"/>
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="255"/>
+      </param>
+      <param name="NUMBERING_GREEN" text=" ~ {8888888, 1172}" comment="Green" type="number" default="if global.$NumberingGreenMR? then global.$NumberingGreenMR else 0">
+        <input_param name="step" value="1"/>
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="255"/>
+      </param>
+      <param name="NUMBERING_BLUE" text=" ~ {8888888, 1173}" comment="Blue" type="number" default="if global.$NumberingBlueMR? then global.$NumberingBlueMR else 255">
+        <input_param name="step" value="1"/>
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="255"/>
+      </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <!-- Renaming On/Off switch-->
       <param name="RENAME_COMMANDER" text="{8888888, 1114}" comment="Rename Commander?" type="bool" default="if global.$RenameCommanderMR? then global.$RenameCommanderMR else true"/>
       <param name="RENAME_SUBORDINATES" text="{8888888, 1115}" comment="Rename Fleet?" type="bool" default="if global.$RenameSubordinatesMR? then global.$RenameSubordinatesMR else true"/>
       <param name="RENAME_SUBORDINATE_FLEETS" text="{8888888, 1116}" comment="Renam sub. Fleets?" type="bool" default="if global.$RenameSubordinateFleetsMR? then global.$RenameSubordinateFleetsMR else true"/>
-      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <!-- Coloring of the tag -->
-      <param name="USE_TAG_COLORING" text="{8888888, 1117}" comment="Use Tag Coloring?" type="bool" default="if global.$UseTagColoringMR? then global.$UseTagColoringMR else true"/>
-      <param name="TAG_ALPHA" text="- {8888888, 1170}" comment="Transparency" type="number" default="if global.$TagAlphaMR? then global.$TagAlphaMR else 255">
-        <input_param name="step" value="1"/>
-        <input_param name="min" value="0"/>
-        <input_param name="max" value="255"/>
-      </param>
-      <param name="TAG_RED" text="- {8888888, 1171}" comment="Red" type="number" default="if global.$TagRedMR? then global.$TagRedMR else 0">
-        <input_param name="step" value="1"/>
-        <input_param name="min" value="0"/>
-        <input_param name="max" value="255"/>
-      </param>
-      <param name="TAG_GREEN" text="- {8888888, 1172}" comment="Green" type="number" default="if global.$TagGreenMR? then global.$TagGreenMR else 204">
-        <input_param name="step" value="1"/>
-        <input_param name="min" value="0"/>
-        <input_param name="max" value="255"/>
-      </param>
-      <param name="TAG_BLUE" text="- {8888888, 1173}" comment="Blue" type="number" default="if global.$TagBlueMR? then global.$TagBlueMR else 102">
-        <input_param name="step" value="1"/>
-        <input_param name="min" value="0"/>
-        <input_param name="max" value="255"/>
-      </param>
-      <!-- Coloring of the name -->
-      <param name="USE_NAME_COLORING" text="{8888888, 1118}" comment="Use Name Coloring?" type="bool" default="if global.$UseNameColoringMR? then global.$UseNameColoringMR else true"/>
-      <param name="NAME_ALPHA" text="- {8888888, 1170}" comment="Transparency" type="number" default="if global.$NameAlphaMR? then global.$NameAlphaMR else 182">
-        <input_param name="step" value="1"/>
-        <input_param name="min" value="0"/>
-        <input_param name="max" value="255"/>
-      </param>
-      <param name="NAME_RED" text="- {8888888, 1171}" comment="Red" type="number" default="if global.$NameRedMR? then global.$NameRedMR else 0">
-        <input_param name="step" value="1"/>
-        <input_param name="min" value="0"/>
-        <input_param name="max" value="255"/>
-      </param>
-      <param name="NAME_GREEN" text="- {8888888, 1172}" comment="Green" type="number" default="if global.$NameGreenMR? then global.$NameGreenMR else 204">
-        <input_param name="step" value="1"/>
-        <input_param name="min" value="0"/>
-        <input_param name="max" value="255"/>
-      </param>
-      <param name="NAME_BLUE" text="- {8888888, 1173}" comment="Blue" type="number" default="if global.$NameBlueMR? then global.$NameBlueMR else 204">
-        <input_param name="step" value="1"/>
-        <input_param name="min" value="0"/>
-        <input_param name="max" value="255"/>
-      </param>
-      <!-- Coloring of the generated number of numbering -->
-      <param name="USE_NUMBER_COLORING" text="{8888888, 1119}" comment="Use Number Coloring?" type="bool" default="if global.$UseNumberColoringMR? then global.$UseNumberColoringMR? else true"/>
-      <param name="NUMBER_ALPHA" text="- {8888888, 1170}" comment="Transparency" type="number" default="if global.$NumberAlphaMR? then global.$NumberAlphaMR else 162">
-        <input_param name="step" value="1"/>
-        <input_param name="min" value="0"/>
-        <input_param name="max" value="255"/>
-      </param>
-      <param name="NUMBER_RED" text="- {8888888, 1171}" comment="Red" type="number" default="if global.$NumberRedMR? then global.$NumberRedMR else 0">
-        <input_param name="step" value="1"/>
-        <input_param name="min" value="0"/>
-        <input_param name="max" value="255"/>
-      </param>
-      <param name="NUMBER_GREEN" text="- {8888888, 1172}" comment="Green" type="number" default="if global.$NumberGreenMR? then global.$NumberGreenMR else 0">
-        <input_param name="step" value="1"/>
-        <input_param name="min" value="0"/>
-        <input_param name="max" value="255"/>
-      </param>
-      <param name="NUMBER_BLUE" text="- {8888888, 1173}" comment="Blue" type="number" default="if global.$NumberBlueMR? then global.$NumberBlueMR else 255">
-        <input_param name="step" value="1"/>
-        <input_param name="min" value="0"/>
-        <input_param name="max" value="255"/>
-      </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="SAVE_COMMANDERS_NAME" text="{8888888, 1130}" type="bool" default="false"/>
       <param name="SAVE_SUBORDINATES_NAMES" text="{8888888, 1131}" type="bool" default="false"/>
@@ -120,7 +174,7 @@
       <param name="DELETE_SETTINGS" text="{8888888, 1196}" comment="Delete Settings?" type="bool" default="false"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <!-- DEBUG -->
-      <param name="DEBUG" text="DebugText" type="number" default="0" advanced="true">
+      <param name="DEBUG" text="DebugText" type="number" default="if global.$DebugMR? then global.$DebugMR else 0 " advanced="true">
         <input_param name="min" value="0"/>
         <input_param name="max" value="100"/>
         <input_param name="step" value="100"/>
@@ -152,61 +206,23 @@
     <set_value name="$DebugFileName" exact="this.ship.idcode + '.JP_MultiRename.xml.log'"/>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <set_value name="$Commander" exact="this.assignedcontrolled"/>
-    <set_value name="$Tag" exact="''"/>
-    <set_value name="$NameColorString" exact="''"/>
-    <set_value name="$NumberColorString" exact="''"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <do_if value="$SAVE_SETTINGS">
-      <do_if value="not global.$NamingVariantMR? or @global.$NamingVariantMR != $NAMING_VARINAT">
-        <set_value name="global.$NamingVariantMR" exact="$NAMING_VARINAT"/>
+
+      <!-- TAG -->
+      <do_if value="not global.$AddTagMR? or @global.$AddTagMR != $ADD_TAG">
+        <set_value name="global.$AddTagMR" exact="$ADD_TAG"/>
       </do_if>
-      <do_if value="not global.$UseClassTagMR? or @global.$UseClassTagMR != $USE_CLASS_TAG">
-        <set_value name="global.$UseClassTagMR" exact="$USE_CLASS_TAG"/>
-      </do_if>
-      <do_if value="not global.$UseTypeNameMR? or @global.$UseTypeNameMR != $USE_TYPE_NAME">
-        <set_value name="global.$UseTypeNameMR" exact="$USE_TYPE_NAME"/>
-      </do_if>
-      <do_if value="not global.$UseModelNameMR? or @global.$UseModelNameMR != $USE_MODEL_NAME">
-        <set_value name="global.$UseModelNameMR" exact="$USE_MODEL_NAME"/>
-      </do_if>
-      <do_if value="not global.$RemoveSentinelTagMR? or @global.$RemoveSentinelTagMR != $REMOVE_SENTINEL_TAG">
-        <set_value name="global.$RemoveSentinelTagMR" exact="$REMOVE_SENTINEL_TAG"/>
-      </do_if>
-      <do_if value="not global.$RemoveVanguardTagMR? or @global.$RemoveVanguardTagMR != $REMOVE_VANGUARD_TAG">
-        <set_value name="global.$RemoveVanguardTagMR" exact="$REMOVE_VANGUARD_TAG"/>
-      </do_if>
-      <do_if value="not global.$ShortenSentinelMR? or @global.$ShortenSentinelMR != $SHORTEN_SENTINEL">
-        <set_value name="global.$ShortenSentinelMR" exact="$SHORTEN_SENTINEL"/>
-      </do_if>
-      <do_if value="not global.$ShortenVanguardMR? or @global.$ShortenVanguardMR != $SHORTEN_VANGUARD">
-        <set_value name="global.$ShortenVanguardMR" exact="$SHORTEN_VANGUARD"/>
-      </do_if>
-      <do_if value="not global.$TagAtFrontMR? or @global.$TagAtFrontMR != $TAG_AT_FRONT">
-        <set_value name="global.$TagAtFrontMR" exact="$TAG_AT_FRONT"/>
-      </do_if>
-      <do_if value="not global.$TagAtEndMR? or @global.$TagAtEndMR != $TAG_AT_END">
-        <set_value name="global.$TagAtEndMR" exact="$TAG_AT_END"/>
+      <do_if value="not global.$TagPositionMR? or @global.$TagPositionMR != $TAG_POSITION">
+        <set_value name="global.$TagPositionMR" exact="$TAG_POSITION"/>
       </do_if>
       <do_if value="not global.$TagObjectMR? or @global.$TagObjectMR != $TAG_OBJECT">
         <set_value name="global.$TagObjectMR" exact="$TAG_OBJECT"/>
       </do_if>
-      <do_if value="not global.$UseNumberingMR? or @global.$UseNumberingMR != $USE_NUMBERING">
-        <set_value name="global.$UseNumberingMR" exact="$USE_NUMBERING"/>
-      </do_if>
-      <do_if value="not global.$ReversedNumberingMR? or @global.$ReversedNumberingMR != $REVERSED_NUMBERING">
-        <set_value name="global.$ReversedNumberingMR" exact="$REVERSED_NUMBERING"/>
-      </do_if>
-      <do_if value="not global.$RenameCommanderMR? or @global.$RenameCommanderMR != $RENAME_COMMANDER">
-        <set_value name="global.$RenameCommanderMR" exact="$RENAME_COMMANDER"/>
-      </do_if>
-      <do_if value="not global.$RenameSubordinatesMR? or @global.$RenameSubordinatesMR != $RENAME_SUBORDINATES">
-        <set_value name="global.$RenameSubordinatesMR" exact="$RENAME_SUBORDINATES"/>
-      </do_if>
-      <do_if value="not global.$RenameSubordinateFleetsMR? or @global.$RenameSubordinateFleetsMR != $RENAME_SUBORDINATE_FLEETS">
-        <set_value name="global.$RenameSubordinateFleetsMR" exact="$RENAME_SUBORDINATE_FLEETS"/>
-      </do_if>
-      <do_if value="not global.$UseTagColoringMR? or @global.$UseTagColoringMR != $USE_TAG_COLORING">
-        <set_value name="global.$UseTagColoringMR" exact="$USE_TAG_COLORING"/>
+      <do_if value="not global.$ColorizeTagMR? or @global.$ColorizeTagMR != $COLORIZE_TAG">
+        <set_value name="global.$ColorizeTagMR" exact="$COLORIZE_TAG"/>
       </do_if>
       <do_if value="not global.$TagAlphaMR? or @global.$TagAlphaMR != $TAG_ALPHA">
         <set_value name="global.$TagAlphaMR" exact="$TAG_ALPHA"/>
@@ -220,73 +236,178 @@
       <do_if value="not global.$TagBlueMR? or @global.$TagBlueMR != $TAG_BLUE">
         <set_value name="global.$TagBlueMR" exact="$TAG_BLUE"/>
       </do_if>
-      <do_if value="not global.$UseNameColoringMR? or @global.$UseNameColoringMR != $USE_NAME_COLORING">
-        <set_value name="global.$UseNameColoringMR" exact="$USE_NAME_COLORING"/>
+
+      <!-- CLASS TAG -->
+      <do_if value="not global.$AddClassTagMR? or @global.$AddClassTagMR != $ADD_CLASS_TAG">
+        <set_value name="global.$AddClassTagMR" exact="$ADD_CLASS_TAG"/>
       </do_if>
-      <do_if value="not global.$NameAlphaMR? or @global.$NameAlphaMR != $NAME_ALPHA">
-        <set_value name="global.$NameAlphaMR" exact="$NAME_ALPHA"/>
+      <do_if value="not global.$ClassTagPositionMR? or @global.$ClassTagPositionMR != $CLASS_TAG_POSITION">
+        <set_value name="global.$ClassTagPositionMR" exact="$CLASS_TAG_POSITION"/>
       </do_if>
-      <do_if value="not global.$NameRedMR? or @global.$NameRedMR != $NAME_RED">
-        <set_value name="global.$NameRedMR" exact="$NAME_RED"/>
+      <do_if value="not global.$ColorizeClassTagMR? or @global.$ColorizeClassTagMR != $COLORIZE_CLASS_TAG">
+        <set_value name="global.$ColorizeClassTagMR" exact="$COLORIZE_CLASS_TAG"/>
       </do_if>
-      <do_if value="not global.$NameGreenMR? or @global.$NameGreenMR != $NAME_GREEN">
-        <set_value name="global.$NameGreenMR" exact="$NAME_GREEN"/>
+      <do_if value="not global.$ClassTagAlphaMR? or @global.$ClassTagAlphaMR != $CLASS_TAG_ALPHA">
+        <set_value name="global.$ClassTagAlphaMR" exact="$CLASS_TAG_ALPHA"/>
       </do_if>
-      <do_if value="not global.$NameBlueMR? or @global.$NameBlueMR != $NAME_BLUE">
-        <set_value name="global.$NameBlueMR" exact="$NAME_BLUE"/>
+      <do_if value="not global.$ClassTagRedMR? or @global.$ClassTagRedMR != $CLASS_TAG_RED">
+        <set_value name="global.$ClassTagRedMR" exact="$CLASS_TAG_RED"/>
       </do_if>
-      <do_if value="not global.$UseNumberColoringMR? or @global.$UseNumberColoringMR != $USE_NUMBER_COLORING">
-        <set_value name="global.$UseNumberColoringMR" exact="$USE_NUMBER_COLORING"/>
+      <do_if value="not global.$ClassTagGreenMR? or @global.$ClassTagGreenMR != $CLASS_TAG_GREEN">
+        <set_value name="global.$ClassTagGreenMR" exact="$CLASS_TAG_GREEN"/>
       </do_if>
-      <do_if value="not global.$NumberAlphaMR? or @global.$NumberAlphaMR != $NUMBER_ALPHA">
-        <set_value name="global.$NumberAlphaMR" exact="$NUMBER_ALPHA"/>
+      <do_if value="not global.$ClassTagBlueMR? or @global.$ClassTagBlueMR != $CLASS_TAG_BLUE">
+        <set_value name="global.$ClassTagBlueMR" exact="$CLASS_TAG_BLUE"/>
       </do_if>
-      <do_if value="not global.$NumberRedMR? or @global.$NumberRedMR != $NUMBER_RED">
-        <set_value name="global.$NumberRedMR" exact="$NUMBER_RED"/>
+
+      <!-- TYPE NAME -->
+      <do_if value="not global.$AddTypeNameMR? or @global.$AddTypeNameMR != $ADD_TYPE_NAME">
+        <set_value name="global.$AddTypeNameMR" exact="$ADD_TYPE_NAME"/>
       </do_if>
-      <do_if value="not global.$NumberGreenMR? or @global.$NumberGreenMR != $NUMBER_GREEN">
-        <set_value name="global.$NumberGreenMR" exact="$NUMBER_GREEN"/>
+      <do_if value="not global.$TypeNamePositionMR? or @global.$TypeNamePositionMR != $TYPE_NAME_POSITION">
+        <set_value name="global.$TypeNamePositionMR" exact="$TYPE_NAME_POSITION"/>
       </do_if>
-      <do_if value="not global.$NumberBlueMR? or @global.$NumberBlueMR != $NUMBER_BLUE">
-        <set_value name="global.$NumberBlueMR" exact="$NUMBER_BLUE"/>
+      <do_if value="not global.$ColorizeTypeNameMR? or @global.$ColorizeTypeNameMR != $COLORIZE_TYPE_NAME">
+        <set_value name="global.$ColorizeTypeNameMR" exact="$COLORIZE_TYPE_NAME"/>
       </do_if>
+      <do_if value="not global.$TypeNameAlphaMR? or @global.$TypeNameAlphaMR != $TYPE_NAME_ALPHA">
+        <set_value name="global.$TypeNameAlphaMR" exact="$TYPE_NAME_ALPHA"/>
+      </do_if>
+      <do_if value="not global.$TypeNameRedMR? or @global.$TypeNameRedMR != $TYPE_NAME_RED">
+        <set_value name="global.$TypeNameRedMR" exact="$TYPE_NAME_RED"/>
+      </do_if>
+      <do_if value="not global.$TypeNameGreenMR? or @global.$TypeNameGreenMR != $TYPE_NAME_GREEN">
+        <set_value name="global.$TypeNameGreenMR" exact="$TYPE_NAME_GREEN"/>
+      </do_if>
+      <do_if value="not global.$TypeNameBlueMR? or @global.$TypeNameBlueMR != $TYPE_NAME_BLUE">
+        <set_value name="global.$TypeNameBlueMR" exact="$TYPE_NAME_BLUE"/>
+      </do_if>
+
+      <!-- MODEL NAME -->
+      <do_if value="not global.$AddModelNameMR? or @global.$AddModelNameMR != $ADD_MODEL_NAME">
+        <set_value name="global.$AddModelNameMR" exact="$ADD_MODEL_NAME"/>
+      </do_if>
+      <do_if value="not global.$ModelNamePositionMR? or @global.$ModelNamePositionMR != $MODEL_NAME_POSITION">
+        <set_value name="global.$ModelNamePositionMR" exact="$MODEL_NAME_POSITION"/>
+      </do_if>
+      <do_if value="not global.$RemoveSentinelTagMR? or @global.$RemoveSentinelTagMR != $REMOVE_SENTINEL_TAG">
+        <set_value name="global.$RemoveSentinelTagMR" exact="$REMOVE_SENTINEL_TAG"/>
+      </do_if>
+      <do_if value="not global.$RemoveVanguardTagMR? or @global.$RemoveVanguardTagMR != $REMOVE_VANGUARD_TAG">
+        <set_value name="global.$RemoveVanguardTagMR" exact="$REMOVE_VANGUARD_TAG"/>
+      </do_if>
+      <do_if value="not global.$ShortenSentinelMR? or @global.$ShortenSentinelMR != $SHORTEN_SENTINEL">
+        <set_value name="global.$ShortenSentinelMR" exact="$SHORTEN_SENTINEL"/>
+      </do_if>
+      <do_if value="not global.$ShortenVanguardMR? or @global.$ShortenVanguardMR != $SHORTEN_VANGUARD">
+        <set_value name="global.$ShortenVanguardMR" exact="$SHORTEN_VANGUARD"/>
+      </do_if>
+      <do_if value="not global.$ColorizeModelNameMR? or @global.$ColorizeModelNameMR != $COLORIZE_MODEL_NAME">
+        <set_value name="global.$ColorizeModelNameMR" exact="$COLORIZE_MODEL_NAME"/>
+      </do_if>
+      <do_if value="not global.$ModelNameAlphaMR? or @global.$ModelNameAlphaMR != $MODEL_NAME_ALPHA">
+        <set_value name="global.$ModelNameAlphaMR" exact="$MODEL_NAME_ALPHA"/>
+      </do_if>
+      <do_if value="not global.$ModelNameRedMR? or @global.$ModelNameRedMR != $MODEL_NAME_RED">
+        <set_value name="global.$ModelNameRedMR" exact="$MODEL_NAME_RED"/>
+      </do_if>
+      <do_if value="not global.$ModelNameGreenMR? or @global.$ModelNameGreenMR != $MODEL_NAME_GREEN">
+        <set_value name="global.$ModelNameGreenMR" exact="$MODEL_NAME_GREEN"/>
+      </do_if>
+      <do_if value="not global.$ModelNameBlueMR? or @global.$ModelNameBlueMR != $MODEL_NAME_BLUE">
+        <set_value name="global.$ModelNameBlueMR" exact="$MODEL_NAME_BLUE"/>
+      </do_if>
+
+      <!-- NUMBERING -->
+      <do_if value="not global.$UseNumberingMR? or @global.$UseNumberingMR != $USE_NUMBERING">
+        <set_value name="global.$UseNumberingMR" exact="$USE_NUMBERING"/>
+      </do_if>
+      <do_if value="not global.$NumberingPositionMR? or @global.$NumberingPositionMR != $MODEL_NAME_POSITION">
+        <set_value name="global.$NumberingPositionMR" exact="$MODEL_NAME_POSITION"/>
+      </do_if>
+      <do_if value="not global.$ReversedNumberingMR? or @global.$ReversedNumberingMR != $REVERSED_NUMBERING">
+        <set_value name="global.$ReversedNumberingMR" exact="$REVERSED_NUMBERING"/>
+      </do_if>
+      <do_if value="not global.$NumberSurroundingsTagMR? or @global.$NumberSurroundingsTagMR != $NUMBER_SURROUNDINGS_TAG">
+        <set_value name="global.$NumberSurroundingsTagMR" exact="$NUMBER_SURROUNDINGS_TAG"/>
+      </do_if>
+      <do_if value="not global.$ColorizeNumberingMR? or @global.$ColorizeModelNameMR != $COLORIZE_NUMBERING">
+        <set_value name="global.$ColorizeNumberingMR" exact="$COLORIZE_NUMBERING"/>
+      </do_if>
+      <do_if value="not global.$NumberingAlphaMR? or @global.$NumberingAlphaMR != $NUMBERING_ALPHA">
+        <set_value name="global.$NumberingAlphaMR" exact="$NUMBERING_ALPHA"/>
+      </do_if>
+      <do_if value="not global.$NumberingRedMR? or @global.$NumberingRedMR != $NUMBERING_RED">
+        <set_value name="global.$NumberingRedMR" exact="$NUMBERING_RED"/>
+      </do_if>
+      <do_if value="not global.$NumberingGreenMR? or @global.$NumberingGreenMR != $NUMBERING_GREEN">
+        <set_value name="global.$NumberingGreenMR" exact="$NUMBERING_GREEN"/>
+      </do_if>
+      <do_if value="not global.$NumberingBlueMR? or @global.$NumberingBlueMR != $NUMBERING_BLUE">
+        <set_value name="global.$NumberingBlueMR" exact="$NUMBERING_BLUE"/>
+      </do_if>
+
+      <do_if value="not global.$RenameCommanderMR? or @global.$RenameCommanderMR != $RENAME_COMMANDER">
+        <set_value name="global.$RenameCommanderMR" exact="$RENAME_COMMANDER"/>
+      </do_if>
+      <do_if value="not global.$RenameSubordinatesMR? or @global.$RenameSubordinatesMR != $RENAME_SUBORDINATES">
+        <set_value name="global.$RenameSubordinatesMR" exact="$RENAME_SUBORDINATES"/>
+      </do_if>
+      <do_if value="not global.$RenameSubordinateFleetsMR? or @global.$RenameSubordinateFleetsMR != $RENAME_SUBORDINATE_FLEETS">
+        <set_value name="global.$RenameSubordinateFleetsMR" exact="$RENAME_SUBORDINATE_FLEETS"/>
+      </do_if>
+
       <do_if value="not global.$DebugMR? or @global.$DebugMR != $DEBUG">
         <set_value name="global.$DebugMR" exact="$DEBUG"/>
       </do_if>
     </do_if>
     <do_if value="$DELETE_SETTINGS">
       <remove_value name="global.$DebugMR"/>
-      <remove_value name="global.$NumberBlueMR"/>
-      <remove_value name="global.$NumberGreenMR"/>
-      <remove_value name="global.$NumberRedMR"/>
-      <remove_value name="global.$NumberAlphaMR"/>
-      <remove_value name="global.$UseNumberColoringMR"/>
-      <remove_value name="global.$NameBlueMR"/>
-      <remove_value name="global.$NameGreenMR"/>
-      <remove_value name="global.$NameRedMR"/>
-      <remove_value name="global.$NameAlphaMR"/>
-      <remove_value name="global.$UseNameColoringMR"/>
-      <remove_value name="global.$TagBlueMR"/>
-      <remove_value name="global.$TagGreenMR"/>
-      <remove_value name="global.$TagRedMR"/>
-      <remove_value name="global.$TagAlphaMR"/>
-      <remove_value name="global.$UseTagColoringMR"/>
       <remove_value name="global.$RenameSubordinateFleetsMR"/>
       <remove_value name="global.$RenameSubordinatesMR"/>
       <remove_value name="global.$RenameCommanderMR"/>
+      <remove_value name="global.$NumberingBlueMR"/>
+      <remove_value name="global.$NumberingGreenMR"/>
+      <remove_value name="global.$NumberingRedMR"/>
+      <remove_value name="global.$NumberingAlphaMR"/>
+      <remove_value name="global.$ColorizeNumberingMR"/>
+      <remove_value name="global.$NumberSurroundingsTagMR"/>
       <remove_value name="global.$ReversedNumberingMR"/>
+      <remove_value name="global.$NumberingPositionMR"/>
       <remove_value name="global.$UseNumberingMR"/>
-      <remove_value name="global.$TagObjectMR"/>
-      <remove_value name="global.$TagAtEndMR"/>
-      <remove_value name="global.$TagAtFrontMR"/>
+      <remove_value name="global.$ModelNameBlueMR"/>
+      <remove_value name="global.$ModelNameGreenMR"/>
+      <remove_value name="global.$ModelNameRedMR"/>
+      <remove_value name="global.$ModelNameAlphaMR"/>
+      <remove_value name="global.$ColorizeModelNameMR"/>
       <remove_value name="global.$ShortenVanguardMR"/>
       <remove_value name="global.$ShortenSentinelMR"/>
       <remove_value name="global.$RemoveVanguardTagMR"/>
       <remove_value name="global.$RemoveSentinelTagMR"/>
-      <remove_value name="global.$UseModelNameMR"/>
-      <remove_value name="global.$UseTypeNameMR"/>
-      <remove_value name="global.$UseClassTagMR"/>
-      <remove_value name="global.$NamingVariantMR"/>
+      <remove_value name="global.$ModelNamePositionMR"/>
+      <remove_value name="global.$AddModelNameMR"/>
+      <remove_value name="global.$TypeNameBlueMR"/>
+      <remove_value name="global.$TypeNameGreenMR"/>
+      <remove_value name="global.$TypeNameRedMR"/>
+      <remove_value name="global.$TypeNameAlphaMR"/>
+      <remove_value name="global.$ColorizeTypeNameMR"/>
+      <remove_value name="global.$TypeNamePositionMR"/>
+      <remove_value name="global.$AddTypeNameMR"/>
+      <remove_value name="global.$ClassTagBlueMR"/>
+      <remove_value name="global.$ClassTagGreenMR"/>
+      <remove_value name="global.$ClassTagRedMR"/>
+      <remove_value name="global.$ClassTagAlphaMR"/>
+      <remove_value name="global.$ColorizeClassTagMR"/>
+      <remove_value name="global.$ClassTagPositionMR"/>
+      <remove_value name="global.$AddClassTagMR"/>
+      <remove_value name="global.$TagBlueMR"/>
+      <remove_value name="global.$TagGreenMR"/>
+      <remove_value name="global.$TagRedMR"/>
+      <remove_value name="global.$TagAlphaMR"/>
+      <remove_value name="global.$ColorizeTagMR"/>
+      <remove_value name="global.$TagObjectMR"/>
+      <remove_value name="global.$TagPositionMR"/>
+      <remove_value name="global.$AddTagMR"/>
       <!-- cancel order because the settings are invalid now -->
       <cancel_order order="this.ship.order"/>
     </do_if>
@@ -302,15 +423,28 @@
 
       <do_if value="$DEBUG gt 0">
         <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~ JP_MultiRename.xml ~ Started ~~' + '\n'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_MultiRename.xml ~ Started ~~' + '\n'"/>
       </do_if>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-      <!-- remove it in a later version.. give time for deleting this unused chunk of memory -->
-      <do_if value="global.$MultiRenameSavedNames?">
-        <remove_value name="global.$MultiRenameSavedNames"/>
-      </do_if>
+      <!-- Remove in one of the next updates.. give time to delete the now unused global variables -->
+      <remove_value name="global.$NumberBlueMR"/>
+      <remove_value name="global.$NumberGreenMR"/>
+      <remove_value name="global.$NumberRedMR"/>
+      <remove_value name="global.$NumberAlphaMR"/>
+      <remove_value name="global.$UseNumberColoringMR"/>
+      <remove_value name="global.$NameBlueMR"/>
+      <remove_value name="global.$NameGreenMR"/>
+      <remove_value name="global.$NameRedMR"/>
+      <remove_value name="global.$NameAlphaMR"/>
+      <remove_value name="global.$UseNameColoringMR"/>
+      <remove_value name="global.$UseTagColoringMR"/>
+      <remove_value name="global.$UseModelNameMR"/>
+      <remove_value name="global.$UseTypeNameMR"/>
+      <remove_value name="global.$UseClassTagMR"/>
+      <remove_value name="global.$NamingVariantMR"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
       <run_script name="'JP_SaveLoadReset_MR'">
         <param name="SAVE_COMMANDERS_NAME" value="$SAVE_COMMANDERS_NAME"/>
@@ -328,48 +462,88 @@
         <param name="DEBUG" value="$DEBUG"/>
       </run_script>
 
-      <!-- Create tag? Colorize it? -->
-      <do_if value="$TAG_AT_FRONT or $TAG_AT_END">
-        <do_if value="$USE_TAG_COLORING">
+      <create_list name="$NameTilesArrangement"/>
+      <do_if value="$ADD_TAG">
+        <set_value name="$_ColorString" exact="''"/>
+        <do_if value="$COLORIZE_TAG">
           <run_script name="'JP_CreateColorString_MR'">
             <param name="ALPHA" value="$TAG_ALPHA"/>
             <param name="RED" value="$TAG_RED"/>
             <param name="GREEN" value="$TAG_GREEN"/>
             <param name="BLUE" value="$TAG_BLUE"/>
             <param name="DEBUG" value="$DEBUG"/>
-            <save_retval name="COLOR_STRING" variable="$_TagColorString"/>
+            <save_retval name="COLOR_STRING" variable="$_ColorString"/>
           </run_script>
-          <set_value name="$Tag" exact="$_TagColorString + $TAG_OBJECT.knownname + '\033X'"/>
-          <remove_value name="$_TagColorString"/>
         </do_if>
-        <do_else>
-          <set_value name="$Tag" exact="$TAG_OBJECT.knownname"/>
-        </do_else>
+        <append_to_list name="$NameTilesArrangement" exact="['TAG', $TAG_POSITION, $_ColorString, $TAG_OBJECT.knownname]"/>
+        <remove_value name="$_ColorString"/>
       </do_if>
 
-      <!-- Colorize name? -->
-      <do_if value="$USE_NAME_COLORING">
-        <run_script name="'JP_CreateColorString_MR'">
-          <param name="ALPHA" value="$NAME_ALPHA"/>
-          <param name="RED" value="$NAME_RED"/>
-          <param name="GREEN" value="$NAME_GREEN"/>
-          <param name="BLUE" value="$NAME_BLUE"/>
-          <param name="DEBUG" value="$DEBUG"/>
-          <save_retval name="COLOR_STRING" variable="$NameColorString"/>
-        </run_script>
+      <do_if value="$ADD_CLASS_TAG">
+        <set_value name="$_ColorString" exact="''"/>
+        <do_if value="$COLORIZE_CLASS_TAG">
+          <run_script name="'JP_CreateColorString_MR'">
+            <param name="ALPHA" value="$CLASS_TAG_ALPHA"/>
+            <param name="RED" value="$CLASS_TAG_RED"/>
+            <param name="GREEN" value="$CLASS_TAG_GREEN"/>
+            <param name="BLUE" value="$CLASS_TAG_BLUE"/>
+            <param name="DEBUG" value="$DEBUG"/>
+            <save_retval name="COLOR_STRING" variable="$_ColorString"/>
+          </run_script>
+        </do_if>
+        <append_to_list name="$NameTilesArrangement" exact="['CLASS_TAG', $CLASS_TAG_POSITION, $_ColorString]"/>
+        <remove_value name="$_ColorString"/>
       </do_if>
 
-      <!-- Colorize number? -->
-      <do_if value="$USE_NUMBER_COLORING">
-        <run_script name="'JP_CreateColorString_MR'">
-          <param name="ALPHA" value="$NUMBER_ALPHA"/>
-          <param name="RED" value="$NUMBER_RED"/>
-          <param name="GREEN" value="$NUMBER_GREEN"/>
-          <param name="BLUE" value="$NUMBER_BLUE"/>
-          <param name="DEBUG" value="$DEBUG"/>
-          <save_retval name="COLOR_STRING" variable="$NumberColorString"/>
-        </run_script>
+      <do_if value="$ADD_TYPE_NAME">
+        <set_value name="$_ColorString" exact="''"/>
+        <do_if value="$COLORIZE_TYPE_NAME">
+          <run_script name="'JP_CreateColorString_MR'">
+            <param name="ALPHA" value="$TYPE_NAME_ALPHA"/>
+            <param name="RED" value="$TYPE_NAME_RED"/>
+            <param name="GREEN" value="$TYPE_NAME_GREEN"/>
+            <param name="BLUE" value="$TYPE_NAME_BLUE"/>
+            <param name="DEBUG" value="$DEBUG"/>
+            <save_retval name="COLOR_STRING" variable="$_ColorString"/>
+          </run_script>
+        </do_if>
+        <append_to_list name="$NameTilesArrangement" exact="['TYPE_NAME', $TYPE_NAME_POSITION, $_ColorString]"/>
+        <remove_value name="$_ColorString"/>
       </do_if>
+
+      <do_if value="$ADD_MODEL_NAME">
+        <set_value name="$_ColorString" exact="''"/>
+        <do_if value="$COLORIZE_MODEL_NAME">
+          <run_script name="'JP_CreateColorString_MR'">
+            <param name="ALPHA" value="$MODEL_NAME_ALPHA"/>
+            <param name="RED" value="$MODEL_NAME_RED"/>
+            <param name="GREEN" value="$MODEL_NAME_GREEN"/>
+            <param name="BLUE" value="$MODEL_NAME_BLUE"/>
+            <param name="DEBUG" value="$DEBUG"/>
+            <save_retval name="COLOR_STRING" variable="$_ColorString"/>
+          </run_script>
+        </do_if>
+        <append_to_list name="$NameTilesArrangement" exact="['MODEL_NAME', $MODEL_NAME_POSITION, $_ColorString]"/>
+        <remove_value name="$_ColorString"/>
+      </do_if>
+
+      <do_if value="$USE_NUMBERING">
+        <set_value name="$_ColorString" exact="''"/>
+        <do_if value="$COLORIZE_NUMBERING">
+          <run_script name="'JP_CreateColorString_MR'">
+            <param name="ALPHA" value="$NUMBERING_ALPHA"/>
+            <param name="RED" value="$NUMBERING_RED"/>
+            <param name="GREEN" value="$NUMBERING_GREEN"/>
+            <param name="BLUE" value="$NUMBERING_BLUE"/>
+            <param name="DEBUG" value="$DEBUG"/>
+            <save_retval name="COLOR_STRING" variable="$_ColorString"/>
+          </run_script>
+        </do_if>
+        <append_to_list name="$NameTilesArrangement" exact="['NUMBER', $NUMBER_POSITION, $_ColorString, $NUMBER_SURROUNDINGS_TAG.knownname]"/>
+        <remove_value name="$_ColorString"/>
+      </do_if>
+
+      <sort_list list="$NameTilesArrangement" sortbyvalue="loop.element.{2}"/>
 
       <!-- Rename Subordinates of subordinated fleets? -->
       <do_if value="not $RENAME_SUBORDINATE_FLEETS">
@@ -407,7 +581,7 @@
         </do_while>
         <remove_value name="$_Subordinates"/>
         <do_for_each name="$_Group" in="$_Groups">
-          <run_script name="'JP_GetSubsSortedForNumbering_NMS'">
+          <run_script name="'JP_GetSubsSortedForNumbering_MR'">
             <param name="SUBORDINATES" value="$_Group"/>
             <param name="REVERSED_NUMBERING" value="$REVERSED_NUMBERING"/>
             <param name="DEBUG" value="$DEBUG"/>
@@ -416,19 +590,12 @@
           <do_for_each name="$_Ship" in="$_Group" counter="$_it">
             <run_script name="'JP_CreateName_MR'">
               <param name="SHIP" value="$_Ship"/>
-              <param name="NAMING_VARINAT" value="$NAMING_VARINAT"/>
-              <param name="USE_CLASS_TAG" value="$USE_CLASS_TAG"/>
-              <param name="USE_TYPE_NAME" value="$USE_TYPE_NAME"/>
-              <param name="USE_MODEL_NAME" value="$USE_MODEL_NAME"/>
+              <param name="NAME_TILES_ARRANGEMENT" value="$NameTilesArrangement"/>
               <param name="REMOVE_SENTINEL_TAG" value="$REMOVE_SENTINEL_TAG"/>
               <param name="REMOVE_VANGUARD_TAG" value="$REMOVE_VANGUARD_TAG"/>
               <param name="SHORTEN_SENTINEL" value="$SHORTEN_SENTINEL"/>
               <param name="SHORTEN_VANGUARD" value="$SHORTEN_VANGUARD"/>
-              <param name="TAG_AT_END" value="if $TAG_AT_END then $Tag else ''"/>
-              <param name="TAG_AT_FRONT" value="if $TAG_AT_FRONT then $Tag else ''"/>
               <param name="NUMBER_TO_ADD" value="if $USE_NUMBERING then $_it else ''"/>
-              <param name="NAME_COLOR_STRING" value="$NameColorString"/>
-              <param name="NUMBER_COLOR_STRING" value="$NumberColorString"/>
               <param name="DEBUG" value="$DEBUG"/>
               <save_retval name="CREATED_NAME" variable="$_CreatedName"/>
             </run_script>
@@ -469,7 +636,7 @@
       </do_while>
       <remove_value name="$_Subordinates"/>
       <do_for_each name="$_Group" in="$_Groups">
-        <run_script name="'JP_GetSubsSortedForNumbering_NMS'">
+        <run_script name="'JP_GetSubsSortedForNumbering_MR'">
           <param name="SUBORDINATES" value="$_Group"/>
           <param name="REVERSED_NUMBERING" value="$REVERSED_NUMBERING"/>
           <param name="DEBUG" value="$DEBUG"/>
@@ -478,19 +645,12 @@
         <do_for_each name="$_Ship" in="$_Group" counter="$_it">
           <run_script name="'JP_CreateName_MR'">
             <param name="SHIP" value="$_Ship"/>
-            <param name="NAMING_VARINAT" value="$NAMING_VARINAT"/>
-            <param name="USE_CLASS_TAG" value="$USE_CLASS_TAG"/>
-            <param name="USE_TYPE_NAME" value="$USE_TYPE_NAME"/>
-            <param name="USE_MODEL_NAME" value="$USE_MODEL_NAME"/>
+            <param name="NAME_TILES_ARRANGEMENT" value="$NameTilesArrangement"/>
             <param name="REMOVE_SENTINEL_TAG" value="$REMOVE_SENTINEL_TAG"/>
             <param name="REMOVE_VANGUARD_TAG" value="$REMOVE_VANGUARD_TAG"/>
             <param name="SHORTEN_SENTINEL" value="$SHORTEN_SENTINEL"/>
             <param name="SHORTEN_VANGUARD" value="$SHORTEN_VANGUARD"/>
-            <param name="TAG_AT_END" value="if $TAG_AT_END then $Tag else ''"/>
-            <param name="TAG_AT_FRONT" value="if $TAG_AT_FRONT then $Tag else ''"/>
             <param name="NUMBER_TO_ADD" value="if $USE_NUMBERING then $_it else ''"/>
-            <param name="NAME_COLOR_STRING" value="$NameColorString"/>
-            <param name="NUMBER_COLOR_STRING" value="$NumberColorString"/>
             <param name="DEBUG" value="$DEBUG"/>
             <save_retval name="CREATED_NAME" variable="$_CreatedName"/>
           </run_script>
@@ -507,38 +667,29 @@
       </do_if>
       <run_script name="'JP_CreateName_MR'">
         <param name="SHIP" value="$Commander"/>
-        <param name="NAMING_VARINAT" value="$NAMING_VARINAT"/>
-        <param name="USE_CLASS_TAG" value="$USE_CLASS_TAG"/>
-        <param name="USE_TYPE_NAME" value="$USE_TYPE_NAME"/>
-        <param name="USE_MODEL_NAME" value="$USE_MODEL_NAME"/>
+        <param name="NAME_TILES_ARRANGEMENT" value="$NameTilesArrangement"/>
         <param name="REMOVE_SENTINEL_TAG" value="$REMOVE_SENTINEL_TAG"/>
         <param name="REMOVE_VANGUARD_TAG" value="$REMOVE_VANGUARD_TAG"/>
         <param name="SHORTEN_SENTINEL" value="$SHORTEN_SENTINEL"/>
         <param name="SHORTEN_VANGUARD" value="$SHORTEN_VANGUARD"/>
-        <param name="TAG_AT_END" value="if $TAG_AT_END then $Tag else ''"/>
-        <param name="TAG_AT_FRONT" value="if $TAG_AT_FRONT then $Tag else ''"/>
         <param name="NUMBER_TO_ADD" value="''"/>
-        <param name="NAME_COLOR_STRING" value="$NameColorString"/>
-        <param name="NUMBER_COLOR_STRING" value="$NumberColorString"/>
         <param name="DEBUG" value="$DEBUG"/>
         <save_retval name="CREATED_NAME" variable="$_CreatedName"/>
       </run_script>
       <set_object_name object="$Commander" name="$_CreatedName"/>
       <remove_value name="$_CreatedName"/>
-      
+
       <label name="FINISH"/>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
       <do_if value="$DEBUG gt 0">
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~ JP_MultiRename.xml ~ Finished ~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_MultiRename.xml ~ Finished ~~'"/>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
       </do_if>
 
       <label name="CLEANUP"/>
-      <remove_value name="$NumberColorString"/>
-      <remove_value name="$NameColorString"/>
-      <remove_value name="$Tag"/>
+      <remove_value name="$NameTilesArrangement"/>
       <remove_value name="$Commander"/>
       <remove_value name="$DebugFileName"/>
       <remove_value name="$DebugDirectory"/>
