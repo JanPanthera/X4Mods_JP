@@ -76,7 +76,7 @@
       </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     </params>
-    <skill min="0"/>
+    <skill min="30"/>
     <requires>
       <match shiptype="shiptype.lasertower" negate="true"/>
     </requires>
@@ -101,7 +101,7 @@
     <set_value name="$DebugFileName" exact="this.ship.idcode + '.JP_SatelliteDropperG.xml.log'"/>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <set_value name="$Ship" exact="this.ship"/>
-    <set_value name="$ExpTotalMultiplier" exact="0.84"/>
+    <set_value name="$ExpTotalMultiplier" exact="0.89"/>
     <set_value name="$Satellite" exact="if $MK2 then ware.satellite_mk2 else ware.satellite_mk1"/>
     <set_value name="$IdleTime" exact="$IDLE_TIME"/>
     <set_value name="$ResumeLabel" exact="'RESUME_LBL'"/>
