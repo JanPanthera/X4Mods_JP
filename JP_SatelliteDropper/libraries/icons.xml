@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <icons>
-  <icon name="order_jp_satellitedropper" texture="assets\fx\gui\textures\order\order_explore.tga" height="32" width="32"></icon>
+  <icon name="order_jp_satellitedropperg" texture="assets\fx\gui\textures\order\order_explore.tga" height="32" width="32"></icon>
+  <icon name="order_jp_satellitedroppers" texture="assets\fx\gui\textures\order\order_explore.tga" height="32" width="32"></icon>
 </icons>

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<aiscript name="JP_SatelliteDropper" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd">
+<aiscript name="JP_SatelliteDropperS" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd">
 
-  <order id="JP_SatelliteDropper" name="{8888888, 1497}SatelliteDropper{8888888, 1499}" category="navigation" infinite="true">
+  <order id="JP_SatelliteDropperS" name="{8888888, 1497}SatelliteDropper - {8888888, 1499}{8888888, 1498}{20001, 201}{8888888, 1499}" category="navigation" infinite="true">
     <params>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="MK2" text="{8888888, 1400}" comment="Advanced satellites?" type="bool" default="if global.$Mk2InsteadSD? then global.$Mk2InsteadSD else false"/>
@@ -14,10 +14,9 @@
         <input_param name="startvalue" value="1"/>
       </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="OWN_SECTORS" text="{8888888, 1410}" comment="Own Sectors?" type="bool" default="if global.$OwnSectorsSD? then global.$OwnSectorsSD else true"/>
-      <param name="ENEMY_SECTORS" text="{8888888, 1411}" comment="Enemy Sectors?" type="bool" default="if global.$EnemySectorsSD? then global.$EnemySectorsSD else false"/>
-      <param name="NEUTRAL_SECTORS" text="{8888888, 1412}" comment="Neutral Sectors?" type="bool" default="if global.$NeutralSectorsSD? then global.$NeutralSectorsSD else true"/>
-      <param name="FRIENDLY_SECTORS" text="{8888888, 1413}" comment="Friendly Sectors?" type="bool" default="if global.$FriendlySectorsSD? then global.$FriendlySectorsSD else true"/>
+      <param name="SECTOR" text="{20001, 201}" comment="Sector" type="object" default="if global.$SectorSD? then global.$SectorSD else this.sector">
+        <input_param name="class" value="[class.sector]"/>
+      </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="GATES" text="{8888888, 1420}" comment="Gates?" type="bool" default="if global.$GatesSD? then global.$GatesSD else true"/>
       <param name="ACTIVE_GATES" text="- {8888888, 1421}" comment="Active Gates?" type="bool" default="if global.$ActiveGates? then global.$ActiveGates else true"/>
@@ -98,7 +97,7 @@
   <init>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <set_value name="$DebugDirectory" exact="'JP_SatelliteDropper.logs'"/>
-    <set_value name="$DebugFileName" exact="this.ship.idcode + '.JP_SatelliteDropper.xml.log'"/>
+    <set_value name="$DebugFileName" exact="this.ship.idcode + '.JP_SatelliteDropperS.xml.log'"/>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <set_value name="$Ship" exact="this.ship"/>
     <set_value name="$ExpTotalMultiplier" exact="0.84"/>
@@ -108,7 +107,7 @@
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <set_value name="this.$OldName" exact="this.ship.name"/>
     <do_if value="$ADD_ORDER_TAG">
-      <set_object_name object="this.ship" name="this.ship.name + '\033#FFA95908# #SD-G\033X'"/>
+      <set_object_name object="this.ship" name="this.ship.name + '\033#FFA95908# #SD-S\033X'"/>
     </do_if>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <do_if value="$SAVE_SETTINGS">
@@ -121,17 +120,8 @@
       <do_if value="not global.$RestockAmountSD? or @global.$RestockAmountSD != $RESTOCK_AMOUNT">
         <set_value name="global.$RestockAmountSD" exact="$RESTOCK_AMOUNT"/>
       </do_if>
-      <do_if value="not global.$EnemySectorsSD? or @global.$EnemySectorsSD != $ENEMY_SECTORS">
-        <set_value name="global.$EnemySectorsSD" exact="$ENEMY_SECTORS"/>
-      </do_if>
-      <do_if value="not global.$NeutralSectorsSD? or @global.$NeutralSectorsSD != $NEUTRAL_SECTORS">
-        <set_value name="global.$NeutralSectorsSD" exact="$NEUTRAL_SECTORS"/>
-      </do_if>
-      <do_if value="not global.$FriendlySectorsSD? or @global.$FriendlySectorsSD != $FRIENDLY_SECTORS">
-        <set_value name="global.$FriendlySectorsSD" exact="$FRIENDLY_SECTORS"/>
-      </do_if>
-      <do_if value="not global.$OwnSectorsSD? or @global.$OwnSectorsSD != $OWN_SECTORS">
-        <set_value name="global.$OwnSectorsSD" exact="$OWN_SECTORS"/>
+      <do_if value="not global.$SectorSD? or @global.$SectorSD != $SECTOR">
+        <set_value name="global.$SectorSD" exact="$SECTOR"/>
       </do_if>
       <do_if value="not global.$GatesSD? or @global.$GatesSD != $GATES">
         <set_value name="global.$GatesSD" exact="$GATES"/>
@@ -251,10 +241,7 @@
       <remove_value name="global.$InactiveGatesSD"/>
       <remove_value name="global.$ActiveGates"/>
       <remove_value name="global.$GatesSD"/>
-      <remove_value name="global.$FriendlySectorsSD"/>
-      <remove_value name="global.$NeutralSectorsSD"/>
-      <remove_value name="global.$EnemySectorsSD"/>
-      <remove_value name="global.$OwnSectorsSD"/>
+      <remove_value name="global.$SectorSD"/>
       <remove_value name="global.$RestockAmountSD"/>
       <remove_value name="global.$RestockSatellitesSD"/>
       <remove_value name="global.$Mk2InsteadSD"/>
@@ -273,7 +260,7 @@
 
       <do_if value="$DEBUG gt 0">
         <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_SatelliteDropper.xml ~ Started ~~' + '\n'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_SatelliteDropperS.xml ~ Started ~~' + '\n'"/>
       </do_if>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -313,10 +300,6 @@
 
       <run_script name="'JP_GetNearestObjectToMark'">
         <param name="SATELLITE_MACRO" value="$Satellite.objectmacro"/>
-        <param name="OWN_SECTORS" value="$OWN_SECTORS"/>
-        <param name="ENEMY_SECTORS" value="$ENEMY_SECTORS"/>
-        <param name="NEUTRAL_SECTORS" value="$NEUTRAL_SECTORS"/>
-        <param name="FRIENDLY_SECTORS" value="$FRIENDLY_SECTORS"/>
         <param name="GATES" value="$GATES"/>
         <param name="ACTIVE_GATES" value="$ACTIVE_GATES"/>
         <param name="INACTIVE_GATES" value="$INACTIVE_GATES"/>
@@ -335,7 +318,7 @@
         <param name="OWN_STATIONS" value="$OWN_STATIONS"/>
         <param name="ENEMY_STATIONS" value="$ENEMY_STATIONS"/>
         <param name="FRIENDLY_STATIONS" value="$FRIENDLY_STATIONS"/>
-        <!--<param name="SECTOR" value="$SECTOR"/>-->
+        <param name="SECTOR" value="$SECTOR"/>
         <param name="DEBUG" value="$DEBUG"/>
         <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
         <save_retval name="NEAREST_OBJECT_TO_MARK" variable="$_NearestObjectToMark"/>
@@ -383,7 +366,7 @@
         <param name="IDLE_TIME" value="$IdleTime"/>
         <param name="DEBUG" value="$DEBUG"/>
       </run_script>
-      <set_object_name object="$Ship" name="if $ADD_ORDER_TAG then this.$OldName + '\033#FFA95908# #SD-G\033X' else this.$OldName"/>
+      <set_object_name object="$Ship" name="if $ADD_ORDER_TAG then this.$OldName + '\033#FFA95908# #SD-S\033X' else this.$OldName"/>
       <do_if value="$ResumeLabel == 'RESUME_LBL'">
         <resume label="RESUME_LBL"/>
       </do_if>
@@ -393,13 +376,13 @@
 
       <label name="FINISH_LBL"/>
 
-      <do_if value="$ADD_ORDER_TAG">
+      <do_if value="$ADD_ORDER_TAG and @this.$OldName">
         <set_object_name object="this.ship" name="this.$OldName"/>
       </do_if>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-      <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_SatelliteDropper.xml ~ Finished ~~'"/>
+      <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_SatelliteDropperS.xml ~ Finished ~~'"/>
       <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
 
       <label name="CLEANUP_LBL"/>

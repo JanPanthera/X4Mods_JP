@@ -1,3 +1,1 @@
-~ Updated: huge refactoring
-~ Updated: translation files
-~ Fixed: another try to fix - ship is stuck and/or flying back and forth
+~ Added: Sector based version
