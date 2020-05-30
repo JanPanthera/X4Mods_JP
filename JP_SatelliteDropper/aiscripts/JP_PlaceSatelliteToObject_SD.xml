@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<aiscript name="JP_PlaceSatelliteToObject_SD" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd">
+
+  <order id="JP_PlaceSatelliteToObject_SD" name="PlaceSatelliteToObject_SD JP" category="internal" infinite="false">
+    <params>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="MK2" text="Mk2" type="bool" default="false"/>
+      <param name="OBJECT" text="Object" type="object" default="null"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <!-- DEBUG -->
+      <param name="DEBUG" text="DebugText" type="number" default="0" advanced="true">
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="100"/>
+        <input_param name="step" value="100"/>
+      </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    </params>
+    <requires>
+      <match shiptype="shiptype.lasertower" negate="true"/>
+    </requires>
+  </order>
+
+  <interrupts>
+  </interrupts>
+
+  <init>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <set_value name="$DebugDirectory" exact="'JP_SatelliteDropper.logs'"/>
+    <set_value name="$DebugFileName" exact="this.ship.idcode + '.JP_PlaceSatelliteToObject_SD.xml.log'"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <set_value name="$Ship" exact="this.ship"/>
+    <set_value name="$SatelliteMacro" exact="if $MK2 then ware.satellite_mk2.objectmacro else ware.satellite_mk1.objectmacro"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  </init>
+
+  <attention min="unknown">
+    <actions>
+
+      <wait exact="1ms"/>
+      <label name="INIT_LBL"/>
+
+      <do_if value="$DEBUG gt 0">
+        <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_PlaceSatelliteToObject_SD.xml ~ Started ~~' + '\n'"/>
+      </do_if>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <set_command command="command.move" param="$OBJECT"/>
+      <set_command_action commandaction="commandaction.calculating"/>
+
+      <wait min="1000ms" max="2000ms" profile="bell"/>
+
+      <label name="MOVE_LBL"/>
+      <do_if value="$Ship.distanceto.{$OBJECT} ge $SatelliteMacro.maxradarrange * 0.8">
+        <get_safe_pos result="$_SafePosition" zone="$OBJECT.zone" value="$OBJECT.position" object="$OBJECT.zone" radius="($Ship.size * 2)" ignored="$Ship" />
+        <move_to object="$Ship" destination="$OBJECT.zone" travel="true" uselocalhighways="if $Ship.canenterhighway then true else false">
+          <position value="$_SafePosition"/>
+          <interrupt_after_time time="2s"/>
+        </move_to>
+        <remove_value name="$_SafePosition"/>
+        <resume label="MOVE_LBL"/>
+      </do_if>
+
+      <do_while value="$Ship.speed gt 2">
+        <stop_moving object="$Ship"/>
+        <wait exact="1s"/>
+      </do_while>
+
+      <wait exact="1s"/>
+      <launch_satellite object="$Ship" macro="$SatelliteMacro" name="$_Satellite"/>
+
+      <do_if value="$OBJECT.class == class.gate">
+        <do_if value="@$OBJECT.exit.sector.name == null">
+          <set_object_name object="$_Satellite" name="'\033#FF00CC66#' + $OBJECT.name + '\033X \033#FF00CCCC#~ ' + $OBJECT.sector.name + ' --> ' + '{20001, 704}' + '\033X'"/>
+        </do_if>
+        <do_elseif value="$OBJECT.exit.sector.isknown">
+          <set_object_name object="$_Satellite" name="'\033#FF00CC66#' + $OBJECT.name + '\033X \033#FF00CCCC#~ ' + $OBJECT.sector.name + ' --> ' + $OBJECT.exit.sector.name + '\033X'"/>
+        </do_elseif>
+        <do_else>
+          <set_object_name object="$_Satellite" name="'\033#FF00CC66#' + $OBJECT.name + '\033X \033#FF00CCCC#~ ' + $OBJECT.sector.name + ' --> ' + '{20006, 301}' + '\033X'"/>
+        </do_else>
+      </do_if>
+      <do_if value="$OBJECT.class == class.station">
+        <set_object_name object="$_Satellite" name="'\033#FF00CC66#' + $OBJECT.name + '\033X \033#FF00CCCC#~ ' + $OBJECT.sector.name + '\033X'"/>
+      </do_if>
+      <remove_value name="$_Satellite"/>
+
+      <label name="FINISH_LBL"/>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <do_if value="$DEBUG gt 0">
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_PlaceSatelliteToObject_SD.xml ~ Finished ~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+      </do_if>
+
+      <label name="CLEANUP_LBL"/>
+      <remove_value name="$SatelliteMacro"/>
+      <remove_value name="$Ship"/>
+      <remove_value name="$DebugFileName"/>
+      <remove_value name="$DebugDirectory"/>
+
+      <label name="END_LBL"/>
+      <wait exact="1ms"/>
+
+    </actions>
+  </attention>
+
+  <on_abort>
+  </on_abort>
+
+</aiscript>

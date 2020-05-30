@@ -6,9 +6,10 @@
     <t id="1400">Satelliti avanzati?</t>
     <t id="1401">Ripopolare i satelliti?</t>
     <t id="1402">Quantità di rifornimento</t>
-    <t id="1410">Settori nemici?</t>
-    <t id="1411">Settori neutrali?</t>
-    <t id="1412">Settori amichevoli?</t>
+    <t id="1410">I propri settori?</t>
+    <t id="1411">Settori nemici?</t>
+    <t id="1412">Settori neutrali?</t>
+    <t id="1413">Settori amichevoli?</t>
     <t id="1420">Porta?</t>
     <t id="1421">Cancelli attivi?</t>
     <t id="1422">Cancelli inattivi?</t>
@@ -16,7 +17,6 @@
     <t id="1424">Acceleratori attivi?</t>
     <t id="1425">Acceleratori inattivi?</t>
     <t id="1430">Stazioni?</t>
-    <t id="1431">Stazioni nemiche?</t>
     <t id="1432">Molo?</t>
     <t id="1433">Cantieri navali?</t>
     <t id="1434">Dock per attrezzature?</t>
@@ -25,6 +25,9 @@
     <t id="1437">Basi pirata?</t>
     <t id="1438">Quartier generale della fazione?</t>
     <t id="1439">Stazioni non speciali?</t>
+    <t id="1450">Stazioni personali?</t>
+    <t id="1451">Stazioni nemiche?</t>
+    <t id="1452">Stazioni amichevoli?</t>
     <t id="1480">Tempo di inattività</t>
     <t id="1481">Inattivo: seguire?</t>
     <t id="1482">Chi seguire?</t>

@@ -32,8 +32,9 @@
     <Xml Include="libraries\experiences.xml" />
     <Xml Include="t\0001.xml" />
     <Xml Include="aiscripts\JP_GetNearestObjectToMark.xml" />
-    <Xml Include="aiscripts\JP_GetNearestSectorWithObjectsToMark.xml" />
     <Xml Include="aiscripts\JP_IdleReturnHome_SD.xml" />
+    <Xml Include="aiscripts\JP_PlaceSatelliteToObject_SD.xml" />
+    <Xml Include="aiscripts\JP_ResupplySatellites_SD.xml" />
   </ItemGroup>
   <ItemGroup>
     <Xsd Include="md\md.xsd">

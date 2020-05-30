@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<content id="JP_SatelliteDropper" name="JP_SatelliteDropper" description="Drops near every Gate or Station a satellite." author="JanPanthera" version="113" date="2020-05-24" save="0" enabled="1">
+<content id="JP_SatelliteDropper" name="JP_SatelliteDropper" description="Drops near every Gate or Station a satellite." author="JanPanthera" version="115" date="2020-05-30" save="0" enabled="1">
   <text language="7"  name="JP_SatelliteDropper" description="Drops near every Gate or Station a satellite." author="JanPanthera"/>
   <text language="33" name="JP_SatelliteDropper" description="Place un satellite près de toutes stations ou portes spatiales." author="JanPanthera"/>
   <text language="34" name="JP_SatelliteDropper" description="Drops near every Gate or Station a satellite." author="JanPanthera"/>

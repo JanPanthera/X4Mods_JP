@@ -1,5 +1,3 @@
-~ Added: IdleReturnHome functions like Follow or Dock at..
-~ Added: saving and deleting of the most settings
-~ Added: order name is now colored
-~ Updated: language files restructured
-~ Updated: added some translations.. (google translate)
+~ Updated: huge refactoring
+~ Updated: translation files
+~ Fixed: another try to fix - ship is stuck and/or flying back and forth

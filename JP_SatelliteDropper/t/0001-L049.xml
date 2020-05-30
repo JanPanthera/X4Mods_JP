@@ -6,9 +6,10 @@
     <t id="1400">Erweiterte Satelliten?</t>
     <t id="1401">Satelliten auffüllen?</t>
     <t id="1402">Nachfüllmenge?</t>
-    <t id="1410">Feindliche Sektoren?</t>
-    <t id="1411">Neutrale Sektoren?</t>
-    <t id="1412">Befreundete Sektoren?</t>
+    <t id="1410">Eigene Sektoren?</t>
+    <t id="1411">Feindliche Sektoren?</t>
+    <t id="1412">Neutrale Sektoren?</t>
+    <t id="1413">Befreundete Sektoren?</t>
     <t id="1420">Sprungtore?</t>
     <t id="1421">Aktive Sprungtore?</t>
     <t id="1422">Inaktive Sprungtore?</t>
@@ -16,7 +17,6 @@
     <t id="1424">Aktive Beschleuniger?</t>
     <t id="1425">Inaktive Beschleuniger?</t>
     <t id="1430">Stationen?</t>
-    <t id="1431">Feindliche Stationen?</t>
     <t id="1432">Raumdocks?</t>
     <t id="1433">Schiffswerften?</t>
     <t id="1434">Ausrüstungsdocks?</t>
@@ -25,6 +25,9 @@
     <t id="1437">Piraten Basen?</t>
     <t id="1438">Fraktions Hauptquartiere?</t>
     <t id="1439">Nicht spezialisierte Stationen?</t>
+    <t id="1450">Eigene Stationen?</t>
+    <t id="1451">Feindliche Stationen?</t>
+    <t id="1452">Befreundete Stationen?</t>
     <t id="1480">Leerlauf Zeit</t>
     <t id="1481">Leerlauf: Folgen?</t>
     <t id="1482">Wem folgen?</t>
