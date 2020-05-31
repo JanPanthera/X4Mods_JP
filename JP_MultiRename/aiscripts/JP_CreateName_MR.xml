@@ -2,7 +2,7 @@
 
 <!--
 <return>
-  <retval name="CREATED_NAME" value="$CreatedName"/>
+  <retval name="CREATED_NAME" value="$_CreatedName"/>
 </return>
 -->
 
@@ -13,11 +13,6 @@
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="SHIP" text="Ship" type="object" default="null"/>
       <param name="NAME_TILES_ARRANGEMENT" text="NameTilesArrangement" type="internal" default="[]"/>
-      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="REMOVE_SENTINEL_TAG" text="Remove Sentinel Tag?" comment="Remove Sentinel Tag?" type="bool" default="true"/>
-      <param name="REMOVE_VANGUARD_TAG" text="Remove Vanguard Tag?" comment="Remove Vanguard Tag?" type="bool" default="true"/>
-      <param name="SHORTEN_SENTINEL" text="" comment="Short Sentinel Tag" type="bool" default="true"/>
-      <param name="SHORTEN_VANGUARD" text="" comment="Short Vanguard Tag" type="bool" default="true"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="NUMBER_TO_ADD" text="NumberToAdd" type="number" default="''"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -49,14 +44,10 @@
 
   <init>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-    <set_value name="$DebugDirectory" exact="'JP_MultiRenameTest.logs'"/>
+    <set_value name="$DebugDirectory" exact="'JP_MultiRename.logs'"/>
     <set_value name="$DebugFileName" exact="this.ship.idcode + '.JP_CreateName_MR.xml.log'"/>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <set_value name="$Ship" exact="$SHIP"/>
-    <set_value name="$CreatedName" exact="''"/>
-    <set_value name="$ClassTag" exact="''"/>
-    <set_value name="$TypeName" exact="''"/>
-    <set_value name="$ModelName" exact="''"/>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
   </init>
 
@@ -73,87 +64,89 @@
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
+      <set_value name="$_CreatedName" exact="''"/>
+
       <do_for_each name="$_NameTile" in="$NAME_TILES_ARRANGEMENT" counter="$_it">
 
-        <!-- ['TAG', $TAG_POSITION, $_ColorString, $TAG_OBJECT.knownname] -->
+        <!-- [(1)'TAG', (2)$TAG_POSITION, (3)$_ColorString, (4)$_Tag] -->
         <do_if value="$_NameTile.{1} == 'TAG'">
           <do_if value="$_NameTile.{3} != ''">
-            <set_value name="$CreatedName" exact="$_NameTile.{3} + $_NameTile.{4} + '\033X'" operation="add"/>
+            <set_value name="$_CreatedName" exact="$_NameTile.{3} + if @$_NameTile.{4} then $_NameTile.{4} else '' + '\033X'" operation="add"/>
           </do_if>
           <do_else>
-            <set_value name="$CreatedName" exact="$_NameTile.{4}" operation="add"/>
+            <set_value name="$_CreatedName" exact="if @$_NameTile.{4} then $_NameTile.{4} else ''" operation="add"/>
           </do_else>
         </do_if>
 
-        <!-- ['CLASS_TAG', $CLASS_TAG_POSITION, $_ColorString] -->
+        <!-- [(1)'CLASS_TAG', (2)$CLASS_TAG_POSITION, (3)$_ColorString, (4)$_Surroundings] -->
         <do_if value="$_NameTile.{1} == 'CLASS_TAG'">
           <do_if value="$Ship.class == class.ship_s">
-            <set_value name="$_ClassTag" exact="'~S~'"/>
+            <set_value name="$_ClassTag" exact="'S'"/>
           </do_if>
           <do_if value="$Ship.class == class.ship_m">
-            <set_value name="$_ClassTag" exact="'~M~'"/>
+            <set_value name="$_ClassTag" exact="'M'"/>
           </do_if>
           <do_if value="$Ship.class == class.ship_l">
-            <set_value name="$_ClassTag" exact="'~L~'"/>
+            <set_value name="$_ClassTag" exact="'L'"/>
           </do_if>
           <do_if value="$Ship.class == class.ship_xl">
-            <set_value name="$_ClassTag" exact="'~XL~'"/>
+            <set_value name="$_ClassTag" exact="'XL'"/>
           </do_if>
           <do_if value="$_NameTile.{3} != ''">
-            <set_value name="$CreatedName" exact="$_NameTile.{3} + $_ClassTag + '\033X'" operation="add"/>
+            <set_value name="$_CreatedName" exact="$_NameTile.{3} + $_NameTile.{4}.[if @$_ClassTag then $_ClassTag else ''] + '\033X'" operation="add"/>
           </do_if>
           <do_else>
-            <set_value name="$CreatedName" exact="$_ClassTag" operation="add"/>
+            <set_value name="$_CreatedName" exact="$_NameTile.{4}.[if @$_ClassTag then $_ClassTag else '']" operation="add"/>
           </do_else>
           <remove_value name="$_ClassTag"/>
         </do_if>
 
-        <!-- ['TYPE_NAME', $TYPE_NAME_POSITION, $_ColorString] -->
+        <!-- [(1)'TYPE_NAME', (2)$TYPE_NAME_POSITION, (3)$_ColorString, (4)$_Surroundings] -->
         <do_if value="$_NameTile.{1} == 'TYPE_NAME'">
           <do_if value="$_NameTile.{3} != ''">
-            <set_value name="$CreatedName" exact="$_NameTile.{3} + $SHIP.typename + '\033X'" operation="add"/>
+            <set_value name="$_CreatedName" exact="$_NameTile.{3} + $_NameTile.{4}.[if @$Ship.typename then $Ship.typename else ''] + '\033X'" operation="add"/>
           </do_if>
           <do_else>
-            <set_value name="$CreatedName" exact="$SHIP.typename" operation="add"/>
+            <set_value name="$_CreatedName" exact="$_NameTile.{4}.[if @$Ship.typename then $Ship.typename else '']" operation="add"/>
           </do_else>
         </do_if>
 
-        <!-- ['MODEL_NAME', $MODEL_NAME_POSITION, $_ColorString] -->
+        <!-- [(1)'MODEL_NAME', (2)$MODEL_NAME_POSITION, (3)$_ColorString, (4)$_Surroundings, (5)$REMOVE_SENTINEL_TAG, (6)$REMOVE_VANGUARD_TAG, (7)$SHORTEN_SENTINEL, (8)$SHORTEN_VANGUARD] -->
         <do_if value="$_NameTile.{1} == 'MODEL_NAME'">
-          <set_value name="$_ModelName" exact="$SHIP.macro.name"/>
-          <do_if value="$REMOVE_SENTINEL_TAG">
+          <set_value name="$_ModelName" exact="$Ship.macro.name"/>
+          <do_if value="$_NameTile.{5}">
             <substitute_text source="$_ModelName" text="$_ModelName">
               <replace string="' ' + {20111,1201}" with="''"/>
             </substitute_text>
           </do_if>
           <!-- Remove the Vanguard Tag from the name ? -->
-          <do_if value="$REMOVE_VANGUARD_TAG">
+          <do_if value="$_NameTile.{6}">
             <substitute_text source="$_ModelName" text="$_ModelName">
               <replace string="' ' + {20111,1101}" with="''"/>
             </substitute_text>
           </do_if>
           <!-- Replace Sentinel with S* ? -->
-          <do_if value="not $REMOVE_SENTINEL_TAG and $SHORTEN_SENTINEL">
+          <do_if value="not $_NameTile.{5} and $_NameTile.{7}">
             <substitute_text source="$_ModelName" text="$_ModelName">
               <replace string="{20111,1201}" with="{8888888, 1121}"/>
             </substitute_text>
           </do_if>
           <!-- Replace Vanguard with V* ? -->
-          <do_if value="not $REMOVE_VANGUARD_TAG and $SHORTEN_VANGUARD">
+          <do_if value="not $_NameTile.{6} and $_NameTile.{8}">
             <substitute_text source="$_ModelName" text="$_ModelName">
               <replace string="{20111,1101}" with="{8888888, 1120}"/>
             </substitute_text>
           </do_if>
           <do_if value="$_NameTile.{3} != ''">
-            <set_value name="$CreatedName" exact="$_NameTile.{3} + $_ModelName + '\033X'" operation="add"/>
+            <set_value name="$_CreatedName" exact="$_NameTile.{3} + $_NameTile.{4}.[if @$_ModelName then $_ModelName else ''] + '\033X'" operation="add"/>
           </do_if>
           <do_else>
-            <set_value name="$CreatedName" exact="$_ModelName" operation="add"/>
+            <set_value name="$_CreatedName" exact="$_NameTile.{4}.[if @$_ModelName then $_ModelName else '']" operation="add"/>
           </do_else>
           <remove_value name="$_ModelName"/>
         </do_if>
 
-        <!-- ['NUMBER', $NUMBER_POSITION, $_ColorString] -->
+        <!-- [(1)'NUMBER', (2)$NUMBER_POSITION, (3)$_ColorString, (4)$_Surroundings] -->
         <do_if value="$_NameTile.{1} == 'NUMBER'">
           <do_if value="$NUMBER_TO_ADD != ''">
             <do_if value="$NUMBER_TO_ADD lt 10">
@@ -166,24 +159,78 @@
               <set_value name="$_Number" exact="'%1'.[$NUMBER_TO_ADD]"/>
             </do_else>
             <do_if value="$_NameTile.{3} != ''">
-              <set_value name="$CreatedName" exact="$_NameTile.{3} + $_NameTile.{4}.[$_Number] + '\033X'" operation="add"/>
+              <set_value name="$_CreatedName" exact="$_NameTile.{3} + $_NameTile.{4}.[if @$_Number then $_Number else ''] + '\033X'" operation="add"/>
             </do_if>
             <do_else>
-              <set_value name="$CreatedName" exact="$_NameTile.{4}.[$_Number]" operation="add"/>
+              <set_value name="$_CreatedName" exact="$_NameTile.{4}.[if @$_Number then $_Number else '']" operation="add"/>
             </do_else>
             <remove_value name="$_Number"/>
           </do_if>
         </do_if>
 
+        <!-- [(1)'FACTION_NAME', (2)$FACTION_NAME_POSITION, (3)$_ColorString, (4)$_Surroundings] -->
+        <do_if value="$_NameTile.{1} == 'FACTION_NAME'">
+          <do_if value="$_NameTile.{3} != ''">
+            <set_value name="$_CreatedName" exact="$_NameTile.{3} + $_NameTile.{4}.[if @$Ship.owner.knownname then $Ship.owner.knownname else ''] + '\033X'" operation="add"/>
+          </do_if>
+          <do_else>
+            <set_value name="$_CreatedName" exact="$_NameTile.{4}.[if @$Ship.owner.knownname then $Ship.owner.knownname else '']" operation="add"/>
+          </do_else>
+        </do_if>
+
+        <!-- [(1)'ORDER_NAME', (2)$ORDER_NAME_POSITION, (3)$_ColorString, (4)$_Surroundings] -->
+        <do_if value="$_NameTile.{1} == 'ORDER_NAME'">
+          <set_value name="$_OrderName" exact="if @$Ship.fleet.iscommander then '' else @$Ship.order.name"/>
+          <do_if value="$_NameTile.{3} != ''">
+            <set_value name="$_CreatedName" exact="$_NameTile.{3} + $_NameTile.{4}.[if @$_OrderName then $_OrderName else ''] + '\033X'" operation="add"/>
+          </do_if>
+          <do_else>
+            <set_value name="$_CreatedName" exact="$_NameTile.{4}.[if @$_OrderName then $_OrderName else '']" operation="add"/>
+          </do_else>
+          <remove_value name="$_OrderName"/>
+        </do_if>
+
+        <!-- [(1)'ASSIGNMENT_NAME', (2)$ASSIGNMENT_NAME_POSITION, (3)$_ColorString, (4)$_Surroundings] -->
+        <do_if value="$_NameTile.{1} == 'ASSIGNMENT_NAME'">
+          <do_if value="$_NameTile.{3} != ''">
+            <set_value name="$_CreatedName" exact="$_NameTile.{3} + $_NameTile.{4}.[if @$Ship.assignment.name then $Ship.assignment.name else ''] + '\033X'" operation="add"/>
+          </do_if>
+          <do_else>
+            <set_value name="$_CreatedName" exact="$_NameTile.{4}.[if @$Ship.assignment.name then $Ship.assignment.name else '']" operation="add"/>
+          </do_else>
+        </do_if>
+
+        <!-- [(1)'FLEET_NAME', (2)$FLEET_NAME_POSITION, (3)$_ColorString, (4)$_Surroundings] -->
+        <do_if value="$_NameTile.{1} == 'FLEET_NAME'">
+          <set_value name="$_FleetName" exact="if @$Ship.fleet.iscommander then @$Ship.fleet.name else @$Ship.commander.fleet.name"/>
+          <do_if value="$_NameTile.{3} != ''">
+            <set_value name="$_CreatedName" exact="$_NameTile.{3} + $_NameTile.{4}.[if @$_FleetName then $_FleetName else ''] + '\033X'" operation="add"/>
+          </do_if>
+          <do_else>
+            <set_value name="$_CreatedName" exact="$_NameTile.{4}.[if @$_FleetName then $_FleetName else '']" operation="add"/>
+          </do_else>
+          <remove_value name="$_FleetName"/>
+        </do_if>
+
+        <!-- [(1)'DPS_TAG', (2)$DPS_TAG_POSITION, (3)$_ColorString, (4)$_Surroundings] -->
+        <do_if value="$_NameTile.{1} == 'DPS_TAG'">
+          <do_if value="$_NameTile.{3} != ''">
+            <set_value name="$_CreatedName" exact="$_NameTile.{3} + $_NameTile.{4}.[if @$Ship.dps.all then $Ship.dps.all else ''] + '\033X'" operation="add"/>
+          </do_if>
+          <do_else>
+            <set_value name="$_CreatedName" exact="$_NameTile.{4}.[if @$Ship.dps.all then $Ship.dps.all else '']" operation="add"/>
+          </do_else>
+        </do_if>
+
         <do_if value="$_it lt $NAME_TILES_ARRANGEMENT.count">
-          <set_value name="$CreatedName" exact="' '" operation="add"/>
+          <set_value name="$_CreatedName" exact="' '" operation="add"/>
         </do_if>
 
       </do_for_each>
 
       <do_if value="$DEBUG gt 0">
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'$CreatedName: ' + $CreatedName"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'$_CreatedName: ' + $_CreatedName"/>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
       </do_if>
 
@@ -205,7 +252,7 @@
       <wait exact="1ms"/>
 
       <return>
-        <retval name="CREATED_NAME" value="$CreatedName"/>
+        <retval name="CREATED_NAME" value="$_CreatedName"/>
       </return>
 
     </actions>
