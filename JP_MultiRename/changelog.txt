@@ -1,6 +1,7 @@
-~ Updated: Saving of settings recoded
 ~ Added: Faction name -- choosable
 ~ Added: Order name -- choosable
 ~ Added: Assignment name -- choosable
 ~ Added: Fleet name -- choosable
 ~ Added: DPS Tag name -- choosable
+~ Updated: Saving of settings recoded
+~ Updated: Translation files

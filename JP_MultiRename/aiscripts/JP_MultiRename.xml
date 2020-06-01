@@ -5,13 +5,13 @@
   <order id="JP_MultiRename" name="{8888888, 1197}MultiRename{8888888, 1199}" category="navigation" infinite="true">
     <params>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="ADD_TAG" text="Add Tag?" comment="Add Tag?" type="bool" default="if global.$SettingsMR.{2}.{1}? and @global.$SettingsMR.{2}.{1} != -1 then global.$SettingsMR.{2}.{1} else true"/>
-      <param name="TAG_POSITION" text="- Tag position" comment="Tag position" type="number" default="if global.$SettingsMR.{2}.{2}? and @global.$SettingsMR.{2}.{2} != -1 then global.$SettingsMR.{2}.{2} else 1">
+      <param name="ADD_TAG" text="{8888888, 1100}" comment="Add Tag?" type="bool" default="if global.$SettingsMR.{2}.{1}? and @global.$SettingsMR.{2}.{1} != -1 then global.$SettingsMR.{2}.{1} else true"/>
+      <param name="TAG_POSITION" text="- {8888888, 1101}" comment="Tag position" type="number" default="if global.$SettingsMR.{2}.{2}? and @global.$SettingsMR.{2}.{2} != -1 then global.$SettingsMR.{2}.{2} else 1">
         <input_param name="min" value="0"/>
         <input_param name="max" value="99"/>
         <input_param name="step" value="1"/>
       </param>
-      <param name="COLORIZE_TAG" text="- Colorize Tag?" comment="Colorize Tag?" type="bool" default="if global.$SettingsMR.{2}.{3}? and @global.$SettingsMR.{2}.{3} != -1 then global.$SettingsMR.{2}.{3} else true"/>
+      <param name="COLORIZE_TAG" text="- {8888888, 1102}" comment="Colorize Tag?" type="bool" default="if global.$SettingsMR.{2}.{3}? and @global.$SettingsMR.{2}.{3} != -1 then global.$SettingsMR.{2}.{3} else true"/>
       <param name="TAG_ALPHA" text=" ~ {8888888, 1170}" comment="Transparency" type="number" default="if global.$SettingsMR.{2}.{4}? and @global.$SettingsMR.{2}.{4} != -1 then global.$SettingsMR.{2}.{4} else 255">
         <input_param name="step" value="1"/>
         <input_param name="min" value="0"/>
@@ -32,15 +32,15 @@
         <input_param name="min" value="0"/>
         <input_param name="max" value="255"/>
       </param>
-      <param name="TAG_OBJECT" text="- {8888888, 1111}" comment="Object with Tag" type="object" default="if global.$SettingsMR.{2}.{8}? and @global.$SettingsMR.{2}.{8} != -1 then global.$SettingsMR.{2}.{8} else null"/>
+      <param name="TAG_OBJECT" text="- {8888888, 1103}" comment="Object with Tag" type="object" default="if global.$SettingsMR.{2}.{8}? and @global.$SettingsMR.{2}.{8} != -1 then global.$SettingsMR.{2}.{8} else null"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="ADD_CLASS_TAG" text="Add Class Tag?" comment="Add Class Tag?" type="bool" default="if global.$SettingsMR.{3}.{1}? and @global.$SettingsMR.{3}.{1} != -1 then global.$SettingsMR.{3}.{1} else true"/>
-      <param name="CLASS_TAG_POSITION" text="- Class Tag position" comment="Class Tag position" type="number" default="if global.$SettingsMR.{3}.{2}? and @global.$SettingsMR.{3}.{2} != -1 then global.$SettingsMR.{3}.{2} else 2">
+      <param name="ADD_CLASS_TAG" text="{8888888, 1104}" comment="Add Class Tag?" type="bool" default="if global.$SettingsMR.{3}.{1}? and @global.$SettingsMR.{3}.{1} != -1 then global.$SettingsMR.{3}.{1} else true"/>
+      <param name="CLASS_TAG_POSITION" text="- {8888888, 1105}" comment="Class Tag position" type="number" default="if global.$SettingsMR.{3}.{2}? and @global.$SettingsMR.{3}.{2} != -1 then global.$SettingsMR.{3}.{2} else 2">
         <input_param name="min" value="0"/>
         <input_param name="max" value="99"/>
         <input_param name="step" value="1"/>
       </param>
-      <param name="COLORIZE_CLASS_TAG" text="- Colorize Class Tag?" comment="Colorize Class Tag?" type="bool" default="if global.$SettingsMR.{3}.{3}? and @global.$SettingsMR.{3}.{3} != -1 then global.$SettingsMR.{3}.{3} else true"/>
+      <param name="COLORIZE_CLASS_TAG" text="- {8888888, 1106}" comment="Colorize Class Tag?" type="bool" default="if global.$SettingsMR.{3}.{3}? and @global.$SettingsMR.{3}.{3} != -1 then global.$SettingsMR.{3}.{3} else true"/>
       <param name="CLASS_TAG_ALPHA" text=" ~ {8888888, 1170}" comment="Transparency" type="number" default="if global.$SettingsMR.{3}.{4}? and @global.$SettingsMR.{3}.{4} != -1 then global.$SettingsMR.{3}.{4} else 182">
         <input_param name="step" value="1"/>
         <input_param name="min" value="0"/>
@@ -61,15 +61,15 @@
         <input_param name="min" value="0"/>
         <input_param name="max" value="255"/>
       </param>
-      <param name="CLASS_TAG_SURROUNDINGS" text="- Class Tag surroundings" comment="Class Tag surroundings" type="object" default="if global.$SettingsMR.{3}.{8}? and @global.$SettingsMR.{3}.{8} != -1 then global.$SettingsMR.{3}.{8} else null"/>
+      <param name="CLASS_TAG_SURROUNDINGS" text="- {8888888, 1107}" comment="Class Tag Surroundings" type="object" default="if global.$SettingsMR.{3}.{8}? and @global.$SettingsMR.{3}.{8} != -1 then global.$SettingsMR.{3}.{8} else null"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="ADD_TYPE_NAME" text="Add Type name?" comment="Add Type name?" type="bool"  default="if global.$SettingsMR.{4}.{1}? and @global.$SettingsMR.{4}.{1} != -1 then global.$SettingsMR.{4}.{1} else true"/>
-      <param name="TYPE_NAME_POSITION" text="- Type name position" comment="Type name position" type="number" default="if global.$SettingsMR.{4}.{2}? and @global.$SettingsMR.{4}.{2} != -1 then global.$SettingsMR.{4}.{2} else 3">
+      <param name="ADD_TYPE_NAME" text="{8888888, 1108}" comment="Add Type name?" type="bool"  default="if global.$SettingsMR.{4}.{1}? and @global.$SettingsMR.{4}.{1} != -1 then global.$SettingsMR.{4}.{1} else true"/>
+      <param name="TYPE_NAME_POSITION" text="- {8888888, 1109}" comment="Type name position" type="number" default="if global.$SettingsMR.{4}.{2}? and @global.$SettingsMR.{4}.{2} != -1 then global.$SettingsMR.{4}.{2} else 3">
         <input_param name="min" value="0"/>
         <input_param name="max" value="99"/>
         <input_param name="step" value="1"/>
       </param>
-      <param name="COLORIZE_TYPE_NAME" text="- Colorize type name?" comment="Colorize type name?" type="bool" default="if global.$SettingsMR.{4}.{3}? and @global.$SettingsMR.{4}.{3} != -1 then global.$SettingsMR.{4}.{3} else true"/>
+      <param name="COLORIZE_TYPE_NAME" text="- {8888888, 1110}" comment="Colorize Type name?" type="bool" default="if global.$SettingsMR.{4}.{3}? and @global.$SettingsMR.{4}.{3} != -1 then global.$SettingsMR.{4}.{3} else true"/>
       <param name="TYPE_NAME_ALPHA" text=" ~ {8888888, 1170}" comment="Transparency" type="number" default="if global.$SettingsMR.{4}.{4}? and @global.$SettingsMR.{4}.{4} != -1 then global.$SettingsMR.{4}.{4} else 182">
         <input_param name="step" value="1"/>
         <input_param name="min" value="0"/>
@@ -90,15 +90,15 @@
         <input_param name="min" value="0"/>
         <input_param name="max" value="255"/>
       </param>
-      <param name="TYPE_NAME_SURROUNDINGS" text="- Type name surroundings" comment="Type name surroundings" type="object" default="if global.$SettingsMR.{4}.{8}? and @global.$SettingsMR.{4}.{8} != -1 then global.$SettingsMR.{4}.{8} else null"/>
+      <param name="TYPE_NAME_SURROUNDINGS" text="- {8888888, 1111}" comment="Type name Surroundings" type="object" default="if global.$SettingsMR.{4}.{8}? and @global.$SettingsMR.{4}.{8} != -1 then global.$SettingsMR.{4}.{8} else null"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="ADD_MODEL_NAME" text="Add Model name?" comment="Add Model name?" type="bool" default="if global.$SettingsMR.{5}.{1}? and @global.$SettingsMR.{5}.{1} != -1 then global.$SettingsMR.{5}.{1} else true"/>
-      <param name="MODEL_NAME_POSITION" text="- Model name position" comment="Model name position" type="number" default="if global.$SettingsMR.{5}.{2}? and @global.$SettingsMR.{5}.{2} != -1 then global.$SettingsMR.{5}.{2} else 4">
+      <param name="ADD_MODEL_NAME" text="{8888888, 1112}" comment="Add Model name?" type="bool" default="if global.$SettingsMR.{5}.{1}? and @global.$SettingsMR.{5}.{1} != -1 then global.$SettingsMR.{5}.{1} else true"/>
+      <param name="MODEL_NAME_POSITION" text="- {8888888, 1113}" comment="Model name position" type="number" default="if global.$SettingsMR.{5}.{2}? and @global.$SettingsMR.{5}.{2} != -1 then global.$SettingsMR.{5}.{2} else 4">
         <input_param name="min" value="0"/>
         <input_param name="max" value="99"/>
         <input_param name="step" value="1"/>
       </param>
-      <param name="COLORIZE_MODEL_NAME" text="- Colorize Model name?" comment="Colorize Model name?" type="bool" default="if global.$SettingsMR.{5}.{3}? and @global.$SettingsMR.{5}.{3} != -1 then global.$SettingsMR.{5}.{3} else true"/>
+      <param name="COLORIZE_MODEL_NAME" text="- {8888888, 1114}" comment="Colorize Model name?" type="bool" default="if global.$SettingsMR.{5}.{3}? and @global.$SettingsMR.{5}.{3} != -1 then global.$SettingsMR.{5}.{3} else true"/>
       <param name="MODEL_NAME_ALPHA" text=" ~ {8888888, 1170}" comment="Transparency" type="number" default="if global.$SettingsMR.{5}.{4}? and @global.$SettingsMR.{5}.{4} != -1 then global.$SettingsMR.{5}.{4} else 182">
         <input_param name="step" value="1"/>
         <input_param name="min" value="0"/>
@@ -119,19 +119,19 @@
         <input_param name="min" value="0"/>
         <input_param name="max" value="255"/>
       </param>
-      <param name="MODEL_NAME_SURROUNDINGS" text="- Model name surroundings" comment="Model name surroundings" type="object" default="if global.$SettingsMR.{5}.{8}? and @global.$SettingsMR.{5}.{8} != -1 then global.$SettingsMR.{5}.{8} else null"/>
-      <param name="REMOVE_SENTINEL_TAG" text="- {8888888, 1105}" comment="Remove Sentinel Tag?" type="bool" default="if global.$SettingsMR.{5}.{9}? and @global.$SettingsMR.{5}.{9} != -1 then global.$SettingsMR.{5}.{9} else false"/>
-      <param name="REMOVE_VANGUARD_TAG" text="- {8888888, 1106}" comment="Remove Vanguard Tag?" type="bool" default="if global.$SettingsMR.{5}.{10}? and @global.$SettingsMR.{5}.{10} != -1 then global.$SettingsMR.{5}.{10} else false"/>
-      <param name="SHORTEN_SENTINEL" text="- {8888888, 1107}" comment="Short Sentinel Tag" type="bool" default="if global.$SettingsMR.{5}.{11}? and @global.$SettingsMR.{5}.{11} != -1 then global.$SettingsMR.{5}.{11} else true"/>
-      <param name="SHORTEN_VANGUARD" text="- {8888888, 1108}" comment="Short Vanguard Tag" type="bool" default="if global.$SettingsMR.{5}.{12}? and @global.$SettingsMR.{5}.{12} != -1 then global.$SettingsMR.{5}.{12} else true"/>
+      <param name="MODEL_NAME_SURROUNDINGS" text="- {8888888, 1115}" comment="Model name Surroundings" type="object" default="if global.$SettingsMR.{5}.{8}? and @global.$SettingsMR.{5}.{8} != -1 then global.$SettingsMR.{5}.{8} else null"/>
+      <param name="REMOVE_SENTINEL_TAG" text="- {8888888, 1116}" comment="Remove Sentinel Tag?" type="bool" default="if global.$SettingsMR.{5}.{9}? and @global.$SettingsMR.{5}.{9} != -1 then global.$SettingsMR.{5}.{9} else false"/>
+      <param name="REMOVE_VANGUARD_TAG" text="- {8888888, 1117}" comment="Remove Vanguard Tag?" type="bool" default="if global.$SettingsMR.{5}.{10}? and @global.$SettingsMR.{5}.{10} != -1 then global.$SettingsMR.{5}.{10} else false"/>
+      <param name="SHORTEN_SENTINEL" text="- {8888888, 1118}" comment="Short Sentinel Tag" type="bool" default="if global.$SettingsMR.{5}.{11}? and @global.$SettingsMR.{5}.{11} != -1 then global.$SettingsMR.{5}.{11} else true"/>
+      <param name="SHORTEN_VANGUARD" text="- {8888888, 1119}" comment="Short Vanguard Tag" type="bool" default="if global.$SettingsMR.{5}.{12}? and @global.$SettingsMR.{5}.{12} != -1 then global.$SettingsMR.{5}.{12} else true"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="USE_NUMBERING" text="{8888888, 1112}" comment="Use numbering?" type="bool" default="if global.$SettingsMR.{6}.{1}? and @global.$SettingsMR.{6}.{1} != -1 then global.$SettingsMR.{6}.{1} else true"/>
-      <param name="NUMBER_POSITION" text="- Number position" comment="Number position" type="number" default="if global.$SettingsMR.{6}.{2}? and @global.$SettingsMR.{6}.{2} != -1 then global.$SettingsMR.{6}.{2} else 0">
+      <param name="USE_NUMBERING" text="{8888888, 1120}" comment="Use numbering?" type="bool" default="if global.$SettingsMR.{6}.{1}? and @global.$SettingsMR.{6}.{1} != -1 then global.$SettingsMR.{6}.{1} else true"/>
+      <param name="NUMBER_POSITION" text="- {8888888, 1121}" comment="Number position" type="number" default="if global.$SettingsMR.{6}.{2}? and @global.$SettingsMR.{6}.{2} != -1 then global.$SettingsMR.{6}.{2} else 0">
         <input_param name="min" value="0"/>
         <input_param name="max" value="99"/>
         <input_param name="step" value="1"/>
       </param>
-      <param name="COLORIZE_NUMBERING" text="- Colorize Numbering?" comment="Colorize Numbering?" type="bool" default="if global.$SettingsMR.{6}.{3}? and @global.$SettingsMR.{6}.{3} != -1 then global.$SettingsMR.{6}.{3} else true"/>
+      <param name="COLORIZE_NUMBERING" text="- {8888888, 1122}" comment="Colorize Numbering?" type="bool" default="if global.$SettingsMR.{6}.{3}? and @global.$SettingsMR.{6}.{3} != -1 then global.$SettingsMR.{6}.{3} else true"/>
       <param name="NUMBERING_ALPHA" text=" ~ {8888888, 1170}" comment="Transparency" type="number" default="if global.$SettingsMR.{6}.{4}? and @global.$SettingsMR.{6}.{4} != -1 then global.$SettingsMR.{6}.{4} else 210">
         <input_param name="step" value="1"/>
         <input_param name="min" value="0"/>
@@ -152,16 +152,16 @@
         <input_param name="min" value="0"/>
         <input_param name="max" value="255"/>
       </param>
-      <param name="NUMBER_SURROUNDINGS" text="- Number surroundings" comment="Number surroundings" type="object" default="if global.$SettingsMR.{6}.{8}? and @global.$SettingsMR.{6}.{8} != -1 then global.$SettingsMR.{6}.{8} else null"/>
-      <param name="REVERSED_NUMBERING" text="- {8888888, 1113}" comment="Sort XL to S?" type="bool" default="if global.$SettingsMR.{6}.{9}? and @global.$SettingsMR.{6}.{9} != -1 then global.$SettingsMR.{6}.{9} else false"/>
+      <param name="NUMBER_SURROUNDINGS" text="- {8888888, 1123}" comment="Number Surroundings" type="object" default="if global.$SettingsMR.{6}.{8}? and @global.$SettingsMR.{6}.{8} != -1 then global.$SettingsMR.{6}.{8} else null"/>
+      <param name="REVERSED_NUMBERING" text="- {8888888, 1124}" comment="Sort XL to S?" type="bool" default="if global.$SettingsMR.{6}.{9}? and @global.$SettingsMR.{6}.{9} != -1 then global.$SettingsMR.{6}.{9} else false"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="ADD_FACTION_NAME" text="Add faction name?" comment="Add faction name?" type="bool" default="if global.$SettingsMR.{7}.{1}? and @global.$SettingsMR.{7}.{1} != -1 then global.$SettingsMR.{7}.{1} else true"/>
-      <param name="FACTION_NAME_POSITION" text="- Faction name position" comment="Faction name position" type="number" default="if global.$SettingsMR.{7}.{2}? and @global.$SettingsMR.{7}.{2} != -1 then global.$SettingsMR.{7}.{2} else 6">
+      <param name="ADD_FACTION_NAME" text="{8888888, 1125}" comment="Add Faction name?" type="bool" default="if global.$SettingsMR.{7}.{1}? and @global.$SettingsMR.{7}.{1} != -1 then global.$SettingsMR.{7}.{1} else true"/>
+      <param name="FACTION_NAME_POSITION" text="- {8888888, 1126}" comment="Faction name position" type="number" default="if global.$SettingsMR.{7}.{2}? and @global.$SettingsMR.{7}.{2} != -1 then global.$SettingsMR.{7}.{2} else 6">
         <input_param name="min" value="0"/>
         <input_param name="max" value="99"/>
         <input_param name="step" value="1"/>
       </param>
-      <param name="COLORIZE_FACTION_NAME" text="- Colorize faction name?" comment="Colorize faction name?" type="bool" default="if global.$SettingsMR.{7}.{3}? and @global.$SettingsMR.{7}.{3} != -1 then global.$SettingsMR.{7}.{3} else true"/>
+      <param name="COLORIZE_FACTION_NAME" text="- {8888888, 1128}" comment="Colorize Faction name?" type="bool" default="if global.$SettingsMR.{7}.{3}? and @global.$SettingsMR.{7}.{3} != -1 then global.$SettingsMR.{7}.{3} else true"/>
       <param name="FACTION_NAME_ALPHA" text=" ~ {8888888, 1170}" comment="Transparency" type="number" default="if global.$SettingsMR.{7}.{4}? and @global.$SettingsMR.{7}.{4} != -1 then global.$SettingsMR.{7}.{4} else 162">
         <input_param name="step" value="1"/>
         <input_param name="min" value="0"/>
@@ -182,15 +182,15 @@
         <input_param name="min" value="0"/>
         <input_param name="max" value="255"/>
       </param>
-      <param name="FACTION_NAME_SURROUNDINGS" text="- Faction name surroundings" comment="Faction name surroundings" type="object" default="if global.$SettingsMR.{7}.{8}? and @global.$SettingsMR.{7}.{8} != -1 then global.$SettingsMR.{7}.{8} else null"/>
+      <param name="FACTION_NAME_SURROUNDINGS" text="- {8888888, 1129}" comment="Faction name Surroundings" type="object" default="if global.$SettingsMR.{7}.{8}? and @global.$SettingsMR.{7}.{8} != -1 then global.$SettingsMR.{7}.{8} else null"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="ADD_ORDER_NAME" text="Add order name?" comment="Add order name?" type="bool" default="if global.$SettingsMR.{8}.{1}? and @global.$SettingsMR.{8}.{1} != -1 then global.$SettingsMR.{8}.{1} else false"/>
-      <param name="ORDER_NAME_POSITION" text="- Order name position" comment="Order name position" type="number" default="if global.$SettingsMR.{8}.{2}? and @global.$SettingsMR.{8}.{2} != -1 then global.$SettingsMR.{8}.{2} else 6">
+      <param name="ADD_ORDER_NAME" text="{8888888, 1130}" comment="Add Order name?" type="bool" default="if global.$SettingsMR.{8}.{1}? and @global.$SettingsMR.{8}.{1} != -1 then global.$SettingsMR.{8}.{1} else false"/>
+      <param name="ORDER_NAME_POSITION" text="- {8888888, 1131}" comment="Order name position" type="number" default="if global.$SettingsMR.{8}.{2}? and @global.$SettingsMR.{8}.{2} != -1 then global.$SettingsMR.{8}.{2} else 6">
         <input_param name="min" value="0"/>
         <input_param name="max" value="99"/>
         <input_param name="step" value="1"/>
       </param>
-      <param name="COLORIZE_ORDER_NAME" text="- Colorize order name?" comment="Colorize order name?" type="bool" default="if global.$SettingsMR.{8}.{3}? and @global.$SettingsMR.{8}.{3} != -1 then global.$SettingsMR.{8}.{3} else true"/>
+      <param name="COLORIZE_ORDER_NAME" text="- {8888888, 1132}" comment="Colorize Order name?" type="bool" default="if global.$SettingsMR.{8}.{3}? and @global.$SettingsMR.{8}.{3} != -1 then global.$SettingsMR.{8}.{3} else true"/>
       <param name="ORDER_NAME_ALPHA" text=" ~ {8888888, 1170}" comment="Transparency" type="number" default="if global.$SettingsMR.{8}.{4}? and @global.$SettingsMR.{8}.{4} != -1 then global.$SettingsMR.{8}.{4} else 182">
         <input_param name="step" value="1"/>
         <input_param name="min" value="0"/>
@@ -211,15 +211,15 @@
         <input_param name="min" value="0"/>
         <input_param name="max" value="255"/>
       </param>
-      <param name="ORDER_NAME_SURROUNDINGS" text="- Order name surroundings" comment="Order name surroundings" type="object" default="if global.$SettingsMR.{8}.{8}? and @global.$SettingsMR.{8}.{8} != -1 then global.$SettingsMR.{8}.{8} else null"/>
+      <param name="ORDER_NAME_SURROUNDINGS" text="- {8888888, 1133}" comment="Order name Surroundings" type="object" default="if global.$SettingsMR.{8}.{8}? and @global.$SettingsMR.{8}.{8} != -1 then global.$SettingsMR.{8}.{8} else null"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="ADD_ASSIGNMENT_NAME" text="Add assignment name?" comment="Add assignment name?" type="bool" default="if global.$SettingsMR.{9}.{1}? and @global.$SettingsMR.{9}.{1} != -1 then global.$SettingsMR.{9}.{1} else false"/>
-      <param name="ASSIGNMENT_NAME_POSITION" text="- Assignment name position" comment="Assignment name position" type="number" default="if global.$SettingsMR.{9}.{2}? and @global.$SettingsMR.{9}.{2} != -1 then global.$SettingsMR.{9}.{2} else 6">
+      <param name="ADD_ASSIGNMENT_NAME" text="{8888888, 1134}" comment="Add Assignment name?" type="bool" default="if global.$SettingsMR.{9}.{1}? and @global.$SettingsMR.{9}.{1} != -1 then global.$SettingsMR.{9}.{1} else false"/>
+      <param name="ASSIGNMENT_NAME_POSITION" text="- {8888888, 1135}" comment="Assignment name position" type="number" default="if global.$SettingsMR.{9}.{2}? and @global.$SettingsMR.{9}.{2} != -1 then global.$SettingsMR.{9}.{2} else 6">
         <input_param name="min" value="0"/>
         <input_param name="max" value="99"/>
         <input_param name="step" value="1"/>
       </param>
-      <param name="COLORIZE_ASSIGNMENT_NAME" text="- Colorize assignment name?" comment="Colorize assignment name?" type="bool" default="if global.$SettingsMR.{9}.{3}? and @global.$SettingsMR.{9}.{3} != -1 then global.$SettingsMR.{9}.{3} else true"/>
+      <param name="COLORIZE_ASSIGNMENT_NAME" text="- {8888888, 1136}" comment="Colorize Assignment name?" type="bool" default="if global.$SettingsMR.{9}.{3}? and @global.$SettingsMR.{9}.{3} != -1 then global.$SettingsMR.{9}.{3} else true"/>
       <param name="ASSIGNMENT_NAME_ALPHA" text=" ~ {8888888, 1170}" comment="Transparency" type="number" default="if global.$SettingsMR.{9}.{4}? and @global.$SettingsMR.{9}.{4} != -1 then global.$SettingsMR.{9}.{4} else 182">
         <input_param name="step" value="1"/>
         <input_param name="min" value="0"/>
@@ -240,15 +240,15 @@
         <input_param name="min" value="0"/>
         <input_param name="max" value="255"/>
       </param>
-      <param name="ASSIGNMENT_NAME_SURROUNDINGS" text="- Assignment name surroundings" comment="Assignment name surroundings" type="object" default="if global.$SettingsMR.{9}.{8}? and @global.$SettingsMR.{9}.{8} != -1 then global.$SettingsMR.{9}.{8} else null"/>
+      <param name="ASSIGNMENT_NAME_SURROUNDINGS" text="- {8888888, 1137}" comment="Assignment name Surroundings" type="object" default="if global.$SettingsMR.{9}.{8}? and @global.$SettingsMR.{9}.{8} != -1 then global.$SettingsMR.{9}.{8} else null"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="ADD_FLEET_NAME" text="Add fleet name?" comment="Add fleet name?" type="bool" default="if global.$SettingsMR.{10}.{1}? and @global.$SettingsMR.{10}.{1} != -1 then global.$SettingsMR.{10}.{1} else false"/>
-      <param name="FLEET_NAME_POSITION" text="- Fleet name position" comment="Fleet name position" type="number" default="if global.$SettingsMR.{10}.{2}? and @global.$SettingsMR.{10}.{2} != -1 then global.$SettingsMR.{10}.{2} else 6">
+      <param name="ADD_FLEET_NAME" text="{8888888, 1138}" comment="Add Fleet name?" type="bool" default="if global.$SettingsMR.{10}.{1}? and @global.$SettingsMR.{10}.{1} != -1 then global.$SettingsMR.{10}.{1} else false"/>
+      <param name="FLEET_NAME_POSITION" text="- {8888888, 1139}" comment="Fleet name position" type="number" default="if global.$SettingsMR.{10}.{2}? and @global.$SettingsMR.{10}.{2} != -1 then global.$SettingsMR.{10}.{2} else 6">
         <input_param name="min" value="0"/>
         <input_param name="max" value="99"/>
         <input_param name="step" value="1"/>
       </param>
-      <param name="COLORIZE_FLEET_NAME" text="- Colorize fleet name?" comment="Colorize fleet name?" type="bool" default="if global.$SettingsMR.{10}.{3}? and @global.$SettingsMR.{10}.{3} != -1 then global.$SettingsMR.{10}.{3} else true"/>
+      <param name="COLORIZE_FLEET_NAME" text="- {8888888, 1140}" comment="Colorize Fleet name?" type="bool" default="if global.$SettingsMR.{10}.{3}? and @global.$SettingsMR.{10}.{3} != -1 then global.$SettingsMR.{10}.{3} else true"/>
       <param name="FLEET_NAME_ALPHA" text=" ~ {8888888, 1170}" comment="Transparency" type="number" default="if global.$SettingsMR.{10}.{4}? and @global.$SettingsMR.{10}.{4} != -1 then global.$SettingsMR.{10}.{4} else 182">
         <input_param name="step" value="1"/>
         <input_param name="min" value="0"/>
@@ -269,15 +269,15 @@
         <input_param name="min" value="0"/>
         <input_param name="max" value="255"/>
       </param>
-      <param name="FLEET_NAME_SURROUNDINGS" text="- Fleet name surroundings" comment="Fleet name surroundings" type="object" default="if global.$SettingsMR.{10}.{8}? and @global.$SettingsMR.{10}.{8} != -1 then global.$SettingsMR.{10}.{8} else null"/>
+      <param name="FLEET_NAME_SURROUNDINGS" text="- {8888888, 1141}" comment="Fleet name Surroundings" type="object" default="if global.$SettingsMR.{10}.{8}? and @global.$SettingsMR.{10}.{8} != -1 then global.$SettingsMR.{10}.{8} else null"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="ADD_DPS_TAG" text="Add DPS Tag?" comment="Add DPS Tag?" type="bool" default="if global.$SettingsMR.{11}.{1}? and @global.$SettingsMR.{11}.{1} != -1 then global.$SettingsMR.{11}.{1} else false"/>
-      <param name="DPS_TAG_POSITION" text="- DPS Tag position" comment="DPS Tag position" type="number" default="if global.$SettingsMR.{11}.{2}? and @global.$SettingsMR.{11}.{2} != -1 then global.$SettingsMR.{11}.{2} else 6">
+      <param name="ADD_DPS_TAG" text="{8888888, 1142}" comment="Add DPS Tag?" type="bool" default="if global.$SettingsMR.{11}.{1}? and @global.$SettingsMR.{11}.{1} != -1 then global.$SettingsMR.{11}.{1} else false"/>
+      <param name="DPS_TAG_POSITION" text="- {8888888, 1143}" comment="DPS Tag position" type="number" default="if global.$SettingsMR.{11}.{2}? and @global.$SettingsMR.{11}.{2} != -1 then global.$SettingsMR.{11}.{2} else 6">
         <input_param name="min" value="0"/>
         <input_param name="max" value="99"/>
         <input_param name="step" value="1"/>
       </param>
-      <param name="COLORIZE_DPS_TAG" text="- Colorize DPS Tag?" comment="Colorize DPS Tag?" type="bool" default="if global.$SettingsMR.{11}.{3}? and @global.$SettingsMR.{11}.{3} != -1 then global.$SettingsMR.{11}.{3} else true"/>
+      <param name="COLORIZE_DPS_TAG" text="- {8888888, 1144}" comment="Colorize DPS Tag?" type="bool" default="if global.$SettingsMR.{11}.{3}? and @global.$SettingsMR.{11}.{3} != -1 then global.$SettingsMR.{11}.{3} else true"/>
       <param name="DPS_TAG_ALPHA" text=" ~ {8888888, 1170}" comment="Transparency" type="number" default="if global.$SettingsMR.{11}.{4}? and @global.$SettingsMR.{11}.{4} != -1 then global.$SettingsMR.{11}.{4} else 182">
         <input_param name="step" value="1"/>
         <input_param name="min" value="0"/>
@@ -298,27 +298,27 @@
         <input_param name="min" value="0"/>
         <input_param name="max" value="255"/>
       </param>
-      <param name="DPS_TAG_SURROUNDINGS" text="- DPS Tag surroundings" comment="DPS Tag surroundings" type="object" default="if global.$SettingsMR.{11}.{8}? and @global.$SettingsMR.{11}.{8} != -1 then global.$SettingsMR.{11}.{8} else null"/>
+      <param name="DPS_TAG_SURROUNDINGS" text="- {8888888, 1145}" comment="DPS Tag surroundings" type="object" default="if global.$SettingsMR.{11}.{8}? and @global.$SettingsMR.{11}.{8} != -1 then global.$SettingsMR.{11}.{8} else null"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <!-- Renaming On/Off switch-->
-      <param name="RENAME_COMMANDER" text="{8888888, 1114}" comment="Rename Commander?" type="bool" default="if global.$SettingsMR.{1}.{2}? and @global.$SettingsMR.{1}.{2} != -1 then global.$SettingsMR.{1}.{2} else true"/>
-      <param name="RENAME_SUBORDINATES" text="{8888888, 1115}" comment="Rename Fleet?" type="bool" default="if global.$SettingsMR.{1}.{3}? and @global.$SettingsMR.{1}.{3} != -1 then global.$SettingsMR.{1}.{3} else true"/>
-      <param name="RENAME_SUBORDINATE_FLEETS" text="{8888888, 1116}" comment="Renam sub. Fleets?" type="bool" default="if global.$SettingsMR.{1}.{4}? and @global.$SettingsMR.{1}.{4} != -1 then global.$SettingsMR.{1}.{4} else true"/>
+      <param name="RENAME_COMMANDER" text="{8888888, 1146}" comment="Rename Commander?" type="bool" default="if global.$SettingsMR.{1}.{2}? and @global.$SettingsMR.{1}.{2} != -1 then global.$SettingsMR.{1}.{2} else true"/>
+      <param name="RENAME_SUBORDINATES" text="{8888888, 1147}" comment="Rename Fleet?" type="bool" default="if global.$SettingsMR.{1}.{3}? and @global.$SettingsMR.{1}.{3} != -1 then global.$SettingsMR.{1}.{3} else true"/>
+      <param name="RENAME_SUBORDINATE_FLEETS" text="{8888888, 1148}" comment="Renam sub. Fleets?" type="bool" default="if global.$SettingsMR.{1}.{4}? and @global.$SettingsMR.{1}.{4} != -1 then global.$SettingsMR.{1}.{4} else true"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="SAVE_COMMANDERS_NAME" text="{8888888, 1130}" type="bool" default="false"/>
-      <param name="SAVE_SUBORDINATES_NAMES" text="{8888888, 1131}" type="bool" default="false"/>
-      <param name="SAVE_NAMES_OF_SUBORDINATES_SUB_FLEETS" text="{8888888, 1132}" type="bool" default="false"/>
-      <param name="LOAD_COMMANDERS_NAME" text="{8888888, 1133}" type="bool" default="false"/>
-      <param name="LOAD_SUBORDINATES_NAMES" text="{8888888, 1134}" type="bool" default="false"/>
-      <param name="LOAD_NAMES_OF_SUBORDINATES_SUB_FLEETS" text="{8888888, 1135}" type="bool" default="false"/>
-      <param name="RESET_COMMANDERS_NAME" text="{8888888, 1136}" type="bool" default="false"/>
-      <param name="RESET_SUBORDINATES_NAMES" text="{8888888, 1137}" type="bool" default="false"/>
-      <param name="RESET_NAMES_OF_SUBORDINATES_SUB_FLEETS" text="{8888888, 1138}" type="bool" default="false"/>
-      <param name="DELETE_COMMANDERS_NAME" text="{8888888, 1139}" type="bool" default="false"/>
-      <param name="DELETE_SUBORDINATES_NAMES" text="{8888888, 1140}" type="bool" default="false"/>
-      <param name="DELETE_NAMES_OF_SUBORDINATES_SUB_FLEETS" text="{8888888, 1141}" type="bool" default="false"/>
+      <param name="SAVE_COMMANDERS_NAME" text="{8888888, 1150}" type="bool" default="false"/>
+      <param name="SAVE_SUBORDINATES_NAMES" text="{8888888, 1151}" type="bool" default="false"/>
+      <param name="SAVE_NAMES_OF_SUBORDINATES_SUB_FLEETS" text="{8888888, 1152}" type="bool" default="false"/>
+      <param name="LOAD_COMMANDERS_NAME" text="{8888888, 1153}" type="bool" default="false"/>
+      <param name="LOAD_SUBORDINATES_NAMES" text="{8888888, 1154}" type="bool" default="false"/>
+      <param name="LOAD_NAMES_OF_SUBORDINATES_SUB_FLEETS" text="{8888888, 1155}" type="bool" default="false"/>
+      <param name="RESET_COMMANDERS_NAME" text="{8888888, 1156}" type="bool" default="false"/>
+      <param name="RESET_SUBORDINATES_NAMES" text="{8888888, 1157}" type="bool" default="false"/>
+      <param name="RESET_NAMES_OF_SUBORDINATES_SUB_FLEETS" text="{8888888, 1158}" type="bool" default="false"/>
+      <param name="DELETE_COMMANDERS_NAME" text="{8888888, 1159}" type="bool" default="false"/>
+      <param name="DELETE_SUBORDINATES_NAMES" text="{8888888, 1160}" type="bool" default="false"/>
+      <param name="DELETE_NAMES_OF_SUBORDINATES_SUB_FLEETS" text="{8888888, 1161}" type="bool" default="false"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="RESET_COLORS" text="Reset Colors?" comment="Reset Colors?" type="bool" default="false"/>
+      <param name="RESET_COLORS" text="{8888888, 1149}" comment="Reset Colors?" type="bool" default="false"/>
       <param name="SAVE_SETTINGS" text="{8888888, 1195}" comment="Save Settings?" type="bool" default="false"/>
       <param name="DELETE_SETTINGS" text="{8888888, 1196}" comment="Delete Settings?" type="bool" default="false"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->

@@ -128,13 +128,13 @@
           <!-- Replace Sentinel with S* ? -->
           <do_if value="not $_NameTile.{5} and $_NameTile.{7}">
             <substitute_text source="$_ModelName" text="$_ModelName">
-              <replace string="{20111,1201}" with="{8888888, 1121}"/>
+              <replace string="{20111,1201}" with="{8888888, 1181}"/>
             </substitute_text>
           </do_if>
           <!-- Replace Vanguard with V* ? -->
           <do_if value="not $_NameTile.{6} and $_NameTile.{8}">
             <substitute_text source="$_ModelName" text="$_ModelName">
-              <replace string="{20111,1101}" with="{8888888, 1120}"/>
+              <replace string="{20111,1101}" with="{8888888, 1180}"/>
             </substitute_text>
           </do_if>
           <do_if value="$_NameTile.{3} != ''">
