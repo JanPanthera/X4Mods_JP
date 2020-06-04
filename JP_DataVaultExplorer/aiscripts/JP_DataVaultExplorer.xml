@@ -126,7 +126,7 @@
           <param name="Offset" value="$Ship.sector.coreposition"/>
           <param name="MaxDistance" value="10km"/>
         </run_script>
-        <set_object_name object="$Ship.sector" name="if $ADD_ORDER_TAG then this.$OldName + '\033#FFA95908# #DVE\033X' else this.$OldName"/>
+        <set_object_name object="$Ship" name="if $ADD_ORDER_TAG then this.$OldName + '\033#FFA95908# #DVE\033X' else this.$OldName"/>
         <resume label="RESUME"/>
       </do_else>
 
