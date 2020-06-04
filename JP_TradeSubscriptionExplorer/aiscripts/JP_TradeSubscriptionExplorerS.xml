@@ -94,7 +94,7 @@
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <set_value name="$Ship" exact="this.ship"/>
     <set_value name="$ExpMultiplier" exact="0.90"/>
-    <set_value name="this.$CurrentSector" exact="this.$CurrentSector"/>
+    <set_value name="this.$CurrentSector" exact="$SECTOR"/>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <do_if value="not global.$TradeSubscriptionExplorerSectorBlackList?">
       <create_list name="global.$TradeSubscriptionExplorerSectorBlackList"/>

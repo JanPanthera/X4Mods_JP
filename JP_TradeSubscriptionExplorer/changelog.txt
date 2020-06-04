@@ -1,9 +1,1 @@
-~ Added: IdleReturnHome functions like Follow or Dock at..
-~ Added: saving and deleting of the most settings
-~ Added: order name is now colored
-~ Added: abillity to choose the color of the auto fleet name
-~ Changed: renamed from TradeOrderExplorer to TradeSubscriptionExplorer.. (makes more sense)
-~ Updated: huge refactoring
-~ Updated: auto fleet refactored
-~ Updated: language files restructured
-~ Updated: added some translations.. (google translate)
+~ Fixed: TradeSubscriptionExplorer Sector was not working
