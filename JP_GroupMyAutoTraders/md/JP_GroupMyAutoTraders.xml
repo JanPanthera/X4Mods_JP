@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<mdscript name="JP_GroupMyAutoTraders_MD" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="md.xsd">
+  <cues>
+
+    <cue name="JP_GroupMyAutoTraders_MD_INIT" instantiate="true">
+      <conditions>
+        <check_any>
+          <event_game_started/>
+          <event_game_loaded/>
+        </check_any>
+      </conditions>
+      <actions>
+        <show_help custom="'JP_GroupMyAutoTraders_MD initialized...'" duration="2s" allowclose="true"/>
+        <set_value name="$DEBUG" exact="100"/>
+        <set_value name="$DebugDirectory" exact="'JP_GroupMyAutoTraders.logs'"/>
+      </actions>
+    </cue>
+
+    <cue name="JP_UPDATE_AUTO_TRADE_SHIPS_FLEETS_LIST" instantiate="true" checkinterval="10s">
+      <actions>
+        <set_value name="$DEBUG" exact="JP_GroupMyAutoTraders_MD_INIT.$DEBUG"/>
+        <set_value name="$DebugDirectory" exact="JP_GroupMyAutoTraders_MD_INIT.$DebugDirectory"/>
+        <set_value name="$DebugFileName" exact="'JP_UPDATE_AUTO_TRADE_SHIPS_FLEETS_LIST.md.log'"/>
+
+        <do_if value="$DEBUG gt 0">
+          <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_UPDATE_AUTO_TRADE_SHIPS_FLEETS_LIST.md ~ Started ~~' + '\n'"/>
+          <show_help custom="'JP_UPDATE_AUTO_TRADE_SHIPS_FLEETS_LIST'" duration="2s"/>
+        </do_if>
+
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+        <do_if value="not global.$AutoTradeShipsFleetsList?">
+          <create_list name="global.$AutoTradeShipsFleetsList"/>
+        </do_if>
+
+        <do_if value="$DEBUG gt 0">
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'global.$AutoTradeShipsFleetsList ~ before list cleanup'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <do_for_each name="$_AutoTradeShipsFleetList" in="global.$AutoTradeShipsFleetsList">
+            <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'$_AutoTradeShipsFleetList: ' + $_AutoTradeShipsFleetList"/>
+          </do_for_each>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+        </do_if>
+
+        <!-- list cleanup -->
+        <create_list name="$_ListEntrysToRemoveList"/>
+        <do_for_each name="$_AutoTradeShipsFleetList" in="global.$AutoTradeShipsFleetsList" counter="$_it">
+          <do_if value="$_AutoTradeShipsFleetList.count gt 0">
+            <create_list name="$_ShipEntrysToRemoveList"/>
+            <do_for_each name="$_AutoTradeShip" in="$_AutoTradeShipsFleetList">
+              <do_if value="$_AutoTradeShip.defaultorder.id != 'TradeRoutine' or $_AutoTradeShip.iswreck">
+                <append_to_list name="$_ShipEntrysToRemoveList" exact="$_AutoTradeShip"/>
+              </do_if>
+            </do_for_each>
+            <remove_from_list name="global.$AutoTradeShipsFleetsList.{$_it}" list="$_ShipEntrysToRemoveList"/>
+            <remove_value name="$_ShipEntrysToRemoveList"/>
+          </do_if>
+          <do_if value="$_AutoTradeShipsFleetList == []">
+            <append_to_list name="$_ListEntrysToRemoveList" exact="$_AutoTradeShipsFleetList"/>
+          </do_if>
+        </do_for_each>
+        <remove_from_list name="global.$AutoTradeShipsFleetsList" list="$_ListEntrysToRemoveList"/>
+        <remove_value name="$_ListEntrysToRemoveList"/>
+
+        <do_if value="$DEBUG gt 0">
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'global.$AutoTradeShipsFleetsList ~ after list cleanup'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <do_for_each name="$_AutoTradeShipsFleetList" in="global.$AutoTradeShipsFleetsList">
+            <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'$_AutoTradeShipsFleetList: ' + $_AutoTradeShipsFleetList"/>
+          </do_for_each>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+        </do_if>
+
+        <create_list name="$_Ships"/>
+        <find_ship_by_true_owner name="$_Ships" space="player.galaxy" multiple="true" faction="faction.player" owner="faction.player">
+          <match class="[class.ship_s, class.ship_m, class.ship_l, class.ship_xl]"/>
+          <match shiptype="shiptype.smalldrone" negate="true"/>
+          <match shiptype="shiptype.miner" negate="true"/>
+          <match shiptype="shiptype.largeminer" negate="true"/>
+        </find_ship_by_true_owner>
+
+        <do_if value="$DEBUG gt 0">
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'ships found: ' + $_Ships.count"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <do_for_each name="$_Ship" in="$_Ships">
+            <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'$_Ship.knownname: ' + $_Ship.knownname + ' ~ [' + $_Ship.idcode + '] ~ ' + @$_Ship.defaultorder.id"/>
+          </do_for_each>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+        </do_if>
+
+        <create_list name="$_AutoTradeShips"/>
+        <do_for_each name="$_Ship" in="$_Ships">
+          <do_if value="@$_Ship.commander.class != class.station and @$_Ship.defaultorder.id == 'TradeRoutine'">
+            <append_to_list name="$_AutoTradeShips" exact="$_Ship"/>
+          </do_if>
+        </do_for_each>
+        <remove_value name="$_Ships"/>
+
+        <do_if value="$DEBUG gt 0">
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'$_AutoTradeShips after check for _TradeRoutine_ right before removing ships who are already in global list'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <do_for_each name="$_AutoTradeShip" in="$_AutoTradeShips">
+            <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'$_AutoTradeShip.knownname: ' + $_AutoTradeShip.knownname + ' ' + $_AutoTradeShip.idcode"/>
+          </do_for_each>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+        </do_if>
+
+        <do_if value="global.$AutoTradeShipsFleetsList.count gt 0">
+          <do_for_each name="$AutoTradeShipsFleetList" in="global.$AutoTradeShipsFleetsList" counter="$_it">
+            <remove_from_list name="$_AutoTradeShips" list="global.$AutoTradeShipsFleetsList.{$_it}"/>
+          </do_for_each>
+
+          <do_if value="$DEBUG gt 0">
+            <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+            <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'$_AutoTradeShips after removing ships who are already in global list'"/>
+            <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+            <do_for_each name="$_AutoTradeShip" in="$_AutoTradeShips">
+              <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'$_AutoTradeShip.knownname: ' + $_AutoTradeShip.knownname + ' ' + $_AutoTradeShip.idcode"/>
+            </do_for_each>
+            <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+          </do_if>
+        </do_if>
+
+        <do_if value="global.$AutoTradeShipsFleetsList.count gt 0">
+
+          <do_while value="$_AutoTradeShips.count gt 0">
+
+            <do_for_each name="$_AutoTradeShip" in="$_AutoTradeShips" counter="$_it">
+              <set_value name="$_WasInList" exact="false"/>
+              <do_for_each name="$AutoTradeShipsFleetList" in="global.$AutoTradeShipsFleetsList" counter="$_jt">
+                <do_if value="$AutoTradeShipsFleetList.{1}.defaultorder.$range == $_AutoTradeShip.defaultorder.$range">
+                  <set_value name="$_WasInList" exact="true"/>
+                  <append_to_list name="global.$AutoTradeShipsFleetsList.{$_jt}" exact="$_AutoTradeShip"/>
+                  <remove_from_list name="$_AutoTradeShips" exact="$_AutoTradeShip"/>
+                  <break/>
+                </do_if>
+              </do_for_each>
+              <do_if value="$_WasInList == false">
+                <append_to_list name="global.$AutoTradeShipsFleetsList" exact="[$_AutoTradeShip]"/>
+                <remove_from_list name="$_AutoTradeShips" exact="$_AutoTradeShip"/>
+                <break/>
+              </do_if>
+            </do_for_each>
+
+          </do_while>
+
+        </do_if>
+        <do_else>
+          <do_while value="$_AutoTradeShips.count gt 0">
+            <set_value name="$_CurrentSector" exact="$_AutoTradeShips.{1}.defaultorder.$range"/>
+            <create_list name="$_CurrentAutoTradeShipsList"/>
+            <do_for_each name="$_AutoTradeShip" in="$_AutoTradeShips">
+              <do_if value="$_AutoTradeShip.defaultorder.$range == $_CurrentSector">
+                <append_to_list name="$_CurrentAutoTradeShipsList" exact="$_AutoTradeShip"/>
+              </do_if>
+            </do_for_each>
+            <remove_from_list name="$_AutoTradeShips" list="$_CurrentAutoTradeShipsList"/>
+            <append_to_list name="global.$AutoTradeShipsFleetsList" exact="$_CurrentAutoTradeShipsList"/>
+            <remove_value name="$_CurrentAutoTradeShipsList"/>
+            <remove_value name="$_CurrentSector"/>
+          </do_while>
+        </do_else>
+
+        <do_if value="$DEBUG gt 0">
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'global.$AutoTradeShipsFleetsList ~ after script ended'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <do_for_each name="$_AutoTradeShipsFleetList" in="global.$AutoTradeShipsFleetsList" counter="$_it">
+            <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'$_AutoTradeShipsFleetList: [' + $_it + ']'"/>
+            <do_for_each name="$_AutoTradeShip" in="$_AutoTradeShipsFleetList">
+              <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'$_AutoTradeShip %1 [%2] ~ %3'.[$_AutoTradeShip.knownname, $_AutoTradeShip.idcode, $_AutoTradeShip.defaultorder.id]"/>
+            </do_for_each>
+            <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          </do_for_each>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+        </do_if>
+
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+        <do_if value="$DEBUG gt 0">
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_UPDATE_AUTO_TRADE_SHIPS_FLEETS_LIST.md ~ Finished ~~'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+        </do_if>
+
+        <remove_value name="$DebugFileName"/>
+        <remove_value name="$DebugDirectory"/>
+        <remove_value name="$DEBUG"/>
+      </actions>
+    </cue>
+
+    <cue name="JP_UPDATE_AUTO_TRADE_SHIPS_FLEETS" instantiate="true" checktime="5s" checkinterval="30s">
+      <conditions>
+        <check_value value="global.$AutoTradeShipsFleetsList?"/>
+      </conditions>
+      <actions>
+        <set_value name="$DEBUG" exact="JP_GroupMyAutoTraders_MD_INIT.$DEBUG"/>
+        <set_value name="$DebugDirectory" exact="JP_GroupMyAutoTraders_MD_INIT.$DebugDirectory"/>
+        <set_value name="$DebugFileName" exact="'JP_UPDATE_AUTO_TRADE_SHIPS_FLEETS.md.log'"/>
+
+        <do_if value="$DEBUG gt 0">
+          <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_UPDATE_AUTO_TRADE_SHIPS_FLEETS.md ~ Started ~~' + '\n'"/>
+          <show_help custom="'JP_UPDATE_AUTO_TRADE_SHIPS_FLEETS'" duration="2s"/>
+        </do_if>
+
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+        <do_for_each name="$_AutoTradeShipsFleetList" in="global.$AutoTradeShipsFleetsList">
+          <do_if value="$_AutoTradeShipsFleetList.count gt 1">
+            <do_for_each name="$_AutoTradeShip" in="$_AutoTradeShipsFleetList" counter="$_jt">
+              <do_if value="$_jt == 1 or $_AutoTradeShip.fleet.commander == $_AutoTradeShipsFleetList.{1}">
+                <continue/>
+              </do_if>
+              <do_if value="not $_AutoTradeShipsFleetList.{1}.fleet.iscommander">
+                <set_value name="$FleetNewlyCreated" exact="''"/>
+              </do_if>
+              <set_object_commander object="$_AutoTradeShip" commander="$_AutoTradeShipsFleetList.{1}"/>
+              <do_if value="$FleetNewlyCreated? or $_AutoTradeShipsFleetList.{1}.fleet.name != '\033#FF03A1FC#%1 ~ Sector %2\033X'.[$_AutoTradeShipsFleetList.{1}.defaultorder.id, $_AutoTradeShipsFleetList.{1}.defaultorder.$range.knownname]">
+                <set_object_fleet_name object="$_AutoTradeShipsFleetList.{1}" name="'\033#FF03A1FC#%1 ~ Sector %2\033X'.[$_AutoTradeShipsFleetList.{1}.defaultorder.id, $_AutoTradeShipsFleetList.{1}.defaultorder.$range.knownname]"/>
+                <do_if value="$FleetNewlyCreated?">
+                  <remove_value name="$FleetNewlyCreated"/>
+                </do_if>
+              </do_if>
+            </do_for_each>
+          </do_if>
+        </do_for_each>
+
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+        <do_if value="$DEBUG gt 0">
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_UPDATE_AUTO_TRADE_SHIPS_FLEETS.md ~ Finished ~~'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+        </do_if>
+
+        <remove_value name="$DebugFileName"/>
+        <remove_value name="$DebugDirectory"/>
+        <remove_value name="$DEBUG"/>
+      </actions>
+    </cue>
+
+  </cues>
+</mdscript>
