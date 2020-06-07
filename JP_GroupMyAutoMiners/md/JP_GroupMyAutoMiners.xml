@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<mdscript name="JP_GroupMyAutoMiners_MD" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="md.xsd">
+  <cues>
+
+    <cue name="JP_GroupMyAutoMiners_MD_INIT" instantiate="true">
+      <conditions>
+        <check_any>
+          <event_game_started/>
+          <event_game_loaded/>
+        </check_any>
+      </conditions>
+      <actions>
+        <show_help custom="'JP_GroupMyAutoMiners_MD initialized...'" duration="2s" allowclose="true"/>
+        <set_value name="$DEBUG" exact="100"/>
+        <set_value name="$DebugDirectory" exact="'JP_GroupMyAutoMiners.logs'"/>
+      </actions>
+    </cue>
+
+    <cue name="JP_UPDATE_AUTO_MINE_SHIPS_FLEETS_LIST" instantiate="true" checkinterval="10s">
+      <actions>
+        <set_value name="$DEBUG" exact="JP_GroupMyAutoMiners_MD_INIT.$DEBUG"/>
+        <set_value name="$DebugDirectory" exact="JP_GroupMyAutoMiners_MD_INIT.$DebugDirectory"/>
+        <set_value name="$DebugFileName" exact="'JP_UPDATE_AUTO_MINE_SHIPS_FLEETS_LIST.md.log'"/>
+
+        <do_if value="$DEBUG gt 0">
+          <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_UPDATE_AUTO_MINE_SHIPS_FLEETS_LIST.md ~ Started ~~' + '\n'"/>
+          <show_help custom="'JP_UPDATE_AUTO_MINE_SHIPS_FLEETS_LIST'" duration="2s"/>
+        </do_if>
+
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+        <do_if value="not global.$AutoMineShipsFleetsList?">
+          <create_list name="global.$AutoMineShipsFleetsList"/>
+        </do_if>
+
+        <do_if value="$DEBUG gt 0">
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'global.$AutoMineShipsFleetsList ~ before list cleanup'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <do_for_each name="$_AutoMineShipsFleetList" in="global.$AutoMineShipsFleetsList">
+            <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'$_AutoMineShipsFleetList: ' + $_AutoMineShipsFleetList"/>
+          </do_for_each>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+        </do_if>
+
+        <!-- list cleanup -->
+        <create_list name="$_ListEntrysToRemoveList"/>
+        <do_for_each name="$_AutoMineShipsFleetList" in="global.$AutoMineShipsFleetsList" counter="$_it">
+          <do_if value="$_AutoMineShipsFleetList.count gt 0">
+            <create_list name="$_ShipEntrysToRemoveList"/>
+            <do_for_each name="$_AutoMineShip" in="$_AutoMineShipsFleetList">
+              <do_if value="$_AutoMineShip.defaultorder.id != 'MiningRoutine' or $_AutoMineShip.defaultorder.id != 'MiningRoutine_Basic' or $_AutoMineShip.defaultorder.id != 'MiningRoutine_Advanced' or $_AutoMineShip.defaultorder.id != 'MiningRoutine_Expert' or $_AutoMineShip.iswreck">
+                <append_to_list name="$_ShipEntrysToRemoveList" exact="$_AutoMineShip"/>
+              </do_if>
+            </do_for_each>
+            <remove_from_list name="global.$AutoMineShipsFleetsList.{$_it}" list="$_ShipEntrysToRemoveList"/>
+            <remove_value name="$_ShipEntrysToRemoveList"/>
+          </do_if>
+          <do_if value="$_AutoMineShipsFleetList == []">
+            <append_to_list name="$_ListEntrysToRemoveList" exact="$_AutoMineShipsFleetList"/>
+          </do_if>
+        </do_for_each>
+        <remove_from_list name="global.$AutoMineShipsFleetsList" list="$_ListEntrysToRemoveList"/>
+        <remove_value name="$_ListEntrysToRemoveList"/>
+
+        <do_if value="$DEBUG gt 0">
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'global.$AutoMineShipsFleetsList ~ after list cleanup'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <do_for_each name="$_AutoMineShipsFleetList" in="global.$AutoMineShipsFleetsList">
+            <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'$_AutoMineShipsFleetList: ' + $_AutoMineShipsFleetList"/>
+          </do_for_each>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+        </do_if>
+
+        <create_list name="$_Ships"/>
+        <find_ship_by_true_owner name="$_Ships" space="player.galaxy" multiple="true" faction="faction.player" owner="faction.player">
+          <match class="[class.ship_s, class.ship_m, class.ship_l, class.ship_xl]"/>
+          <match shiptype="shiptype.smalldrone" negate="true"/>
+          <match_any>
+            <match shiptype="shiptype.miner"/>
+            <match shiptype="shiptype.largeminer"/>
+          </match_any>
+        </find_ship_by_true_owner>
+
+        <do_if value="$DEBUG gt 0">
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'ships found: ' + $_Ships.count"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <do_for_each name="$_Ship" in="$_Ships">
+            <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'$_Ship.knownname: ' + $_Ship.knownname + ' ~ [' + $_Ship.idcode + '] ~ ' + @$_Ship.defaultorder.id"/>
+          </do_for_each>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+        </do_if>
+
+        <create_list name="$_AutoMineShips"/>
+        <do_for_each name="$_Ship" in="$_Ships">
+          <do_if value="@$_Ship.commander.class != class.station and (@$_Ship.defaultorder.id == 'MiningRoutine' or @$_Ship.defaultorder.id == 'MiningRoutine_Basic' or @$_Ship.defaultorder.id == 'MiningRoutine_Advanced' or @$_Ship.defaultorder.id == 'MiningRoutine_Expert')">
+            <append_to_list name="$_AutoMineShips" exact="$_Ship"/>
+          </do_if>
+        </do_for_each>
+        <remove_value name="$_Ships"/>
+
+        <do_if value="$DEBUG gt 0">
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'$_AutoMineShips after check for _MiningRoutine_ right before removing ships who are already in global list'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <do_for_each name="$_AutoMineShip" in="$_AutoMineShips">
+            <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'$_AutoMineShip.knownname: ' + $_AutoMineShip.knownname + ' ' + $_AutoMineShip.idcode"/>
+          </do_for_each>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+        </do_if>
+
+        <do_if value="global.$AutoMineShipsFleetsList.count gt 0">
+          <do_for_each name="$AutoMineShipsFleetList" in="global.$AutoMineShipsFleetsList" counter="$_it">
+            <remove_from_list name="$_AutoMineShips" list="global.$AutoMineShipsFleetsList.{$_it}"/>
+          </do_for_each>
+
+          <do_if value="$DEBUG gt 0">
+            <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+            <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'$_AutoMineShips after removing ships who are already in global list'"/>
+            <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+            <do_for_each name="$_AutoMineShip" in="$_AutoMineShips">
+              <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'$_AutoMineShip.knownname: ' + $_AutoMineShip.knownname + ' ' + $_AutoMineShip.idcode"/>
+            </do_for_each>
+            <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+          </do_if>
+        </do_if>
+
+        <do_if value="global.$AutoMineShipsFleetsList.count gt 0">
+
+          <do_while value="$_AutoMineShips.count gt 0">
+
+            <do_for_each name="$_AutoMineShip" in="$_AutoMineShips" counter="$_it">
+              <set_value name="$_WasInList" exact="false"/>
+              <do_for_each name="$AutoMineShipsFleetList" in="global.$AutoMineShipsFleetsList" counter="$_jt">
+                <do_if value="$AutoMineShipsFleetList.{1}.defaultorder.$range == $_AutoMineShip.defaultorder.$range">
+                  <set_value name="$_WasInList" exact="true"/>
+                  <append_to_list name="global.$AutoMineShipsFleetsList.{$_jt}" exact="$_AutoMineShip"/>
+                  <remove_from_list name="$_AutoMineShips" exact="$_AutoMineShip"/>
+                  <break/>
+                </do_if>
+              </do_for_each>
+              <do_if value="$_WasInList == false">
+                <append_to_list name="global.$AutoMineShipsFleetsList" exact="[$_AutoMineShip]"/>
+                <remove_from_list name="$_AutoMineShips" exact="$_AutoMineShip"/>
+                <break/>
+              </do_if>
+            </do_for_each>
+
+          </do_while>
+
+        </do_if>
+        <do_else>
+          <do_while value="$_AutoMineShips.count gt 0">
+            <set_value name="$_CurrentSector" exact="$_AutoMineShips.{1}.defaultorder.$range"/>
+            <create_list name="$_CurrentAutoMineShipsList"/>
+            <do_for_each name="$_AutoMineShip" in="$_AutoMineShips">
+              <do_if value="$_AutoMineShip.defaultorder.$range == $_CurrentSector">
+                <append_to_list name="$_CurrentAutoMineShipsList" exact="$_AutoMineShip"/>
+              </do_if>
+            </do_for_each>
+            <remove_from_list name="$_AutoMineShips" list="$_CurrentAutoMineShipsList"/>
+            <append_to_list name="global.$AutoMineShipsFleetsList" exact="$_CurrentAutoMineShipsList"/>
+            <remove_value name="$_CurrentAutoMineShipsList"/>
+            <remove_value name="$_CurrentSector"/>
+          </do_while>
+        </do_else>
+
+        <do_if value="$DEBUG gt 0">
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'global.$AutoMineShipsFleetsList ~ after script ended'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <do_for_each name="$_AutoMineShipsFleetList" in="global.$AutoMineShipsFleetsList" counter="$_it">
+            <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'$_AutoMineShipsFleetList: [' + $_it + ']'"/>
+            <do_for_each name="$_AutoMineShip" in="$_AutoMineShipsFleetList">
+              <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'$_AutoMineShip %1 [%2] ~ %3'.[$_AutoMineShip.knownname, $_AutoMineShip.idcode, $_AutoMineShip.defaultorder.id]"/>
+            </do_for_each>
+            <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          </do_for_each>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+        </do_if>
+
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+        <do_if value="$DEBUG gt 0">
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_UPDATE_AUTO_MINE_SHIPS_FLEETS_LIST.md ~ Finished ~~'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+        </do_if>
+
+        <remove_value name="$DebugFileName"/>
+        <remove_value name="$DebugDirectory"/>
+        <remove_value name="$DEBUG"/>
+      </actions>
+    </cue>
+
+    <cue name="JP_UPDATE_AUTO_MINE_SHIPS_FLEETS" instantiate="true" checktime="5s" checkinterval="30s">
+      <conditions>
+        <check_value value="global.$AutoMineShipsFleetsList?"/>
+      </conditions>
+      <actions>
+        <set_value name="$DEBUG" exact="JP_GroupMyAutoMiners_MD_INIT.$DEBUG"/>
+        <set_value name="$DebugDirectory" exact="JP_GroupMyAutoMiners_MD_INIT.$DebugDirectory"/>
+        <set_value name="$DebugFileName" exact="'JP_UPDATE_AUTO_MINE_SHIPS_FLEETS.md.log'"/>
+
+        <do_if value="$DEBUG gt 0">
+          <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_UPDATE_AUTO_MINE_SHIPS_FLEETS.md ~ Started ~~' + '\n'"/>
+          <show_help custom="'JP_UPDATE_AUTO_MINE_SHIPS_FLEETS'" duration="2s"/>
+        </do_if>
+
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+        <do_for_each name="$_AutoMineShipsFleetList" in="global.$AutoMineShipsFleetsList">
+          <do_if value="$_AutoMineShipsFleetList.count gt 1">
+            <do_for_each name="$_AutoMineShip" in="$_AutoMineShipsFleetList" counter="$_jt">
+              <do_if value="$_jt == 1 or $_AutoMineShip.fleet.commander == $_AutoMineShipsFleetList.{1}">
+                <continue/>
+              </do_if>
+              <do_if value="not $_AutoMineShipsFleetList.{1}.fleet.iscommander">
+                <set_value name="$FleetNewlyCreated" exact="''"/>
+              </do_if>
+              <set_object_commander object="$_AutoMineShip" commander="$_AutoMineShipsFleetList.{1}"/>
+              <do_if value="$FleetNewlyCreated? or $_AutoMineShipsFleetList.{1}.fleet.name != '\033#FF03A1FC#%1 ~ Sector %2\033X'.['MiningRoutine', $_AutoMineShipsFleetList.{1}.defaultorder.$range.knownname]">
+                <set_object_fleet_name object="$_AutoMineShipsFleetList.{1}" name="'\033#FF03A1FC#%1 ~ Sector %2\033X'.['MiningRoutine', $_AutoMineShipsFleetList.{1}.defaultorder.$range.knownname]"/>
+                <do_if value="$FleetNewlyCreated?">
+                  <remove_value name="$FleetNewlyCreated"/>
+                </do_if>
+              </do_if>
+            </do_for_each>
+          </do_if>
+        </do_for_each>
+
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+        <do_if value="$DEBUG gt 0">
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_UPDATE_AUTO_MINE_SHIPS_FLEETS.md ~ Finished ~~'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+        </do_if>
+
+        <remove_value name="$DebugFileName"/>
+        <remove_value name="$DebugDirectory"/>
+        <remove_value name="$DEBUG"/>
+      </actions>
+    </cue>
+
+  </cues>
+</mdscript>
