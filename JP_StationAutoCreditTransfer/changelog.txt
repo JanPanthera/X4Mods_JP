@@ -1,2 +1,4 @@
-~ Updated: refactoring
-~ Updated: language files restructured
+~ Updated: huge refactoring
+~ Changed: Check intervall back to 900 seconds
+~ Fixed: Station transfered money back when 
+  $AdditionalStationMoneyCap was modified and huge like 15.000.000 Credits
