@@ -230,7 +230,7 @@
               <append_to_list name="$_Objects" exact="$_Station"/>
               <continue/>
             </do_if>
-            <do_if value="$_Station.isdefencestation and not $_Station.iswharf and not $_Station.isshipyard and not $_Station.istradestation and $DEFENCE_STATIONS">
+            <do_if value="$_Station.isdefencestation and not $_Station.iswharf and not $_Station.isshipyard and not $_Station.isequipmentdock and not $_Station.istradestation and not $_Station.ispiratebase and not $_Station.isfactionheadquarters and $DEFENCE_STATIONS">
               <append_to_list name="$_Objects" exact="$_Station"/>
               <continue/>
             </do_if>

@@ -105,14 +105,13 @@
     <set_value name="$IdleTime" exact="$IDLE_TIME"/>
     <set_value name="$ResumeLabel" exact="'RESUME_LBL'"/>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-    <set_value name="this.$OldName" exact="this.ship.name"/>
     <do_if value="$ADD_ORDER_TAG">
       <set_object_name object="this.ship" name="this.ship.name + '\033#FFA95908# #SD-S\033X'"/>
     </do_if>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <do_if value="$SAVE_SETTINGS">
-      <do_if value="not global.$Mk2InsteadSD? or @global.$Mk2InsteadSD != $MK2_INSTEAD">
-        <set_value name="global.$Mk2InsteadSD" exact="$MK2_INSTEAD"/>
+      <do_if value="not global.$Mk2InsteadSD? or @global.$Mk2InsteadSD != $MK2">
+        <set_value name="global.$Mk2InsteadSD" exact="$MK2"/>
       </do_if>
       <do_if value="not global.$RestockSatellitesSD? or @global.$RestockSatellitesSD != $RESTOCK_SATELLITES">
         <set_value name="global.$RestockSatellitesSD" exact="$RESTOCK_SATELLITES"/>
@@ -366,7 +365,6 @@
         <param name="IDLE_TIME" value="$IdleTime"/>
         <param name="DEBUG" value="$DEBUG"/>
       </run_script>
-      <set_object_name object="$Ship" name="if $ADD_ORDER_TAG then this.$OldName + '\033#FFA95908# #SD-S\033X' else this.$OldName"/>
       <do_if value="$ResumeLabel == 'RESUME_LBL'">
         <resume label="RESUME_LBL"/>
       </do_if>
@@ -376,14 +374,21 @@
 
       <label name="FINISH_LBL"/>
 
-      <do_if value="$ADD_ORDER_TAG and @this.$OldName">
-        <set_object_name object="this.ship" name="this.$OldName"/>
+      <do_if value="$ADD_ORDER_TAG">
+        <set_value name="$_ShipName" exact="$Ship.knownname"/>
+        <substitute_text source="$_ShipName" text="$_ShipName">
+          <replace string="'\033#FFA95908# #SD-S\033X'" with="''"/>
+        </substitute_text>
+        <set_object_name object="this.ship" name="$_ShipName"/>
+        <remove_value name="$_ShipName"/>
       </do_if>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-      <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_SatelliteDropperS.xml ~ Finished ~~'"/>
-      <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+      <do_if value="$DEBUG gt 0">
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_SatelliteDropperS.xml ~ Finished ~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+      </do_if>
 
       <label name="CLEANUP_LBL"/>
       <remove_value name="$ResumeLabel"/>
@@ -391,7 +396,6 @@
       <remove_value name="$Satellite"/>
       <remove_value name="$ExpTotalMultiplier"/>
       <remove_value name="$Ship"/>
-      <remove_value name="this.$OldName"/>
       <remove_value name="$DebugFileName"/>
       <remove_value name="$DebugDirectory"/>
 
@@ -404,9 +408,13 @@
   </attention>
 
   <on_abort>
-    <do_if value="$ADD_ORDER_TAG and @this.$OldName">
-      <set_object_name object="this.ship" name="this.$OldName"/>
-      <remove_value name="this.$OldName"/>
+    <do_if value="$ADD_ORDER_TAG">
+      <set_value name="$_ShipName" exact="$Ship.knownname"/>
+      <substitute_text source="$_ShipName" text="$_ShipName">
+        <replace string="'\033#FFA95908# #SD-S\033X'" with="''"/>
+      </substitute_text>
+      <set_object_name object="this.ship" name="$_ShipName"/>
+      <remove_value name="$_ShipName"/>
     </do_if>
   </on_abort>
 
