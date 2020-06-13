@@ -1,1 +1,1 @@
-~ Fixed: TradeSubscriptionExplorer Sector was not working
+~ Added: Japanese translation -- thanks to aisu
