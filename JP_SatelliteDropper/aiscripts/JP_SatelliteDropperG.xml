@@ -394,7 +394,7 @@
       <do_if value="$ADD_ORDER_TAG">
         <set_value name="$_ShipName" exact="$Ship.knownname"/>
         <substitute_text source="$_ShipName" text="$_ShipName">
-          <replace string="'\033#FFA95908# #SD-S\033X'" with="''"/>
+          <replace string="'\033#FFA95908# #SD-G\033X'" with="''"/>
         </substitute_text>
         <set_object_name object="this.ship" name="$_ShipName"/>
         <remove_value name="$_ShipName"/>
@@ -428,7 +428,7 @@
     <do_if value="$ADD_ORDER_TAG">
       <set_value name="$_ShipName" exact="$Ship.knownname"/>
       <substitute_text source="$_ShipName" text="$_ShipName">
-        <replace string="'\033#FFA95908# #SD-S\033X'" with="''"/>
+        <replace string="'\033#FFA95908# #SD-G\033X'" with="''"/>
       </substitute_text>
       <set_object_name object="this.ship" name="$_ShipName"/>
       <remove_value name="$_ShipName"/>
