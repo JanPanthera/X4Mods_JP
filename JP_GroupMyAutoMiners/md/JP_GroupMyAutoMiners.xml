@@ -8,12 +8,18 @@
         <check_any>
           <event_game_started/>
           <event_game_loaded/>
+          <!--<event_ui_triggered screen="'MapMenu'"/>-->
         </check_any>
       </conditions>
       <actions>
-        <show_help custom="'JP_GroupMyAutoMiners_MD initialized...'" duration="2s" allowclose="true"/>
-        <set_value name="$DEBUG" exact="100"/>
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <set_value name="$DEBUG" exact="0"/>
         <set_value name="$DebugDirectory" exact="'JP_GroupMyAutoMiners.logs'"/>
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <do_if value="$DEBUG gt 0">
+          <show_help custom="'JP_GroupMyAutoMiners_MD_INIT'" allowclose="true" duration="3s"/>
+        </do_if>
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       </actions>
     </cue>
 
@@ -26,7 +32,7 @@
         <do_if value="$DEBUG gt 0">
           <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
           <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_UPDATE_AUTO_MINE_SHIPS_FLEETS_LIST.md ~ Started ~~' + '\n'"/>
-          <show_help custom="'JP_UPDATE_AUTO_MINE_SHIPS_FLEETS_LIST'" duration="2s"/>
+          <show_help custom="'JP_UPDATE_AUTO_MINE_SHIPS_FLEETS_LIST'" duration="2s" allowclose="true"/>
         </do_if>
 
         <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -208,7 +214,7 @@
         <do_if value="$DEBUG gt 0">
           <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
           <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_UPDATE_AUTO_MINE_SHIPS_FLEETS.md ~ Started ~~' + '\n'"/>
-          <show_help custom="'JP_UPDATE_AUTO_MINE_SHIPS_FLEETS'" duration="2s"/>
+          <show_help custom="'JP_UPDATE_AUTO_MINE_SHIPS_FLEETS'" duration="2s" allowclose="true"/>
         </do_if>
 
         <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
