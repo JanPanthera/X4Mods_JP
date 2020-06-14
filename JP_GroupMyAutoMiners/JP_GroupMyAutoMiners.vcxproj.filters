@@ -23,4 +23,7 @@
     <Xml Include="content.xml" />
     <Xml Include="md\JP_GroupMyAutoMiners.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="changelog.txt" />
+  </ItemGroup>
 </Project>
