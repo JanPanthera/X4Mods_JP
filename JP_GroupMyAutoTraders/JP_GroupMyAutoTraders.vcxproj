@@ -145,6 +145,9 @@
     <Xml Include="content.xml" />
     <Xml Include="md\JP_GroupMyAutoTraders.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="changelog.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
