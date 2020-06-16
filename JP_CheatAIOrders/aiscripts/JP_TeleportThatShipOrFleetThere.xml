@@ -7,7 +7,6 @@
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="WHOLE_FLEET" text="{8888888, 620}" comment="Whole Fleet?" type="bool" default="false"/>
       <param name="OBJECT" text="{1001, 23}" comment="Object" type="object" default="this.ship">
-        <input_param name="owner" value="this.ship.owner"/>
         <input_param name="class" value="[class.ship]"/>
       </param>
       <param name="DESTINATION" text="{1041, 10027}" comment="Destination" type="position" required="true">
