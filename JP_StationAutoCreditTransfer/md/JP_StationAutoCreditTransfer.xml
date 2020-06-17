@@ -14,9 +14,9 @@
         <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
         <set_value name="$StationToBuildstorage" exact="true"/>
         <set_value name="$BuildstorageToStation" exact="true"/>
-        <set_value name="$PlayerToBuildstorage" exact="not md.JP_SACT_DisablePlayerToTransfers?"/>
-        <set_value name="$PlayerToStation" exact="not md.JP_SACT_DisablePlayerToTransfers?"/>
-        <set_value name="$StationToPlayer" exact="not md.JP_SACT_DisableStationToPlayerTransfers?"/>
+        <set_value name="$PlayerToBuildstorage" exact="if md.JP_SACT_DisablePlayerToTransfers? then false else true"/>
+        <set_value name="$PlayerToStation" exact="if md.JP_SACT_DisablePlayerToTransfers? then false else true"/>
+        <set_value name="$StationToPlayer" exact="if md.JP_SACT_DisableStationToPlayerTransfers? then false else true"/>
         <set_value name="$BuildstorageToPlayer" exact="true"/>
         <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
         <set_value name="$DEBUG" exact="0"/>
@@ -52,9 +52,7 @@
                 <write_to_logbook category="tips" title="'\033#FF516E38#' + $_Station.knownname + '\033X\033#FF516E38# [' + faction.player + ']\033X'"
                                   text="'\033#A03A7F8F#' + {8888888, 1800} + ':\033X \033#A000CCCC#' + $_Station.name + ' ' + $_Station.buildstorage.knownname + '\033X'"
                                   money="$_MoneyToTransfer"/>
-                <do_if value="$_MoneyToTransfer gt ($_Station.buildstorage.maxbudget / 100)">
-                  <set_object_max_budget object="$_Station.buildstorage" amount="$_MoneyToTransfer + ($_Station.buildstorage.money / 100)"/>
-                </do_if>
+                <set_object_max_budget object="$_Station.buildstorage" amount="$_MoneyToTransfer + $_Station.buildstorage.money"/>
                 <transfer_money from="$_Station" to="$_Station.buildstorage" amount="$_MoneyToTransfer"/>
               </do_if>
               <remove_value name="$_MoneyToTransfer"/>
@@ -68,9 +66,7 @@
                 <write_to_logbook category="tips" title="'\033#FF516E38#' + $_Station.name + ' ' + $_Station.buildstorage.name + '\033X\033#FF516E38# [' + faction.player + ']\033X'"
                                   text="'\033#A03A7F8F#' + {8888888, 1800} + ':\033X \033#A000CCCC#' + $_Station.name + '\033X'"
                                   money="$_MoneyToTransfer"/>
-                <do_if value="$_MoneyToTransfer gt ($_Station.maxbudget / 100)">
-                  <set_object_max_budget object="$_Station" amount="$_MoneyToTransfer + ($_Station.money / 100)"/>
-                </do_if>
+                <set_object_max_budget object="$_Station" amount="$_MoneyToTransfer + $_Station.money"/>
                 <transfer_money from="$_Station.buildstorage" to="$_Station" amount="$_MoneyToTransfer"/>
               </do_if>
               <remove_value name="$_MoneyToTransfer"/>
@@ -84,9 +80,7 @@
                 <write_to_logbook category="tips" title="'\033#FF516E38#' + player.name + '\033X\033#FF516E38# [' + faction.player + ']\033X'"
                                   text="'\033#A09E0606#' + {8888888, 1800} + ':\033X \033#A000CCCC#' + $_Station.name + ' ' + $_Station.buildstorage.name + '\033X'"
                                   money="-($_MoneyToTransfer)"/>
-                <do_if value="$_MoneyToTransfer gt ($_Station.buildstorage.maxbudget / 100)">
-                  <set_object_max_budget object="$_Station.buildstorage" amount="$_MoneyToTransfer + ($_Station.buildstorage.money / 100)"/>
-                </do_if>
+                <set_object_max_budget object="$_Station.buildstorage" amount="$_MoneyToTransfer + $_Station.buildstorage.money"/>
                 <transfer_money from="faction.player" to="$_Station.buildstorage" amount="$_MoneyToTransfer"/>
               </do_if>
               <remove_value name="$_MoneyToTransfer"/>
@@ -100,9 +94,7 @@
                 <write_to_logbook category="tips" title="'\033#FF516E38#' + player.name + '\033X\033#FF516E38# [' + faction.player + ']\033X'"
                                   text="'\033#A09E0606#' + {8888888, 1800} + ':\033X \033#A000CCCC#' + $_Station.name + '\033X'"
                                   money="-($_MoneyToTransfer)"/>
-                <do_if value="$_MoneyToTransfer gt ($_Station.maxbudget / 100)">
-                  <set_object_max_budget object="$_Station" amount="$_MoneyToTransfer + ($_Station.money / 100)"/>
-                </do_if>
+                <set_object_max_budget object="$_Station" amount="($_MoneyToTransfer + $_Station.money)"/>
                 <transfer_money from="faction.player" to="$_Station" amount="$_MoneyToTransfer"/>
               </do_if>
               <remove_value name="$_MoneyToTransfer"/>

@@ -1,4 +1,2 @@
-~ Updated: huge refactoring
-~ Changed: Check intervall back to 900 seconds
-~ Fixed: Station transfered money back when 
-  $AdditionalStationMoneyCap was modified and huge like 15.000.000 Credits
+~ Fixed: set_object_max_budget got the amount in Credits not cents
+~ Fixed: ??? ignored the "disable transfer" mods ???
