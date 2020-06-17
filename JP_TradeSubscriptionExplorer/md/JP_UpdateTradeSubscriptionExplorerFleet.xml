@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 
-<mdscript name="JP_UpdateTradeSubscriptionExplorerFleet" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="md.xsd">
+<mdscript name="JP_UpdateTradeSubscriptionExplorerFleet_MD" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="md.xsd">
   <cues>
 
     <cue name="JP_UPDATE_TRADE_SUBSCRIPTION_EXPLORER_FLEET" instantiate="true" checkinterval="2s">
@@ -10,10 +10,12 @@
       <actions>
 
         <set_value name="$DEBUG" exact="0"/>
-
         <do_if value="$DEBUG gt 0">
           <set_value name="$DebugDirectory" exact="'JP_TradeSubscriptionExplorer.logs'"/>
           <set_value name="$DebugFileName" exact="'JP_UPDATE_TRADE_SUBSCRIPTION_EXPLORER_FLEET.xml.log'"/>
+        </do_if>
+
+        <do_if value="$DEBUG gt 0">
           <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
           <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_UPDATE_TRADE_SUBSCRIPTION_EXPLORER_FLEET.xml ~ Started ~~' + '\n'"/>
         </do_if>
@@ -78,8 +80,10 @@
       <actions>
 
         <set_value name="$DEBUG" exact="0"/>
-        <set_value name="$DebugDirectory" exact="'JP_TradeSubscriptionExplorer.logs'"/>
-        <set_value name="$DebugFileName" exact="'JP_TRADE_SUBSCRIPTION_EXPLORER_DEBUG.xml.log'"/>
+        <do_if value="$DEBUG gt 0">
+          <set_value name="$DebugDirectory" exact="'JP_TradeSubscriptionExplorer.logs'"/>
+          <set_value name="$DebugFileName" exact="'JP_TRADE_SUBSCRIPTION_EXPLORER_DEBUG.xml.log'"/>
+        </do_if>
 
         <do_if value="$DEBUG gt 0">
           <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
@@ -93,8 +97,8 @@
           <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'global.$TradeSubscriptionExplorerSectorBlackList'"/>
           <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
           <do_if value="global.$TradeSubscriptionExplorerSectorBlackList?">
-            <do_for_each name="$Sector" in="@global.$TradeSubscriptionExplorerSectorBlackList">
-              <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~ Sector: %1 ~~ [%2].'.[@$Sector.knownname, @$Sector.owner.knownname]"/>
+            <do_for_each name="$_Sector" in="@global.$TradeSubscriptionExplorerSectorBlackList">
+              <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~ Sector: %1 ~~ [%2].'.[@$_Sector.knownname, @$_Sector.owner.knownname]"/>
             </do_for_each>
           </do_if>
           <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
@@ -103,8 +107,8 @@
           <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'global.$TradeSubscriptionExplorerShips'"/>
           <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
           <do_if value="global.$TradeSubscriptionExplorerShips?">
-            <do_for_each name="$Ship" in="@global.$TradeSubscriptionExplorerShips">
-              <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~ Ship: %1 [%2] ~~ [%3].'.[@$Ship.knownname, @$Ship.idcode, @$Ship.owner.knownname]"/>
+            <do_for_each name="$_Ship" in="@global.$TradeSubscriptionExplorerShips">
+              <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~ Ship: %1 [%2] ~~ [%3].'.[@$_Ship.knownname, @$_Ship.idcode, @$_Ship.owner.knownname]"/>
             </do_for_each>
           </do_if>
           <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>

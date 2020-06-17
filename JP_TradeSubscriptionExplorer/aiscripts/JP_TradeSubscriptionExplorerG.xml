@@ -10,8 +10,8 @@
       <param name="FRIENDLY_SECTORS" text="{8888888, 1902}" comment="Friendly Sectors?" type="bool" default="if global.$FriendlySectorsTSE? then global.$FriendlySectorsTSE else true"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="AUTO_FLEET" text="{8888888, 1910}" comment="Automatic Fleet?" type="bool" default="if global.$AutoFleetTSE? then global.$AutoFleetTSE else false"/>
-      <param name="IS_AUTO_FLEET_LEADER" text="{8888888, 1911}" comment="Is Leader of automatic Fleet?" type="bool" default="false"/>
-      <param name="COLOR_AUTOFLEET_NAME" text="{8888888, 1912}" comment="Color Automatic Fleet name?" type="bool" default="if global.$ColorAutoFleetNameTSE? then global.$ColorAutoFleetNameTSE else true"/>
+      <param name="IS_AUTO_FLEET_LEADER" text="- {8888888, 1911}" comment="Is Leader of automatic Fleet?" type="bool" default="false"/>
+      <param name="COLOR_AUTOFLEET_NAME" text="- {8888888, 1912}" comment="Color Automatic Fleet name?" type="bool" default="if global.$ColorAutoFleetNameTSE? then global.$ColorAutoFleetNameTSE else true"/>
       <param name="AUTOFLEET_NAME_ALPHA" text="- {8888888, 1970}" comment="Transparency" type="number" default="if $AutoFleetNameAlphaTSE? then $AutoFleetNameAlphaTSE else 255">
         <input_param name="step" value="1"/>
         <input_param name="min" value="0"/>
@@ -108,6 +108,13 @@
     <append_to_list name="global.$TradeSubscriptionExplorerShips" exact="this.ship"/>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <do_if value="$ADD_ORDER_TAG">
+      <set_value name="$_ShipName" exact="$Ship.knownname"/>
+      <set_object_name object="this.ship" name="$_ShipName"/>
+      <substitute_text source="$_ShipName" text="$_ShipName">
+        <replace string="'\033#FFA95908# #TSE-G\033X'" with="''"/>
+      </substitute_text>
+      <set_object_name object="this.ship" name="$_ShipName"/>
+      <remove_value name="$_ShipName"/>
       <set_object_name object="this.ship" name="this.ship.knownname + '\033#FFA95908# #TSE-G\033X'"/>
     </do_if>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->

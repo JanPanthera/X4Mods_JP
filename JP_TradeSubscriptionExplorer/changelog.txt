@@ -1,1 +1,2 @@
-~ Updated: Translation Files
+~ Updated: the order tag will first removed from the ships name now before it will added..
+~ Fixed: fix for the issue where the order tag will added every time the player changes an parameter from the order
