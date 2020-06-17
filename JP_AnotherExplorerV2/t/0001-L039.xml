@@ -12,6 +12,12 @@
     <t id="412">Stazioni nemiche?</t>
     <t id="413">Stazioni amichevoli?</t>
     <t id="420">Flotta automatica?</t>
+    <t id="421">Leader della flotta automatica?</t>
+    <t id="422">Colorare il nome della flotta "auto"?</t>
+    <t id="470">Trasparenza</t>
+    <t id="471">Rossa</t>
+    <t id="472">Verde</t>
+    <t id="473">Blu</t>
     <t id="480">Tempo di inattività</t>
     <t id="481">Inattivo: seguire?</t>
     <t id="482">Chi seguire?</t>

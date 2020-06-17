@@ -16,6 +16,28 @@
       <param name="FRIENDLY_STATIONS" text="- {8888888, 413}" comment="Friendly Stations?" type="bool" default="if global.$FriendlyStationsAEV2? then global.$FriendlyStationsAEV2 else true"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="AUTO_FLEET" text="{8888888, 420}" comment="Automatic Fleet?" type="bool" default="if global.$AutoFleetAEV2? then global.$AutoFleetAEV2 else false"/>
+      <param name="IS_AUTO_FLEET_LEADER" text="- {8888888, 421}" comment="Is Leader of automatic Fleet?" type="bool" default="false"/>
+      <param name="COLOR_AUTOFLEET_NAME" text="- {8888888, 422}" comment="Color Automatic Fleet name?" type="bool" default="if global.$ColorAutoFleetNameAEV2? then global.$ColorAutoFleetNameAEV2 else true"/>
+      <param name="AUTOFLEET_NAME_ALPHA" text="- {8888888, 470}" comment="Transparency" type="number" default="if $AutoFleetNameAlphaAEV2? then $AutoFleetNameAlphaAEV2 else 255">
+        <input_param name="step" value="1"/>
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="255"/>
+      </param>
+      <param name="AUTOFLEET_NAME_RED" text="- {8888888, 471}" comment="Red" type="number" default="if $AutoFleetNameRedAEV2? then $AutoFleetNameRedAEV2 else 3">
+        <input_param name="step" value="1"/>
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="255"/>
+      </param>
+      <param name="AUTOFLEET_NAME_GREEN" text="- {8888888, 472}" comment="Green" type="number" default="if $AutoFleetNameGreenAEV2? then $AutoFleetNameGreenAEV2 else 161">
+        <input_param name="step" value="1"/>
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="255"/>
+      </param>
+      <param name="AUTOFLEET_NAME_BLUE" text="- {8888888, 473}" comment="Blue" type="number" default="if $AutoFleetNameBlueAEV2? then $AutoFleetNameBlueAEV2 else 252">
+        <input_param name="step" value="1"/>
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="255"/>
+      </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="IDLE_TIME" text="{8888888, 480}" comment="Idle Time" type="time" default="if global.$IdleTimeAEV2? then global.$IdleTimeAEV2 else 600s">
         <input_param name="min" value="60s"/>
@@ -56,6 +78,7 @@
     <requires>
       <match shiptype="shiptype.lasertower" negate="true"/>
     </requires>
+    <location object="if @$_NearestUnknownObject != null then $_NearestUnknownObject else @this.$CurrentSector" condition="@$_NearestUnknownObject != null or @this.$CurrentSector != null"/>
   </order>
 
   <interrupts>
@@ -73,12 +96,14 @@
 
   <init>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-    <set_value name="$DebugDirectory" exact="'JP_AnotherExplorerV2.logs'"/>
-    <set_value name="$DebugFileName" exact="this.ship.idcode + '.JP_AnotherExplorerV2G.xml.log'"/>
+    
+    <do_if value="$DEBUG gt 0">
+      <set_value name="$DebugDirectory" exact="'JP_AnotherExplorerV2.logs'"/>
+      <set_value name="$DebugFileName" exact="this.ship.idcode + '.JP_AnotherExplorerV2G.xml.log'"/>
+    </do_if>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <set_value name="$Ship" exact="this.ship"/>
-    <set_value name="this.$CurrentSector" exact="null"/>
-    <set_value name="$ExpTotalMultiplier" exact="0.87"/>
+    <set_value name="$ExpMultiplier" exact="0.87"/>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <do_if value="not global.$AnotherExplorerV2SectorBlackList?">
       <create_list name="global.$AnotherExplorerV2SectorBlackList"/>
@@ -88,9 +113,15 @@
     </do_if>
     <append_to_list name="global.$AnotherExplorerV2Ships" exact="this.ship"/>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-    <set_value name="this.$OldName" exact="this.ship.name"/>
     <do_if value="$ADD_ORDER_TAG">
-      <set_object_name object="this.ship" name="this.ship.name + '\033#FFA2560B# #AEV2-G\033X'"/>
+      <set_value name="$_ShipName" exact="$Ship.knownname"/>
+      <set_object_name object="this.ship" name="$_ShipName"/>
+      <substitute_text source="$_ShipName" text="$_ShipName">
+        <replace string="'\033#FFA95908# #AEV2-G\033X'" with="''"/>
+      </substitute_text>
+      <set_object_name object="this.ship" name="$_ShipName"/>
+      <remove_value name="$_ShipName"/>
+      <set_object_name object="this.ship" name="this.ship.knownname + '\033#FFA95908# #AEV2-G\033X'"/>
     </do_if>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <do_if value="$SAVE_SETTINGS">
@@ -123,6 +154,21 @@
       </do_if>
       <do_if value="not global.$AutoFleetAEV2? or @global.$AutoFleetAEV2 != $AUTO_FLEET">
         <set_value name="global.$AutoFleetAEV2" exact="$AUTO_FLEET"/>
+      </do_if>
+      <do_if value="not global.$ColorAutoFleetNameAEV2? or @global.$ColorAutoFleetNameAEV2 != $COLOR_AUTOFLEET_NAME">
+        <set_value name="global.$ColorAutoFleetNameAEV2" exact="$COLOR_AUTOFLEET_NAME"/>
+      </do_if>
+      <do_if value="not global.$AutoFleetNameAlphaAEV2? or @global.$AutoFleetNameAlphaAEV2 != $AUTOFLEET_NAME_ALPHA">
+        <set_value name="global.$AutoFleetNameAlphaAEV2" exact="$AUTOFLEET_NAME_ALPHA"/>
+      </do_if>
+      <do_if value="not global.$AutoFleetNameRedAEV2? or @global.$AutoFleetNameRedAEV2 != $AUTOFLEET_NAME_RED">
+        <set_value name="global.$AutoFleetNameRedAEV2" exact="$AUTOFLEET_NAME_RED"/>
+      </do_if>
+      <do_if value="not global.$AutoFleetNameGreenAEV2? or @global.$AutoFleetNameGreenAEV2 != $AUTOFLEET_NAME_GREEN">
+        <set_value name="global.$AutoFleetNameGreenAEV2" exact="$AUTOFLEET_NAME_GREEN"/>
+      </do_if>
+      <do_if value="not global.$AutoFleetNameBlueAEV2? or @global.$AutoFleetNameBlueAEV2 != $AUTOFLEET_NAME_BLUE">
+        <set_value name="global.$AutoFleetNameBlueAEV2" exact="$AUTOFLEET_NAME_BLUE"/>
       </do_if>
       <do_if value="not global.$IdleTimeAEV2? or @global.$IdleTimeAEV2 != $IDLE_TIME">
         <set_value name="global.$IdleTimeAEV2" exact="$IDLE_TIME"/>
@@ -166,6 +212,11 @@
       <remove_value name="global.$WhoToFollowAEV2"/>
       <remove_value name="global.$IdleFollowAEV2"/>
       <remove_value name="global.$IdleTimeAEV2"/>
+      <remove_value name="global.$ColorAutoFleetNameAEV2"/>
+      <remove_value name="global.$AutoFleetNameAlphaAEV2"/>
+      <remove_value name="global.$AutoFleetNameRedAEV2"/>
+      <remove_value name="global.$AutoFleetNameGreenAEV2"/>
+      <remove_value name="global.$AutoFleetNameBlueAEV2"/>
       <remove_value name="global.$AutoFleetAEV2"/>
       <remove_value name="global.$AddOrderTagAEV2"/>
       <remove_value name="global.$FriendlyStationsAEV2"/>
@@ -186,7 +237,7 @@
     <actions>
 
       <wait exact="1ms"/>
-      <label name="INIT"/>
+      <label name="START_LBL"/>
 
       <do_if value="$DEBUG gt 0">
         <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
@@ -195,7 +246,23 @@
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-      <label name="RESUME"/>
+      <label name="PRE_SETTING_UP_LBL"/>
+      <do_if value="$COLOR_AUTOFLEET_NAME">
+        <run_script name="'JP_CreateColorString_AEV2'">
+          <param name="ALPHA" value="$AUTOFLEET_NAME_ALPHA"/>
+          <param name="RED" value="$AUTOFLEET_NAME_RED"/>
+          <param name="GREEN" value="$AUTOFLEET_NAME_GREEN"/>
+          <param name="BLUE" value="$AUTOFLEET_NAME_BLUE"/>
+          <param name="DEBUG" value="$DEBUG"/>
+          <save_retval name="COLOR_STRING" variable="$_ColorString"/>
+        </run_script>
+        <do_if value="not global.$AEV2_AFCS? or @global.$AEV2_AFCS != $_ColorString">
+          <set_value name="global.$AEV2_AFCS" exact="$_ColorString"/>
+        </do_if>
+        <remove_value name="$_ColorString"/>
+      </do_if>
+
+      <label name="RESUME_LBL"/>
 
       <set_command command="command.explore"/>
       <set_command_action commandaction="commandaction.calculating"/>
@@ -209,76 +276,68 @@
         <param name="ENEMY_STATIONS" value="$ENEMY_STATIONS"/>
         <param name="FRIENDLY_STATIONS" value="$FRIENDLY_STATIONS"/>
         <param name="DEBUG" value="$DEBUG"/>
-        <save_retval name="NEAREST_UNKNOWN_OBJECT" variable="$NearestUnknownObject"/>
+        <save_retval name="NEAREST_UNKNOWN_OBJECT" variable="$_NearestUnknownObject"/>
       </run_script>
 
-      <do_if value="$NearestUnknownObject == 'NoUnknownObjectFound'">
-        <run_script name="'JP_IdleReturnHome_AEV2'">
-          <param name="IDLE_FOLLOW" value="$IDLE_FOLLOW"/>
-          <param name="WHO_TO_FOLLOW" value="$WHO_TO_FOLLOW"/>
-          <param name="IDLE_DOCKING" value="$IDLE_DOCKING"/>
-          <param name="WHERE_TO_DOCK" value="$WHERE_TO_DOCK"/>
-          <param name="IDLE_RANDOM_MOVEMENT" value="$IDLE_RANDOM_MOVEMENT"/>
-          <param name="IN_WHICH_SECTOR" value="$IN_WHICH_SECTOR"/>
-          <param name="IDLE_MOVE_TO" value="$IDLE_MOVE_TO"/>
-          <param name="WHERE_TO_MOVE" value="$WHERE_TO_MOVE"/>
-          <param name="IDLE_TIME" value="$IDLE_TIME"/>
-          <param name="DEBUG" value="$DEBUG"/>
-        </run_script>
-        <set_object_name object="this.ship" name="if $ADD_ORDER_TAG then this.$OldName + '\033#FFA95908# #AEV2-G\033X' else this.$OldName"/>
-        <resume label="RESUME"/>
+      <do_if value="$_NearestUnknownObject == 'NoUnknownObjectFound'">
+        <resume label="IDLE_RETURN_HOME_LBL"/>
       </do_if>
-      <do_else>
-        <set_value name="this.$CurrentSector" exact="$NearestUnknownObject.sector"/>
-        <append_to_list name="global.$AnotherExplorerV2SectorBlackList" exact="this.$CurrentSector"/>
-        <remove_value name="$NearestUnknownObject"/>
-      </do_else>
 
-      <label name="MOVE_TO_SECTOR"/>
+      <set_value name="this.$CurrentSector" exact="$_NearestUnknownObject.sector"/>
+      <append_to_list name="global.$AnotherExplorerV2SectorBlackList" exact="this.$CurrentSector"/>
+
+      <label name="MOVE_TO_SECTOR_LBL"/>
       <do_if value="$Ship.sector != this.$CurrentSector">
         <set_command command="command.move" param="this.$CurrentSector"/>
-        <do_if value="$DEBUG gt 0">
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'Moving to: ' + this.$CurrentSector.knownname"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
-        </do_if>
         <run_script name="'move.generic'">
           <param name="destination" value="this.$CurrentSector"/>
           <param name="endintargetzone" value="true"/>
           <param name="recallsubordinates" value="true"/>
         </run_script>
-        <wait exact="1ms"/>
+        <do_if value="this.zone.isclass.highway">
+          <get_safe_pos result="$_SafePos" zone="$Ship.zone" object="$Ship" direction="quadrant.front" radius="$Ship.size" angle="45deg"/>
+          <move_to object="$Ship" destination="$Ship.zone" uselocalhighways="false" finishonapproach="true" abortpath="true">
+            <position value="$_SafePos"/>
+          </move_to>
+          <remove_value name="$_SafePos"/>
+        </do_if>
+        <wait exact="1s"/>
         <do_if value="$Ship.sector != this.$CurrentSector">
-          <resume label="MOVE_TO_SECTOR"/>
+          <resume label="MOVE_TO_SECTOR_LBL"/>
         </do_if>
       </do_if>
 
-      <label name="EXPLORE_SECTOR"/>
-      <run_script name="'JP_GetNearestUnknownObject_AEV2'">
-        <param name="GATES" value="$GATES"/>
-        <param name="STATIONS" value="$STATIONS"/>
-        <param name="ENEMY_STATIONS" value="$ENEMY_STATIONS"/>
-        <param name="FRIENDLY_STATIONS" value="$FRIENDLY_STATIONS"/>
-        <param name="SECTOR" value="this.$CurrentSector"/>
+      <label name="EXPLORE_OBJECT_LBL"/>
+      <run_script name="'JP_ExploreObject'">
+        <param name="OBJECT" value="$_NearestUnknownObject"/>
         <param name="DEBUG" value="$DEBUG"/>
-        <save_retval name="NEAREST_UNKNOWN_OBJECT" variable="$NearestUnknownObject"/>
       </run_script>
-      <do_if value="$NearestUnknownObject != 'NoUnknownObjectFound'">
-        <run_script name="'JP_ExploreObject'">
-          <param name="OBJECT" value="$NearestUnknownObject"/>
-          <param name="DEBUG" value="$DEBUG"/>
-        </run_script>
-        <apply_experience entity="$Ship.pilot" experience="'JP_SHIP_OBJECT_DISCOVERED'" factor="$ExpTotalMultiplier"/>
-        <apply_experience object="$Ship" experience="'JP_SHIP_OBJECT_DISCOVERED'" role="entityrole.service" factor="$ExpTotalMultiplier"/>
-        <resume label="EXPLORE_SECTOR"/>
-      </do_if>
+      <apply_experience entity="$Ship.pilot" experience="'JP_SHIP_OBJECT_DISCOVERED'" factor="$ExpMultiplier"/>
+      <apply_experience object="$Ship" experience="'JP_SHIP_OBJECT_DISCOVERED'" role="entityrole.service" factor="$ExpMultiplier"/>
 
       <remove_from_list name="global.$AnotherExplorerV2SectorBlackList" exact="this.$CurrentSector"/>
+      <remove_value name="$_NearestUnknownObject"/>
 
-      <wait exact="1ms"/>
-      <resume label="RESUME"/>
+      <wait exact="1s"/>
+      <resume label="RESUME_LBL"/>
 
-      <label name="FINISH"/>
+      <label name="IDLE_RETURN_HOME_LBL"/>
+      <run_script name="'JP_IdleReturnHome_AEV2'">
+        <param name="IDLE_TIME" value="$IDLE_TIME"/>
+        <param name="IDLE_FOLLOW" value="$IDLE_FOLLOW"/>
+        <param name="WHO_TO_FOLLOW" value="$WHO_TO_FOLLOW"/>
+        <param name="IDLE_DOCKING" value="$IDLE_DOCKING"/>
+        <param name="WHERE_TO_DOCK" value="$WHERE_TO_DOCK"/>
+        <param name="IDLE_RANDOM_MOVEMENT" value="$IDLE_RANDOM_MOVEMENT"/>
+        <param name="IN_WHICH_SECTOR" value="$IN_WHICH_SECTOR"/>
+        <param name="IDLE_MOVE_TO" value="$IDLE_MOVE_TO"/>
+        <param name="WHERE_TO_MOVE" value="$WHERE_TO_MOVE"/>
+        <param name="DEBUG" value="$DEBUG"/>
+      </run_script>
+      <wait exact="1s"/>
+      <resume label="RESUME_LBL"/>
+
+      <label name="FINISH_LBL"/>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
@@ -288,27 +347,36 @@
       </do_if>
 
       <label name="CLEANUP"/>
+      <do_if value="$ADD_ORDER_TAG">
+        <set_value name="$_ShipName" exact="$Ship.knownname"/>
+        <substitute_text source="$_ShipName" text="$_ShipName">
+          <replace string="'\033#FFA95908# #AEV2-G\033X'" with="''"/>
+        </substitute_text>
+        <set_object_name object="this.ship" name="$_ShipName"/>
+        <remove_value name="$_ShipName"/>
+      </do_if>
+      <do_if value="global.$AnotherExplorerV2SectorBlackList? and @this.$CurrentSector != null">
+        <remove_from_list name="global.$AnotherExplorerV2SectorBlackList" exact="this.$CurrentSector"/>
+      </do_if>
       <do_if value="global.$AnotherExplorerV2Ships?">
         <remove_from_list name="global.$AnotherExplorerV2Ships" exact="this.ship"/>
       </do_if>
-      <do_if value="global.$AnotherExplorerV2SectorBlackList?">
-        <remove_from_list name="global.$AnotherExplorerV2SectorBlackList" exact="this.$CurrentSector"/>
-      </do_if>
-      <do_if value="global.$AnotherExplorerV2Ships.count == 0">
-        <remove_value name="global.$AnotherExplorerV2SectorBlackList"/>
+      <do_if value="@global.$AnotherExplorerV2Ships.count == 0">
         <remove_value name="global.$AnotherExplorerV2Ships"/>
+        <remove_value name="global.$AnotherExplorerV2SectorBlackList"/>
       </do_if>
-      <do_if value="$ADD_ORDER_TAG and this.$OldName?">
-        <set_object_name object="this.ship" name="this.$OldName"/>
+      <do_if value="this.$CurrentSector?">
+        <remove_value name="this.$CurrentSector"/>
       </do_if>
-      <remove_value name="$ExpTotalMultiplier"/>
-      <remove_value name="this.$OldName"/>
-      <remove_value name="this.$CurrentSector"/>
-      <remove_value name="$Ship"/>
-      <remove_value name="$DebugFileName"/>
-      <remove_value name="$DebugDirectory"/>
 
-      <label name="END"/>
+      <remove_value name="$Ship"/>
+      <remove_value name="$ExpMultiplier"/>
+      <do_if value="$DEBUG gt 0">
+        <remove_value name="$DebugFileName"/>
+        <remove_value name="$DebugDirectory"/>
+      </do_if>
+
+      <label name="END_LBL"/>
       <wait exact="1ms"/>
       <set_order_syncpoint_reached order="this.ship.order"/>
       <cancel_order order="this.ship.order" />
@@ -317,20 +385,34 @@
   </attention>
 
   <on_abort>
+    <do_if value="$ADD_ORDER_TAG">
+      <set_value name="$_ShipName" exact="$Ship.knownname"/>
+      <substitute_text source="$_ShipName" text="$_ShipName">
+        <replace string="'\033#FFA95908# #AEV2-G\033X'" with="''"/>
+      </substitute_text>
+      <set_object_name object="this.ship" name="$_ShipName"/>
+      <remove_value name="$_ShipName"/>
+    </do_if>
+    <do_if value="global.$AnotherExplorerV2SectorBlackList? and @this.$CurrentSector != null">
+      <remove_from_list name="global.$AnotherExplorerV2SectorBlackList" exact="this.$CurrentSector"/>
+    </do_if>
     <do_if value="global.$AnotherExplorerV2Ships?">
       <remove_from_list name="global.$AnotherExplorerV2Ships" exact="this.ship"/>
     </do_if>
-    <do_if value="global.$AnotherExplorerV2SectorBlackList?">
-      <remove_from_list name="global.$AnotherExplorerV2SectorBlackList" exact="this.$CurrentSector"/>
-    </do_if>
-    <do_if value="global.$AnotherExplorerV2Ships.count == 0">
-      <remove_value name="global.$AnotherExplorerV2SectorBlackList"/>
+    <do_if value="@global.$AnotherExplorerV2Ships.count == 0">
       <remove_value name="global.$AnotherExplorerV2Ships"/>
+      <remove_value name="global.$AnotherExplorerV2SectorBlackList"/>
     </do_if>
-    <do_if value="$ADD_ORDER_TAG and this.$OldName?">
-      <set_object_name object="this.ship" name="this.$OldName"/>
+    <do_if value="this.$CurrentSector?">
+      <remove_value name="this.$CurrentSector"/>
     </do_if>
-    <remove_value name="this.$OldName"/>
+
+    <remove_value name="$Ship"/>
+    <remove_value name="$ExpMultiplier"/>
+    <do_if value="$DEBUG gt 0">
+      <remove_value name="$DebugFileName"/>
+      <remove_value name="$DebugDirectory"/>
+    </do_if>
   </on_abort>
 
 </aiscript>
