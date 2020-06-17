@@ -10,8 +10,8 @@
       <param name="FRIENDLY_SECTORS" text="{8888888, 1902}" comment="Friendly Sectors?" type="bool" default="if global.$FriendlySectorsTSE? then global.$FriendlySectorsTSE else true"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="AUTO_FLEET" text="{8888888, 1910}" comment="Automatic Fleet?" type="bool" default="if global.$AutoFleetTSE? then global.$AutoFleetTSE else false"/>
-      <param name="IS_AUTO_FLEET_LEADER" text="IsAutoFleetLeader?" comment="IsAutoFleetLeader?" type="bool" default="false"/>
-      <param name="COLOR_AUTOFLEET_NAME" text="{8888888, 1911}" comment="Color Automatic Fleet name?" type="bool" default="if global.$ColorAutoFleetNameTSE? then global.$ColorAutoFleetNameTSE else true"/>
+      <param name="IS_AUTO_FLEET_LEADER" text="{8888888, 1911}" comment="Is Leader of automatic Fleet?" type="bool" default="false"/>
+      <param name="COLOR_AUTOFLEET_NAME" text="{8888888, 1912}" comment="Color Automatic Fleet name?" type="bool" default="if global.$ColorAutoFleetNameTSE? then global.$ColorAutoFleetNameTSE else true"/>
       <param name="AUTOFLEET_NAME_ALPHA" text="- {8888888, 1970}" comment="Transparency" type="number" default="if $AutoFleetNameAlphaTSE? then $AutoFleetNameAlphaTSE else 255">
         <input_param name="step" value="1"/>
         <input_param name="min" value="0"/>
@@ -91,11 +91,13 @@
 
   <init>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-    <set_value name="$DebugDirectory" exact="'JP_TradeSubscriptionExplorer.logs'"/>
-    <set_value name="$DebugFileName" exact="this.ship.idcode + '.JP_TradeSubscriptionExplorerG.xml.log'"/>
+    <do_if value="$DEBUG gt 0">
+      <set_value name="$DebugDirectory" exact="'JP_TradeSubscriptionExplorer.logs'"/>
+      <set_value name="$DebugFileName" exact="this.ship.idcode + '.JP_TradeSubscriptionExplorerG.xml.log'"/>
+    </do_if>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <set_value name="$Ship" exact="this.ship"/>
-    <set_value name="$ExpMultiplier" exact="0.87"/>
+    <set_value name="$ExpMultiplier" exact="0.83"/>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <do_if value="not global.$TradeSubscriptionExplorerSectorBlackList?">
       <create_list name="global.$TradeSubscriptionExplorerSectorBlackList"/>
@@ -202,7 +204,7 @@
     <actions>
 
       <wait exact="1ms"/>
-      <label name="START"/>
+      <label name="START_LBL"/>
 
       <do_if value="$DEBUG gt 0">
         <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
@@ -211,7 +213,7 @@
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-      <label name="PRE_SETTING_UP"/>
+      <label name="PRE_SETTING_UP_LBL"/>
       <do_if value="$COLOR_AUTOFLEET_NAME">
         <run_script name="'JP_CreateColorString_TSE'">
           <param name="ALPHA" value="$AUTOFLEET_NAME_ALPHA"/>
@@ -247,7 +249,7 @@
       <set_value name="this.$CurrentSector" exact="$_NearestStation.sector"/>
       <append_to_list name="global.$TradeSubscriptionExplorerSectorBlackList" exact="this.$CurrentSector"/>
 
-      <label name="MOVE_TO_SECTOR"/>
+      <label name="MOVE_TO_SECTOR_LBL"/>
       <do_if value="$Ship.sector != this.$CurrentSector">
         <set_command command="command.move" param="this.$CurrentSector"/>
         <run_script name="'move.generic'">
@@ -255,13 +257,20 @@
           <param name="endintargetzone" value="true"/>
           <param name="recallsubordinates" value="true"/>
         </run_script>
+        <do_if value="this.zone.isclass.highway">
+          <get_safe_pos result="$_SafePos" zone="$Ship.zone" object="$Ship" direction="quadrant.front" radius="$Ship.size" angle="45deg"/>
+          <move_to object="$Ship" destination="$Ship.zone" uselocalhighways="false" finishonapproach="true" abortpath="true">
+            <position value="$_SafePos"/>
+          </move_to>
+          <remove_value name="$_SafePos"/>
+        </do_if>
         <wait exact="1s"/>
         <do_if value="$Ship.sector != this.$CurrentSector">
-          <resume label="MOVE_TO_SECTOR"/>
+          <resume label="MOVE_TO_SECTOR_LBL"/>
         </do_if>
       </do_if>
 
-      <label name="UPDATE_TRADE_SUBSCRIPTION"/>
+      <label name="UPDATE_TRADE_SUBSCRIPTION_LBL"/>
       <run_script name="'JP_ExploreTradeSubscription'">
         <param name="STATION" value="$_NearestStation"/>
         <param name="DEBUG" value="$DEBUG"/>
@@ -274,7 +283,7 @@
 
       <wait exact="1s"/>
       <resume label="RESUME_LBL"/>
-      
+
       <label name="IDLE_RETURN_HOME_LBL"/>
       <run_script name="'JP_IdleReturnHome_TSE'">
         <param name="IDLE_TIME" value="$IDLE_TIME"/>
@@ -291,7 +300,7 @@
       <wait exact="1s"/>
       <resume label="RESUME_LBL"/>
 
-      <label name="FINISH"/>
+      <label name="FINISH_LBL"/>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
@@ -300,7 +309,7 @@
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
       </do_if>
 
-      <label name="CLEANUP"/>
+      <label name="CLEANUP_LBL"/>
       <do_if value="$ADD_ORDER_TAG">
         <set_value name="$_ShipName" exact="$Ship.knownname"/>
         <substitute_text source="$_ShipName" text="$_ShipName">
@@ -309,7 +318,7 @@
         <set_object_name object="this.ship" name="$_ShipName"/>
         <remove_value name="$_ShipName"/>
       </do_if>
-      <do_if value="global.$TradeSubscriptionExplorerSectorBlackList?">
+      <do_if value="global.$TradeSubscriptionExplorerSectorBlackList? and @this.$CurrentSector != null">
         <remove_from_list name="global.$TradeSubscriptionExplorerSectorBlackList" exact="this.$CurrentSector"/>
       </do_if>
       <do_if value="global.$TradeSubscriptionExplorerShips?">
@@ -330,7 +339,7 @@
         <remove_value name="$DebugDirectory"/>
       </do_if>
 
-      <label name="END"/>
+      <label name="END_LBL"/>
       <wait exact="1ms"/>
       <set_order_syncpoint_reached order="this.ship.order"/>
       <cancel_order order="this.ship.order" />

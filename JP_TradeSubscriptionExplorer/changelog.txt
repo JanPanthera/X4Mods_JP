@@ -1,7 +1,1 @@
-~ Added: Icon with blue path shown on map targeting the actual station
-~ Added: Icon with blue path shown on map targeting the actual idle object (following, docking) or Sector (moving randomly, moving to)
-~ Updated: Refactored JP_IdleReturnHome_ASE
-~ Updated: Refactored JP_TradeSubscriptionExplorerS
-~ Updated: Refactored JP_TradeSubscriptionExplorerG
-~ Updated: Refactored the automatic fleet system
-~ Fixed: Bug where the order tag was multiple times added
+~ Updated: Translation Files
