@@ -2,30 +2,30 @@
 
 <aiscript name="JP_IdleReturnHome_SD" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd">
 
-  <order id="JP_IdleReturnHome_SD" name="IdleReturnHome_SD JP" category="navigation" infinite="false">
+  <order id="JP_IdleReturnHome_SD" name="IdleReturnHome_SD" category="navigation" infinite="false">
     <params>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="IDLE_TIME" text="IdleTime" comment="IdleTime" type="time" default="60s">
+      <param name="IDLE_TIME" text="{8888888, 1480}" comment="Idle Time" type="time" default="60s">
         <input_param name="min" value="60s"/>
         <input_param name="max" value="3600s"/>
         <input_param name="step" value="10s"/>
       </param>
-      <param name="IDLE_FOLLOW" text="{8888888, 1035}" comment="Idle: Follow?" type="bool" default="false"/>
-      <param name="WHO_TO_FOLLOW" text="{8888888, 1036}" comment="Who to follow?" type="object" default="null">
+      <param name="IDLE_FOLLOW" text="{8888888, 1481}" comment="Idle: Follow?" type="bool" default="false"/>
+      <param name="WHO_TO_FOLLOW" text="{8888888, 1482}" comment="Who to follow?" type="object" default="null">
         <input_param name="class" value="[class.ship]"/>
         <input_param name="owner" value="this.ship.owner"/>
       </param>
-      <param name="IDLE_DOCKING" text="{8888888, 1037}" comment="Idle: Docking?" type="bool" default="false"/>
-      <param name="WHERE_TO_DOCK" text="{8888888, 1038}" comment="Where to dock?" type="object" default="null">
+      <param name="IDLE_DOCKING" text="{8888888, 1483}" comment="Idle: Docking?" type="bool" default="false"/>
+      <param name="WHERE_TO_DOCK" text="{8888888, 1484}" comment="Where to dock?" type="object" default="null">
         <input_param name="class" value="[class.station, class.ship_m, class.ship_l, class.ship_xl]"/>
         <input_param name="owner" value="this.ship.owner"/>
       </param>
-      <param name="IDLE_RANDOM_MOVEMENT" text="{8888888, 1039}" comment="Idle: Random movement?" type="bool" default="false"/>
-      <param name="IN_WHICH_SECTOR" text="{8888888, 1040}" comment="In which sector?" type="position" default="[this.ship.sector, this.ship.position]">
+      <param name="IDLE_RANDOM_MOVEMENT" text="{8888888, 1485}" comment="Idle: Random movement?" type="bool" default="false"/>
+      <param name="IN_WHICH_SECTOR" text="{8888888, 1486}" comment="In which sector?" type="position" default="[this.ship.sector, this.ship.position]">
         <input_param name="class" value="class.sector"/>
       </param>
-      <param name="IDLE_MOVE_TO" text="{8888888, 1041}" comment="Idle: Move to?" type="bool" default="false"/>
-      <param name="WHERE_TO_MOVE" text="{8888888, 1042}" comment="Where to move?" type="position" default="[this.ship.sector, this.ship.position]">
+      <param name="IDLE_MOVE_TO" text="{8888888, 1487}" comment="Idle: Move to?" type="bool" default="false"/>
+      <param name="WHERE_TO_MOVE" text="{8888888, 1488}" comment="Where to move?" type="position" default="[this.ship.sector, this.ship.position]">
         <input_param name="class" value="class.sector"/>
       </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -40,6 +40,7 @@
     <requires>
       <match shiptype="shiptype.lasertower" negate="true"/>
     </requires>
+    <location object="$LocationUsedInUI" condition="@$LocationUsedInUI != null"/>
   </order>
 
   <interrupts>
@@ -137,12 +138,13 @@
         <wait exact="1s"/>
         <resume label="RESUME_LBL"/>
       </do_if>
+      <set_value name="$LocationUsedInUI" exact="$WHO_TO_FOLLOW"/>
       <do_if value="$Ship.sector != $_IdleSector">
         <set_value name="$CurrentSector" exact="$_IdleSector"/>
         <wait exact="1s"/>
         <resume label="MOVE_TO_SECTOR_LBL"/>
       </do_if>
-      <set_object_name object="$Ship" name="$Ship.name + '\033#FFCEFBA1# ~ nothing to do - following..\033X'"/>
+      <set_object_name object="$Ship" name="$Ship.name + '\033#FFCEFBA1# ~ Idle - following..\033X'"/>
       <set_value name="$InitialTime" exact="player.age"/>
       <get_safe_pos result="$SafePosition" zone="$_IdleSector" object="$WHO_TO_FOLLOW" directionobject="$Ship" radius="($WHO_TO_FOLLOW.size + $Ship.size) / 2"/>
       <label name="MOVE_FOLLOW_LBL"/>
@@ -172,6 +174,7 @@
         <wait exact="1s"/>
         <resume label="MOVE_FOLLOW_LBL"/>
       </do_if>
+      <set_object_name object="$Ship" name="$OldShipName"/>
       <remove_value name="$_IdleSector"/>
       <wait exact="1s"/>
       <resume label="FINISH_LBL"/>
@@ -185,18 +188,20 @@
         <wait exact="1s"/>
         <resume label="RESUME_LBL"/>
       </do_if>
+      <set_value name="$LocationUsedInUI" exact="$WHERE_TO_DOCK"/>
       <do_if value="$Ship.sector != $_ObjectToDockAt.sector">
         <set_value name="$CurrentSector" exact="$_ObjectToDockAt.sector"/>
         <wait exact="1s"/>
         <resume label="MOVE_TO_SECTOR_LBL"/>
       </do_if>
       <set_command command="command.dockat" param="$WHERE_TO_DOCK"/>
-      <set_object_name object="$Ship" name="$Ship.name + '\033#FFCEFBA1# ~ nothing to do - docking at %1\033X'.[$WHERE_TO_DOCK.knownname]"/>
+      <set_object_name object="$Ship" name="$Ship.name + '\033#FFCEFBA1# ~ Idle - docking at %1\033X'.[$WHERE_TO_DOCK.knownname]"/>
       <create_order object="$Ship" id="'DockAndWait'" immediate="true">
         <param name="destination" value="$WHERE_TO_DOCK"/>
         <param name="timeout" value="$IDLE_TIME"/>
         <param name="dockfollowers" value="true"/>
       </create_order>
+      <set_object_name object="$Ship" name="$OldShipName"/>
       <remove_value name="$_ObjectToDockAt"/>
       <wait exact="1s"/>
       <resume label="FINISH_LBL"/>
@@ -210,19 +215,21 @@
         <wait exact="1s"/>
         <resume label="RESUME_LBL"/>
       </do_if>
+      <set_value name="$LocationUsedInUI" exact="$IN_WHICH_SECTOR.{1}"/>
       <do_if value="$Ship.sector != $_IdleSector">
         <set_value name="$CurrentSector" exact="$_IdleSector"/>
         <wait exact="1s"/>
         <resume label="MOVE_TO_SECTOR_LBL"/>
       </do_if>
       <set_command command="command.patrol"/>
-      <set_object_name object="$Ship" name="$Ship.name + '\033#FFCEFBA1# ~ nothing to do - moving randomly\033X'"/>
+      <set_object_name object="$Ship" name="$Ship.name + '\033#FFCEFBA1# ~ Idle - moving randomly\033X'"/>
       <run_script name="'move.random'">
         <param name="TimeOut" value="$IDLE_TIME"/>
         <param name="Anchor" value="$_IdleSector"/>
         <param name="Offset" value="$_IdleSector.coreposition"/>
         <param name="MaxDistance" value="10km"/>
       </run_script>
+      <set_object_name object="$Ship" name="$OldShipName"/>
       <remove_value name="$_IdleSector"/>
       <wait exact="1s"/>
       <resume label="FINISH_LBL"/>
@@ -236,18 +243,21 @@
         <wait exact="1s"/>
         <resume label="RESUME_LBL"/>
       </do_if>
+      <set_value name="$LocationUsedInUI" exact="$WHERE_TO_MOVE.{1}"/>
       <do_if value="$Ship.sector != $_IdleSector">
         <set_value name="$CurrentSector" exact="$_IdleSector"/>
         <wait exact="1s"/>
         <resume label="MOVE_TO_SECTOR_LBL"/>
       </do_if>
       <set_command command="command.move" param="$_IdleSector"/>
-      <set_object_name object="$Ship" name="$Ship.knownname + '\033#FFCEFBA1# ~ nothing to do - waiting\033X'"/>
+      <set_object_name object="$Ship" name="$Ship.knownname + '\033#FFCEFBA1# ~ Idle - move to waiting position\033X'"/>
       <move_to object="$Ship" destination="$_IdleSector" finishonapproach="false" forceposition="true" travel="true">
         <position value="$WHERE_TO_MOVE.{2}"/>
       </move_to>
       <stop_moving object="$Ship"/>
+      <set_object_name object="$Ship" name="$OldShipName + '\033#FFCEFBA1# ~ Idle - waiting some time\033X'"/>
       <wait exact="$IDLE_TIME"/>
+      <set_object_name object="$Ship" name="$OldShipName"/>
       <remove_value name="$_IdleSector"/>
       <wait exact="1s"/>
       <resume label="FINISH_LBL"/>
@@ -255,7 +265,7 @@
 
       <label name="MOVE_TO_SECTOR_LBL"/>
       <set_command command="command.move" param="$CurrentSector"/>
-      <set_object_name object="$Ship" name="$Ship.knownname + '\033#FFCEFBA1# ~ going idle\033X'"/>
+      <set_object_name object="$Ship" name="$Ship.knownname + '\033#FFCEFBA1# ~ moving to Idle Sector..\033X'"/>
       <run_script name="'move.generic'">
         <param name="destination" value="$CurrentSector"/>
         <param name="endintargetzone" value="true"/>
@@ -266,7 +276,9 @@
       <resume label="RESUME_LBL"/>
 
       <label name="FINISH_LBL"/>
-      <set_object_name object="$Ship" name="$OldShipName"/>
+      <do_if value="$Ship.knownname != $OldShipName">
+        <set_object_name object="$Ship" name="$OldShipName"/>
+      </do_if>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 

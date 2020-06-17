@@ -80,6 +80,7 @@
     <requires>
       <match shiptype="shiptype.lasertower" negate="true"/>
     </requires>
+    <location object="$_NearestObjectToMark" condition="@$_NearestObjectToMark"/>
   </order>
 
   <interrupts>
@@ -97,17 +98,26 @@
 
   <init>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-    <set_value name="$DebugDirectory" exact="'JP_SatelliteDropper.logs'"/>
-    <set_value name="$DebugFileName" exact="this.ship.idcode + '.JP_SatelliteDropperG.xml.log'"/>
+    <do_if value="$DEBUG gt 0">
+      <set_value name="$DebugDirectory" exact="'JP_SatelliteDropper.logs'"/>
+      <set_value name="$DebugFileName" exact="this.ship.idcode + '.JP_SatelliteDropperG.xml.log'"/>
+    </do_if>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <set_value name="$Ship" exact="this.ship"/>
-    <set_value name="$ExpTotalMultiplier" exact="0.89"/>
+    <set_value name="$ExpMultiplier" exact="0.89"/>
+    <!-- TODO: Try to get modded satellites here if MK1 and MK2 are not checked as option.. or give an boolean that enables
+               that the script looks for satellites already in cargo bay and uses this for placing and resupplying -->
     <set_value name="$Satellite" exact="if $MK2 then ware.satellite_mk2 else ware.satellite_mk1"/>
-    <set_value name="$IdleTime" exact="$IDLE_TIME"/>
-    <set_value name="$ResumeLabel" exact="'RESUME_LBL'"/>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <do_if value="$ADD_ORDER_TAG">
-      <set_object_name object="this.ship" name="this.ship.name + '\033#FFA95908# #SD-G\033X'"/>
+      <set_value name="$_ShipName" exact="$Ship.knownname"/>
+      <set_object_name object="this.ship" name="$_ShipName"/>
+      <substitute_text source="$_ShipName" text="$_ShipName">
+        <replace string="'\033#FFA95908# #SD-G\033X'" with="''"/>
+      </substitute_text>
+      <set_object_name object="this.ship" name="$_ShipName"/>
+      <remove_value name="$_ShipName"/>
+      <set_object_name object="this.ship" name="this.ship.knownname + '\033#FFA95908# #SD-G\033X'"/>
     </do_if>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <do_if value="$SAVE_SETTINGS">
@@ -266,8 +276,8 @@
   <attention min="unknown">
     <actions>
 
-      <wait exact="1ms"/>
-      <label name="INIT_LBL"/>
+      <wait exact="1s"/>
+      <label name="START_LBL"/>
       <cancel_all_orders object="this.ship"/>
 
       <do_if value="$DEBUG gt 0">
@@ -291,24 +301,21 @@
         </run_script>
         <do_if value="$_Result == 'NotEnoughMoneyForResuppling'">
           <set_value name="$IdleTime" exact="20s"/>
-          <set_value name="$ResumeLabel" exact="'RESTOCK_SATELLITES_LBL'"/>
-          <resume label="IDLE_RETURN_HOME"/>
+          <wait exact="5s"/>
+          <resume label="RESUME_LBL"/>
         </do_if>
         <do_if value="$_Result == 'NoStationsFoundWhereWeCanResupply'">
           <set_value name="$IdleTime" exact="20s"/>
-          <set_value name="$ResumeLabel" exact="'RESTOCK_SATELLITES_LBL'"/>
-          <resume label="IDLE_RETURN_HOME"/>
+          <wait exact="5s"/>
+          <resume label="RESUME_LBL"/>
         </do_if>
       </do_if>
       <do_if value="$Ship.ammostorage.{$Satellite.objectmacro}.count le 0 and not $RESTOCK_SATELLITES">
         <show_help custom="'JP_SatelliteDropper:\n' +
                            'Ship ' + $Ship.knownname + ' has no satellites and automatic restocking turned off.. canceling the order.'" log="true" color="[160, 0, 0, 256]"/>
-        <set_value name="$IdleTime" exact="30s"/>
-        <set_value name="$ResumeLabel" exact="'RESTOCK_SATELLITES_LBL'"/>
-        <resume label="IDLE_RETURN_HOME"/>
+        <wait exact="5s"/>
+        <resume label="RESUME_LBL"/>
       </do_if>
-
-      <set_command_action commandaction="commandaction.calculating"/>
 
       <run_script name="'JP_GetNearestObjectToMark'">
         <param name="SATELLITE_MACRO" value="$Satellite.objectmacro"/>
@@ -341,11 +348,10 @@
       </run_script>
 
       <do_if value="$_NearestObjectToMark == 'NoObjectWithoutSatellitesFound'">
-        <set_value name="$IdleTime" exact="$IDLE_TIME"/>
-        <set_value name="$ResumeLabel" exact="'RESUME_LBL'"/>
-        <resume label="IDLE_RETURN_HOME"/>
+        <resume label="IDLE_RETURN_HOME_LBL"/>
       </do_if>
 
+      <label name="MOVE_TO_SECTOR_LBL"/>
       <do_if value="$Ship.sector != $_NearestObjectToMark.sector">
         <set_command command="command.move" param="$_NearestObjectToMark.sector"/>
         <run_script name="'move.generic'">
@@ -353,24 +359,36 @@
           <param name="endintargetzone" value="true"/>
           <param name="recallsubordinates" value="true"/>
         </run_script>
+        <do_if value="this.zone.isclass.highway">
+          <get_safe_pos result="$_SafePos" zone="$Ship.zone" object="$Ship" direction="quadrant.front" radius="$Ship.size" angle="45deg"/>
+          <move_to object="$Ship" destination="$Ship.zone" uselocalhighways="false" finishonapproach="true" abortpath="true">
+            <position value="$_SafePos"/>
+          </move_to>
+          <remove_value name="$_SafePos"/>
+        </do_if>
+        <wait exact="1s"/>
+        <do_if value="$Ship.sector != $_NearestObjectToMark.sector">
+          <resume label="MOVE_TO_SECTOR_LBL"/>
+        </do_if>
       </do_if>
 
+      <label name="PLACE_SATELLITE_LBL"/>
       <run_script name="'JP_PlaceSatelliteToObject_SD'">
         <param name="MK2" value="$MK2"/>
         <param name="OBJECT" value="$_NearestObjectToMark"/>
         <param name="DEBUG" value="$DEBUG"/>
       </run_script>
-
-      <apply_experience entity="$Ship.pilot" experience="'JP_SHIP_SATELLITE_PLACE'" factor="$ExpTotalMultiplier"/>
-      <apply_experience object="$Ship" experience="'JP_SHIP_SATELLITE_PLACE'" role="entityrole.service" factor="$ExpTotalMultiplier"/>
+      <apply_experience entity="$Ship.pilot" experience="'JP_SHIP_SATELLITE_PLACE'" factor="$ExpMultiplier"/>
+      <apply_experience object="$Ship" experience="'JP_SHIP_SATELLITE_PLACE'" role="entityrole.service" factor="$ExpMultiplier"/>
 
       <remove_value name="$_NearestObjectToMark"/>
 
-      <wait min="1000ms" max="2000ms" profile="bell"/>
+      <wait exact="1s"/>
       <resume label="RESUME_LBL"/>
 
-      <label name="IDLE_RETURN_HOME"/>
-      <run_script name="'JP_IdleReturnHome_SD'">
+      <label name="IDLE_RETURN_HOME_LBL"/>
+      <create_order id="'JP_IdleReturnHome_SD'" object="$Ship">
+        <param name="IDLE_TIME" value="$IDLE_TIME"/>
         <param name="IDLE_FOLLOW" value="$IDLE_FOLLOW"/>
         <param name="WHO_TO_FOLLOW" value="$WHO_TO_FOLLOW"/>
         <param name="IDLE_DOCKING" value="$IDLE_DOCKING"/>
@@ -379,26 +397,12 @@
         <param name="IN_WHICH_SECTOR" value="$IN_WHICH_SECTOR"/>
         <param name="IDLE_MOVE_TO" value="$IDLE_MOVE_TO"/>
         <param name="WHERE_TO_MOVE" value="$WHERE_TO_MOVE"/>
-        <param name="IDLE_TIME" value="$IdleTime"/>
         <param name="DEBUG" value="$DEBUG"/>
-      </run_script>
-      <do_if value="$ResumeLabel == 'RESUME_LBL'">
-        <resume label="RESUME_LBL"/>
-      </do_if>
-      <do_if value="$ResumeLabel == 'RESTOCK_SATELLITES_LBL'">
-        <resume label="RESTOCK_SATELLITES_LBL"/>
-      </do_if>
+      </create_order>
+      <wait exact="1s"/>
+      <resume label="RESUME_LBL"/>
 
       <label name="FINISH_LBL"/>
-
-      <do_if value="$ADD_ORDER_TAG">
-        <set_value name="$_ShipName" exact="$Ship.knownname"/>
-        <substitute_text source="$_ShipName" text="$_ShipName">
-          <replace string="'\033#FFA95908# #SD-G\033X'" with="''"/>
-        </substitute_text>
-        <set_object_name object="this.ship" name="$_ShipName"/>
-        <remove_value name="$_ShipName"/>
-      </do_if>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
@@ -408,16 +412,24 @@
       </do_if>
 
       <label name="CLEANUP_LBL"/>
-      <remove_value name="$ResumeLabel"/>
-      <remove_value name="$IdleTime"/>
+      <do_if value="$ADD_ORDER_TAG">
+        <set_value name="$_ShipName" exact="$Ship.knownname"/>
+        <substitute_text source="$_ShipName" text="$_ShipName">
+          <replace string="'\033#FFA95908# #SD-G\033X'" with="''"/>
+        </substitute_text>
+        <set_object_name object="this.ship" name="$_ShipName"/>
+        <remove_value name="$_ShipName"/>
+      </do_if>
       <remove_value name="$Satellite"/>
-      <remove_value name="$ExpTotalMultiplier"/>
+      <remove_value name="$ExpMultiplier"/>
       <remove_value name="$Ship"/>
-      <remove_value name="$DebugFileName"/>
-      <remove_value name="$DebugDirectory"/>
+      <do_if value="$DEBUG gt 0">
+        <remove_value name="$DebugFileName"/>
+        <remove_value name="$DebugDirectory"/>
+      </do_if>
 
       <label name="END_LBL"/>
-      <wait exact="1ms"/>
+      <wait exact="1s"/>
       <set_order_syncpoint_reached order="this.ship.order"/>
       <cancel_order order="this.ship.order" />
 

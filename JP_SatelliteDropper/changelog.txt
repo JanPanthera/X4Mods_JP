@@ -1,2 +1,7 @@
-~ Updated: Refactored IdleReturnHome
-~ Updated: Refactored OrderTag thing
+~ TODO: satellite to object distance player configurable
+~ Added: Icon with blue path shown on map targeting the actual station
+~ Added: Icon with blue path shown on map targeting the actual idle object (following, docking) or Sector (moving randomly, moving to)
+~ Updated: Refactored
+~ Updated: Translation Files
+~ Updated: the order tag will first removed from the ships name now before it will added..
+~ Fixed: fix for the issue where the order tag will added every time the player changes an parameter from the order
