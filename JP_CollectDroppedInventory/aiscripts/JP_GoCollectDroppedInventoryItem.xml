@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<aiscript name="JP_GoCollectDroppedInventoryItem" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd">
+
+  <order id="JP_GoCollectDroppedInventoryItem" name="GoCollectDroppedInventoryItem" category="internal" infinite="true">
+    <params>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="DROP" text="Drop" type="object" default="null" advanced="true"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="ADD_ORDER_TAG" text="AddOrderTag?" type="bool" default="true" advanced="true"/>
+      <param name="ORDER_TAG" text="OrderTag" type="internal" default="''"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <!-- DEBUG -->
+      <param name="DEBUG" text="DebugText" type="number" default="0" advanced="true">
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="100"/>
+        <input_param name="step" value="100"/>
+      </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    </params>
+    <location object="$DROP" condition="@$DROP != null and @$DROP.exists"/>
+  </order>
+
+  <interrupts>
+  </interrupts>
+
+  <init>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <do_if value="$DEBUG gt 0">
+      <set_value name="$DebugDirectory" exact="'JP_CollectDroppedInventory.logs'"/>
+      <set_value name="$DebugFileName" exact="this.ship.idcode + 'JP_GoCollectDroppedInventoryItem.xml.log'"/>
+    </do_if>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <set_value name="$Ship" exact="this.ship"/>
+    <set_value name="$ExpMultiplier" exact="0.88"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <do_if value="$ADD_ORDER_TAG">
+      <set_value name="$_ShipName" exact="$Ship.knownname"/>
+      <set_object_name object="this.ship" name="$_ShipName"/>
+      <substitute_text source="$_ShipName" text="$_ShipName">
+        <replace string="'\033#FFA95908# #CDI-S\033X'" with="''"/>
+      </substitute_text>
+      <set_object_name object="this.ship" name="$_ShipName"/>
+      <remove_value name="$_ShipName"/>
+      <set_object_name object="this.ship" name="this.ship.knownname + '\033#FFA95908# ' + $ORDER_TAG + '\033X'"/>
+    </do_if>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  </init>
+
+  <attention min="unknown">
+    <actions>
+
+      <wait exact="1s"/>
+      <label name="START_LBL"/>
+
+      <do_if value="$DEBUG gt 0">
+        <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_GoCollectDroppedInventoryItem.xml ~ Started ~~' + '\n'"/>
+      </do_if>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <do_if value="@$DROP == null or not $DROP.exists">
+        <resume label="FINISH_LBL"/>
+      </do_if>
+
+      <set_command command="command.collect" param="$DROP"/>
+      <label name="MOVE_LBL"/>
+      <move_to object="$Ship" destination="$DROP" travel="true" finishonapproach="true" abortpath="true" forceposition="false">
+        <interrupt_after_time time="100ms"/>
+      </move_to>
+      <do_if value="@$DROP">
+        <do_if value="$Ship.distanceto.{$DROP} gt 500m">
+          <resume label="MOVE_LBL"/>
+        </do_if>
+        <do_else>
+          <stop_moving object="$Ship" immediate="true"/>
+          <collect_drop object="$Ship" drop="$DROP"/>
+          <apply_experience entity="$Ship.pilot" experience="'JP_SHIP_INVENTORY_COLLECTED'" factor="$ExpMultiplier"/>
+          <apply_experience object="$Ship" experience="'JP_SHIP_INVENTORY_COLLECTED'" role="entityrole.service" factor="$ExpMultiplier"/>
+          <resume label="FINISH_LBL"/>
+        </do_else>
+      </do_if>
+
+      <label name="FINISH_LBL"/>
+      <do_if value="$ADD_ORDER_TAG">
+        <set_value name="$_ShipName" exact="$Ship.knownname"/>
+        <substitute_text source="$_ShipName" text="$_ShipName">
+          <replace string="'\033#FFA95908# ' + $ORDER_TAG + '\033X'" with="''"/>
+        </substitute_text>
+        <set_object_name object="this.ship" name="$_ShipName"/>
+        <remove_value name="$_ShipName"/>
+      </do_if>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <do_if value="$DEBUG gt 0">
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_GoCollectDroppedInventoryItem.xml ~ Finished ~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+      </do_if>
+
+      <label name="CLEANUP_LBL"/>
+      <remove_value name="$ExpMultiplier"/>
+      <remove_value name="$Ship"/>
+      <do_if value="$DEBUG gt 0">
+        <remove_value name="$DebugFileName"/>
+        <remove_value name="$DebugDirectory"/>
+      </do_if>
+
+      <label name="END_LBL"/>
+      <wait exact="1s"/>
+      <set_order_syncpoint_reached order="this.ship.order"/>
+
+    </actions>
+  </attention>
+
+  <on_abort>
+    <do_if value="$ADD_ORDER_TAG">
+      <set_value name="$_ShipName" exact="$Ship.knownname"/>
+      <substitute_text source="$_ShipName" text="$_ShipName">
+        <replace string="'\033#FFA95908# ' + $ORDER_TAG + '\033X'" with="''"/>
+      </substitute_text>
+      <set_object_name object="this.ship" name="$_ShipName"/>
+      <remove_value name="$_ShipName"/>
+    </do_if>
+  </on_abort>
+
+</aiscript>

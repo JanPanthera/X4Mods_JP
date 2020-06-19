@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<icons>
+  <icon name="order_jp_collectdroppedinventory" texture="assets\fx\gui\textures\order\order_collectdropsinradius.tga" height="32" width="32"></icon>
+  <icon name="order_jp_gocollectdroppedinventoryitem" texture="assets\fx\gui\textures\order\order_collect.tga" height="32" width="32"></icon>
+  <icon name="order_jp_idlereturnhome_cdi" texture="assets\fx\gui\textures\order\order_wait.tga" height="32" width="32"></icon>
+</icons>

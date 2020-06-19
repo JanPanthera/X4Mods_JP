@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- English ~~ English -->
+<language>
+  <page id="8888888" voice="no">
+    <!--  JP_CollectDroppedInventory -->
+    <t id="2080">Idle Time</t>
+    <t id="2081">Idle: Follow?</t>
+    <t id="2082">Who to follow?</t>
+    <t id="2083">Idle: Docking?</t>
+    <t id="2084">Where to dock?</t>
+    <t id="2085">Idle: Random movement?</t>
+    <t id="2086">In which sector?</t>
+    <t id="2087">Idle: Move to?</t>
+    <t id="2088">Where to move?</t>
+    <t id="2094">Add order tag?</t>
+    <t id="2095">Save Settings?</t>
+    <t id="2096">Delete Settings?</t>
+    <t id="2097">\033#B600CCCC#</t>
+    <t id="2098">\033#FF00CC66#</t>
+    <t id="2099">\033X</t>
+  </page>
+</language>

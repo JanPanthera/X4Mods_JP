@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Simplified Chinese ~~ 简体中文 -->
+<language>
+  <page id="8888888" voice="no">
+    <!--  JP_CollectDroppedInventory -->
+    <t id="2080">空闲时间</t>
+    <t id="2081">闲置：跟随？</t>
+    <t id="2082">跟踪谁？</t>
+    <t id="2083">空闲：坞站？</t>
+    <t id="2084">在哪里停靠？</t>
+    <t id="2085">闲置：随机移动？</t>
+    <t id="2086">在哪个部门？</t>
+    <t id="2087">闲置：移动到？</t>
+    <t id="2088">移动到哪里？</t>
+    <t id="2094">添加订单标签？</t>
+    <t id="2095">是否保存设置？</t>
+    <t id="2096">是否删除设置？</t>
+    <t id="2097">\033#B600CCCC#</t>
+    <t id="2098">\033#FF00CC66#</t>
+    <t id="2099">\033倍</t>
+  </page>
+</language>

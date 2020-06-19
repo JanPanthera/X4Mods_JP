@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Italian ~~ Italiano -->
+<language>
+  <page id="8888888" voice="no">
+    <!--  JP_CollectDroppedInventory -->
+    <t id="2080">Tempo di inattività</t>
+    <t id="2081">Inattivo: seguire?</t>
+    <t id="2082">Chi seguire?</t>
+    <t id="2083">Inattivo: Attracco?</t>
+    <t id="2084">Dove attraccare?</t>
+    <t id="2085">Inattivo: movimento casuale?</t>
+    <t id="2086">In quale settore?</t>
+    <t id="2087">Inattivo: passa a?</t>
+    <t id="2088">Dove spostarsi?</t>
+    <t id="2094">Aggiungi tag ordine?</t>
+    <t id="2095">Salva le impostazioni?</t>
+    <t id="2096">Elimina impostazioni?</t>
+    <t id="2097">\033#B600CCCC#</t>
+    <t id="2098">\033#FF00CC66#</t>
+    <t id="2099">\033X</t>
+  </page>
+</language>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Portuguese (Brazil) ~~ Português (Brasil) -->
+<language>
+  <page id="8888888" voice="no">
+    <!--  JP_CollectDroppedInventory -->
+    <t id="2080">Tempo ocioso</t>
+    <t id="2081">Inativo: Seguir?</t>
+    <t id="2082">Quem seguir?</t>
+    <t id="2083">Inativo: Ancoragem?</t>
+    <t id="2084">Onde atracar?</t>
+    <t id="2085">Ocioso: movimento aleatório?</t>
+    <t id="2086">Em qual setor?</t>
+    <t id="2087">Inativo: Mover para?</t>
+    <t id="2088">Para onde ir?</t>
+    <t id="2094">Adicionar etiqueta de pedido?</t>
+    <t id="2095">Salvar configurações?</t>
+    <t id="2096">Excluir configurações?</t>
+    <t id="2097">\033#B600CCCC#</t>
+    <t id="2098">\033#FF00CC66#</t>
+    <t id="2099">\033X</t>
+  </page>
+</language>
