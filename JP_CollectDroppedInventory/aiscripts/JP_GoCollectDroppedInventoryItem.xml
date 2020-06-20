@@ -69,7 +69,7 @@
       <move_to object="$Ship" destination="$DROP" travel="true" finishonapproach="true" abortpath="true" forceposition="false">
         <interrupt_after_time time="100ms"/>
       </move_to>
-      <do_if value="@$DROP">
+      <do_if value="@$DROP and not $DROP.iswreck">
         <do_if value="$Ship.distanceto.{$DROP} gt 500m">
           <resume label="MOVE_LBL"/>
         </do_if>

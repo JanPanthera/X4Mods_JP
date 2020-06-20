@@ -159,6 +159,7 @@
 
       <find_object name="$_FoundDrops" space="$SECTOR" multiple="true">
         <match class="class.drop"/>
+        <match knownto="$Ship.owner"/>
       </find_object>
 
       <create_list name="$_InventoryDrops"/>
