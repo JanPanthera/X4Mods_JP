@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<mdscript name="JP_AFBV2_UpdateFleetOrders" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="md.xsd">
+  <cues>
+
+    <cue name="JP_AFBV2_UpdateFleetOrders_LOOP" instantiate="true" checkinterval="1s">
+      <conditions>
+      </conditions>
+      <actions>
+        <set_value name="$DEBUG" exact="1"/>
+        <set_value name="$DebugDirectory" exact="'JP_AnotherFleetBehaviorV2.logs'"/>
+        <set_value name="$DebugFileName" exact="'JP_AFBV2_UpdateFleetOrders.xml.log'"/>
+
+        <do_if value="$DEBUG gt 0">
+          <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_AFBV2_UpdateFleetOrders.xml ~ Started ~~' + '\n'"/>
+        </do_if>
+
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+        <create_list name="$_Ships"/>
+        <find_ship_by_true_owner name="$_Ships" space="player.galaxy" multiple="true" faction="faction.player" owner="faction.player">
+          <match shiptype="shiptype.lasertower" negate="true"/>
+        </find_ship_by_true_owner>
+
+        <do_if value="$_Ships.count gt 0">
+          <do_for_each name="$_Ship" in="$_Ships">
+
+            <do_if value="@$_Ship.fleet.commander.defaultorder.id != 'JP_AnotherFleetBehaviorV2' or $_Ship.isunit">
+              <continue/>
+            </do_if>
+
+            <do_if value="$_Ship.defaultorder.id != 'JP_AFBV2_InterceptionFighter' and $_Ship.defaultorder.id != 'JP_AFBV2_DefenceFighter' and $_Ship.defaultorder.id != 'JP_AFBV2_AttackFighter'">
+              <continue/>
+            </do_if>
+            
+            <do_if value="$_Ship.order.id == 'Flee'">
+              <continue/>
+            </do_if>
+
+            <!-- Is actual enemy to far away? -->
+            <do_if value="$_Ship.order.id == 'Attack'">
+              <do_if value="$_Ship.fleet.commander.distanceto.{$_Ship.order.$primarytarget} gt $_Ship.fleet.commander.maxradarrange">
+                <cancel_all_orders object="$_Ship"/>
+                <continue/>
+              </do_if>
+            </do_if>
+
+            <!-- Going to repair? -->
+            <do_if value="$_Ship.hullpercentage le 90">
+              <set_value name="$_HasRepairOrder" exact="false"/>
+              <do_for_each name="$_Order" in="$_Ship.orders">
+                <do_if value="$_Order.id == 'JP_AFBV2_Go_Repair'">
+                  <set_value name="$_HasRepairOrder" exact="true"/>
+                  <break/>
+                </do_if>
+              </do_for_each>
+              <do_if value="not $_HasRepairOrder">
+                <cancel_all_orders object="$_Ship"/>
+                <create_order object="$_Ship" id="'JP_AFBV2_Go_Repair'" immediate="true">
+                  <param name="LOOK_FOR_FRIENDLY_STATIONS_WHERE_WE_CAN_REPAIR" value="true"/>
+                  <param name="STATION_SEARCH_MAX_GATE_DISTANCE" value="5"/>
+                  <param name="DEBUG" value="$DEBUG"/>
+                </create_order>
+              </do_if>
+              <continue/>
+            </do_if>
+
+            <!-- Enemys near and we don't attack them? -->
+            <create_list name="$_FoundEnemyShips"/>
+            <set_value name="$_GoAttack" exact="false"/>
+            <find_ship name="$_FoundEnemyShips" space="$_Ship.sector" multiple="false" append="true">
+              <match_relation_to object="$_Ship" relation="enemy"/>
+              <match mayattack="$_Ship"/>
+              <match knownto="$_Ship.owner"/>
+              <match class="$_Ship.defaultorder.$CLASSES_TO_ATTACK"/>
+              <match_distance object="$_Ship.fleet.commander" max="$_Ship.fleet.commander.maxradarrange"/>
+            </find_ship>
+            <do_if value="$_FoundEnemyShips.count gt 0">
+              <set_value name="$_GoAttack" exact="true"/>
+            </do_if>
+            <remove_value name="$_FoundEnemyShips"/>
+            <do_if value="not $_Ship.subordinategroupdockoverride and $_GoAttack">
+              <set_value name="$_HasAttackOrder" exact="false"/>
+              <set_value name="$_HasUndockOrder" exact="false"/>
+              <do_for_each name="$_Order" in="$_Ship.orders">
+                <do_if value="$_Order.id == 'Attack'">
+                  <set_value name="$_HasAttackOrder" exact="true"/>
+                  <continue/>
+                </do_if>
+                <do_if value="$_Order.id == 'Undock'">
+                  <set_value name="$_HasUndockOrder" exact="true"/>
+                  <continue/>
+                </do_if>
+              </do_for_each>
+              <do_if value="not $_HasAttackOrder and not $_HasUndockOrder">
+                <cancel_all_orders object="$_Ship"/>
+              </do_if>
+              <remove_value name="$_HasUndockOrder"/>
+              <remove_value name="$_HasAttackOrder"/>
+              <continue/>
+            </do_if>
+            <do_else>
+              <set_value name="$_HasDockOrder" exact="false"/>
+              <do_for_each name="$_Order" in="$_Ship.orders">
+                <do_if value="$_Order.id == 'DockAndWait' or $_Order.id == 'Follow'">
+                  <set_value name="$_HasDockOrder" exact="true"/>
+                  <break/>
+                </do_if>
+              </do_for_each>
+              <do_if value="not $_HasDockOrder">
+                <do_if value="$_Ship.fleet.commander.dockingallowed.{$_Ship}">
+                  <cancel_all_orders object="$_Ship"/>
+                  <create_order object="$_Ship" id="'DockAndWait'" immediate="true">
+                    <param name="destination" value="$_Ship.fleet.commander"/>
+                    <param name="dockfollowers" value="true"/>
+                    <param name="timeout" value="0s"/>
+                  </create_order>
+                </do_if>
+                <do_else>
+                  <cancel_all_orders object="$_Ship"/>
+                  <create_order object="$_Ship" id="'Follow'" immediate="true">
+                    <param name="target" value="$_Ship.fleet.commander"/>
+                  </create_order>
+                </do_else>
+              </do_if>
+              <continue/>
+            </do_else>
+
+          </do_for_each>
+        </do_if>
+
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+        <do_if value="$DEBUG gt 0">
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_AFBV2_UpdateFleetOrders.xml ~ Finished ~~'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+        </do_if>
+
+        <remove_value name="$DebugFileName"/>
+        <remove_value name="$DebugDirectory"/>
+        <remove_value name="$DEBUG"/>
+      </actions>
+    </cue>
+
+  </cues>
+</mdscript>

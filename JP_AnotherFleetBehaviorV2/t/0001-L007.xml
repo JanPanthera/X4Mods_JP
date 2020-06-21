@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Russian ~~ Русский -->
+<language>
+  <page id="8888888" voice="no">
+    <!--  JP_AnotherFleetBehaviorV2 -->
+    <t id="594">Add order tag?</t>
+    <t id="595">Save Settings?</t>
+    <t id="596">Delete Settings?</t>
+    <t id="597">\033#B600CCCC#</t>
+    <t id="598">\033#FF00CC66#</t>
+    <t id="599">\033X</t>
+  </page>
+</language>

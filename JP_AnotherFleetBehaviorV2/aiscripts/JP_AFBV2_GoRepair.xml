@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<aiscript name="JP_AFBV2_Go_Repair" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd" version="1">
+
+  <order id="JP_AFBV2_Go_Repair" name="AFBV2_Go_Repair" category="internal" infinite="true">
+    <params>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="LOOK_FOR_FRIENDLY_STATIONS_WHERE_WE_CAN_REPAIR" text="LookForFriendlyStationsWhereWeCanReapir" type="bool" default="true"/>
+      <param name="STATION_SEARCH_MAX_GATE_DISTANCE" text="StationSearchMaxGateDistance" type="number" default="2">
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="99"/>
+        <input_param name="step" value="1"/>
+      </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <!-- DEBUG -->
+      <param name="DEBUG" text="DebugText" type="number" default="0" advanced="true">
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="100"/>
+        <input_param name="step" value="100"/>
+      </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    </params>
+    <skill min="0"/>
+    <requires>
+      <match shiptype="shiptype.lasertower" negate="true"/>
+    </requires>
+  </order>
+
+  <interrupts>
+    <handler ref="ScannedHandler"/>
+    <handler ref="SectorChangeHandler"/>
+    <handler ref="TargetInvalidHandler"/>
+    <handler ref="AttackHandler"/>
+    <handler ref="MissileLockHandler"/>
+    <handler ref="ScannedHandler"/>
+    <handler ref="InspectedHandler"/>
+    <handler ref="FoundAbandonedHandler"/>
+    <handler ref="FoundLockboxHandler"/>
+    <handler ref="ResupplyHandler"/>
+    <handler ref="JobRemoveRequestHandler"/>
+  </interrupts>
+
+  <init>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <do_if value="$DEBUG gt 0">
+      <set_value name="$DebugDirectory" exact="'JP_AFBV2_Go_Repair.logs'"/>
+      <set_value name="$DebugFileName" exact="this.ship.idcode + '.JP_AFBV2_Go_Repair.xml.log'"/>
+    </do_if>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <set_value name="$Ship" exact="this.ship"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  </init>
+
+  <attention min="unknown">
+    <actions>
+
+      <wait exact="1s"/>
+      <label name="START_LBL"/>
+
+      <do_if value="$DEBUG gt 0">
+        <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_AFBV2_Go_Repair.xml ~ Started ~~' + '\n'"/>
+      </do_if>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <label name="RESUME_LBL"/>
+
+      <do_if value="$Ship.hullpercentage ge 100">
+        <do_if value="$DEBUG gt 0">
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'Ship hull is greater or equal 100 percent.'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+        </do_if>
+        <wait exact="1s"/>
+        <resume label="FINISH_LBL"/>
+      </do_if>
+
+      <do_if value="@$Ship.fleet.commander != null">
+        <do_for_each name="$_Subordinate" in="$Ship.fleet.commander.allsubordinates">
+          <do_if value="$_Subordinate.type == shiptype.resupplier">
+            <do_if value="$_Subordinate.cansupplyclass.{$Ship.class}">
+              <set_value name="$_ResupplyShip" exact="$_Subordinate"/>
+              <break/>
+            </do_if>
+          </do_if>
+        </do_for_each>
+      </do_if>
+
+      <do_if value="not $_ResupplyShip?">
+        <do_if value="$Ship.fleet.commander.cansupplyclass.{$Ship.class}">
+          <set_value name="$_ResupplyShip" exact="$Ship.fleet.commander"/>
+        </do_if>
+      </do_if>
+
+      <do_if value="$LOOK_FOR_FRIENDLY_STATIONS_WHERE_WE_CAN_REPAIR and not $_ResupplyShip?">
+        <create_list name="$_FoundStations"/>
+        <find_station name="$_FoundStations" space="player.galaxy" multiple="true">
+          <match knownto="$Ship.owner"/>
+          <match cansupplyclass="$Ship.class"/>
+          <match mayattack="$Ship" negate="true"/>
+          <match_relation_to object="$Ship" comparison="ge" relation="neutral"/>
+          <match_gate_distance object="$Ship" max="$STATION_SEARCH_MAX_GATE_DISTANCE"/>
+        </find_station>
+        <do_if value="$_FoundStations.count gt 0">
+          <do_if value="$_FoundStations.count gt 1">
+            <sort_list list="$_FoundStations" sortbyvalue="$Ship.gatedistance.{loop.element}"/>
+            <sort_list list="$_FoundStations" sortbyvalue="$Ship.distanceto.{loop.element}"/>
+          </do_if>
+          <set_value name="$_ResupplyShip" exact="$_FoundStations.{1}"/>
+        </do_if>
+        <remove_value name="$_FoundStations"/>
+      </do_if>
+
+      <do_if value="not $_ResupplyShip?">
+        <do_if value="$DEBUG gt 0">
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'No resupply ship or station found where we can repair'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+        </do_if>
+        <wait exact="1s"/>
+        <resume label="FINISH_LBL"/>
+      </do_if>
+
+      <do_if value="$Ship.hullpercentage le 90">
+        <create_order object="$Ship" id="'Repair'" immediate="true" override="true">
+          <param name="destination" value="$_ResupplyShip"/>
+          <param name="hullpercent" value="100"/>
+          <param name="repairall" value="true"/>
+        </create_order>
+      </do_if>
+      <wait exact="1s"/>
+      <resume label="RESUME_LBL"/>
+
+      <label name="FINISH_LBL"/>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <do_if value="$DEBUG gt 0">
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_AFBV2_Go_Repair.xml ~ Finished ~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+      </do_if>
+
+      <label name="CLEANUP_LBL"/>
+      <remove_value name="$Ship"/>
+      <do_if value="$DEBUG gt 0">
+        <remove_value name="$DebugFileName"/>
+        <remove_value name="$DebugDirectory"/>
+      </do_if>
+
+      <label name="END_LBL"/>
+      <wait exact="1ms"/>
+      <set_order_syncpoint_reached order="this.ship.order"/>
+      <cancel_order order="this.ship.order" />
+
+    </actions>
+  </attention>
+
+  <on_abort>
+  </on_abort>
+
+</aiscript>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<icons>
+  <icon name="order_jp_anotherfleetbehaviorv2" texture="assets\fx\gui\textures\order\order_patrol.tga" height="32" width="32"></icon>
+  <icon name="order_jp_afbv2_go_repair" texture="assets\fx\gui\textures\order\order_repair.tga" height="32" width="32"></icon>
+  <icon name="order_jp_afbv2_interceptionfighter" texture="assets\fx\gui\textures\order\order_recon.tga" height="32" width="32"></icon>
+  <icon name="order_jp_afbv2_defencefighter" texture="assets\fx\gui\textures\order\order_recon.tga" height="32" width="32"></icon>
+  <icon name="order_jp_afbv2_attackfighter" texture="assets\fx\gui\textures\order\order_recon.tga" height="32" width="32"></icon>
+</icons>

@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<aiscript name="JP_AnotherFleetBehaviorV2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd" version="1">
+
+  <order id="JP_AnotherFleetBehaviorV2" name="{8888888, 597}AnotherFleetBehaviorV2{8888888, 599}" category="combat" infinite="true">
+    <params>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <!-- DEBUG -->
+      <param name="DEBUG" text="DebugText" type="number" default="0" advanced="true">
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="100"/>
+        <input_param name="step" value="100"/>
+      </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    </params>
+    <skill min="0"/>
+    <requires>
+      <match shiptype="shiptype.lasertower" negate="true"/>
+    </requires>
+  </order>
+
+  <interrupts>
+    <handler ref="ScannedHandler"/>
+    <handler ref="SectorChangeHandler"/>
+    <handler ref="TargetInvalidHandler"/>
+    <handler ref="AttackHandler"/>
+    <handler ref="MissileLockHandler"/>
+    <handler ref="ScannedHandler"/>
+    <handler ref="InspectedHandler"/>
+    <handler ref="FoundAbandonedHandler"/>
+    <handler ref="FoundLockboxHandler"/>
+    <handler ref="ResupplyHandler"/>
+    <handler ref="JobRemoveRequestHandler"/>
+  </interrupts>
+
+  <init>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <do_if value="$DEBUG gt 0">
+      <set_value name="$DebugDirectory" exact="'JP_AnotherFleetBehaviorV2.logs'"/>
+      <set_value name="$DebugFileName" exact="this.ship.idcode + '.JP_AnotherFleetBehaviorV2.xml.log'"/>
+    </do_if>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <set_value name="$Assignedcontrolled" exact="this.assignedcontrolled"/>
+    <set_value name="$FleetCommander" exact="this.ship"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+  </init>
+
+  <attention min="unknown">
+    <actions>
+
+      <wait exact="1s"/>
+      <label name="START_LBL"/>
+
+      <do_if value="$DEBUG gt 0">
+        <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_AnotherFleetBehaviorV2.xml ~ Started ~~' + '\n'"/>
+      </do_if>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <label name="RESUME_LBL"/>
+
+      <do_for_each name="$_Subordinate" in="$Assignedcontrolled.allsubordinates">
+
+        <do_if value="$_Subordinate.defaultorder.id == 'JP_AFBV2_Go_Repair' or $_Subordinate.isunit">
+          <continue/>
+        </do_if>
+
+        <do_if value="$_Subordinate.class == class.ship_s">
+
+          <do_if value="$_Subordinate.assignment == assignment.interception and $_Subordinate.defaultorder.id != 'JP_AFBV2_InterceptionFighter'">
+            <cancel_all_orders object="$_Subordinate"/>
+            <create_order object="$_Subordinate" id="'JP_AFBV2_InterceptionFighter'" default="true">
+              <param name="CLASSES_TO_ATTACK" value="[class.ship_xs, class.ship_s, class.ship_m]"/>
+              <param name="DEBUG" value="$DEBUG"/>
+            </create_order>
+          </do_if>
+
+          <do_if value="$_Subordinate.assignment == assignment.defence and $_Subordinate.defaultorder.id != 'JP_AFBV2_DefenceFighter'">
+            <cancel_all_orders object="$_Subordinate"/>
+            <create_order object="$_Subordinate" id="'JP_AFBV2_DefenceFighter'" default="true">
+              <param name="CLASSES_TO_ATTACK" value="[class.ship_xs, class.ship_s, class.ship_m]"/>
+              <param name="DEBUG" value="$DEBUG"/>
+            </create_order>
+          </do_if>
+
+          <do_if value="$_Subordinate.assignment == assignment.attack and $_Subordinate.defaultorder.id != 'JP_AFBV2_AttackFighter'">
+            <cancel_all_orders object="$_Subordinate"/>
+            <create_order object="$_Subordinate" id="'JP_AFBV2_AttackFighter'" default="true">
+              <param name="CLASSES_TO_ATTACK" value="[class.ship_xs, class.ship_s, class.ship_m]"/>
+              <param name="DEBUG" value="$DEBUG"/>
+            </create_order>
+          </do_if>
+
+        </do_if>
+
+
+      </do_for_each>
+
+      <wait exact="1s"/>
+      <resume label="RESUME_LBL"/>
+
+      <label name="FINISH_LBL"/>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <do_if value="$DEBUG gt 0">
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_AnotherFleetBehaviorV2.xml ~ Finished ~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+      </do_if>
+
+      <label name="CLEANUP_LBL"/>
+      <remove_value name="$FleetCommander"/>
+      <remove_value name="$Assignedcontrolled"/>
+      <do_if value="$DEBUG gt 0">
+        <remove_value name="$DebugFileName"/>
+        <remove_value name="$DebugDirectory"/>
+      </do_if>
+
+      <label name="END_LBL"/>
+      <wait exact="1ms"/>
+      <set_order_syncpoint_reached order="this.ship.order"/>
+      <cancel_order order="this.ship.order" />
+
+    </actions>
+  </attention>
+
+  <on_abort>
+  </on_abort>
+
+</aiscript>
