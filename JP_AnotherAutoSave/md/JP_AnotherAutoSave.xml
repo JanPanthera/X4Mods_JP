@@ -5,19 +5,28 @@
 
     <cue name="JP_ANOTHER_AUTO_SAVE_900" instantiate="true" checktime="player.age + 900s" checkinterval="900s">
       <conditions>
-        <check_value value="player.autosave.active and player.autosave.factor == 1"/>
+        <check_value value="player.autosave.active and player.autosave.factor == 0.5"/>
       </conditions>
       <actions>
-        <set_value name="$AutoSaveTriggered" exact="true"/>
+        <set_value name="global.$AutoSaveTriggered_AAS" exact="true"/>
       </actions>
     </cue>
 
     <cue name="JP_ANOTHER_AUTO_SAVE_1800" instantiate="true" checktime="player.age + 1800s" checkinterval="1800s">
       <conditions>
+        <check_value value="player.autosave.active and player.autosave.factor == 1"/>
+      </conditions>
+      <actions>
+        <set_value name="global.$AutoSaveTriggered_AAS" exact="true"/>
+      </actions>
+    </cue>
+
+    <cue name="JP_ANOTHER_AUTO_SAVE_3600" instantiate="true" checktime="player.age + 3600s" checkinterval="3600s">
+      <conditions>
         <check_value value="player.autosave.active and player.autosave.factor == 2"/>
       </conditions>
       <actions>
-        <set_value name="$AutoSaveTriggered" exact="true"/>
+        <set_value name="global.$AutoSaveTriggered_AAS" exact="true"/>
       </actions>
     </cue>
 
@@ -25,8 +34,7 @@
       <conditions>
         <check_all>
           <check_value value="player.autosave.active"/>
-          <check_value value="JP_ANOTHER_AUTO_SAVE_900.$AutoSaveTriggered? or JP_ANOTHER_AUTO_SAVE_1800.$AutoSaveTriggered?"/>
-          <check_value value="if player.autosave.factor == 1 then JP_ANOTHER_AUTO_SAVE_900.$AutoSaveTriggered else JP_ANOTHER_AUTO_SAVE_1800.$AutoSaveTriggered"/>
+          <check_value value="@global.$AutoSaveTriggered_AAS"/>
         </check_all>
       </conditions>
       <actions>
@@ -35,7 +43,7 @@
         <set_value name="$DebugFileName" exact="'JP_AnotherAutoSave.xml.log'"/>
 
         <do_if value="$DEBUG gt 0">
-          <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file append="true" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
           <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_TestScript_MD_03.xml ~ Started ~~' + '\n'"/>
         </do_if>
 
@@ -45,10 +53,10 @@
           <set_value name="$_Counter" exact="10"/>
         </do_if>
 
-        <do_if value="$_Counter == 10">
-          <do_if value="player.timewarp.active">
-            <toggle_timewarp/>
-            <set_value name="$SetaWasActive" exact="true"/>
+        <do_if value="player.timewarp.active and ($_Counter == 10 or $_Counter lt 9)">
+          <toggle_timewarp/>
+          <do_if value="not global.$SetaWasActive_AAS">
+            <set_value name="global.$SetaWasActive_AAS" exact="true"/>
           </do_if>
         </do_if>
 
@@ -67,15 +75,10 @@
         </do_if>
 
         <do_if value="$_Counter == -4">
-          <do_if value="player.autosave.factor == 1">
-            <set_value name="JP_ANOTHER_AUTO_SAVE_900.$AutoSaveTriggered" exact="false"/>
-          </do_if>
-          <do_else>
-            <set_value name="JP_ANOTHER_AUTO_SAVE_1800.$AutoSaveTriggered" exact="false"/>
-          </do_else>
-          <do_if value="$SetaWasActive">
+          <set_value name="global.$AutoSaveTriggered_AAS" exact="false"/>
+          <do_if value="@global.$SetaWasActive_AAS">
             <toggle_timewarp/>
-            <set_value name="$SetaWasActive" exact="false"/>
+            <set_value name="global.$SetaWasActive_AAS" exact="false"/>
           </do_if>
           <trigger_autosave/>
           <remove_value name="$_Counter"/>

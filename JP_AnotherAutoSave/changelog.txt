@@ -1,4 +1,4 @@
-~ Added: translation files..
-~ Updated: Counter logic optimized.. it counts now till 0.. then comes a message Saving.. and then the game will be saved.
-~ Updated: When Seta is active while the script starts.. it will turned temporarily off.. if saving is done it will be turned on again.
-~ Updated: added some translations.. (google translate)
+~ Added: save interval 1 hour, use ingame autosave setting 80-160
+~ Changed: save intervall 30 minutes to ingame autosave setting 40 - 80
+~ Changed: save intervall 15 minutes to ingame autosave setting 20 - 40
+~ Updated: SETA/SINZA will be turned off when the player activates it again while the counter is active
