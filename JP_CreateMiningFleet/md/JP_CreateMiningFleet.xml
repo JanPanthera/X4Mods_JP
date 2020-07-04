@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<mdscript name="JP_CreateMiningFleet_MD" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="md.xsd">
+  <cues>
+
+    <cue name="JP_CreateMiningFleet_LOOP" instantiate="true" checkinterval="6s">
+      <conditions>
+      </conditions>
+      <actions>
+        <set_value name="$DEBUG" exact="0"/>
+        <set_value name="$DebugDirectory" exact="'JP_CreateMiningFleet.logs'"/>
+        <set_value name="$DebugFileName" exact="'JP_CreateMiningFleet_MD.xml.log'"/>
+
+        <do_if value="$DEBUG gt 0">
+          <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_CreateMiningFleet_MD.xml ~ Started ~~' + '\n'"/>
+        </do_if>
+
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+        <create_list name="$_Ships"/>
+        <find_ship_by_true_owner name="$_Ships" space="player.galaxy" faction="faction.player" owner="faction.player" multiple="true">
+          <match checkoperational="true"/>
+        </find_ship_by_true_owner>
+
+        <do_if value="$DEBUG gt 0">
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <do_for_each name="$_Ship" in="$_Ships">
+            <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="$_Ship.knownname + ' ~ ' + '[' + $_Ship.idcode + ']'"/>
+          </do_for_each>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+        </do_if>
+
+        <do_for_each name="$_Ship" in="$_Ships">
+          <do_if value="@$_Ship.defaultorder">
+            <do_if value="($_Ship.defaultorder.id == 'MiningRoutine_Basic' or $_Ship.defaultorder.id == 'MiningRoutine_Advanced' or $_Ship.defaultorder.id == 'MiningRoutine_Expert') and $_Ship.subordinates.count gt 0">
+              <substitute_text source="@$_Ship.fleet.name" text="$_MiningRoutine">
+                <replace string="'MiningRoutine'" with="''"/>
+              </substitute_text>
+              <!-- yeah .. != means == here -->
+              <do_if value="$_Ship.fleet.name != $_MiningRoutine">
+                <do_for_each name="$_Subordinate" in="$_Ship.subordinates">
+                  <do_if value="$_Subordinate.isunit or $_Subordinate.defaultorder == null">
+                    <continue/>
+                  </do_if>
+                  <!-- assignment.mining is not working -->
+                  <do_if value="$_Subordinate.defaultorder.id != $_Ship.defaultorder.id or $_Subordinate.assignment != assignment.trade">
+                    <remove_object_commander object="$_Subordinate"/>
+                    <set_object_commander object="$_Subordinate" commander="$_Ship" assignment="assignment.trade"/>
+                    <create_order object="$_Subordinate" id="$_Ship.defaultorder.id" default="true">
+                      <param name="warebasket" value="$_Ship.defaultorder.$warebasket"/>
+                      <param name="range" value="$_Ship.defaultorder.$range"/>
+                      <param name="minbuy" value="$_Ship.defaultorder.$minbuy"/>
+                      <param name="maxbuy" value="$_Ship.defaultorder.$maxbuy"/>
+                      <param name="minsell" value="$_Ship.defaultorder.$minsell"/>
+                      <param name="maxsell" value="$_Ship.defaultorder.$maxsell"/>
+                    </create_order>
+                  </do_if>
+                  <do_else>
+                    <do_if value="$_Subordinate.defaultorder.$warebasket != $_Ship.defaultorder.$warebasket">
+                      <edit_order_param order="$_Subordinate.defaultorder" param="'warebasket'" value="$_Ship.defaultorder.$warebasket"/>
+                    </do_if>
+                    <do_if value="$_Subordinate.defaultorder.$range != $_Ship.defaultorder.$range">
+                      <edit_order_param order="$_Subordinate.defaultorder" param="'range'" value="$_Ship.defaultorder.$range"/>
+                    </do_if>
+                    <do_if value="$_Subordinate.defaultorder.$minbuy != [$_Ship.defaultorder.$minbuy, ($_Subordinate.pilot.skill.piloting / 3)].min">
+                      <edit_order_param order="$_Subordinate.defaultorder" param="'minbuy'" value="[$_Ship.defaultorder.$minbuy, ($_Subordinate.pilot.skill.piloting / 3)].min"/>
+                    </do_if>
+                    <do_if value="$_Subordinate.defaultorder.$maxbuy != [$_Ship.defaultorder.$maxbuy, ($_Subordinate.pilot.skill.piloting / 3)].min">
+                      <edit_order_param order="$_Subordinate.defaultorder" param="'maxbuy'" value="[$_Ship.defaultorder.$maxbuy, ($_Subordinate.pilot.skill.piloting / 3)].min"/>
+                    </do_if>
+                    <do_if value="$_Subordinate.defaultorder.$minsell != [$_Ship.defaultorder.$minsell, ($_Subordinate.pilot.skill.piloting / 3)].min">
+                      <edit_order_param order="$_Subordinate.defaultorder" param="'minsell'" value="[$_Ship.defaultorder.$minsell, ($_Subordinate.pilot.skill.piloting / 3)].min"/>
+                    </do_if>
+                    <do_if value="$_Subordinate.defaultorder.$maxsell != [$_Ship.defaultorder.$maxsell, ($_Subordinate.pilot.skill.piloting / 3)].min">
+                      <edit_order_param order="$_Subordinate.defaultorder" param="'maxsell'" value="[$_Ship.defaultorder.$maxsell, ($_Subordinate.pilot.skill.piloting / 3)].min"/>
+                    </do_if>
+                  </do_else>
+                </do_for_each>
+                <do_if value="$_Ship.fleet.name != '\033#FF03A1FC#%1 ~ Sector %2 [%3]\033X'.['MiningRoutine', $_Ship.defaultorder.$range.knownname, $_Ship.defaultorder.$warebasket]">
+                  <set_object_fleet_name object="$_Ship" name="'\033#FF03A1FC#%1 ~ Sector %2 [%3]\033X'.['MiningRoutine', $_Ship.defaultorder.$range.knownname, $_Ship.defaultorder.$warebasket]"/>
+                </do_if>
+              </do_if>
+            </do_if>
+          </do_if>
+        </do_for_each>
+
+        <remove_value name="$_Ships"/>
+
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+        <do_if value="$DEBUG gt 0">
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_CreateMiningFleet_MD.xml ~ Finished ~~'"/>
+          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+        </do_if>
+
+        <remove_value name="$DebugFileName"/>
+        <remove_value name="$DebugDirectory"/>
+        <remove_value name="$DEBUG"/>
+      </actions>
+    </cue>
+
+  </cues>
+</mdscript>
