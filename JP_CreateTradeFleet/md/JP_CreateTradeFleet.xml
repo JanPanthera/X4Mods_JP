@@ -76,9 +76,36 @@
                     </do_if>
                   </do_else>
                 </do_for_each>
-                <do_if value="$_Ship.fleet.name != '\033#FF03A1FC#%1 ~ Sector %2 [%3]\033X'.['TradeRoutine', $_Ship.defaultorder.$range.knownname, (if $_Ship.defaultorder.$warebasket.count gt 2 then $_Ship.defaultorder.$warebasket.{1} + '...' else '%1'.[$_Ship.defaultorder.$warebasket.{1}] + if @$_Ship.defaultorder.$warebasket.{2} then ', %1'.[@$_Ship.defaultorder.$warebasket.{2}] else '')]">
-                  <set_object_fleet_name object="$_Ship" name="'\033#FF03A1FC#%1 ~ Sector %2 [%3]\033X'.['TradeRoutine', $_Ship.defaultorder.$range.knownname, (if $_Ship.defaultorder.$warebasket.count gt 2 then $_Ship.defaultorder.$warebasket.{1} + '...' else '%1'.[$_Ship.defaultorder.$warebasket.{1}] + if @$_Ship.defaultorder.$warebasket.{2} then ', %1'.[@$_Ship.defaultorder.$warebasket.{2}] else '')]"/>
+
+                <set_value name="$_FleetName" exact="'\033#FF03A1FC#' + 'TradeRoutine ~ Sector ' + $_Ship.defaultorder.$range.knownname + ' ['"/>
+                <do_if value="@$_Ship.defaultorder.$warebasket.count gt 0">
+                  <do_for_each name="$_Ware" in="$_Ship.defaultorder.$warebasket" counter="$_it">
+                    <do_if value="$_it gt 4">
+                      <set_value name="$_FleetName" operation="add" exact="', ...'"/>
+                      <break/>
+                    </do_if>
+                    <do_if value="$_it gt 1">
+                      <set_value name="$_FleetName" operation="add" exact="', '"/>
+                    </do_if>
+                    <set_value name="$_FleetName" operation="add" exact="$_Ware"/>
+                  </do_for_each>
+                  <set_value name="$_FleetName" operation="add" exact="']'"/>
                 </do_if>
+                <do_else>
+                  <set_value name="$_FleetName" exact="'\033#FF03A1FC#' + 'TradeRoutine ~ Sector ' + $_Ship.defaultorder.$range.knownname + ' [' + $_Ship.defaultorder.$warebasket + ']'"/>
+                </do_else>
+
+                <do_if value="$DEBUG gt 0">
+                  <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+                  <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="$_FleetName"/>
+                  <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+                </do_if>
+
+                <do_if value="$_Ship.fleet.name != $_FleetName">
+                  <set_object_fleet_name object="$_Ship" name="$_FleetName"/>
+                </do_if>
+
+                <remove_value name="$_FleetName"/>
               </do_if>
             </do_if>
           </do_if>
