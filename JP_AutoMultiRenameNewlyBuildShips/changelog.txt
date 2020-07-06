@@ -1,1 +1,1 @@
-~ Initial release
+~ Fixed: english description in content.xml.. (grammar, spelling) -- thanks to MindTooth
