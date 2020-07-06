@@ -97,7 +97,7 @@
       <do_if value="$TempFoundEnemyObjects.count gt 0">
         <create_list name="$EnemysInRange"/>
         <do_for_each name="$Enemy" in="$TempFoundEnemyObjects">
-          <do_if value="$Enemy.distanceto.{$CENTER_POSITION} lt $RANGE">
+          <do_if value="$Enemy.distanceto.{$FleetCommander} lt $RANGE">
             <append_to_list name="$EnemysInRange" exact="$Enemy"/>
           </do_if>
         </do_for_each>

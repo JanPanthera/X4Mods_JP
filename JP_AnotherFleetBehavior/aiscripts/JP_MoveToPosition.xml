@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<aiscript name="JP_MoveToPosition" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd" version="1">
+
+  <order id="JP_MoveToPosition" name="MoveToPosition JP" category="internal" infinite="false">
+    <params>
+      <!-- PARAMS ~~ Sector Coords! -->
+      <param name="TARGED_ZONE" text="TargedZone" type="object" required="true"/>
+      <param name="TARGED_SECTOR" text="TargedSector" type="object" required="true"/>
+      <param name="TARGED_POSITION" text="TargedPosition" type="position" required="true"/>
+      <param name="TARGED_ROTATION" text="TargedRotation" type="position" default="this.ship.rotation"/>
+      <param name="FORCE_POSITION" text="ForcePosition" type="bool" default="true"/>
+      <param name="FORCE_ROTATION" text="ForceRotation" type="bool" default="false"/>
+      <param name="POSITION_TOLERANCE" text="PositionTolerance" type="internal" default="100m"/>
+      <!-- DEBUG -->
+      <param name="DEBUG" text="DebugText" type="number" default="0.0" advanced="1">
+        <input_param name="step" value="0.1"/>
+        <input_param name="min" value="0.0"/>
+        <input_param name="max" value="1.0"/>
+      </param>
+    </params>
+    <skill min="0"/>
+    <requires>
+      <match shiptype="shiptype.lasertower" negate="true"/>
+    </requires>
+  </order>
+
+  <interrupts>
+    <handler ref="ScannedHandler"/>
+    <handler ref="SectorChangeHandler"/>
+    <handler ref="TargetInvalidHandler"/>
+    <handler ref="AttackHandler"/>
+    <handler ref="MissileLockHandler"/>
+    <handler ref="ScannedHandler"/>
+    <handler ref="InspectedHandler"/>
+    <handler ref="FoundAbandonedHandler"/>
+    <handler ref="FoundLockboxHandler"/>
+    <handler ref="ResupplyHandler"/>
+    <handler ref="JobRemoveRequestHandler"/>
+  </interrupts>
+
+  <init>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <set_value name="$DebugDirectory" exact="'JP_ScriptLibrary.logs'"/>
+    <set_value name="$DebugFileName" exact="'JP_MoveToPosition' + '.log'"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <set_value name="$Ship" exact="this.ship"/>
+    <do_if value="this.ship.class" list="[class.ship_xs, class.ship_s, class.ship_m]">
+      <set_value name="$UseHighways" exact="true"/>
+    </do_if>
+    <do_else>
+      <set_value name="$UseHighways" exact="false"/>
+    </do_else>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  </init>
+
+  <attention min="unknown">
+    <actions>
+      <wait exact="1ms"/>
+      <label name="INIT"/>
+
+      <do_if value="$DEBUG gt 0.0">
+        <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ Running JP_MoveToPosition ~~' + '\n'"/>
+      </do_if>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <do_if value="$Ship.sector != $TARGED_SECTOR">
+        <run_script name="'JP_MoveToSector'">
+          <param name="TARGED_SECTOR" value="$TARGED_SECTOR"/>
+          <param name="DEBUG" value="$DEBUG"/>
+        </run_script>
+      </do_if>
+
+      <label name="RESUME"/>
+
+      <do_if value="$Ship.distanceto.[$TARGED_ZONE, $TARGED_POSITION] gt (if $FORCE_POSITION then 1m else $POSITION_TOLERANCE)">
+        <set_command command="command.move" param="$TARGED_ZONE"/>
+        <move_to object="$Ship" destination="$TARGED_ZONE" forceposition="$FORCE_POSITION" forcerotation="$TARGED_ROTATION" travel="true" finishonapproach="true" uselocalhighways="$UseHighways">
+          <position value="$TARGED_POSITION"/>
+          <rotation value="$TARGED_ROTATION"/>
+          <interrupt_after_time time="5s"/>
+        </move_to>
+
+        <wait exact="1ms"/>
+        <resume label="RESUME"/>
+      </do_if>
+
+      <stop_moving object="$Ship"/>
+      <label name="END"/>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <do_if value="$DEBUG gt 0.0">
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ Completed JP_MoveToPosition ~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+      </do_if>
+
+      <label name="CLEANUP"/>
+      <remove_value name="$UseHighways"/>
+      <remove_value name="$WayPoints"/>
+      <remove_value name="$Ship"/>
+      <remove_value name="$DebugFileName"/>
+      <remove_value name="$DebugDirectory"/>
+
+      <label name="FINISH"/>
+      <wait exact="1ms"/>
+
+    </actions>
+  </attention>
+
+  <on_abort>
+  </on_abort>
+
+</aiscript>

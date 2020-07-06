@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<aiscript name="JP_MoveToObject" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd" version="1">
+
+  <order id="JP_MoveToObject" name="MoveToObject JP" category="internal" infinite="false">
+    <params>
+      <!-- PARAMS -->
+      <param name="TARGED_OBJECT" text="Object" type="object" default="null"/>
+      <param name="END_DISTANCE" text="EndDistance" type="number" default="20km"/>
+      <!-- DEBUG -->
+      <param name="DEBUG" text="DebugText" type="number" default="0.0" advanced="1">
+        <input_param name="step" value="0.1"/>
+        <input_param name="min" value="0.0"/>
+        <input_param name="max" value="1.0"/>
+      </param>
+    </params>
+    <skill min="0"/>
+    <requires>
+      <match shiptype="shiptype.lasertower" negate="true"/>
+    </requires>
+  </order>
+
+  <interrupts>
+    <handler ref="ScannedHandler"/>
+    <handler ref="SectorChangeHandler"/>
+    <handler ref="TargetInvalidHandler"/>
+    <handler ref="AttackHandler"/>
+    <handler ref="MissileLockHandler"/>
+    <handler ref="ScannedHandler"/>
+    <handler ref="InspectedHandler"/>
+    <handler ref="FoundAbandonedHandler"/>
+    <handler ref="FoundLockboxHandler"/>
+    <handler ref="ResupplyHandler"/>
+    <handler ref="JobRemoveRequestHandler"/>
+  </interrupts>
+
+  <init>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <set_value name="$DebugDirectory" exact="'JP_ScriptLibrary.logs'"/>
+    <set_value name="$DebugFileName" exact="'JP_MoveToObject' + '.log'"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <set_value name="$Ship" exact="this.ship"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  </init>
+
+  <attention min="unknown">
+    <actions>
+      <wait exact="1ms"/>
+      <label name="INIT"/>
+
+      <do_if value="$DEBUG gt 0.0">
+        <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ Running JP_MoveToObject ~~' + '\n'"/>
+      </do_if>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <do_if value="$Ship.sector != $TARGED_OBJECT.sector">
+        <run_script name="'JP_MoveToSector'">
+          <param name="TARGED_SECTOR" value="$TARGED_OBJECT.sector"/>
+          <param name="DEBUG" value="$DEBUG"/>
+        </run_script>
+      </do_if>
+
+      <set_value name="$TargedObjectLastPosition" exact="$Ship.position"/>
+
+      <label name="RESUME"/>
+      <do_if value="$TARGED_OBJECT.position != $TargedObjectLastPosition">
+        <get_safe_pos result="$SafePosition" zone="$TARGED_OBJECT.sector" object="$TARGED_OBJECT" exact="$END_DISTANCE"/>
+        <set_value name="$TargedObjectLastPosition" exact="$TARGED_OBJECT.position"/>
+      </do_if>
+
+      <do_if value="$DEBUG gt 0.0">
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="' ~ Ship position: ' + $Ship.position + '  ~~ $SafePosition: ' + $SafePosition"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="' ~ Ship distance to position: ' + $Ship.distanceto.[$TARGED_OBJECT.sector, $SafePosition]"/>
+      </do_if>
+
+      <do_if value="$Ship.distanceto.[$TARGED_OBJECT.sector, $SafePosition] gt 1m">
+
+        <move_to object="$Ship" destination="$TARGED_OBJECT.sector" forceposition="true" forcerotation="true" travel="true" uselocalhighways="true">
+          <position value="$SafePosition"/>
+          <rotation value="$TARGED_OBJECT.rotation"/>
+          <interrupt_after_time time="5s"/>
+        </move_to>
+
+        <resume label="RESUME"/>
+      </do_if>
+
+      <label name="END"/>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <do_if value="$DEBUG gt 0.0">
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ Completed JP_MoveToObject ~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+      </do_if>
+
+      <label name="CLEANUP"/>
+      <remove_value name="$Ship"/>
+      <remove_value name="$DebugFileName"/>
+      <remove_value name="$DebugDirectory"/>
+
+      <label name="FINISH"/>
+      <wait exact="1ms"/>
+
+    </actions>
+  </attention>
+
+  <on_abort>
+  </on_abort>
+
+</aiscript>

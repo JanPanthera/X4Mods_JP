@@ -90,7 +90,7 @@
           <resume label="END"/>
         </do_if>
 
-        <create_order object="$Ship" id="'Attack'" default="false">
+        <create_order object="$Ship" id="'Attack'" immediate="true">
           <param name="primarytarget" value="$NearestEnemySmall"/>
           <param name="pursuetargets" value="false"/>
         </create_order>

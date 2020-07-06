@@ -195,12 +195,12 @@
 
         <!-- Check for damage and if $Subordinate has already an repair order, if not create one -->
         <do_if value="($Subordinate.hullpercentage lt $COMBAT_REPAIR_HULL_THRESHOLD) or
-                      ($Subordinate.hullpercentage lt 100 and $Subordinate.class == class.ship_s or $Subordinate.class == ship_m and $Subordinate.assignment == assignment.attack and not $SendAttackerSmall) or
-                      ($Subordinate.hullpercentage lt 100 and $Subordinate.class == class.ship_s or $Subordinate.class == ship_m and $Subordinate.assignment == assignment.defence and not $SendDefenderSmall) or
-                      ($Subordinate.hullpercentage lt 100 and $Subordinate.class == class.ship_s or $Subordinate.class == ship_m and $Subordinate.assignment == assignment.interception and not $SendInterceptorSmall) or
-                      ($Subordinate.hullpercentage lt 100 and $Subordinate.class == class.ship_l or $Subordinate.class == ship_xl and $Subordinate.assignment == assignment.attack and not $SendAttackerLarge) or
-                      ($Subordinate.hullpercentage lt 100 and $Subordinate.class == class.ship_l or $Subordinate.class == ship_xl and $Subordinate.assignment == assignment.defence and not $SendDefenderLarge) or
-                      ($Subordinate.hullpercentage lt 100 and $Subordinate.class == class.ship_l or $Subordinate.class == ship_xl and $Subordinate.assignment == assignment.interception and not $SendInterceptorLarge)">
+                      ($Subordinate.hullpercentage lt 100 and $Subordinate.class == class.ship_s or $Subordinate.class == class.ship_m and $Subordinate.assignment == assignment.attack and not $SendAttackerSmall) or
+                      ($Subordinate.hullpercentage lt 100 and $Subordinate.class == class.ship_s or $Subordinate.class == class.ship_m and $Subordinate.assignment == assignment.defence and not $SendDefenderSmall) or
+                      ($Subordinate.hullpercentage lt 100 and $Subordinate.class == class.ship_s or $Subordinate.class == class.ship_m and $Subordinate.assignment == assignment.interception and not $SendInterceptorSmall) or
+                      ($Subordinate.hullpercentage lt 100 and $Subordinate.class == class.ship_l or $Subordinate.class == class.ship_xl and $Subordinate.assignment == assignment.attack and not $SendAttackerLarge) or
+                      ($Subordinate.hullpercentage lt 100 and $Subordinate.class == class.ship_l or $Subordinate.class == class.ship_xl and $Subordinate.assignment == assignment.defence and not $SendDefenderLarge) or
+                      ($Subordinate.hullpercentage lt 100 and $Subordinate.class == class.ship_l or $Subordinate.class == class.ship_xl and $Subordinate.assignment == assignment.interception and not $SendInterceptorLarge)">
           <do_if value="$Subordinate.class" list="[class.ship_s, class.ship_m]">
             <cancel_all_orders object="$Subordinate"/>
             <create_order object="$Subordinate" id="'Repair'" immediate="true">
