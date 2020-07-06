@@ -143,10 +143,10 @@
     <Xsd Include="md\md.xsd" />
   </ItemGroup>
   <ItemGroup>
-    <Xml Include="aiscripts\JP_AFBV2_AttackFighter.xml" />
-    <Xml Include="aiscripts\JP_AFBV2_DefenceFighter.xml" />
+    <Xml Include="aiscripts\JP_AFBV2_AttackSmall.xml" />
+    <Xml Include="aiscripts\JP_AFBV2_DefenceSmall.xml" />
     <Xml Include="aiscripts\JP_AFBV2_GoRepair.xml" />
-    <Xml Include="aiscripts\JP_AFBV2_InterceptorFighter.xml" />
+    <Xml Include="aiscripts\JP_AFBV2_InterceptonSmall.xml" />
     <Xml Include="aiscripts\JP_AnotherFleetBehaviorV2.xml" />
     <Xml Include="content.xml" />
     <Xml Include="libraries\experiences.xml" />
