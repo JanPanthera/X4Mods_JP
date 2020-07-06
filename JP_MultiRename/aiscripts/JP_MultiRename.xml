@@ -34,6 +34,10 @@
       </param>
       <param name="TAG_OBJECT" text="- {8888888, 1103}" comment="Object with Tag" type="object" default="if global.$SettingsMR.{2}.{8}? and @global.$SettingsMR.{2}.{8} != -1 then global.$SettingsMR.{2}.{8} else null"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="PLACE_HOLDER_00" text="----------------------------------" type="object" default="null">
+        <input_param name="class" value="[]"/>
+      </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="ADD_CLASS_TAG" text="{8888888, 1104}" comment="Add Class Tag?" type="bool" default="if global.$SettingsMR.{3}.{1}? and @global.$SettingsMR.{3}.{1} != -1 then global.$SettingsMR.{3}.{1} else true"/>
       <param name="CLASS_TAG_POSITION" text="- {8888888, 1105}" comment="Class Tag position" type="number" default="if global.$SettingsMR.{3}.{2}? and @global.$SettingsMR.{3}.{2} != -1 then global.$SettingsMR.{3}.{2} else 2">
         <input_param name="min" value="0"/>
@@ -63,6 +67,10 @@
       </param>
       <param name="CLASS_TAG_SURROUNDINGS" text="- {8888888, 1107}" comment="Class Tag Surroundings" type="object" default="if global.$SettingsMR.{3}.{8}? and @global.$SettingsMR.{3}.{8} != -1 then global.$SettingsMR.{3}.{8} else null"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="PLACE_HOLDER_01" text="----------------------------------" type="object" default="null">
+        <input_param name="class" value="[]"/>
+      </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="ADD_TYPE_NAME" text="{8888888, 1108}" comment="Add Type name?" type="bool"  default="if global.$SettingsMR.{4}.{1}? and @global.$SettingsMR.{4}.{1} != -1 then global.$SettingsMR.{4}.{1} else true"/>
       <param name="TYPE_NAME_POSITION" text="- {8888888, 1109}" comment="Type name position" type="number" default="if global.$SettingsMR.{4}.{2}? and @global.$SettingsMR.{4}.{2} != -1 then global.$SettingsMR.{4}.{2} else 3">
         <input_param name="min" value="0"/>
@@ -91,6 +99,10 @@
         <input_param name="max" value="255"/>
       </param>
       <param name="TYPE_NAME_SURROUNDINGS" text="- {8888888, 1111}" comment="Type name Surroundings" type="object" default="if global.$SettingsMR.{4}.{8}? and @global.$SettingsMR.{4}.{8} != -1 then global.$SettingsMR.{4}.{8} else null"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="PLACE_HOLDER_02" text="----------------------------------" type="object" default="null">
+        <input_param name="class" value="[]"/>
+      </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="ADD_MODEL_NAME" text="{8888888, 1112}" comment="Add Model name?" type="bool" default="if global.$SettingsMR.{5}.{1}? and @global.$SettingsMR.{5}.{1} != -1 then global.$SettingsMR.{5}.{1} else true"/>
       <param name="MODEL_NAME_POSITION" text="- {8888888, 1113}" comment="Model name position" type="number" default="if global.$SettingsMR.{5}.{2}? and @global.$SettingsMR.{5}.{2} != -1 then global.$SettingsMR.{5}.{2} else 4">
@@ -125,6 +137,10 @@
       <param name="SHORTEN_SENTINEL" text="- {8888888, 1118}" comment="Short Sentinel Tag" type="bool" default="if global.$SettingsMR.{5}.{11}? and @global.$SettingsMR.{5}.{11} != -1 then global.$SettingsMR.{5}.{11} else true"/>
       <param name="SHORTEN_VANGUARD" text="- {8888888, 1119}" comment="Short Vanguard Tag" type="bool" default="if global.$SettingsMR.{5}.{12}? and @global.$SettingsMR.{5}.{12} != -1 then global.$SettingsMR.{5}.{12} else true"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="PLACE_HOLDER_03" text="----------------------------------" type="object" default="null">
+        <input_param name="class" value="[]"/>
+      </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="USE_NUMBERING" text="{8888888, 1120}" comment="Use numbering?" type="bool" default="if global.$SettingsMR.{6}.{1}? and @global.$SettingsMR.{6}.{1} != -1 then global.$SettingsMR.{6}.{1} else true"/>
       <param name="NUMBER_POSITION" text="- {8888888, 1121}" comment="Number position" type="number" default="if global.$SettingsMR.{6}.{2}? and @global.$SettingsMR.{6}.{2} != -1 then global.$SettingsMR.{6}.{2} else 0">
         <input_param name="min" value="0"/>
@@ -155,6 +171,10 @@
       <param name="NUMBER_SURROUNDINGS" text="- {8888888, 1123}" comment="Number Surroundings" type="object" default="if global.$SettingsMR.{6}.{8}? and @global.$SettingsMR.{6}.{8} != -1 then global.$SettingsMR.{6}.{8} else null"/>
       <param name="REVERSED_NUMBERING" text="- {8888888, 1124}" comment="Sort XL to S?" type="bool" default="if global.$SettingsMR.{6}.{9}? and @global.$SettingsMR.{6}.{9} != -1 then global.$SettingsMR.{6}.{9} else false"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="PLACE_HOLDER_04" text="----------------------------------" type="object" default="null">
+        <input_param name="class" value="[]"/>
+      </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="ADD_FACTION_NAME" text="{8888888, 1125}" comment="Add Faction name?" type="bool" default="if global.$SettingsMR.{7}.{1}? and @global.$SettingsMR.{7}.{1} != -1 then global.$SettingsMR.{7}.{1} else true"/>
       <param name="FACTION_NAME_POSITION" text="- {8888888, 1126}" comment="Faction name position" type="number" default="if global.$SettingsMR.{7}.{2}? and @global.$SettingsMR.{7}.{2} != -1 then global.$SettingsMR.{7}.{2} else 6">
         <input_param name="min" value="0"/>
@@ -183,6 +203,10 @@
         <input_param name="max" value="255"/>
       </param>
       <param name="FACTION_NAME_SURROUNDINGS" text="- {8888888, 1129}" comment="Faction name Surroundings" type="object" default="if global.$SettingsMR.{7}.{8}? and @global.$SettingsMR.{7}.{8} != -1 then global.$SettingsMR.{7}.{8} else null"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="PLACE_HOLDER_05" text="----------------------------------" type="object" default="null">
+        <input_param name="class" value="[]"/>
+      </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="ADD_ORDER_NAME" text="{8888888, 1130}" comment="Add Order name?" type="bool" default="if global.$SettingsMR.{8}.{1}? and @global.$SettingsMR.{8}.{1} != -1 then global.$SettingsMR.{8}.{1} else false"/>
       <param name="ORDER_NAME_POSITION" text="- {8888888, 1131}" comment="Order name position" type="number" default="if global.$SettingsMR.{8}.{2}? and @global.$SettingsMR.{8}.{2} != -1 then global.$SettingsMR.{8}.{2} else 6">
@@ -213,6 +237,10 @@
       </param>
       <param name="ORDER_NAME_SURROUNDINGS" text="- {8888888, 1133}" comment="Order name Surroundings" type="object" default="if global.$SettingsMR.{8}.{8}? and @global.$SettingsMR.{8}.{8} != -1 then global.$SettingsMR.{8}.{8} else null"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="PLACE_HOLDER_06" text="----------------------------------" type="object" default="null">
+        <input_param name="class" value="[]"/>
+      </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="ADD_ASSIGNMENT_NAME" text="{8888888, 1134}" comment="Add Assignment name?" type="bool" default="if global.$SettingsMR.{9}.{1}? and @global.$SettingsMR.{9}.{1} != -1 then global.$SettingsMR.{9}.{1} else false"/>
       <param name="ASSIGNMENT_NAME_POSITION" text="- {8888888, 1135}" comment="Assignment name position" type="number" default="if global.$SettingsMR.{9}.{2}? and @global.$SettingsMR.{9}.{2} != -1 then global.$SettingsMR.{9}.{2} else 6">
         <input_param name="min" value="0"/>
@@ -241,6 +269,10 @@
         <input_param name="max" value="255"/>
       </param>
       <param name="ASSIGNMENT_NAME_SURROUNDINGS" text="- {8888888, 1137}" comment="Assignment name Surroundings" type="object" default="if global.$SettingsMR.{9}.{8}? and @global.$SettingsMR.{9}.{8} != -1 then global.$SettingsMR.{9}.{8} else null"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="PLACE_HOLDER_07" text="----------------------------------" type="object" default="null">
+        <input_param name="class" value="[]"/>
+      </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="ADD_FLEET_NAME" text="{8888888, 1138}" comment="Add Fleet name?" type="bool" default="if global.$SettingsMR.{10}.{1}? and @global.$SettingsMR.{10}.{1} != -1 then global.$SettingsMR.{10}.{1} else false"/>
       <param name="FLEET_NAME_POSITION" text="- {8888888, 1139}" comment="Fleet name position" type="number" default="if global.$SettingsMR.{10}.{2}? and @global.$SettingsMR.{10}.{2} != -1 then global.$SettingsMR.{10}.{2} else 6">
@@ -271,6 +303,10 @@
       </param>
       <param name="FLEET_NAME_SURROUNDINGS" text="- {8888888, 1141}" comment="Fleet name Surroundings" type="object" default="if global.$SettingsMR.{10}.{8}? and @global.$SettingsMR.{10}.{8} != -1 then global.$SettingsMR.{10}.{8} else null"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="PLACE_HOLDER_08" text="----------------------------------" type="object" default="null">
+        <input_param name="class" value="[]"/>
+      </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="ADD_DPS_TAG" text="{8888888, 1142}" comment="Add DPS Tag?" type="bool" default="if global.$SettingsMR.{11}.{1}? and @global.$SettingsMR.{11}.{1} != -1 then global.$SettingsMR.{11}.{1} else false"/>
       <param name="DPS_TAG_POSITION" text="- {8888888, 1143}" comment="DPS Tag position" type="number" default="if global.$SettingsMR.{11}.{2}? and @global.$SettingsMR.{11}.{2} != -1 then global.$SettingsMR.{11}.{2} else 6">
         <input_param name="min" value="0"/>
@@ -300,10 +336,18 @@
       </param>
       <param name="DPS_TAG_SURROUNDINGS" text="- {8888888, 1145}" comment="DPS Tag surroundings" type="object" default="if global.$SettingsMR.{11}.{8}? and @global.$SettingsMR.{11}.{8} != -1 then global.$SettingsMR.{11}.{8} else null"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="PLACE_HOLDER_09" text="----------------------------------" type="object" default="null">
+        <input_param name="class" value="[]"/>
+      </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <!-- Renaming On/Off switch-->
       <param name="RENAME_COMMANDER" text="{8888888, 1146}" comment="Rename Commander?" type="bool" default="if global.$SettingsMR.{1}.{2}? and @global.$SettingsMR.{1}.{2} != -1 then global.$SettingsMR.{1}.{2} else true"/>
       <param name="RENAME_SUBORDINATES" text="{8888888, 1147}" comment="Rename Fleet?" type="bool" default="if global.$SettingsMR.{1}.{3}? and @global.$SettingsMR.{1}.{3} != -1 then global.$SettingsMR.{1}.{3} else true"/>
       <param name="RENAME_SUBORDINATE_FLEETS" text="{8888888, 1148}" comment="Renam sub. Fleets?" type="bool" default="if global.$SettingsMR.{1}.{4}? and @global.$SettingsMR.{1}.{4} != -1 then global.$SettingsMR.{1}.{4} else true"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="PLACE_HOLDER_10" text="----------------------------------" type="object" default="null">
+        <input_param name="class" value="[]"/>
+      </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="SAVE_COMMANDERS_NAME" text="{8888888, 1150}" type="bool" default="false"/>
       <param name="SAVE_SUBORDINATES_NAMES" text="{8888888, 1151}" type="bool" default="false"/>
@@ -317,6 +361,10 @@
       <param name="DELETE_COMMANDERS_NAME" text="{8888888, 1159}" type="bool" default="false"/>
       <param name="DELETE_SUBORDINATES_NAMES" text="{8888888, 1160}" type="bool" default="false"/>
       <param name="DELETE_NAMES_OF_SUBORDINATES_SUB_FLEETS" text="{8888888, 1161}" type="bool" default="false"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="PLACE_HOLDER_11" text="----------------------------------" type="object" default="null">
+        <input_param name="class" value="[]"/>
+      </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="RESET_COLORS" text="{8888888, 1149}" comment="Reset Colors?" type="bool" default="false"/>
       <param name="SAVE_SETTINGS" text="{8888888, 1195}" comment="Save Settings?" type="bool" default="false"/>
@@ -447,57 +495,7 @@
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-      <!-- Remove in one of the next updates.. give time to delete the now unused global variables -->
-      <remove_value name="global.$DebugMR"/>
-      <remove_value name="global.$RenameSubordinateFleetsMR"/>
-      <remove_value name="global.$RenameSubordinatesMR"/>
-      <remove_value name="global.$RenameCommanderMR"/>
-      <remove_value name="global.$NumberingBlueMR"/>
-      <remove_value name="global.$NumberingGreenMR"/>
-      <remove_value name="global.$NumberingRedMR"/>
-      <remove_value name="global.$NumberingAlphaMR"/>
-      <remove_value name="global.$ColorizeNumberingMR"/>
-      <remove_value name="global.$NumberSurroundingsTagMR"/>
-      <remove_value name="global.$ReversedNumberingMR"/>
-      <remove_value name="global.$NumberingPositionMR"/>
-      <remove_value name="global.$UseNumberingMR"/>
-      <remove_value name="global.$ModelNameBlueMR"/>
-      <remove_value name="global.$ModelNameGreenMR"/>
-      <remove_value name="global.$ModelNameRedMR"/>
-      <remove_value name="global.$ModelNameAlphaMR"/>
-      <remove_value name="global.$ColorizeModelNameMR"/>
-      <remove_value name="global.$ShortenVanguardMR"/>
-      <remove_value name="global.$ShortenSentinelMR"/>
-      <remove_value name="global.$RemoveVanguardTagMR"/>
-      <remove_value name="global.$RemoveSentinelTagMR"/>
-      <remove_value name="global.$ModelNamePositionMR"/>
-      <remove_value name="global.$AddModelNameMR"/>
-      <remove_value name="global.$TypeNameBlueMR"/>
-      <remove_value name="global.$TypeNameGreenMR"/>
-      <remove_value name="global.$TypeNameRedMR"/>
-      <remove_value name="global.$TypeNameAlphaMR"/>
-      <remove_value name="global.$ColorizeTypeNameMR"/>
-      <remove_value name="global.$TypeNamePositionMR"/>
-      <remove_value name="global.$AddTypeNameMR"/>
-      <remove_value name="global.$ClassTagBlueMR"/>
-      <remove_value name="global.$ClassTagGreenMR"/>
-      <remove_value name="global.$ClassTagRedMR"/>
-      <remove_value name="global.$ClassTagAlphaMR"/>
-      <remove_value name="global.$ColorizeClassTagMR"/>
-      <remove_value name="global.$ClassTagPositionMR"/>
-      <remove_value name="global.$AddClassTagMR"/>
-      <remove_value name="global.$TagBlueMR"/>
-      <remove_value name="global.$TagGreenMR"/>
-      <remove_value name="global.$TagRedMR"/>
-      <remove_value name="global.$TagAlphaMR"/>
-      <remove_value name="global.$ColorizeTagMR"/>
-      <remove_value name="global.$TagObjectMR"/>
-      <remove_value name="global.$TagPositionMR"/>
-      <remove_value name="global.$AddTagMR"/>
-      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-
       <do_if value="$DEBUG gt 0">
-
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'$SettingsMR'"/>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
@@ -505,7 +503,6 @@
           <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="' ~ $_Setting: ' + $_Setting"/>
         </do_for_each>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
-
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'global.$SettingsMR'"/>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
@@ -515,7 +512,6 @@
           </do_for_each>
         </do_if>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
-
       </do_if>
 
       <run_script name="'JP_SaveLoadReset_MR'">
