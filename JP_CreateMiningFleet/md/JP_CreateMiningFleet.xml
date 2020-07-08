@@ -38,9 +38,9 @@
                 <replace string="'MiningRoutine'" with="''"/>
               </substitute_text>
               <!-- yeah .. != means == here -->
-              <do_if value="$_Ship.fleet.name != $_MiningRoutine">
+              <do_if value="@$_Ship.fleet.name != $_MiningRoutine">
                 <do_for_each name="$_Subordinate" in="$_Ship.subordinates">
-                  <do_if value="$_Subordinate.isunit or $_Subordinate.defaultorder == null">
+                  <do_if value="$_Subordinate.isunit or $_Subordinate.defaultorder == null or $_Subordinate.commander != $_Subordinate.fleet.commander">
                     <continue/>
                   </do_if>
                   <!-- assignment.mining is not working -->

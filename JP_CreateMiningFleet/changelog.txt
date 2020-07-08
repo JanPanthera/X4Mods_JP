@@ -1,1 +1,1 @@
-~ Initial release
+~ Changed: Only direct subordinates of the fleet leader will get the mining order
