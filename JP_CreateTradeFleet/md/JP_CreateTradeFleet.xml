@@ -38,12 +38,12 @@
                 <replace string="'TradeRoutine'" with="''"/>
               </substitute_text>
               <!-- yeah .. != means == here -->
-              <do_if value="@$_Ship.fleet.name != $_TradeRoutine or $_Subordinate.assignment != assignment.trade">
+              <do_if value="@$_Ship.fleet.name != $_TradeRoutine">
                 <do_for_each name="$_Subordinate" in="$_Ship.subordinates">
-                  <do_if value="$_Subordinate.isunit or $_Subordinate.defaultorder == null">
+                  <do_if value="$_Subordinate.isunit or $_Subordinate.defaultorder == null or $_Subordinate.commander != $_Subordinate.fleet.commander">
                     <continue/>
                   </do_if>
-                  <do_if value="$_Subordinate.defaultorder.id != 'TradeRoutine'">
+                  <do_if value="$_Subordinate.defaultorder.id != 'TradeRoutine' or $_Subordinate.assignment != assignment.trade">
                     <remove_object_commander object="$_Subordinate"/>
                     <set_object_commander object="$_Subordinate" commander="$_Ship" assignment="assignment.trade"/>
                     <create_order object="$_Subordinate" id="'TradeRoutine'" default="true">
