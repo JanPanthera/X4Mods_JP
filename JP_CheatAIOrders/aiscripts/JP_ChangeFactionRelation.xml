@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<aiscript name="JP_ChangeFactionRelation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd" version="1">
+
+  <order id="JP_ChangeFactionRelation" name="{8888888, 697}ChangeFactionRelation - {8888888, 699}{8888888, 698}Cheat{8888888, 699}" category="navigation" infinite="true">
+    <params>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="FACTION_OBJECT_1" text="FactionObject1" type="object" default="null"/>
+      <param name="FACTION_OBJECT_2" text="FactionObject2" type="object" default="null"/>
+      <param name="RELATION" text="Relation" type="number" default="0">
+        <input_param name="step" value="5"/>
+        <input_param name="min" value="-30"/>
+        <input_param name="max" value="30"/>
+      </param>
+      <param name="NEGATIVE_RELATION" text="NegativeRelation" type="bool" default="false"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <!-- DEBUG -->
+      <param name="DEBUG" text="DebugText" type="number" default="0" advanced="true">
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="100"/>
+        <input_param name="step" value="100"/>
+      </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    </params>
+    <skill min="0"/>
+    <requires>
+      <match shiptype="shiptype.lasertower" negate="true"/>
+    </requires>
+    <location object="$_InventoryToCollect" condition="$_InventoryToCollect? and @$_InventoryToCollect.class != null"/>
+  </order>
+
+  <interrupts>
+    <handler ref="SectorChangeHandler"/>
+    <handler ref="TargetInvalidHandler"/>
+    <handler ref="AttackHandler"/>
+    <handler ref="MissileLockHandler" />
+    <handler ref="ScannedHandler"/>
+    <handler ref="InspectedHandler"/>
+    <handler ref="FoundAbandonedHandler"/>
+    <handler ref="FoundLockboxHandler"/>
+    <handler ref="ResupplyHandler"/>
+    <handler ref="JobRemoveRequestHandler" />
+  </interrupts>
+
+  <init>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <do_if value="$DEBUG gt 0">
+      <set_value name="$DebugDirectory" exact="'JP_ChangeFactionRelation.logs'"/>
+      <set_value name="$DebugFileName" exact="this.ship.idcode + '.JP_ChangeFactionRelation.xml.log'"/>
+    </do_if>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  </init>
+
+  <attention min="unknown">
+    <actions>
+
+      <wait exact="1s"/>
+      <label name="START_LBL"/>
+
+      <do_if value="$DEBUG gt 0">
+        <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_ChangeFactionRelation.xml ~ Started ~~' + '\n'"/>
+      </do_if>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <do_if value="@$FACTION_OBJECT_1.owner == null or @$FACTION_OBJECT_2.owner == null or @$FACTION_OBJECT_1.owner == @$FACTION_OBJECT_2.owner">
+        <resume label="FINISH_LBL"/>
+      </do_if>
+
+      <set_value name="$_NewRelation" exact="0.0"/>
+      <do_if value="$RELATION == 30">
+        <set_value name="$_NewRelation" exact="1.0"/>
+      </do_if>
+      <do_if value="$RELATION == 25">
+        <set_value name="$_NewRelation" exact="0.32"/>
+      </do_if>
+      <do_if value="$RELATION == 20">
+        <set_value name="$_NewRelation" exact="0.1"/>
+      </do_if>
+      <do_if value="$RELATION == 15">
+        <set_value name="$_NewRelation" exact="0.032"/>
+      </do_if>
+      <do_if value="$RELATION == 10">
+        <set_value name="$_NewRelation" exact="0.01"/>
+      </do_if>
+      <do_if value="$RELATION == 5">
+        <set_value name="$_NewRelation" exact="0.0032"/>
+      </do_if>
+
+      <do_if value="$RELATION == 0">
+        <set_value name="$_NewRelation" exact="0.0"/>
+      </do_if>
+
+      <do_if value="$NEGATIVE_RELATION">
+        <do_if value="$RELATION == 5">
+          <set_value name="$_NewRelation" exact="-0.0032"/>
+        </do_if>
+        <do_if value="$RELATION == 10">
+          <set_value name="$_NewRelation" exact="-0.01"/>
+        </do_if>
+        <do_if value="$RELATION == 15">
+          <set_value name="$_NewRelation" exact="-0.032"/>
+        </do_if>
+        <do_if value="$RELATION == 20">
+          <set_value name="$_NewRelation" exact="-0.1"/>
+        </do_if>
+        <do_if value="$RELATION == 25">
+          <set_value name="$_NewRelation" exact="-0.32"/>
+        </do_if>
+        <do_if value="$RELATION == 30">
+          <set_value name="$_NewRelation" exact="-1.0"/>
+        </do_if>
+      </do_if>
+
+      <set_faction_relation faction="$FACTION_OBJECT_1.owner" otherfaction="$FACTION_OBJECT_2.owner" value="$_NewRelation"/>
+
+      <do_if value="$RELATION == 0">
+        <show_help custom="'{8888888, 697}' + 'New relation between ' + '{8888888, 699}' + '{8888888, 698}' + $FACTION_OBJECT_1.owner.knownname + '{8888888, 699}' +
+                         '{8888888, 697}' + ' and ' + '{8888888, 699}' + '{8888888, 698}' + $FACTION_OBJECT_2.owner.knownname + '{8888888, 699}' + '{8888888, 697}' + ':\n' + '{8888888, 699}' + 
+                         '\033#FFEB6B34#' + $RELATION + '{8888888, 699}'"
+        allowclose="true" duration="5s"/>
+      </do_if>
+      <do_else>
+        <show_help custom="'{8888888, 697}' + 'New relation between ' + '{8888888, 699}' + '{8888888, 698}' + $FACTION_OBJECT_1.owner.knownname + '{8888888, 699}' +
+                         '{8888888, 697}' + ' and ' + '{8888888, 699}' + '{8888888, 698}' + $FACTION_OBJECT_2.owner.knownname + '{8888888, 699}' + '{8888888, 697}' + ':\n' + '{8888888, 699}' + 
+                         (if $_NewRelation gt 0 then ('{8888888, 698}' + '+' + $RELATION) else ('\033#FFFF0000#' + '-' + $RELATION)) + '{8888888, 699}'"
+              allowclose="true" duration="5s"/>
+      </do_else>
+
+      <label name="FINISH_LBL"/>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <do_if value="$DEBUG gt 0">
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_ChangeFactionRelation.xml ~ Finished ~~'"/>
+        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+      </do_if>
+
+      <label name="CLEANUP_LBL"/>
+      <do_if value="$DEBUG gt 0">
+        <remove_value name="$DebugFileName"/>
+        <remove_value name="$DebugDirectory"/>
+      </do_if>
+
+      <label name="END_LBL"/>
+      <wait exact="1s"/>
+      <set_order_syncpoint_reached order="this.ship.order"/>
+      <cancel_order order="this.ship.order" />
+
+    </actions>
+  </attention>
+
+  <on_abort>
+  </on_abort>
+
+</aiscript>

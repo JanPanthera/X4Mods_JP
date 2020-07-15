@@ -138,6 +138,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <Xml Include="aiscripts\JP_ChangeFactionRelation.xml" />
     <Xml Include="aiscripts\JP_GiveMeExperience.xml" />
     <Xml Include="aiscripts\JP_GiveMeMoney.xml" />
     <Xml Include="aiscripts\JP_GiveMeThatCargo.xml" />

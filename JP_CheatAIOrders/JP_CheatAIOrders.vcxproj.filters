@@ -34,6 +34,7 @@
     <Xml Include="aiscripts\JP_TeleportThatShipOrFleetThere.xml" />
     <Xml Include="aiscripts\JP_GiveMeMoney.xml" />
     <Xml Include="libraries\experiences.xml" />
+    <Xml Include="aiscripts\JP_ChangeFactionRelation.xml" />
   </ItemGroup>
   <ItemGroup>
     <Xsd Include="aiscripts\aiscripts.xsd">

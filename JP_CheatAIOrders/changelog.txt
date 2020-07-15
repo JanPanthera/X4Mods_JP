@@ -1,1 +1,1 @@
-~ Updated: now you can teleport all factions ships
+~ Added: ChangeFactionRelation
