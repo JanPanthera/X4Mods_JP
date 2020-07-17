@@ -5,6 +5,16 @@
   <order id="JP_MultiRename" name="{8888888, 1197}MultiRename{8888888, 1199}" category="navigation" infinite="true">
     <params>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="PLACE_HOLDER_0000" text="----------------------------------" type="object" default="null">
+        <input_param name="class" value="[]"/>
+      </param>
+      <param name="OBJECT" text="Which ship or fleet?" type="object" default="this.ship">
+        <input_param name="class" value="[class.ship]"/>
+      </param>
+      <param name="PLACE_HOLDER_000" text="----------------------------------" type="object" default="null">
+        <input_param name="class" value="[]"/>
+      </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="ADD_TAG" text="{8888888, 1100}" comment="Add Tag?" type="bool" default="if global.$SettingsMR.{2}.{1}? and @global.$SettingsMR.{2}.{1} != -1 then global.$SettingsMR.{2}.{1} else true"/>
       <param name="TAG_POSITION" text="- {8888888, 1101}" comment="Tag position" type="number" default="if global.$SettingsMR.{2}.{2}? and @global.$SettingsMR.{2}.{2} != -1 then global.$SettingsMR.{2}.{2} else 1">
         <input_param name="min" value="0"/>
@@ -402,7 +412,8 @@
     <set_value name="$DebugDirectory" exact="'JP_MultiRename.logs'"/>
     <set_value name="$DebugFileName" exact="this.ship.idcode + '.JP_MultiRename.xml.log'"/>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-    <set_value name="$Commander" exact="this.assignedcontrolled"/>
+    <set_value name="$Commander" exact="$OBJECT"/>
+    <!--<set_value name="$Commander" exact="$OBJECT.assignedcontrolled"/>-->
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <create_list name="$MiscellaneousSettings"/>
     <append_list_elements name="$MiscellaneousSettings" other="[$DEBUG, $RENAME_COMMANDER, $RENAME_SUBORDINATES, $RENAME_SUBORDINATE_FLEETS]"/>

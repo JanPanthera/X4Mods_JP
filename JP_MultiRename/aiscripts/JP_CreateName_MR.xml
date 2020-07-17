@@ -210,7 +210,7 @@
 
         <!-- [(1)'ORDER_NAME', (2)$ORDER_NAME_POSITION, (3)$_ColorString, (4)$_Surroundings] -->
         <do_if value="$_NameTile.{1} == 'ORDER_NAME'">
-          <set_value name="$_OrderName" exact="if @$Ship.fleet.iscommander then '' else @$Ship.order.name"/>
+          <set_value name="$_OrderName" exact="@$Ship.defaultorder.name"/>
           <do_if value="$_NameTile.{3} != ''">
             <set_value name="$_CreatedName" exact="$_NameTile.{3} + $_NameTile.{4}.[if @$_OrderName then $_OrderName else ''] + '\033X'" operation="add"/>
           </do_if>

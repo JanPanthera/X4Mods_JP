@@ -1,2 +1,2 @@
-~ Added: Placeholder parameters.. for better readability
-~ Fixed: not worth to mention here
+~ Added: Ship or fleet choosable as parameter
+~ Changed: Order name to default order name
