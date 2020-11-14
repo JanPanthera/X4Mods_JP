@@ -3,34 +3,36 @@
 <language>
   <page id="8888888" voice="no">
     <!-- JP_AddTag -->
-    <t id="200">Tag at Front?</t>
-    <t id="201">Tag at End?</t>
-    <t id="202">Include Commander?</t>
-    <t id="203">Include Subordinates?</t>
-    <t id="204">Include Subordinates of subordinated fleets?</t>
-    <t id="205">Object with tag as name</t>
-    <t id="206">Colorize Tag?</t>
-    <t id="207">Colorize Name?</t>
-    <t id="230">Save Commanders name?</t>
-    <t id="231">Save Subordinates names?</t>
-    <t id="232">Save Subordinates names sub. Fleets?</t>
-    <t id="233">Load Commanders name?</t>
-    <t id="234">Load Subordinates names?</t>
-    <t id="235">Load Subordinates names sub. Fleets?</t>
-    <t id="236">Reset Commanders name?</t>
-    <t id="237">Reset Subordinates names?</t>
-    <t id="238">Reset Subordinates names sub. Fleets?</t>
-    <t id="239">Delete Commanders name?</t>
-    <t id="240">Delete Subordinates names?</t>
-    <t id="241">Delete Subordinates names sub. Fleets?</t>
-    <t id="270">Transparency</t>
-    <t id="271">Red</t>
-    <t id="272">Green</t>
-    <t id="273">Blue</t>
-    <t id="295">Save Settings?</t>
-    <t id="296">Delete Settings?</t>
+    <t id="200">自己的船/站</t>
+    <t id="201">以标记为名称的对象</t>
+    <t id="202">标签位置</t>
+    <t id="203">添加到船舶/站？</t>
+    <t id="204">添加到下属？</t>
+    <t id="205">添加到从属舰队？</t>
+    <t id="206">着色标签？</t>
+    <t id="207">着色的名字？</t>
+    <t id="230">保存名字？</t>
+    <t id="231">加载名称？</t>
+    <t id="232">重置名字？</t>
+    <t id="233">删除名字？</t>
+    <t id="234">适用于船舶/车站？</t>
+    <t id="235">适用于下属？</t>
+    <t id="236">适用于从属车队？</t>
+    <t id="237">适用于所有？</t>
+    <t id="260">订单设置已保存。</t>
+    <t id="261">订单设置重置。</t>
+    <t id="262">名字保存。</t>
+    <t id="263">名字加载。</t>
+    <t id="264">名字重置。</t>
+    <t id="265">姓名删除。</t>
+    <t id="270">透明度</t>
+    <t id="271">红色</t>
+    <t id="272">绿色</t>
+    <t id="273">蓝色</t>
+    <t id="295">保存订单设置？</t>
+    <t id="296">重置订单设置？</t>
     <t id="297">\033#B600CCCC#</t>
     <t id="298">\033#FF00CC66#</t>
-    <t id="299">\033X</t>
+    <t id="299">\033倍</t>
   </page>
 </language>

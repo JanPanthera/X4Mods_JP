@@ -1,5 +1,6 @@
-~ Added: saving and deleting of the most settings
-~ Added: order name is now colored
-~ Updated: refactoring
-~ Updated: language files restructuring
-~ Updated: added some translations.. (google translate)
+~ Added: option to choose the object you want the tag be added
+~ Changed: Tag position choosable with a number 0 -> 2 0=front 2=back 1=front+back
+~ Updated: language files
+~ Updated: refactored/recreated addtag.. now has a lot fewer lines of code
+~ Updated: refactored/recreated save and load order settings function
+~ Updated: added a _ before the color code of the behaviour name, ai routines of the base game are now arranged at top of the routines list
