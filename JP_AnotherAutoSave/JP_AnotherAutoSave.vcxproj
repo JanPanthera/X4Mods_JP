@@ -154,6 +154,7 @@
     <Xml Include="t\0001.xml" />
   </ItemGroup>
   <ItemGroup>
+    <Xsd Include="aiscripts\aiscripts.xsd" />
     <Xsd Include="md\md.xsd" />
   </ItemGroup>
   <ItemGroup>

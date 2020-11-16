@@ -34,6 +34,9 @@
     <Xsd Include="md\md.xsd">
       <Filter>Header Files</Filter>
     </Xsd>
+    <Xsd Include="aiscripts\aiscripts.xsd">
+      <Filter>Header Files</Filter>
+    </Xsd>
   </ItemGroup>
   <ItemGroup>
     <Text Include="changelog.txt" />
