@@ -193,7 +193,6 @@
       <do_if value="global.$AddTag_Settings?">
         <remove_value name="global.$AddTag_Settings"/>
       </do_if>
-      <cancel_order order="this.ship.order"/>
       <show_help duration="5s" allowclose="true" log="true" custom="'JP_AddTag ~ ' + this.ship.knownname + ' [' + this.ship.idcode + ']\n\n' + '{8888888, 261}'"/>
       <cancel_order order="this.ship.order"/>
     </do_if>
