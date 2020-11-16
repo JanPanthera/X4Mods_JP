@@ -42,7 +42,7 @@
         <set_value name="$DebugDirectory" exact="'JP_AnotherAutoSave.logs'"/>
         <set_value name="$DebugFileName" exact="'JP_AnotherAutoSave.xml.log'"/>
 
-        <do_if value="$DEBUG gt 0">
+        <do_if value="$DEBUG">
           <debug_to_file append="true" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
           <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_TestScript_MD_03.xml ~ Started ~~' + '\n'"/>
         </do_if>
@@ -86,7 +86,7 @@
 
         <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-        <do_if value="$DEBUG gt 0">
+        <do_if value="$DEBUG">
           <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_TestScript_MD_03.xml ~ Finished ~~'"/>
           <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
         </do_if>
