@@ -3,34 +3,36 @@
 <language>
   <page id="8888888" voice="no">
     <!-- JP_AbandonedShipExplorer -->
-    <t id="100">Enemy Sectors?</t> 
-    <t id="101">Neutral Sectors?</t> 
-    <t id="102">Friendly Sectors?</t> 
-    <t id="110">Message when arrived?</t> 
-    <t id="111">Wait at the ship?</t> 
-    <t id="112">How long to wait?</t> 
-    <t id="113">Place navigation beacons?</t> 
-    <t id="114">Restock navigation beacons?</t> 
-    <t id="115">Amount to restock</t> 
-    <t id="116">Abandoned Ship</t> 
-    <t id="117">I arrived at the abandoned ship.</t> 
-    <t id="118">Wait time:</t> 
-    <t id="119">No free storage for restocking navigation beacons!</t> 
-    <t id="120">No navigation beacons on board and restocking turned off, going idle...</t> 
-    <t id="180">Idle Time</t> 
-    <t id="181">Idle: Follow?</t> 
-    <t id="182">Who to follow?</t> 
-    <t id="183">Idle: Docking?</t> 
-    <t id="184">Where to dock?</t> 
-    <t id="185">Idle: Random movement?</t> 
-    <t id="186">In which sector?</t> 
-    <t id="187">Idle: Move to?</t> 
-    <t id="188">Where to move?</t> 
-    <t id="194">Add order tag?</t> 
-    <t id="195">Save Settings?</t> 
-    <t id="196">Delete Settings?</t> 
+    <t id="100">敌区？</t>
+    <t id="101">中立部门？</t>
+    <t id="102">友好部门？</t>
+    <t id="110">消息到达时？</t>
+    <t id="111">在船上等？</t>
+    <t id="112">要等多久？</t>
+    <t id="113">地方导航信标？</t>
+    <t id="114">补货导航信标？</t>
+    <t id="115">进货量</t>
+    <t id="116">被遗弃的船</t>
+    <t id="117">我到了废弃的船</t>
+    <t id="118">等待时间:</t>
+    <t id="119">没有免费存储进货导航信标！</t>
+    <t id="120">船上没有导航信标和补货关闭，闲置。..</t>
+    <t id="160">订单设置已保存。</t>
+    <t id="161">订单设置复位。</t>
+    <t id="180">空闲时间</t>
+    <t id="181">闲置：跟随？</t>
+    <t id="182">跟踪谁？</t>
+    <t id="183">空闲：坞站？</t>
+    <t id="184">在哪里停靠？</t>
+    <t id="185">闲置：随机移动？</t>
+    <t id="186">在哪个部门？</t>
+    <t id="187">闲置：移动到？</t>
+    <t id="188">移动到哪里？</t>
+    <t id="194">添加订单标签？</t>
+    <t id="195">保存订单设置？</t>
+    <t id="196">重置订单设置？</t>
     <t id="197">\033#B600CCCC#</t>
     <t id="198">\033#FF00CC66#</t>
-    <t id="199">\033X</t>
+    <t id="199">\033倍</t>
   </page>
 </language>

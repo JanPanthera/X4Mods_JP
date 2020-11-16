@@ -12,11 +12,7 @@
       </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <!-- DEBUG -->
-      <param name="DEBUG" text="DebugText" type="number" default="0" advanced="true">
-        <input_param name="min" value="0"/>
-        <input_param name="max" value="100"/>
-        <input_param name="step" value="100"/>
-      </param>
+      <param name="DEBUG" text="Debug" type="bool" default="false" advanced="true"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     </params>
     <skill min="0"/>
@@ -54,7 +50,7 @@
       <wait exact="1ms"/>
       <label name="INIT"/>
 
-      <do_if value="$DEBUG gt 0">
+      <do_if value="$DEBUG">
         <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_RestockNavBeacons_ASE.xml ~ Started ~~' + '\n'"/>
       </do_if>
@@ -71,7 +67,7 @@
 
       <!-- Restocking failed ~~ no stations found where we can restock -->
       <do_if value="$Stations.count lt 1">
-        <do_if value="$DEBUG gt 0">
+        <do_if value="$DEBUG">
           <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
           <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'Could not resupply nav beacons because no station found.'"/>
           <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
@@ -87,7 +83,7 @@
         <set_value name="$RESTOCK_AMOUNT" exact="$Ship.ammostorage.{ware.waypointmarker_01}.free"/>
       </do_if>
       <do_if value="$RESTOCK_AMOUNT le 0">
-        <do_if value="$DEBUG gt 0">
+        <do_if value="$DEBUG">
           <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
           <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'No storage avaialable for resupplying of navbeacons.'"/>
           <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
@@ -102,7 +98,7 @@
       <set_value name="$AmmoTable.{ware.waypointmarker_01}" exact="$RESTOCK_AMOUNT"/>
 
       <!-- Restocking -->
-      <do_if value="$DEBUG gt 0">
+      <do_if value="$DEBUG">
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'Resupplying %1 navigation beacons.'.[$RESTOCK_AMOUNT]"/>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
@@ -114,7 +110,7 @@
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-      <do_if value="$DEBUG gt 0">
+      <do_if value="$DEBUG">
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_RestockNavBeacons_ASE.xml ~ Finished ~~'"/>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
       </do_if>

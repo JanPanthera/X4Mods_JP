@@ -2,61 +2,57 @@
 
 <aiscript name="JP_AbandonedShipExplorer" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd">
 
-  <order id="JP_AbandonedShipExplorer" name="{8888888, 197}AbandonedShipExplorer{8888888, 199}" category="navigation" infinite="true">
+  <order id="JP_AbandonedShipExplorer" name="_{8888888, 197}AbandonedShipExplorer - {8888888, 199}{8888888, 198}{20001, 901}{8888888, 199}" category="navigation" infinite="true">
     <params>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="ENEMY_SECTORS" text="{8888888, 100}" comment="Enemy Sectors?" type="bool" default="if global.$EnemySectorsASE? then global.$EnemySectorsASE else false"/>
-      <param name="NEUTRAL_SECTORS" text="{8888888, 101}" comment="Neutral Sectors?" type="bool" default="if global.$NeutralSectorsASE? then global.$NeutralSectorsASE else true"/>
-      <param name="FRIENDLY_SECTORS" text="{8888888, 102}" comment="Friendly Sectors?" type="bool" default="if global.$FrienlySectorsASE? then global.$FrienlySectorsASE else true"/>
+      <param name="ENEMY_SECTORS" text="{8888888, 100}" comment="Enemy Sectors?" type="bool" default="if global.$AbandonedShipExplorer_Settings? then global.$AbandonedShipExplorer_Settings.{1} else false"/>
+      <param name="NEUTRAL_SECTORS" text="{8888888, 101}" comment="Neutral Sectors?" type="bool" default="if global.$AbandonedShipExplorer_Settings? then global.$AbandonedShipExplorer_Settings.{2} else true"/>
+      <param name="FRIENDLY_SECTORS" text="{8888888, 102}" comment="Friendly Sectors?" type="bool" default="if global.$AbandonedShipExplorer_Settings? then global.$AbandonedShipExplorer_Settings.{3} else true"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="SHOW_MESSAGE" text="{8888888, 110}" comment="Message when arrived?" type="bool" default="if global.$ShowMessageASE? then global.$ShowMessageASE else true"/>
-      <param name="WAIT_AT_SHIP" text="{8888888, 111}" comment="Wait at the ship?" type="bool" default="if global.$WaitAtShipASE? then global.$WaitAtShipASE else true"/>
-      <param name="WAIT_AMOUNT" text="- {8888888, 112}" comment="How long to wait?" type="time" default="if global.$WaitAmountASE? then global.$WaitAmountASE else 60s">
+      <param name="SHOW_MESSAGE" text="{8888888, 110}" comment="Message when arrived?" type="bool" default="if global.$AbandonedShipExplorer_Settings? then global.$AbandonedShipExplorer_Settings.{4} else true"/>
+      <param name="WAIT_AT_SHIP" text="{8888888, 111}" comment="Wait at the ship?" type="bool" default="if global.$AbandonedShipExplorer_Settings? then global.$AbandonedShipExplorer_Settings.{5} else true"/>
+      <param name="WAIT_AMOUNT" text="- {8888888, 112}" comment="How long to wait?" type="time" default="if global.$AbandonedShipExplorer_Settings? then global.$AbandonedShipExplorer_Settings.{6} else 60s">
         <input_param name="step" value="10s"/>
         <input_param name="min" value="10s"/>
         <input_param name="max" value="3600s"/>
       </param>
-      <param name="PLACE_NAVBEACON" text="{8888888, 113}" comment="Place navigation beacons?" type="bool" default="if global.$PlaceNavbeaconASE? then global.$PlaceNavbeaconASE else true"/>
-      <param name="RESTOCK_NAV_BEACONS" text="{8888888, 114}" comment="Restock navigation beacons?" type="bool" default="if global.$RestockNavBeaconsASE? then global.$RestockNavBeaconsASE else true"/>
-      <param name="RESTOCK_AMOUNT" text="- {8888888, 115}" comment="Amount to restock" type="number" default="3">
+      <param name="PLACE_NAVBEACON" text="{8888888, 113}" comment="Place navigation beacons?" type="bool" default="if global.$AbandonedShipExplorer_Settings? then global.$AbandonedShipExplorer_Settings.{7} else true"/>
+      <param name="RESTOCK_NAV_BEACONS" text="{8888888, 114}" comment="Restock navigation beacons?" type="bool" default="if global.$AbandonedShipExplorer_Settings? then global.$AbandonedShipExplorer_Settings.{8} else true"/>
+      <param name="RESTOCK_AMOUNT" text="- {8888888, 115}" comment="Amount to restock" type="number" default="if global.$AbandonedShipExplorer_Settings? then global.$AbandonedShipExplorer_Settings.{9} else 3">
         <input_param name="step" value="1"/>
         <input_param name="min" value="1"/>
         <input_param name="max" value="if this.ship.ammostorage.deployable.free le 0 then 1 else this.ship.ammostorage.deployable.free"/>
       </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="IDLE_TIME" text="{8888888, 180}" comment="Idle Time" type="time" default="if global.$IdleTimeASE? then global.$IdleTimeASE else 600s">
+      <param name="IDLE_TIME" text="{8888888, 180}" comment="Idle Time" type="time" default="if global.$AbandonedShipExplorer_Settings? then global.$AbandonedShipExplorer_Settings.{10} else 600s">
         <input_param name="min" value="60s"/>
         <input_param name="max" value="3600s"/>
         <input_param name="step" value="10s"/>
       </param>
-      <param name="IDLE_FOLLOW" text="{8888888, 181}" comment="Idle: Follow?" type="bool" default="if global.$IdleFollowASE? then global.$IdleFollowASE else false"/>
-      <param name="WHO_TO_FOLLOW" text="- {8888888, 182}" comment="Who to follow?" type="object" default="if global.$WhoToFollowASE? then global.$WhoToFollowASE else null">
+      <param name="IDLE_FOLLOW" text="{8888888, 181}" comment="Idle: Follow?" type="bool" default="if global.$AbandonedShipExplorer_Settings? then global.$AbandonedShipExplorer_Settings.{11} else false"/>
+      <param name="WHO_TO_FOLLOW" text="- {8888888, 182}" comment="Who to follow?" type="object" default="if global.$AbandonedShipExplorer_Settings? then global.$AbandonedShipExplorer_Settings.{12} else null">
         <input_param name="class" value="[class.ship]"/>
         <input_param name="owner" value="this.ship.owner"/>
       </param>
-      <param name="IDLE_DOCKING" text="{8888888, 183}" comment="Idle: Docking?" type="bool" default="if global.$IdleDockingASE? then global.$IdleDockingASE else false"/>
-      <param name="WHERE_TO_DOCK" text="- {8888888, 184}" comment="Where to dock?" type="object" default="if global.$WhereToDockASE? then global.$WhereToDockASE else null">
+      <param name="IDLE_DOCKING" text="{8888888, 183}" comment="Idle: Docking?" type="bool" default="if global.$AbandonedShipExplorer_Settings? then global.$AbandonedShipExplorer_Settings.{13} else false"/>
+      <param name="WHERE_TO_DOCK" text="- {8888888, 184}" comment="Where to dock?" type="object" default="if global.$AbandonedShipExplorer_Settings? then global.$AbandonedShipExplorer_Settings.{14} else null">
         <input_param name="class" value="if this.ship.isclass.[class.ship_s, class.ship_xs] then [class.station, class.ship_m, class.ship_l, class.ship_xl] else [class.station, class.ship_l, class.ship_xl]"/>
       </param>
-      <param name="IDLE_RANDOM_MOVEMENT" text="{8888888, 185}" comment="Idle: Movement?" type="bool" default="if global.$IdleRandomMovementASE? then global.$IdleRandomMovementASE else false"/>
-      <param name="IN_WHICH_SECTOR" text="- {8888888, 186}" comment="In which sector?" type="position" default="if global.$InWhichSectorASE? then global.$InWhichSectorASE else [this.ship.sector, this.ship.position]">
+      <param name="IDLE_RANDOM_MOVEMENT" text="{8888888, 185}" comment="Idle: Movement?" type="bool" default="if global.$AbandonedShipExplorer_Settings? then global.$AbandonedShipExplorer_Settings.{15} else false"/>
+      <param name="IN_WHICH_SECTOR" text="- {8888888, 186}" comment="In which sector?" type="position" default="if global.$AbandonedShipExplorer_Settings? then global.$AbandonedShipExplorer_Settings.{16} else [this.ship.sector, this.ship.position]">
         <input_param name="class" value="class.sector"/>
       </param>
-      <param name="IDLE_MOVE_TO" text="{8888888, 187}" comment="Idle: Move to?" type="bool" default="if global.$IdleMoveToASE? then global.$IdleMoveToASE else false"/>
-      <param name="WHERE_TO_MOVE" text="- {8888888, 188}" comment="Where to move?" type="position" default="if global.$WhereToMoveASE? then global.$WhereToMoveASE else [this.ship.sector, this.ship.position]">
+      <param name="IDLE_MOVE_TO" text="{8888888, 187}" comment="Idle: Move to?" type="bool" default="if global.$AbandonedShipExplorer_Settings? then global.$AbandonedShipExplorer_Settings.{17} else false"/>
+      <param name="WHERE_TO_MOVE" text="- {8888888, 188}" comment="Where to move?" type="position" default="if global.$AbandonedShipExplorer_Settings? then global.$AbandonedShipExplorer_Settings.{18} else [this.ship.sector, this.ship.position]">
         <input_param name="class" value="class.sector"/>
       </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="ADD_ORDER_TAG" text="{8888888, 194}" comment="Add order tag?" type="bool" default="if global.$AddOrderTagASE? then global.$AddOrderTagASE else true"/>
-      <param name="SAVE_SETTINGS" text="{8888888, 195}" comment="SaveSettings" type="bool" default="false"/>
-      <param name="DELETE_SETTINGS" text="{8888888, 196}" comment="DeleteSettings" type="bool" default="false"/>
+      <param name="ADD_ORDER_TAG" text="{8888888, 194}" comment="Add Order tag?" type="bool" default="if global.$AbandonedShipExplorer_Settings? then global.$AbandonedShipExplorer_Settings.{19} else true"/>
+      <param name="SAVE_ORDER_SETTINGS" text="{8888888, 195}" comment="Save Order Settings?" type="bool" default="false"/>
+      <param name="RESET_ORDER_SETTINGS" text="{8888888, 196}" comment="Delete Order Settings?" type="bool" default="false"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <!-- DEBUG -->
-      <param name="DEBUG" text="DebugText" type="number" default="if global.$DebugASE? then global.$DebugASE else 0" advanced="true">
-        <input_param name="min" value="0"/>
-        <input_param name="max" value="100"/>
-        <input_param name="step" value="100"/>
-      </param>
+      <param name="DEBUG" text="Debug" type="bool" default="if global.$AbandonedShipExplorer_Settings? then global.$AbandonedShipExplorer_Settings.{20} else false" advanced="true"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     </params>
     <skill min="0"/>
@@ -84,71 +80,16 @@
     <set_value name="$DebugFileName" exact="this.ship.idcode + '.JP_AbandonedShipExplorer.xml.log'"/>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <set_value name="$Ship" exact="this.ship"/>
-    <set_value name="this.$OldName" exact="this.ship.name"/>
     <do_if value="$ADD_ORDER_TAG">
-      <set_object_name object="this.ship" name="this.ship.name + '\033#FFA2560B# #ASE\033X'"/>
+      <do_if value="not this.$OldName?">
+        <set_value name="this.$OldName" exact="this.ship.knownname"/>
+      </do_if>
+      <set_object_name object="this.ship" name="this.ship.knownname + '\033#FFA2560B# #ASE\033X'"/>
     </do_if>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-    <do_if value="$SAVE_SETTINGS">
-      <do_if value="not global.$EnemySectorsASE? or @global.$EnemySectorsASE != $ENEMY_SECTORS">
-        <set_value name="global.$EnemySectorsASE" exact="$ENEMY_SECTORS"/>
-      </do_if>
-      <do_if value="not global.$NeutralSectorsASE? or @global.$NeutralSectorsASE != $NEUTRAL_SECTORS">
-        <set_value name="global.$NeutralSectorsASE" exact="$NEUTRAL_SECTORS"/>
-      </do_if>
-      <do_if value="not global.$FriendlySectorsASE? or @global.$FriendlySectorsASE != $FRIENDLY_SECTORS">
-        <set_value name="global.$FriendlySectorsASE" exact="$FRIENDLY_SECTORS"/>
-      </do_if>
-      <do_if value="not global.$ShowMessageASE? or @global.$ShowMessageASE != $SHOW_MESSAGE">
-        <set_value name="global.$ShowMessageASE" exact="$SHOW_MESSAGE"/>
-      </do_if>
-      <do_if value="not global.$WaitAtShipASE? or @global.$WaitAtShipASE != $WAIT_AT_SHIP">
-        <set_value name="global.$WaitAtShipASE" exact="$WAIT_AT_SHIP"/>
-      </do_if>
-      <do_if value="not global.$WaitAmountASE? or @global.$WaitAmountASE != $WAIT_AMOUNT">
-        <set_value name="global.$WaitAmountASE" exact="$WAIT_AMOUNT"/>
-      </do_if>
-      <do_if value="not global.$PlaceNavbeaconASE? or @global.$PlaceNavbeaconASE != $PLACE_NAVBEACON">
-        <set_value name="global.$PlaceNavbeaconASE" exact="$PLACE_NAVBEACON"/>
-      </do_if>
-      <do_if value="not global.$RestockNavBeaconsASE? or @global.$RestockNavBeaconsASE != $RESTOCK_NAV_BEACONS">
-        <set_value name="global.$RestockNavBeaconsASE" exact="$RESTOCK_NAV_BEACONS"/>
-      </do_if>
-      <do_if value="not global.$IdleTimeASE? or @global.$IdleTimeASE != $IDLE_TIME">
-        <set_value name="global.$IdleTimeASE" exact="$IDLE_TIME"/>
-      </do_if>
-      <do_if value="not global.$IdleFollowASE? or @global.$IdleFollowASE != $IDLE_FOLLOW">
-        <set_value name="global.$IdleFollowASE" exact="$IDLE_FOLLOW"/>
-      </do_if>
-      <do_if value="not global.$WhoToFollowASE? or @global.$WhoToFollowASE != $WHO_TO_FOLLOW">
-        <set_value name="global.$WhoToFollowASE" exact="$WHO_TO_FOLLOW"/>
-      </do_if>
-      <do_if value="not global.$IdleDockingASE? or @global.$IdleDockingASE != $IDLE_DOCKING">
-        <set_value name="global.$IdleDockingASE" exact="$IDLE_DOCKING"/>
-      </do_if>
-      <do_if value="not global.$WhereToDockASE? or @global.$WhereToDockASE != $WHERE_TO_DOCK">
-        <set_value name="global.$WhereToDockASE" exact="$WHERE_TO_DOCK"/>
-      </do_if>
-      <do_if value="not global.$IdleRandomMovementASE? or @global.$IdleRandomMovementASE != $IDLE_RANDOM_MOVEMENT">
-        <set_value name="global.$IdleRandomMovementASE" exact="$IDLE_RANDOM_MOVEMENT"/>
-      </do_if>
-      <do_if value="not global.$InWhichSectorASE? or @global.$InWhichSectorASE != $IN_WHICH_SECTOR">
-        <set_value name="global.$InWhichSectorASE" exact="$IN_WHICH_SECTOR"/>
-      </do_if>
-      <do_if value="not global.$IdleMoveToASE? or @global.$IdleMoveToASE != $IDLE_MOVE_TO">
-        <set_value name="global.$IdleMoveToASE" exact="$IDLE_MOVE_TO"/>
-      </do_if>
-      <do_if value="not global.$WhereToMoveASE? or @global.$WhereToMoveASE != $WHERE_TO_MOVE">
-        <set_value name="global.$WhereToMoveASE" exact="$WHERE_TO_MOVE"/>
-      </do_if>
-      <do_if value="not global.$AddOrderTagASE? or @global.$AddOrderTagASE != $ADD_ORDER_TAG">
-        <set_value name="global.$AddOrderTagASE" exact="$ADD_ORDER_TAG"/>
-      </do_if>
-      <do_if value="not global.$DebugASE? or @global.$DebugASE != $DEBUG">
-        <set_value name="global.$DebugASE" exact="$DEBUG"/>
-      </do_if>
-    </do_if>
-    <do_if value="$DELETE_SETTINGS">
+
+    <!-- remove it in a later version.. give time for deleting this unused chunk of memory -->
+    <do_if value="true">
       <remove_value name="global.$EnemySectorsASE"/>
       <remove_value name="global.$NeutralSectorsASE"/>
       <remove_value name="global.$FriendlySectorsASE"/>
@@ -168,9 +109,42 @@
       <remove_value name="global.$IdleTimeASE"/>
       <remove_value name="global.$AddOrderTagASE"/>
       <remove_value name="global.$DebugASE"/>
-      <!-- Cancel order because the settings are invalid.. because they were deleted -->
+    </do_if>
+
+    <!-- save settings? -->
+    <do_if value="$SAVE_ORDER_SETTINGS">
+      <create_list name="$_SettingsList"/>
+      <append_list_elements name="$_SettingsList" other="[$ENEMY_SECTORS, $NEUTRAL_SECTORS, $FRIENDLY_SECTORS,
+                            $SHOW_MESSAGE, $WAIT_AT_SHIP, $WAIT_AMOUNT,
+                            $PLACE_NAVBEACON, $RESTOCK_NAV_BEACONS, $RESTOCK_AMOUNT, 
+                            $IDLE_TIME, $IDLE_FOLLOW, $WHO_TO_FOLLOW, $IDLE_DOCKING, $WHERE_TO_DOCK,
+                            $IDLE_RANDOM_MOVEMENT, $IN_WHICH_SECTOR, $IDLE_MOVE_TO, $WHERE_TO_MOVE,
+                            $ADD_ORDER_TAG, $DEBUG]"/>
+      <do_if value="not global.$AbandonedShipExplorer_Settings?">
+        <create_list name="global.$AbandonedShipExplorer_Settings"/>
+        <append_list_elements name="global.$AbandonedShipExplorer_Settings" other="$_SettingsList"/>
+      </do_if>
+      <do_else>
+        <do_for_each name="$_Setting" in="global.$AbandonedShipExplorer_Settings" counter="$_it">
+          <do_if value="$_Setting != $_SettingsList.{$_it}">
+            <set_value name="global.$AbandonedShipExplorer_Settings.{$_it}" exact="$_SettingsList.{$_it}"/>
+          </do_if>
+        </do_for_each>
+      </do_else>
+      <remove_value name="$_SettingsList"/>
+      <show_help duration="5s" allowclose="true" log="true" custom="'JP_AbandonedShipExplorer ~ ' + this.ship.knownname + ' [' + this.ship.idcode + ']\n\n' + '{8888888, 160}'"/>
       <cancel_order order="this.ship.order"/>
     </do_if>
+
+    <!-- reset settings? -->
+    <do_if value="$RESET_ORDER_SETTINGS">
+      <do_if value="global.$AbandonedShipExplorer_Settings?">
+        <remove_value name="global.$AbandonedShipExplorer_Settings"/>
+      </do_if>
+      <show_help duration="5s" allowclose="true" log="true" custom="'JP_AbandonedShipExplorer ~ ' + this.ship.knownname + ' [' + this.ship.idcode + ']\n\n' + '{8888888, 161}'"/>
+      <cancel_order order="this.ship.order"/>
+    </do_if>
+
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
   </init>
 
@@ -178,9 +152,9 @@
     <actions>
 
       <wait exact="1ms"/>
-      <label name="INIT"/>
+      <label name="INIT_LBL"/>
 
-      <do_if value="$DEBUG gt 0">
+      <do_if value="$DEBUG">
         <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_AbandonedShipExplorer.xml ~ Started ~~' + '\n'"/>
       </do_if>
@@ -198,7 +172,7 @@
       </run_script>
 
       <do_if value="$NearestAbandonedShip == 'NoAbandonedShipFound'">
-        <do_if value="$DEBUG gt 0">
+        <do_if value="$DEBUG">
           <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
           <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="$NearestAbandonedShip"/>
           <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
@@ -266,12 +240,12 @@
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-      <do_if value="$DEBUG gt 0">
+      <do_if value="$DEBUG">
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_AbandonedShipExplorer.xml ~ Finished ~~'"/>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
       </do_if>
 
-      <label name="CLEANUP"/>
+      <label name="CLEANUP_LBL"/>
       <remove_value name="this.$OldName"/>
       <remove_value name="$Ship"/>
       <remove_value name="$DebugFileName"/>

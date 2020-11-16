@@ -12,13 +12,10 @@
       <param name="SHOW_MESSAGE" text="'Message when arrived?'" type="bool" default="true"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <!-- DEBUG -->
-      <param name="DEBUG" text="DebugText" type="number" default="0" advanced="true">
-        <input_param name="min" value="0"/>
-        <input_param name="max" value="100"/>
-        <input_param name="step" value="100"/>
-      </param>
+      <param name="DEBUG" text="Debug" type="bool" default="false" advanced="true"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     </params>
+    <location object="$ABANDONED_SHIP" condition="@$ABANDONED_SHIP"/>
   </order>
 
   <interrupts>
@@ -49,7 +46,7 @@
       <wait exact="1ms"/>
       <label name="INIT"/>
 
-      <do_if value="$DEBUG gt 0">
+      <do_if value="$DEBUG">
         <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_ExploreAbandonedShip.xml ~ Started ~~' + '\n'"/>
       </do_if>
@@ -127,7 +124,7 @@
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-      <do_if value="$DEBUG gt 0">
+      <do_if value="$DEBUG">
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_ExploreAbandonedShip.xml ~ Finished ~~'"/>
         <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
       </do_if>

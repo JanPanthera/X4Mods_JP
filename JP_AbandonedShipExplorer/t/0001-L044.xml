@@ -13,10 +13,12 @@
     <t id="114">Restock navigation beacons?</t>
     <t id="115">Amount to restock</t>
     <t id="116">Abandoned Ship</t>
-    <t id="117">I arrived at the abandoned ship.</t>
+    <t id="117">I arrived at the abandoned ship</t>
     <t id="118">Wait time:</t>
     <t id="119">No free storage for restocking navigation beacons!</t>
     <t id="120">No navigation beacons on board and restocking turned off, going idle...</t>
+    <t id="160">Order settings saved.</t>
+    <t id="161">Order setttings resetted.</t>
     <t id="180">Idle Time</t>
     <t id="181">Idle: Follow?</t>
     <t id="182">Who to follow?</t>
@@ -26,9 +28,9 @@
     <t id="186">In which sector?</t>
     <t id="187">Idle: Move to?</t>
     <t id="188">Where to move?</t>
-    <t id="194">Add order tag?</t>
-    <t id="195">Save Settings?</t>
-    <t id="196">Delete Settings?</t>
+    <t id="194">Add Order tag?</t>
+    <t id="195">Save Order Settings?</t>
+    <t id="196">Reset Order Settings?</t>
     <t id="197">\033#B600CCCC#</t>
     <t id="198">\033#FF00CC66#</t>
     <t id="199">\033X</t>
