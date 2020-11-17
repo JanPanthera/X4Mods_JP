@@ -69,6 +69,7 @@
     <Xml Include="aiscripts\JP_IdleReturnHome_AEV2.xml" />
     <Xml Include="aiscripts\JP_GetNearestUnknownObject_AEV2.xml" />
     <Xml Include="aiscripts\JP_CreateColorString_AEV2.xml" />
+    <Xml Include="t\JP_AnotherExplorerV2.xml" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="changelog.txt" />

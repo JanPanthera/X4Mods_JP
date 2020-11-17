@@ -170,6 +170,7 @@
     <Xml Include="t\0001-L086.xml" />
     <Xml Include="t\0001-L088.xml" />
     <Xml Include="t\0001.xml" />
+    <Xml Include="t\JP_AnotherExplorerV2.xml" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="changelog.txt" />

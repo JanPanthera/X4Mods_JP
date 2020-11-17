@@ -1,9 +1,4 @@
-~ Added: Icon with blue path shown on map targeting the actual station
-~ Added: Icon with blue path shown on map targeting the actual idle object (following, docking) or Sector (moving randomly, moving to)
-~ Added: Automatic Fleet name color choosable
-~ Added: JP_CreateColorString_AEV2
-~ Updated: Refactored JP_IdleReturnHome_AEV2
-~ Updated: Refactored JP_AnotherExplorerV2S
-~ Updated: Refactored JP_AnotherExplorerV2G
-~ Updated: Refactored the automatic fleet system
-~ Updated: Translation Files
+V1.36
+~ Updated: language files
+~ Updated: refactored/recreated save and load order settings function
+~ Updated: added a _ before the color code of the behaviour name, ai routines of the base game are now arranged at top of the routines list

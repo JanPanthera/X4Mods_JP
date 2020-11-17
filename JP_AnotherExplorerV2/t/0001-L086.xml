@@ -3,35 +3,37 @@
 <language>
   <page id="8888888" voice="no">
     <!--  JP_AnotherExplorerV2 -->
-    <t id="400">Enemy Sectors?</t> 
-    <t id="401">Neutral Sectors?</t> 
-    <t id="402">Friendly Sectors?</t> 
-    <t id="403">Unknown Sectors?</t> 
-    <t id="410">Gates?</t> 
-    <t id="411">Stations?</t> 
-    <t id="412">Enemy Stations?</t> 
-    <t id="413">Friendly Stations?</t> 
-    <t id="420">Automatic Fleet?</t> 
-    <t id="421">Is Leader of automatic Fleet?</t> 
-    <t id="422">Colorize the name of the "auto" fleet?</t> 
-    <t id="470">Transparency</t> 
-    <t id="471">Red</t> 
-    <t id="472">Green</t> 
-    <t id="473">Blue</t> 
-    <t id="480">Idle Time</t> 
-    <t id="481">Idle: Follow?</t> 
-    <t id="482">Who to follow?</t> 
-    <t id="483">Idle: Docking?</t> 
-    <t id="484">Where to dock?</t> 
-    <t id="485">Idle: Random movement?</t> 
-    <t id="486">In which Sector?</t> 
-    <t id="487">Idle: Move to?</t> 
-    <t id="488">Where to move?</t> 
-    <t id="494">Add order tag?</t> 
-    <t id="495">Save Settings?</t> 
-    <t id="496">Delete Settings?</t> 
+    <t id="400">敌区？</t>
+    <t id="401">中立部门？</t>
+    <t id="402">友好部门？</t>
+    <t id="403">未知部门？</t>
+    <t id="410">盖茨</t>
+    <t id="411">各就各位</t>
+    <t id="412">敌人就位？</t>
+    <t id="413">友好站？</t>
+    <t id="420">自动舰队？</t>
+    <t id="421">是舰队的领导者？</t>
+    <t id="422">着色舰队名称？</t>
+    <t id="460">订单设置已保存。</t>
+    <t id="461">订单设置重置。</t>
+    <t id="470">透明度</t>
+    <t id="471">红色</t>
+    <t id="472">绿色</t>
+    <t id="473">蓝色</t>
+    <t id="480">空闲时间</t>
+    <t id="481">闲置：跟随？</t>
+    <t id="482">跟踪谁？</t>
+    <t id="483">空闲：坞站？</t>
+    <t id="484">在哪里停靠？</t>
+    <t id="485">闲置：随机移动？</t>
+    <t id="486">在哪个部门？</t>
+    <t id="487">闲置：移动到？</t>
+    <t id="488">移动到哪里？</t>
+    <t id="494">添加订单标签？</t>
+    <t id="495">保存订单设置？</t>
+    <t id="496">重置订单设置？</t>
     <t id="497">\033#B600CCCC#</t>
     <t id="498">\033#FF00CC66#</t>
-    <t id="499">\033X</t>
+    <t id="499">\033倍</t>
   </page>
 </language>
