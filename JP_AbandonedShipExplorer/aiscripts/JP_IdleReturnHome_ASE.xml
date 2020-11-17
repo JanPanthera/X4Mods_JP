@@ -2,41 +2,36 @@
 
 <aiscript name="JP_IdleReturnHome_ASE" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd">
 
-  <order id="JP_IdleReturnHome_ASE" name="IdleReturnHome_ASE JP" category="navigation" infinite="false">
+  <order id="JP_IdleReturnHome_ASE" name="_IdleReturnHome_ASE" category="navigation" infinite="false">
     <params>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="IDLE_TIME" text="IdleTime" comment="IdleTime" type="time" default="60s">
+      <param name="IDLE_TIME" text="IdleTime" type="time" default="60s">
         <input_param name="min" value="60s"/>
         <input_param name="max" value="3600s"/>
         <input_param name="step" value="10s"/>
       </param>
-      <param name="IDLE_FOLLOW" text="{8888888, 1035}" comment="Idle: Follow?" type="bool" default="false"/>
-      <param name="WHO_TO_FOLLOW" text="{8888888, 1036}" comment="Who to follow?" type="object" default="null">
+      <param name="IDLE_FOLLOW" text="Idle: Follow?" type="bool" default="false"/>
+      <param name="WHO_TO_FOLLOW" text="Who to follow?" type="object" default="null">
         <input_param name="class" value="[class.ship]"/>
         <input_param name="owner" value="this.ship.owner"/>
       </param>
-      <param name="IDLE_DOCKING" text="{8888888, 1037}" comment="Idle: Docking?" type="bool" default="false"/>
-      <param name="WHERE_TO_DOCK" text="{8888888, 1038}" comment="Where to dock?" type="object" default="null">
+      <param name="IDLE_DOCKING" text="Idle: Docking?" type="bool" default="false"/>
+      <param name="WHERE_TO_DOCK" text="Where to dock?" type="object" default="null">
         <input_param name="class" value="[class.station, class.ship_m, class.ship_l, class.ship_xl]"/>
         <input_param name="owner" value="this.ship.owner"/>
       </param>
-      <param name="IDLE_RANDOM_MOVEMENT" text="{8888888, 1039}" comment="Idle: Random movement?" type="bool" default="false"/>
-      <param name="IN_WHICH_SECTOR" text="{8888888, 1040}" comment="In which sector?" type="position" default="[this.ship.sector, this.ship.position]">
+      <param name="IDLE_RANDOM_MOVEMENT" text="Idle: Random movement?" type="bool" default="false"/>
+      <param name="IN_WHICH_SECTOR" text="In which sector?" type="position" default="[this.ship.sector, this.ship.position]">
         <input_param name="class" value="class.sector"/>
       </param>
-      <param name="IDLE_MOVE_TO" text="{8888888, 1041}" comment="Idle: Move to?" type="bool" default="false"/>
-      <param name="WHERE_TO_MOVE" text="{8888888, 1042}" comment="Where to move?" type="position" default="[this.ship.sector, this.ship.position]">
+      <param name="IDLE_MOVE_TO" text="Idle: Move to?" type="bool" default="false"/>
+      <param name="WHERE_TO_MOVE" text="Where to move?" type="position" default="[this.ship.sector, this.ship.position]">
         <input_param name="class" value="class.sector"/>
       </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <!-- DEBUG -->
       <param name="DEBUG" text="Debug" type="bool" default="false" advanced="true"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     </params>
-    <skill min="0"/>
-    <requires>
-      <match shiptype="shiptype.lasertower" negate="true"/>
-    </requires>
   </order>
 
   <interrupts>
@@ -53,9 +48,14 @@
   </interrupts>
 
   <init>
-    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-    <set_value name="$DebugDirectory" exact="'JP_AbandonedShipExplorer.logs'"/>
-    <set_value name="$DebugFileName" exact="this.ship.idcode + '.JP_IdleReturnHome_ASE.xml.log'"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <do_if value="$DEBUG">
+      <set_value name="$DebugScriptName" exact="'JP_IdleReturnHome_ASE'"/>
+      <set_value name="$DebugFolderName" exact="'JP_AbandonedShipExplorer.logs'"/>
+      <set_value name="$DebugFileName" exact="this.ship.idcode + '.' + $DebugScriptName + '.xml.log'"/>
+      <debug_to_file append="false" directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+      <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Started ~~' + '\n'"/>
+    </do_if>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <set_value name="$Ship" exact="this.ship"/>
     <set_value name="$OldShipName" exact="$Ship.knownname"/>
@@ -65,23 +65,18 @@
   <attention min="unknown">
     <actions>
 
-      <wait exact="1ms"/>
       <label name="INIT_LBL"/>
+      <wait exact="1ms"/>
 
-      <do_if value="$DEBUG">
-        <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_IdleReturnHome_ASE.xml ~ Started ~~' + '\n'"/>
-      </do_if>
-
-      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
       <label name="RESUME_LBL"/>
 
       <do_if value="$IDLE_FOLLOW">
         <do_if value="$DEBUG">
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~ JP_IdleReturnHome_ASE.xml ~ $IDLE_FOLLOW ~~'"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~ JP_IdleReturnHome_ASE.xml ~ $IDLE_FOLLOW ~~'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
         </do_if>
         <wait exact="1s"/>
         <resume label="IDLE_FOLLOW_LBL"/>
@@ -89,9 +84,9 @@
 
       <do_if value="$IDLE_DOCKING">
         <do_if value="$DEBUG">
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~ JP_IdleReturnHome_ASE.xml ~ $IDLE_DOCKING ~~'"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~ JP_IdleReturnHome_ASE.xml ~ $IDLE_DOCKING ~~'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
         </do_if>
         <wait exact="1s"/>
         <resume label="IDLE_DOCKING_LBL"/>
@@ -99,9 +94,9 @@
 
       <do_if value="$IDLE_RANDOM_MOVEMENT">
         <do_if value="$DEBUG">
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~ JP_IdleReturnHome_ASE.xml ~ $IDLE_RANDOM_MOVEMENT ~~'"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~ JP_IdleReturnHome_ASE.xml ~ $IDLE_RANDOM_MOVEMENT ~~'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
         </do_if>
         <wait exact="1s"/>
         <resume label="IDLE_RANDOM_MOVEMENT_LBL"/>
@@ -109,18 +104,18 @@
 
       <do_if value="$IDLE_MOVE_TO">
         <do_if value="$DEBUG">
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~ JP_IdleReturnHome_ASE.xml ~ $IDLE_MOVE_TO ~~'"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~ JP_IdleReturnHome_ASE.xml ~ $IDLE_MOVE_TO ~~'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
         </do_if>
         <wait exact="1s"/>
         <resume label="IDLE_MOVE_TO_LBL"/>
       </do_if>
 
       <do_if value="$DEBUG">
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~ JP_IdleReturnHome_ASE.xml ~ No Options active.. enabling $IDLE_RANDOM_MOVEMENT ~~'"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~ JP_IdleReturnHome_ASE.xml ~ No Options active.. enabling $IDLE_RANDOM_MOVEMENT ~~'"/>
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
       </do_if>
       <set_value name="$IDLE_RANDOM_MOVEMENT" exact="true"/>
       <wait exact="1s"/>
@@ -156,14 +151,14 @@
         <wait exact="2s"/>
       </do_else>
       <do_if value="$DEBUG">
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'player.age: ' + player.age + '\n' + 
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'player.age: ' + player.age + '\n' + 
                                                                                '$InitialTime: ' + $InitialTime + '\n' +
                                                                                '$IDLE_TIME: ' + $IDLE_TIME + '\n' + 
                                                                                '(player.age - $InitialTime)s: ' + (player.age - $InitialTime)s + '\n' +
                                                                                '$Ship.distanceto.{$WHO_TO_FOLLOW}: ' + $Ship.distanceto.{$WHO_TO_FOLLOW} + '\n' +
                                                                                '($WHO_TO_FOLLOW.size + $Ship.size): ' + ($WHO_TO_FOLLOW.size + $Ship.size)"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
       </do_if>
       <do_if value="((player.age - $InitialTime)s lt $IDLE_TIME)">
         <wait exact="1s"/>
@@ -268,16 +263,19 @@
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
       <do_if value="$DEBUG">
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_IdleReturnHome_ASE.xml ~ Finished ~~'"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Finished ~~'"/>
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+        <remove_value name="$DebugFileName"/>
+        <remove_value name="$DebugFolderName"/>
+        <remove_value name="$DebugScriptName"/>
       </do_if>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
       <label name="CLEANUP_LBL"/>
       <remove_value name="$CurrentSector"/>
-      <remove_value name="$Ship"/>
       <remove_value name="$OldShipName"/>
-      <remove_value name="$DebugFileName"/>
-      <remove_value name="$DebugDirectory"/>
+      <remove_value name="$Ship"/>
 
       <label name="END_LBL"/>
       <wait exact="1ms"/>

@@ -8,29 +8,40 @@
 
 <aiscript name="JP_GetNearestAbandonedShip_ASE" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd">
 
-  <order id="JP_GetNearestAbandonedShip_ASE" name="GetNearestAbandonedShip_ASE JP" category="internal" infinite="false">
+  <order id="JP_GetNearestAbandonedShip_ASE" name="_GetNearestAbandonedShip_ASE" category="internal" infinite="false">
     <params>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="ENEMY_SECTORS" text="EnemySectors" comment="EnemySectors" type="bool" default="false"/>
       <param name="NEUTRAL_SECTORS" text="NeutralSectors" comment="NeutralSectors" type="bool" default="true"/>
       <param name="FRIENDLY_SECTORS" text="FriendlySectors" comment="FriendlySectors" type="bool" default="true"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <!-- DEBUG -->
       <param name="DEBUG" text="Debug" type="bool" default="false" advanced="true"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     </params>
-    <requires>
-      <match shiptype="shiptype.lasertower" negate="true"/>
-    </requires>
   </order>
 
   <interrupts>
+    <handler ref="SectorChangeHandler"/>
+    <handler ref="TargetInvalidHandler"/>
+    <handler ref="AttackHandler"/>
+    <handler ref="MissileLockHandler"/>
+    <handler ref="ScannedHandler"/>
+    <handler ref="InspectedHandler"/>
+    <handler ref="FoundAbandonedHandler"/>
+    <handler ref="FoundLockboxHandler"/>
+    <handler ref="ResupplyHandler"/>
+    <handler ref="JobRemoveRequestHandler"/>
   </interrupts>
 
   <init>
-    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-    <set_value name="$DebugDirectory" exact="'JP_AbandonedShipExplorer.logs'"/>
-    <set_value name="$DebugFileName" exact="this.ship.idcode + '.JP_GetNearestAbandonedShip_ASE.xml.log'"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <do_if value="$DEBUG">
+      <set_value name="$DebugScriptName" exact="'JP_GetNearestAbandonedShip_ASE'"/>
+      <set_value name="$DebugFolderName" exact="'JP_AbandonedShipExplorer.logs'"/>
+      <set_value name="$DebugFileName" exact="this.ship.idcode + '.' + $DebugScriptName + '.xml.log'"/>
+      <debug_to_file append="false" directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+      <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Started ~~' + '\n'"/>
+    </do_if>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <set_value name="$Ship" exact="this.ship"/>
     <set_value name="$NearestAbandonedShip" exact="'NoAbandonedShipFound'"/>
@@ -40,15 +51,10 @@
   <attention min="unknown">
     <actions>
 
+      <label name="INIT_LBL"/>
       <wait exact="1ms"/>
-      <label name="INIT"/>
-
-      <do_if value="$DEBUG">
-        <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_GetNearestAbandonedShip_ASE.xml ~ Started ~~' + '\n'"/>
-      </do_if>
-
-      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
       <create_list name="$_TempSectors"/>
       <find_sector name="$_TempSectors" space="player.galaxy" multiple="true"/>
@@ -69,7 +75,6 @@
         <do_if value="$_Sector.owner == faction.ownerless and not $NEUTRAL_SECTORS">
           <continue/>
         </do_if>
-        <!-- TODO: own boolean for own sectors -->
         <do_if value="$_Sector.owner == faction.player and not $FRIENDLY_SECTORS">
           <continue/>
         </do_if>
@@ -85,11 +90,11 @@
       </do_if>
 
       <do_if value="$DEBUG">
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
         <do_for_each name="$_Sector" in="$_Sectors">
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="' ~ ' + $_Sector.knownname + ' ~ [' + $_Sector.owner.knownname + ']'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="' ~ ' + $_Sector.knownname + ' ~ [' + $_Sector.owner.knownname + ']'"/>
         </do_for_each>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
       </do_if>
 
       <label name="FIND_ABANDONED_SHIPS_LBL"/>
@@ -130,24 +135,27 @@
 
       </do_for_each>
 
-      <label name="FINISH"/>
+      <label name="FINISH_LBL"/>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
       <do_if value="$DEBUG">
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_GetNearestAbandonedShip_ASE.xml ~ Finished ~~'"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Finished ~~'"/>
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+        <remove_value name="$DebugFileName"/>
+        <remove_value name="$DebugFolderName"/>
+        <remove_value name="$DebugScriptName"/>
       </do_if>
 
-      <label name="CLEANUP"/>
-      <remove_value name="$Ship"/>
-      <remove_value name="$DebugFileName"/>
-      <remove_value name="$DebugDirectory"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-      <label name="END"/>
+      <label name="CLEANUP_LBL"/>
+      <remove_value name="$Ship"/>
+
+      <label name="END_LBL"/>
       <wait exact="1ms"/>
 
-      <label name="RETURN"/>
+      <label name="RETURN_LBL"/>
       <return>
         <retval name="NEAREST_ABANDONED_SHIP" value="$NearestAbandonedShip"/>
       </return>

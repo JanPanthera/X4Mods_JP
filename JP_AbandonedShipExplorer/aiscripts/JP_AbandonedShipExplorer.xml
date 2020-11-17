@@ -5,9 +5,17 @@
   <order id="JP_AbandonedShipExplorer" name="_{8888888, 197}AbandonedShipExplorer - {8888888, 199}{8888888, 198}{20001, 901}{8888888, 199}" category="navigation" infinite="true">
     <params>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="PLACE_HOLDER_00" text="----------------------------------" type="object" default="null">
+        <input_param name="class" value="[]"/>
+      </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="ENEMY_SECTORS" text="{8888888, 100}" comment="Enemy Sectors?" type="bool" default="if global.$AbandonedShipExplorer_Settings? then global.$AbandonedShipExplorer_Settings.{1} else false"/>
       <param name="NEUTRAL_SECTORS" text="{8888888, 101}" comment="Neutral Sectors?" type="bool" default="if global.$AbandonedShipExplorer_Settings? then global.$AbandonedShipExplorer_Settings.{2} else true"/>
       <param name="FRIENDLY_SECTORS" text="{8888888, 102}" comment="Friendly Sectors?" type="bool" default="if global.$AbandonedShipExplorer_Settings? then global.$AbandonedShipExplorer_Settings.{3} else true"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="PLACE_HOLDER_01" text="----------------------------------" type="object" default="null">
+        <input_param name="class" value="[]"/>
+      </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="SHOW_MESSAGE" text="{8888888, 110}" comment="Message when arrived?" type="bool" default="if global.$AbandonedShipExplorer_Settings? then global.$AbandonedShipExplorer_Settings.{4} else true"/>
       <param name="WAIT_AT_SHIP" text="{8888888, 111}" comment="Wait at the ship?" type="bool" default="if global.$AbandonedShipExplorer_Settings? then global.$AbandonedShipExplorer_Settings.{5} else true"/>
@@ -22,6 +30,10 @@
         <input_param name="step" value="1"/>
         <input_param name="min" value="1"/>
         <input_param name="max" value="if this.ship.ammostorage.deployable.free le 0 then 1 else this.ship.ammostorage.deployable.free"/>
+      </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="PLACE_HOLDER_02" text="----------------------------------" type="object" default="null">
+        <input_param name="class" value="[]"/>
       </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="IDLE_TIME" text="{8888888, 180}" comment="Idle Time" type="time" default="if global.$AbandonedShipExplorer_Settings? then global.$AbandonedShipExplorer_Settings.{10} else 600s">
@@ -47,12 +59,23 @@
         <input_param name="class" value="class.sector"/>
       </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="PLACE_HOLDER_03" text="----------------------------------" type="object" default="null">
+        <input_param name="class" value="[]"/>
+      </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="ADD_ORDER_TAG" text="{8888888, 194}" comment="Add Order tag?" type="bool" default="if global.$AbandonedShipExplorer_Settings? then global.$AbandonedShipExplorer_Settings.{19} else true"/>
       <param name="SAVE_ORDER_SETTINGS" text="{8888888, 195}" comment="Save Order Settings?" type="bool" default="false"/>
       <param name="RESET_ORDER_SETTINGS" text="{8888888, 196}" comment="Delete Order Settings?" type="bool" default="false"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <!-- DEBUG -->
-      <param name="DEBUG" text="Debug" type="bool" default="if global.$AbandonedShipExplorer_Settings? then global.$AbandonedShipExplorer_Settings.{20} else false" advanced="true"/>
+      <param name="PLACE_HOLDER_998" text="----------------------------------" type="object" default="null">
+        <input_param name="class" value="[]"/>
+      </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="DEBUG" text="Debug" type="bool" default="if global.$AddTag_Settings? then global.$AddTag_Settings.{17} else false" advanced="true"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="PLACE_HOLDER_999" text="----------------------------------" type="object" default="null" advanced="true">
+        <input_param name="class" value="[]"/>
+      </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     </params>
     <skill min="0"/>
@@ -65,19 +88,24 @@
     <handler ref="SectorChangeHandler"/>
     <handler ref="TargetInvalidHandler"/>
     <handler ref="AttackHandler"/>
-    <handler ref="MissileLockHandler" />
+    <handler ref="MissileLockHandler"/>
     <handler ref="ScannedHandler"/>
     <handler ref="InspectedHandler"/>
     <handler ref="FoundAbandonedHandler"/>
     <handler ref="FoundLockboxHandler"/>
     <handler ref="ResupplyHandler"/>
-    <handler ref="JobRemoveRequestHandler" />
+    <handler ref="JobRemoveRequestHandler"/>
   </interrupts>
 
   <init>
-    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-    <set_value name="$DebugDirectory" exact="'JP_AbandonedShipExplorer.logs'"/>
-    <set_value name="$DebugFileName" exact="this.ship.idcode + '.JP_AbandonedShipExplorer.xml.log'"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <do_if value="$DEBUG">
+      <set_value name="$DebugScriptName" exact="'JP_AbandonedShipExplorer'"/>
+      <set_value name="$DebugFolderName" exact="'JP_AbandonedShipExplorer.logs'"/>
+      <set_value name="$DebugFileName" exact="this.ship.idcode + '.' + $DebugScriptName + '.xml.log'"/>
+      <debug_to_file append="false" directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+      <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Started ~~' + '\n'"/>
+    </do_if>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <set_value name="$Ship" exact="this.ship"/>
     <do_if value="$ADD_ORDER_TAG">
@@ -151,15 +179,10 @@
   <attention min="unknown">
     <actions>
 
-      <wait exact="1ms"/>
       <label name="INIT_LBL"/>
+      <wait exact="1ms"/>
 
-      <do_if value="$DEBUG">
-        <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_AbandonedShipExplorer.xml ~ Started ~~' + '\n'"/>
-      </do_if>
-
-      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
       <label name="RESUME_LBL"/>
 
@@ -173,9 +196,9 @@
 
       <do_if value="$NearestAbandonedShip == 'NoAbandonedShipFound'">
         <do_if value="$DEBUG">
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="$NearestAbandonedShip"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="$NearestAbandonedShip"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
         </do_if>
         <resume label="IDLE_RETURN_HOME_LBL"/>
       </do_if>
@@ -205,7 +228,7 @@
         <resume label="IDLE_RETURN_HOME_LBL"/>
       </do_if>
 
-      <run_script name="'JP_ExploreAbandonedShip'">
+      <run_script name="'JP_ExploreAbandonedShip_ASE'">
         <param name="ABANDONED_SHIP" value="$NearestAbandonedShip"/>
         <param name="WAIT_AT_SHIP" value="$WAIT_AT_SHIP"/>
         <param name="WAIT_AMOUNT" value="$WAIT_AMOUNT"/>
@@ -241,19 +264,22 @@
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
       <do_if value="$DEBUG">
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_AbandonedShipExplorer.xml ~ Finished ~~'"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Finished ~~'"/>
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+        <remove_value name="$DebugFileName"/>
+        <remove_value name="$DebugFolderName"/>
+        <remove_value name="$DebugScriptName"/>
       </do_if>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
       <label name="CLEANUP_LBL"/>
       <remove_value name="this.$OldName"/>
       <remove_value name="$Ship"/>
-      <remove_value name="$DebugFileName"/>
-      <remove_value name="$DebugDirectory"/>
 
       <label name="END_LBL"/>
-      <wait exact="1ms"/>
       <set_order_syncpoint_reached order="this.ship.order"/>
+      <wait exact="1ms"/>
       <cancel_order order="this.ship.order" />
 
     </actions>
