@@ -4,11 +4,11 @@
   <page id="8888888" voice="no">
     <!-- JP_CheatAIOrders -->
     <t id="600">Esperienza di imbarco?</t>
-    <t id="601">Esperienza di ingegneria?</t>
+    <t id="601">Esperienza ingegneristica?</t>
     <t id="602">Esperienza di gestione?</t>
-    <t id="603">Esperienza morale?</t>
+    <t id="603">Esperienza Morale?</t>
     <t id="604">Esperienza di pilotaggio?</t>
-    <t id="620">Tutta la flotta?</t>
+    <t id="620">Tutta La Flotta?</t>
     <t id="697">\033#B600CCCC#</t>
     <t id="698">\033#FF00CC66#</t>
     <t id="699">\033X</t>

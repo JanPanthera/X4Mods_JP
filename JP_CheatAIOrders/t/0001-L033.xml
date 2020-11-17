@@ -5,10 +5,10 @@
     <!-- JP_CheatAIOrders -->
     <t id="600">Expérience d'embarquement?</t>
     <t id="601">Expérience en ingénierie?</t>
-    <t id="602">Expérience en gestion?</t>
-    <t id="603">Expérience morale?</t>
+    <t id="602">L'expérience de la gestion?</t>
+    <t id="603">Le moral de l'expérience?</t>
     <t id="604">Expérience de pilotage?</t>
-    <t id="620">Toute la flotte?</t>
+    <t id="620">Ensemble De La Flotte?</t>
     <t id="697">\033#B600CCCC#</t>
     <t id="698">\033#FF00CC66#</t>
     <t id="699">\033X</t>

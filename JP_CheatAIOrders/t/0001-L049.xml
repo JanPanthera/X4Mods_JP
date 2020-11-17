@@ -3,12 +3,12 @@
 <language>
   <page id="8888888" voice="no">
     <!-- JP_CheatAIOrders -->
-    <t id="600">Boarding-Erfahrung?</t> 
-    <t id="601">Ingenieurerfahrung?</t> 
-    <t id="602">Managementerfahrung?</t> 
-    <t id="603">Moral Erfahrung?</t> 
-    <t id="604">Pilotenerfahrung?</t> 
-    <t id="620">Ganze Flotte?</t> 
+    <t id="600">Entern-Erfahrung?</t>
+    <t id="601">Ingenieurswesen-Erfahrung?</t>
+    <t id="602">Management-Erfahrung?</t>
+    <t id="603">Moral-Erfahrung?</t>
+    <t id="604">Pilot-Erfahrung?</t>
+    <t id="620">Ganze Flotte?</t>
     <t id="697">\033#B600CCCC#</t>
     <t id="698">\033#FF00CC66#</t>
     <t id="699">\033X</t>

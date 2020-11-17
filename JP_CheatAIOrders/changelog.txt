@@ -1,1 +1,3 @@
-~ Added: ChangeFactionRelation
+V1.04
+~ Updated: language files
+~ Updated: added a _ before the color code of the behaviour name, ai routines of the base game are now arranged at top of the routines list

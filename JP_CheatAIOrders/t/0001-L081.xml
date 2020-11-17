@@ -3,12 +3,12 @@
 <language>
   <page id="8888888" voice="no">
     <!-- JP_CheatAIOrders -->
-    <t id="600">Boarding experience?</t>
-    <t id="601">Engineering experience?</t>
-    <t id="602">Management experience?</t>
-    <t id="603">Morale experience?</t>
-    <t id="604">Piloting experience?</t>
-    <t id="620">Whole Fleet?</t>
+    <t id="600">搭乗経験？</t>
+    <t id="601">工学経験か。</t>
+    <t id="602">マネジメント経験？</t>
+    <t id="603">士気の経験か。</t>
+    <t id="604">パイロット経験？</t>
+    <t id="620">全艦隊？</t>
     <t id="697">\033#B600CCCC#</t>
     <t id="698">\033#FF00CC66#</t>
     <t id="699">\033X</t>
