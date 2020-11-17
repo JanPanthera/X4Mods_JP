@@ -1,3 +1,3 @@
-~ Updated: language files
-~ Updated: refactored/recreated save and load order settings function
-~ Updated: added a _ before the color code of the behaviour name, ai routines of the base game are now arranged at top of the routines list
+~ Added: The script shows now the current abandoned ship visual on the map
+~ Added: IdleReturnHome shows visual where to idle
+~ Changed: IdleReturnHome creates now a sub order.. with that you can easily cancel it manually

@@ -82,6 +82,7 @@
     <requires>
       <match shiptype="shiptype.lasertower" negate="true"/>
     </requires>
+    <location object="$NearestAbandonedShip" condition="$NearestAbandonedShip? and @$NearestAbandonedShip != null"/>
   </order>
 
   <interrupts>
@@ -112,7 +113,7 @@
       <do_if value="not this.$OldName?">
         <set_value name="this.$OldName" exact="this.ship.knownname"/>
       </do_if>
-      <set_object_name object="this.ship" name="this.ship.knownname + '\033#FFA2560B# #ASE\033X'"/>
+      <set_object_name object="this.ship" name="this.ship.knownname + '\033#FFA2560B# #ASE-G\033X'"/>
     </do_if>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
@@ -240,7 +241,8 @@
       <resume label="RESUME_LBL"/>
 
       <label name="IDLE_RETURN_HOME_LBL"/>
-      <run_script name="'JP_IdleReturnHome_ASE'">
+      <create_order id="'JP_IdleReturnHome_ASE'" object="$Ship">
+        <param name="IDLE_TIME" value="$IDLE_TIME"/>
         <param name="IDLE_FOLLOW" value="$IDLE_FOLLOW"/>
         <param name="WHO_TO_FOLLOW" value="$WHO_TO_FOLLOW"/>
         <param name="IDLE_DOCKING" value="$IDLE_DOCKING"/>
@@ -249,10 +251,11 @@
         <param name="IN_WHICH_SECTOR" value="$IN_WHICH_SECTOR"/>
         <param name="IDLE_MOVE_TO" value="$IDLE_MOVE_TO"/>
         <param name="WHERE_TO_MOVE" value="$WHERE_TO_MOVE"/>
-        <param name="IDLE_TIME" value="$IDLE_TIME"/>
+        <param name="ADD_ORDER_TAG" value="$ADD_ORDER_TAG"/>
+        <param name="ORDER_TAG" value="'#ASE-G'"/>
         <param name="DEBUG" value="$DEBUG"/>
-      </run_script>
-      <set_object_name object="$Ship" name="if $ADD_ORDER_TAG then this.$OldName + '\033#FFA95908# #ASE\033X' else this.$OldName"/>
+      </create_order>
+      <wait exact="1s"/>
       <resume label="RESUME_LBL"/>
 
       <label name="FINISH_LBL"/>
@@ -262,7 +265,6 @@
       </do_if>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-
       <do_if value="$DEBUG">
         <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Finished ~~'"/>
         <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
@@ -270,7 +272,6 @@
         <remove_value name="$DebugFolderName"/>
         <remove_value name="$DebugScriptName"/>
       </do_if>
-
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
       <label name="CLEANUP_LBL"/>

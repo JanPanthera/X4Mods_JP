@@ -2,4 +2,5 @@
 
 <icons>
   <icon name="order_jp_abandonedshipexplorer" texture="assets\fx\gui\textures\order\order_explore.tga" height="32" width="32"></icon>
+  <icon name="order_jp_idlereturnhome_ase" texture="assets\fx\gui\textures\order\order_wait.tga" height="32" width="32"></icon>
 </icons>
