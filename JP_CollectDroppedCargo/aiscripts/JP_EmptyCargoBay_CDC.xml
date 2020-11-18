@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<aiscript name="JP_EmptyCargoBay_CDC" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd" version="1">
+
+  <order id="JP_EmptyCargoBay_CDC" name="_EmptyCargoBay" category="internal" infinite="false">
+    <params>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <!-- TODO: sell range? -->
+      <!-- TODO: sell limitation through blacklist from x4 vanilla? -->
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="DEBUG" text="Debug" type="bool" default="false"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    </params>
+  </order>
+
+  <interrupts>
+    <handler ref="SectorChangeHandler"/>
+    <handler ref="TargetInvalidHandler"/>
+    <handler ref="AttackHandler"/>
+    <handler ref="MissileLockHandler" />
+    <handler ref="ScannedHandler"/>
+    <handler ref="InspectedHandler"/>
+    <handler ref="FoundAbandonedHandler"/>
+    <handler ref="FoundLockboxHandler"/>
+    <handler ref="ResupplyHandler"/>
+    <handler ref="JobRemoveRequestHandler" />
+  </interrupts>
+
+  <init>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <do_if value="$DEBUG">
+      <set_value name="$DebugScriptName" exact="'JP_EmptyCargoBay'"/>
+      <set_value name="$DebugFolderName" exact="'JP_CollectDroppedCargo.logs'"/>
+      <set_value name="$DebugFileName" exact="this.ship.idcode + '.' + $DebugScriptName + '.xml.log'"/>
+      <debug_to_file append="false" directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+      <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Started ~~' + '\n'"/>
+    </do_if>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <set_value name="$Ship" exact="this.ship"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  </init>
+
+  <attention min="unknown">
+    <actions>
+
+      <label name="INIT_LBL"/>
+      <wait exact="1ms"/>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <label name="RESUME_LBL"/>
+
+      <do_if value="$Ship.cargo.free.container == $Ship.cargo.capacity.container">
+        <resume label="FINISH_LBL"/>
+      </do_if>
+
+      <find_sector name="$Locations" multiple="true">
+        <match mayattack="$Ship" negate="true"/>
+        <match knownto="$Ship"/>
+        <match_gate_distance object="$Ship" max="2"/>
+      </find_sector>
+
+      <run_script name="'order.trade.single.sell'">
+        <param name="ware" value="$Ship.cargo.list.last"/>
+        <param name="locations" value="$Locations"/>
+        <param name="minamount" value="$Ship.cargo.{$Ship.cargo.list.last}.count"/>
+        <param name="internalorder" value="true"/>
+      </run_script>
+
+      <wait exact="1s"/>
+      <resume label="RESUME_LBL"/>
+
+      <label name="FINISH_LBL"/>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <do_if value="$DEBUG">
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Finished ~~'"/>
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+        <remove_value name="$DebugFileName"/>
+        <remove_value name="$DebugFolderName"/>
+        <remove_value name="$DebugScriptName"/>
+      </do_if>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <label name="$CLEANUP_LBL"/>
+      <remove_value name="$Ship"/>
+      <remove_value name="$SellerStation"/>
+
+      <label name="END_LBL"/>
+      <wait exact="1ms"/>
+
+    </actions>
+  </attention>
+
+  <on_abort>
+  </on_abort>
+
+</aiscript>

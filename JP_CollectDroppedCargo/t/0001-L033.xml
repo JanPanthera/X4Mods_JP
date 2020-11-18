@@ -3,10 +3,21 @@
 <language>
   <page id="8888888" voice="no">
     <!--  JP_CollectDroppedCargo -->
-    <t id="700">Collecter items de cargaison?</t>
-    <t id="701">Collect items d'inventaire?</t>
-    <t id="702">Vendre la cargaison quand la soute est pleine?</t>
-    <t id="703">instantané?</t>
+    <t id="700">Vendre la cargaison collectée?</t>
+    <t id="760">Paramètres de commande enregistrés.</t>
+    <t id="761">Paramètres de commande réinitialisés.</t>
+    <t id="780">Le Temps D'Inactivité</t>
+    <t id="781">Inactif: suivre?</t>
+    <t id="782">Qui suivre?</t>
+    <t id="783">Inactif: amarrage?</t>
+    <t id="784">Où accoster?</t>
+    <t id="785">Inactif: mouvement aléatoire?</t>
+    <t id="786">Dans quel secteur?</t>
+    <t id="787">Inactif: passer à?</t>
+    <t id="788">Où déménager?</t>
+    <t id="794">Ajouter une étiquette de commande?</t>
+    <t id="795">Enregistrer Les Paramètres De Commande?</t>
+    <t id="796">Réinitialiser Les Paramètres De Commande?</t>
     <t id="797">\033#B600CCCC#</t>
     <t id="798">\033#FF00CC66#</t>
     <t id="799">\033X</t>

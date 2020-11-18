@@ -129,8 +129,10 @@
     <Xsd Include="md\md.xsd" />
   </ItemGroup>
   <ItemGroup>
-    <Xml Include="aiscripts\JP_EmptyCargoBay.xml" />
-    <Xml Include="aiscripts\JP_CollectDroppedCargo.xml" />
+    <Xml Include="aiscripts\JP_CollectDrop_CDC.xml" />
+    <Xml Include="aiscripts\JP_EmptyCargoBay_CDC.xml" />
+    <Xml Include="aiscripts\JP_CollectDroppedCargoS.xml" />
+    <Xml Include="aiscripts\JP_IdleReturnHome_CDC.xml" />
     <Xml Include="content.xml" />
     <Xml Include="JP_CollectDroppedCargo\aiscripts\JP_CollectDroppedCargo.xml" />
     <Xml Include="JP_CollectDroppedCargo\aiscripts\JP_SellLastFromCargoBay.xml" />

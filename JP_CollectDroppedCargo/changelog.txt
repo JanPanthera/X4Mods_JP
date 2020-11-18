@@ -1,3 +1,4 @@
-~ Added: order name is now colored
-~ Updated: language files restructuring
-~ Updated: added some translations.. (google translate)
+V1.22
+~ Updated: language files
+~ Updated: refactored/recreated save and load order settings function
+~ Updated: added a _ before the color code of the behaviour name, ai routines of the base game are now arranged at top of the routines list

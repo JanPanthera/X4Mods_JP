@@ -3,10 +3,21 @@
 <language>
   <page id="8888888" voice="no">
     <!--  JP_CollectDroppedCargo -->
-    <t id="700">Collect Cargo items?</t>
-    <t id="701">Collect Inventory items?</t>
-    <t id="702">Sell cargo when full?</t>
-    <t id="720">Instant Collect?</t>
+    <t id="700">수집 된화물을 판매?</t>
+    <t id="760">주문 설정이 저장되었습니다.</t>
+    <t id="761">주문 설정이 다시 시작되었습니다.</t>
+    <t id="780">유휴 시간</t>
+    <t id="781">유휴: 팔로우?</t>
+    <t id="782">누가 따라야 할까요?</t>
+    <t id="783">유휴: 도킹?</t>
+    <t id="784">도킹할 곳은 어디입니까?</t>
+    <t id="785">유휴: 임의 이동?</t>
+    <t id="786">어느 부문에서?</t>
+    <t id="787">유휴: 로 이동?</t>
+    <t id="788">어디로 이동할까요?</t>
+    <t id="794">주문 태그를 추가 하시겠습니까?</t>
+    <t id="795">주문 설정을 저장 하시겠습니까?</t>
+    <t id="796">주문 설정을 재설정?</t>
     <t id="797">\033#B600CCCC#</t>
     <t id="798">\033#FF00CC66#</t>
     <t id="799">\033X</t>

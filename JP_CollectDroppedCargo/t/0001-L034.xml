@@ -3,10 +3,21 @@
 <language>
   <page id="8888888" voice="no">
     <!--  JP_CollectDroppedCargo -->
-    <t id="700">¿Recoger artículos de carga?</t>
-    <t id="701">¿Recoger artículos de inventario?</t>
-    <t id="702">¿Vender carga cuando está llena?</t>
-    <t id="720">¿Recolección instantánea?</t>
+    <t id="700">Vender carga recogida?</t>
+    <t id="760">Configuración de orden guardada.</t>
+    <t id="761">Ajustes de orden restablecidos.</t>
+    <t id="780">Tiempo de inactividad</t>
+    <t id="781">Inactivo: ¿Seguir?</t>
+    <t id="782">¿A quién seguir?</t>
+    <t id="783">Inactivo: ¿Atraque?</t>
+    <t id="784">¿Dónde atracar?</t>
+    <t id="785">Inactivo: ¿movimiento aleatorio?</t>
+    <t id="786">En que sector</t>
+    <t id="787">Inactivo: ¿Mover a?</t>
+    <t id="788">Hacia donde moverse</t>
+    <t id="794">Agregar etiqueta de pedido?</t>
+    <t id="795">Guardar la configuración de la orden?</t>
+    <t id="796">¿Restablecer la configuración del pedido?</t>
     <t id="797">\033#B600CCCC#</t>
     <t id="798">\033#FF00CC66#</t>
     <t id="799">\033X</t>

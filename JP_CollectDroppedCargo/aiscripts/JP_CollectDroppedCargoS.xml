@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<aiscript name="JP_CollectDroppedCargoS" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd" version="1">
+
+  <order id="JP_CollectDroppedCargoS" name="_{8888888, 797}CollectDroppedCargo - {8888888, 799}{8888888, 798}{20001, 201}{8888888, 799}" category="navigation" infinite="true">
+    <params>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="PLACE_HOLDER_00" text="----------------------------------" type="object" default="null">
+        <input_param name="class" value="[]"/>
+      </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="SECTOR" text="{20001, 201}" comment="Sector" type="object" default="this.sector">
+        <input_param name="class" value="[class.sector]"/>
+      </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="PLACE_HOLDER_01" text="----------------------------------" type="object" default="null">
+        <input_param name="class" value="[]"/>
+      </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="SELL_DROPPED_CARGO" text="{8888888, 700}" comment="Sell collected Cargo?" type="bool" default="if global.$CollectDroppedCargo_Settings? then global.$CollectDroppedCargo_Settings.{1} else false"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="PLACE_HOLDER_02" text="----------------------------------" type="object" default="null">
+        <input_param name="class" value="[]"/>
+      </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="IDLE_TIME" text="{8888888, 780}" comment="Idle Time" type="time" default="if global.$CollectDroppedCargo_Settings? then global.$CollectDroppedCargo_Settings.{2} else 600s">
+        <input_param name="min" value="60s"/>
+        <input_param name="max" value="3600s"/>
+        <input_param name="step" value="10s"/>
+      </param>
+      <param name="IDLE_FOLLOW" text="{8888888, 781}" comment="Idle: Follow?" type="bool" default="if global.$CollectDroppedCargo_Settings? then global.$CollectDroppedCargo_Settings.{3} else false"/>
+      <param name="WHO_TO_FOLLOW" text="- {8888888, 782}" comment="Who to follow?" type="object" default="if global.$CollectDroppedCargo_Settings? then global.$CollectDroppedCargo_Settings.{4} else null">
+        <input_param name="class" value="[class.ship]"/>
+        <input_param name="owner" value="this.ship.owner"/>
+      </param>
+      <param name="IDLE_DOCKING" text="{8888888, 783}" comment="Idle: Docking?" type="bool" default="if global.$CollectDroppedCargo_Settings? then global.$CollectDroppedCargo_Settings.{5} else false"/>
+      <param name="WHERE_TO_DOCK" text="- {8888888, 784}" comment="Where to dock?" type="object" default="if global.$CollectDroppedCargo_Settings? then global.$CollectDroppedCargo_Settings.{6} else null">
+        <input_param name="class" value="if this.ship.isclass.[class.ship_s, class.ship_xs] then [class.station, class.ship_m, class.ship_l, class.ship_xl] else [class.station, class.ship_l, class.ship_xl]"/>
+      </param>
+      <param name="IDLE_RANDOM_MOVEMENT" text="{8888888, 785}" comment="Idle: Movement?" type="bool" default="if global.$CollectDroppedCargo_Settings? then global.$CollectDroppedCargo_Settings.{7} else false"/>
+      <param name="IN_WHICH_SECTOR" text="- {8888888, 786}" comment="In which sector?" type="position" default="if global.$CollectDroppedCargo_Settings? then global.$CollectDroppedCargo_Settings.{8} else [this.ship.sector, this.ship.position]">
+        <input_param name="class" value="class.sector"/>
+      </param>
+      <param name="IDLE_MOVE_TO" text="{8888888, 787}" comment="Idle: Move to?" type="bool" default="if global.$CollectDroppedCargo_Settings? then global.$CollectDroppedCargo_Settings.{9} else false"/>
+      <param name="WHERE_TO_MOVE" text="- {8888888, 788}" comment="Where to move?" type="position" default="if global.$CollectDroppedCargo_Settings? then global.$CollectDroppedCargo_Settings.{10} else [this.ship.sector, this.ship.position]">
+        <input_param name="class" value="class.sector"/>
+      </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="PLACE_HOLDER_03" text="----------------------------------" type="object" default="null">
+        <input_param name="class" value="[]"/>
+      </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="ADD_ORDER_TAG" text="{8888888, 1994}" comment="Add Order tag?" type="bool" default="if global.$CollectDroppedCargo_Settings? then global.$CollectDroppedCargo_Settings.{11} else true"/>
+      <param name="SAVE_ORDER_SETTINGS" text="{8888888, 1995}" comment="Save Order Settings?" type="bool" default="false"/>
+      <param name="RESET_ORDER_SETTINGS" text="{8888888, 1996}" comment="Reset Order Settings?" type="bool" default="false"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="PLACE_HOLDER_998" text="----------------------------------" type="object" default="null">
+        <input_param name="class" value="[]"/>
+      </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="DEBUG" text="Debug" type="bool" default="if global.$CollectDroppedCargo_Settings? then global.$CollectDroppedCargo_Settings.{12} else false" advanced="true"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="PLACE_HOLDER_999" text="----------------------------------" type="object" default="null" advanced="true">
+        <input_param name="class" value="[]"/>
+      </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    </params>
+    <skill min="0"/>
+    <requires>
+      <match shiptype="shiptype.lasertower" negate="true"/>
+    </requires>
+    <location object="$LocationObjectToMoveTo" condition="$LocationObjectToMoveTo? and @$LocationObjectToMoveTo != null"/>
+  </order>
+
+  <interrupts>
+    <handler ref="SectorChangeHandler"/>
+    <handler ref="TargetInvalidHandler"/>
+    <handler ref="AttackHandler"/>
+    <handler ref="MissileLockHandler"/>
+    <handler ref="ScannedHandler"/>
+    <handler ref="InspectedHandler"/>
+    <handler ref="FoundAbandonedHandler"/>
+    <handler ref="FoundLockboxHandler"/>
+    <handler ref="ResupplyHandler"/>
+    <handler ref="JobRemoveRequestHandler"/>
+  </interrupts>
+
+  <init>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <do_if value="$DEBUG">
+      <set_value name="$DebugScriptName" exact="'JP_CollectDroppedCargo'"/>
+      <set_value name="$DebugFolderName" exact="'JP_CollectDroppedCargo.logs'"/>
+      <set_value name="$DebugFileName" exact="this.ship.idcode + '.' + $DebugScriptName + '.xml.log'"/>
+      <debug_to_file append="false" directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+      <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Started ~~' + '\n'"/>
+    </do_if>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <set_value name="$Ship" exact="this.ship"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <do_if value="$ADD_ORDER_TAG">
+      <set_value name="$ShipName" exact="$Ship.knownname"/>
+      <set_object_name object="$Ship" name="$ShipName + '\033#FFA95908# ' + '#CDC-S' + '\033X'"/>
+    </do_if>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+    <!-- remove it in a later version.. give time for deleting this unused chunk of memory -->
+    <remove_value name="this.$GO_SELLING"/>
+
+    <!-- save settings? -->
+    <do_if value="$SAVE_ORDER_SETTINGS">
+      <create_list name="$_SettingsList"/>
+      <append_list_elements name="$_SettingsList" other="[$SELL_DROPPED_CARGO,
+                            $IDLE_TIME, $IDLE_FOLLOW, $WHO_TO_FOLLOW, $IDLE_DOCKING, $WHERE_TO_DOCK,
+                            $IDLE_RANDOM_MOVEMENT, $IN_WHICH_SECTOR, $IDLE_MOVE_TO, $WHERE_TO_MOVE,
+                            $ADD_ORDER_TAG, $DEBUG]"/>
+      <do_if value="not global.$CollectDroppedCargo_Settings?">
+        <create_list name="global.$CollectDroppedCargo_Settings"/>
+        <append_list_elements name="global.$CollectDroppedCargo_Settings" other="$_SettingsList"/>
+      </do_if>
+      <do_else>
+        <do_for_each name="$_Setting" in="global.$CollectDroppedCargo_Settings" counter="$_it">
+          <do_if value="$_Setting != $_SettingsList.{$_it}">
+            <set_value name="global.$CollectDroppedCargo_Settings.{$_it}" exact="$_SettingsList.{$_it}"/>
+          </do_if>
+        </do_for_each>
+      </do_else>
+      <remove_value name="$_SettingsList"/>
+      <show_help duration="5s" allowclose="true" log="true" custom="'JP_AnotherExplorerV2G ~ ' + this.ship.knownname + ' [' + this.ship.idcode + ']\n\n' + '{8888888, 760}'"/>
+      <cancel_order order="this.ship.order"/>
+    </do_if>
+
+    <!-- reset settings? -->
+    <do_if value="$RESET_ORDER_SETTINGS">
+      <do_if value="global.$CollectDroppedCargo_Settings?">
+        <remove_value name="global.$CollectDroppedCargo_Settings"/>
+      </do_if>
+      <show_help duration="5s" allowclose="true" log="true" custom="'JP_AnotherExplorerV2S ~ ' + this.ship.knownname + ' [' + this.ship.idcode + ']\n\n' + '{8888888, 761}'"/>
+      <cancel_order order="this.ship.order"/>
+    </do_if>
+
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  </init>
+
+  <attention min="unknown">
+    <actions>
+
+      <label name="INIT_LBL"/>
+      <wait exact="1ms"/>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <label name="RESUME_LBL"/>
+
+      <set_command command="command.collect"/>
+      <set_command_action commandaction="commandaction.calculating"/>
+
+      <!-- Are we in the right sector? -->
+      <label name="MOVE_TO_SECTOR_LBL"/>
+      <do_if value="$Ship.sector != $SECTOR">
+        <set_command command="command.move" param="$SECTOR"/>
+        <set_value name="$LocationObjectToMoveTo" exact="$SECTOR"/>
+        <run_script name="'move.generic'">
+          <param name="destination" value="$SECTOR"/>
+          <param name="endintargetzone" value="true"/>
+          <param name="recallsubordinates" value="true"/>
+        </run_script>
+        <do_if value="this.zone.isclass.highway">
+          <get_safe_pos result="$_SafePos" zone="$Ship.zone" object="$Ship" direction="quadrant.front" radius="$Ship.size" angle="45deg"/>
+          <move_to object="$Ship" destination="$Ship.zone" uselocalhighways="false" finishonapproach="true" abortpath="true">
+            <position value="$_SafePos"/>
+          </move_to>
+          <remove_value name="$_SafePos"/>
+        </do_if>
+        <wait exact="1s"/>
+        <remove_value name="$LocationObjectToMoveTo"/>
+        <do_if value="$Ship.sector != this.$CurrentSector">
+          <resume label="MOVE_TO_SECTOR_LBL"/>
+        </do_if>
+      </do_if>
+
+      <find_object name="$_FoundCargoDrops" space="$SECTOR" multiple="true">
+        <match class="class.collectablewares"/>
+        <match knownto="$Ship.owner"/>
+      </find_object>
+
+      <do_if value="$_FoundCargoDrops.count le 0">
+        <resume label="IDLE_RETURN_HOME_LBL"/>
+      </do_if>
+
+      <create_list name="$_CollectableDrops"/>
+      <do_for_each name="$_FoundCargoDrop" in="$_FoundCargoDrops">
+        <do_if value="$_FoundCargoDrop.wares.list.last.iscargo">
+          <append_to_list name="$_CollectableDrops" exact="$_FoundCargoDrop"/>
+        </do_if>
+      </do_for_each>
+      <remove_value name="$_FoundCargoDrops"/>
+
+      <do_if value="$_CollectableDrops.count le 0">
+        <resume label="IDLE_RETURN_HOME_LBL"/>
+      </do_if>
+
+      <do_if value="$_CollectableDrops.count gt 1">
+        <sort_list list="$_CollectableDrops" sortbyvalue="$Ship.distanceto.{loop.element}"/>
+      </do_if>
+
+      <do_for_each name="$_CollectableDrop" in="$_CollectableDrops">
+        <do_if value="$Ship.cargo.{$_CollectableDrop.wares.list.last}.free gt 0">
+          <set_value name="$LocationObjectToMoveTo" exact="$_CollectableDrop"/>
+          <run_script name="'JP_CollectDrop_CDC'">
+            <param name="DROP_TO_COLLECT" value="$_CollectableDrop"/>
+            <param name="DEBUG" value="$DEBUG"/>
+          </run_script>
+          <collect_drop object="$Ship" drop="$_CollectableDrop"/>
+        </do_if>
+        <do_if value="$Ship.cargo.free.container le 0">
+          <remove_value name="$_CollectableDrops"/>
+          <do_if value="$SELL_DROPPED_CARGO">
+            <create_order object="$Ship" id="'JP_EmptyCargoBay_CDC'">
+              <param name="DEBUG" value="$DEBUG"/>
+            </create_order>
+          </do_if>
+          <do_else>
+            <!-- TODO: show_help message when cargo is full and automatic selling of the wares is deactivated -->
+            <resume label="IDLE_RETURN_HOME_LBL"/>
+          </do_else>
+        </do_if>
+        <wait min="1s"/>
+      </do_for_each>
+      <remove_value name="$_CollectableDrops"/>
+
+      <wait exact="1s"/>
+      <resume label="RESUME_LBL"/>
+
+      <label name="IDLE_RETURN_HOME_LBL"/>
+      <create_order id="'JP_IdleReturnHome_AEV2'" object="$Ship">
+        <param name="IDLE_TIME" value="$IDLE_TIME"/>
+        <param name="IDLE_FOLLOW" value="$IDLE_FOLLOW"/>
+        <param name="WHO_TO_FOLLOW" value="$WHO_TO_FOLLOW"/>
+        <param name="IDLE_DOCKING" value="$IDLE_DOCKING"/>
+        <param name="WHERE_TO_DOCK" value="$WHERE_TO_DOCK"/>
+        <param name="IDLE_RANDOM_MOVEMENT" value="$IDLE_RANDOM_MOVEMENT"/>
+        <param name="IN_WHICH_SECTOR" value="$IN_WHICH_SECTOR"/>
+        <param name="IDLE_MOVE_TO" value="$IDLE_MOVE_TO"/>
+        <param name="WHERE_TO_MOVE" value="$WHERE_TO_MOVE"/>
+        <param name="ADD_ORDER_TAG" value="$ADD_ORDER_TAG"/>
+        <param name="ORDER_TAG" value="'#CDC-S'"/>
+        <param name="DEBUG" value="$DEBUG"/>
+      </create_order>
+      <wait exact="1s"/>
+      <resume label="RESUME_LBL"/>
+
+      <label name="FINISH_LBL"/>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <do_if value="$DEBUG">
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Finished ~~'"/>
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+        <remove_value name="$DebugFileName"/>
+        <remove_value name="$DebugFolderName"/>
+        <remove_value name="$DebugScriptName"/>
+      </do_if>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <label name="CLEANUP_LBL"/>
+      <do_if value="$ADD_ORDER_TAG and $ShipName?">
+        <do_if value="$Ship.knownname != $ShipName">
+          <set_object_name object="$Ship" name="$ShipName"/>
+        </do_if>
+      </do_if>
+      <remove_value name="$Ship"/>
+      <remove_value name="$ShipName"/>
+
+      <label name="END_LBL"/>
+      <set_order_syncpoint_reached order="this.ship.order"/>
+      <wait exact="1ms"/>
+      <cancel_order order="this.ship.order" />
+
+    </actions>
+  </attention>
+
+  <on_abort>
+    <do_if value="$ADD_ORDER_TAG and $ShipName?">
+      <do_if value="$Ship.knownname != $ShipName">
+        <set_object_name object="$Ship" name="$ShipName"/>
+      </do_if>
+    </do_if>
+  </on_abort>
+
+</aiscript>

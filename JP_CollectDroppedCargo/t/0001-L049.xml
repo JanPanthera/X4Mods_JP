@@ -3,10 +3,21 @@
 <language>
   <page id="8888888" voice="no">
     <!--  JP_CollectDroppedCargo -->
-    <t id="700">Frachtgut sammeln?</t>
-    <t id="701">Inventargegenstände sammeln?</t>
-    <t id="702">Ladung verkaufen, wenn voll?</t>
-    <t id="720">Instantan aufsammeln?</t>
+    <t id="700">Gesammelte Fracht verkaufen?</t>
+    <t id="760">Auftragseinstellungen gespeichert.</t>
+    <t id="761">Auftragseinstellungen zurückgesetzt.</t>
+    <t id="780">Leerlaufzeit</t>
+    <t id="781">Leerlauf: Folgen?</t>
+    <t id="782">Wem Folgen?</t>
+    <t id="783">Leerlauf: Andocken?</t>
+    <t id="784">Wo andocken?</t>
+    <t id="785">Leerlauf: Zufällige Bewegung?</t>
+    <t id="786">In welchem Sektor?</t>
+    <t id="787">Leerlauf: Zu Position bewegen?</t>
+    <t id="788">Wohin?</t>
+    <t id="794">Befehlskürzel hinzufügen?</t>
+    <t id="795">Auftragseinstellungen Speichern?</t>
+    <t id="796">Auftragseinstellungen Zurücksetzen?</t>
     <t id="797">\033#B600CCCC#</t>
     <t id="798">\033#FF00CC66#</t>
     <t id="799">\033X</t>
