@@ -5,12 +5,21 @@
   <order id="JP_EmptyCargoBay_CDC" name="_EmptyCargoBay" category="internal" infinite="false">
     <params>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <!-- TODO: sell range? -->
-      <!-- TODO: sell limitation through blacklist from x4 vanilla? -->
+      <param name="PREFER_OWN_STATIONS" text="Prefer own stations?" type="bool" default="true"/>
+      <param name="SELL_DROPPED_CARGO" text="Sell collected Cargo?" type="bool" default="true"/>
+      <param name="SELL_RANGE" text="Selling range?" type="number" default="3">
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="30"/>
+        <input_param name="step" value="1"/>
+      </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="WARE_TRANSFER_TO_TARGET" text="Cargo transfer?" type="bool" default="false"/>
+      <param name="TRANSFER_TARGET" text="Transfer Target" type="object" default="null"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="DEBUG" text="Debug" type="bool" default="false"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     </params>
+    <location object="$LocationObject" condition="$LocationObject? and @$LocationObject != null"/>
   </order>
 
   <interrupts>
@@ -27,7 +36,7 @@
   </interrupts>
 
   <init>
-    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <do_if value="$DEBUG">
       <set_value name="$DebugScriptName" exact="'JP_EmptyCargoBay'"/>
       <set_value name="$DebugFolderName" exact="'JP_CollectDroppedCargo.logs'"/>
@@ -36,39 +45,205 @@
       <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Started ~~' + '\n'"/>
     </do_if>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-    <set_value name="$Ship" exact="this.ship"/>
+
+    <!-- variables - "scriptfile global" -->
+    <do_if value="true">
+      <set_value name="$Ship" exact="this.ship"/>
+    </do_if>
+
+    <!-- prefer $WARE_TRANSFER_TO_TARGET over $SELL_DROPPED_CARGO.. if $TRANSFER_TARGET is valid -->
+    <do_if value="$SELL_DROPPED_CARGO == true and $WARE_TRANSFER_TO_TARGET == true">
+      <do_if value="@$TRANSFER_TARGET != null and (@$TRANSFER_TARGET.class == class.ship or @$TRANSFER_TARGET.class == class.station) and @$TRANSFER_TARGET.owner == this.ship.owner">
+        <find_dockingbay name="$_FoundDockingBay" object="$TRANSFER_TARGET">
+        </find_dockingbay>
+        <do_if value="$_FoundDockingBay">
+          <set_value name="$SELL_DROPPED_CARGO" exact="false"/>
+          <set_value name="$LocationObject" exact="$TRANSFER_TARGET"/>
+        </do_if>
+        <do_else>
+          <set_value name="$WARE_TRANSFER_TO_TARGET" exact="false"/>
+        </do_else>
+      </do_if>
+    </do_if>
+
+    <include_interrupt_actions ref="GetBlacklistgroup"/>
+
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
   </init>
 
   <attention min="unknown">
     <actions>
 
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
       <label name="INIT_LBL"/>
       <wait exact="1ms"/>
 
-      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
       <label name="RESUME_LBL"/>
 
+      <!-- our cargo bay is empty? continue with collecting -->
       <do_if value="$Ship.cargo.free.container == $Ship.cargo.capacity.container">
         <resume label="FINISH_LBL"/>
       </do_if>
 
-      <find_sector name="$Locations" multiple="true">
-        <match mayattack="$Ship" negate="true"/>
-        <match knownto="$Ship"/>
-        <match_gate_distance object="$Ship" max="2"/>
-      </find_sector>
+      <do_for_each name="$_Ware" in="$Ship.cargo.list" counter="$_it">
 
-      <run_script name="'order.trade.single.sell'">
-        <param name="ware" value="$Ship.cargo.list.last"/>
-        <param name="locations" value="$Locations"/>
-        <param name="minamount" value="$Ship.cargo.{$Ship.cargo.list.last}.count"/>
-        <param name="internalorder" value="true"/>
-      </run_script>
+        <do_if value="$WARE_TRANSFER_TO_TARGET and $TRANSFER_TARGET.isoperational and $TRANSFER_TARGET != null and $TRANSFER_TARGET != $Ship">
+          <create_list name="$_BuyOffers"/>
+          <do_if value="$Ship.iscapitalship and $Ship.availableunits.{unitcategory.transport}.count le 0">
+            <find_buy_offer result="$_BuyOffers" tradepartner="$Ship" buyer="$TRANSFER_TARGET" wares="$_Ware" multiple="true">
+              <offeramount min="1"/>
+              <match_buyer>
+                <match_units_available category="unitcategory.transport" min="1"/>
+              </match_buyer>
+            </find_buy_offer>
+          </do_if>
+          <do_else>
+            <find_buy_offer result="$_BuyOffers" tradepartner="$Ship" buyer="$TRANSFER_TARGET" wares="$_Ware" multiple="true">
+              <offeramount min="1"/>
+            </find_buy_offer>
+          </do_else>
+          <!-- DEBUG ~ $_BuyOffers ~ $WARE_TRANSFER_TO_TARGET -->
+          <do_if value="$DEBUG">
+            <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+            <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="' ~ $WARE_TRANSFER_TO_TARGET'"/>
+            <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'$_BuyOffers.count: ' + $_BuyOffers.count"/>
+            <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+            <do_if value="$_BuyOffers.count gt 0">
+              <do_for_each name="$_BuyOffer" in="$_BuyOffers">
+                <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'$_BuyOffer.owner.knownname: ' + $_BuyOffer.owner.knownname"/>
+                <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'$_BuyOffer.ware: ' + $_BuyOffer.ware"/>
+                <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'$_BuyOffer.amount: ' + $_BuyOffer.amount"/>
+                <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'$_BuyOffer.unitprice: ' + $_BuyOffer.unitprice"/>
+                <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="' ~ --------------------------------------------'"/>
+                <!-- owner = owner object of the offer.. station/ship.. not faction itself -->
+              </do_for_each>
+            </do_if>
+            <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+          </do_if>
+        </do_if>
 
-      <wait exact="1s"/>
+        <do_if value="($SELL_DROPPED_CARGO and $WARE_TRANSFER_TO_TARGET) or ($SELL_DROPPED_CARGO and not $WARE_TRANSFER_TO_TARGET)">
+          <create_list name="$_BuyOffers"/>
+
+          <do_if value="$PREFER_OWN_STATIONS">
+            <do_if value="$Ship.iscapitalship and $Ship.availableunits.{unitcategory.transport}.count le 0">
+              <find_buy_offer result="$_BuyOffers" tradepartner="$Ship" wares="$_Ware" space="player.galaxy" multiple="true">
+                <offeramount min="$Ship.cargo.{$_Ware}.count"/>
+                <match_buyer>
+                  <match owner="$Ship.owner"/>
+                  <match_gate_distance object="$Ship" max="$SELL_RANGE"/>
+                  <match_units_available category="unitcategory.transport" min="1"/>
+                  <match_use_blacklist object="$Ship" type="blacklisttype.sectortravel" group="$blacklistgroup"/>
+                  <match_use_blacklist object="$Ship" type="blacklisttype.sectoractivity" group="$blacklistgroup"/>
+                  <match_use_blacklist object="$Ship" type="blacklisttype.objectactivity" group="$blacklistgroup"/>
+                </match_buyer>
+              </find_buy_offer>
+            </do_if>
+            <do_else>
+              <find_buy_offer result="$_BuyOffers" tradepartner="$Ship" wares="$_Ware" space="player.galaxy" multiple="true">
+                <offeramount min="$Ship.cargo.{$_Ware}.count"/>
+                <match_buyer>
+                  <match owner="$Ship.owner"/>
+                  <match_gate_distance object="$Ship" max="$SELL_RANGE"/>
+                  <match_use_blacklist object="$Ship" type="blacklisttype.sectortravel" group="$blacklistgroup"/>
+                  <match_use_blacklist object="$Ship" type="blacklisttype.sectoractivity" group="$blacklistgroup"/>
+                  <match_use_blacklist object="$Ship" type="blacklisttype.objectactivity" group="$blacklistgroup"/>
+                </match_buyer>
+              </find_buy_offer>
+            </do_else>
+            <do_if value="$_BuyOffers.count gt 0">
+              <sort_list list="$_BuyOffers" sortbyvalue="$Ship.gatedistance.{loop.element}"/>
+            </do_if>
+            <!-- DEBUG ~ $_BuyOffers ~ $PREFER_OWN_STATIONS -->
+            <do_if value="$DEBUG">
+              <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+              <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="' ~ $PREFER_OWN_STATIONS'"/>
+              <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'$_BuyOffers.count: ' + $_BuyOffers.count"/>
+              <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+              <do_if value="$_BuyOffers.count gt 0">
+                <do_for_each name="$_BuyOffer" in="$_BuyOffers">
+                  <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'$_BuyOffer.owner.knownname: ' + $_BuyOffer.owner.knownname"/>
+                  <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'$_BuyOffer.ware: ' + $_BuyOffer.ware"/>
+                  <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'$_BuyOffer.amount: ' + $_BuyOffer.amount"/>
+                  <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'$_BuyOffer.unitprice: ' + $_BuyOffer.unitprice"/>
+                  <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="' ~ --------------------------------------------'"/>
+                  <!-- owner = owner object of the offer.. station/ship.. not faction itself -->
+                </do_for_each>
+              </do_if>
+              <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+            </do_if>
+          </do_if>
+
+          <do_if value="$_BuyOffers.count le 0">
+            <do_if value="$Ship.iscapitalship and $Ship.availableunits.{unitcategory.transport}.count le 0">
+              <find_buy_offer result="$_BuyOffers" tradepartner="$Ship" wares="$_Ware" space="player.galaxy" multiple="true">
+                <offeramount min="$Ship.cargo.{$_Ware}.count"/>
+                <match_buyer>
+                  <match knownto="$Ship.owner"/>
+                  <match_gate_distance object="$Ship" max="$SELL_RANGE"/>
+                  <match_units_available category="unitcategory.transport" min="1"/>
+                  <match_use_blacklist object="$Ship" type="blacklisttype.sectortravel" group="$blacklistgroup"/>
+                  <match_use_blacklist object="$Ship" type="blacklisttype.sectoractivity" group="$blacklistgroup"/>
+                  <match_use_blacklist object="$Ship" type="blacklisttype.objectactivity" group="$blacklistgroup"/>
+                </match_buyer>
+              </find_buy_offer>
+            </do_if>
+            <do_else>
+              <find_buy_offer result="$_BuyOffers" tradepartner="$Ship" wares="$_Ware" space="player.galaxy" multiple="true">
+                <offeramount min="$Ship.cargo.{$_Ware}.count"/>
+                <match_buyer>
+                  <match knownto="$Ship.owner"/>
+                  <match_gate_distance object="$Ship" max="$SELL_RANGE"/>
+                  <match_use_blacklist object="$Ship" type="blacklisttype.sectortravel" group="$blacklistgroup"/>
+                  <match_use_blacklist object="$Ship" type="blacklisttype.sectoractivity" group="$blacklistgroup"/>
+                  <match_use_blacklist object="$Ship" type="blacklisttype.objectactivity" group="$blacklistgroup"/>
+                </match_buyer>
+              </find_buy_offer>
+            </do_else>
+            <do_if value="$_BuyOffers.count gt 0">
+              <sort_list list="$_BuyOffers" sortbyvalue="loop.element.unitprice" sortdescending="true"/>
+            </do_if>
+            <!-- DEBUG ~ $_BuyOffers ~ not $PREFER_OWN_STATIONS -->
+            <do_if value="$DEBUG">
+              <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+              <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="' ~ not $PREFER_OWN_STATIONS'"/>
+              <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'$_BuyOffers.count: ' + $_BuyOffers.count"/>
+              <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+              <do_if value="$_BuyOffers.count gt 0">
+                <do_for_each name="$_BuyOffer" in="$_BuyOffers">
+                  <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'$_BuyOffer.owner.knownname: ' + $_BuyOffer.owner.knownname"/>
+                  <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'$_BuyOffer.ware: ' + $_BuyOffer.ware"/>
+                  <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'$_BuyOffer.amount: ' + $_BuyOffer.amount"/>
+                  <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'$_BuyOffer.unitprice: ' + $_BuyOffer.unitprice"/>
+                  <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="' ~ --------------------------------------------'"/>
+                  <!-- owner = owner object of the offer.. station/ship.. not faction itself -->
+                </do_for_each>
+              </do_if>
+              <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+            </do_if>
+          </do_if>
+
+        </do_if>
+
+        <!-- are still buyoffers left? if create the order.. -->
+        <do_if value="$_BuyOffers.count gt 0">
+          <clamp_trade_amount result="$_TradeAmount" buyer="$_BuyOffers.{1}.buyer" seller="$Ship" trade="$_BuyOffers.{1}" amount="$_BuyOffers.{1}.amount"/>
+          <create_trade_order object="$Ship" tradeoffer="$_BuyOffers.{1}" amount="$_TradeAmount" immediate="true" internal="true"/>
+        </do_if>
+
+        <remove_value name="$_TradeAmount"/>
+        <remove_value name="$_BuyOffers"/>
+
+      </do_for_each>
+
+      <wait min="3s" max="6s"/>
       <resume label="RESUME_LBL"/>
+
 
       <label name="FINISH_LBL"/>
 
@@ -83,11 +258,11 @@
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
       <label name="$CLEANUP_LBL"/>
+      <remove_value name="$LocationObject"/>
       <remove_value name="$Ship"/>
-      <remove_value name="$SellerStation"/>
 
       <label name="END_LBL"/>
-      <wait exact="1ms"/>
+      <wait min="1s" max="3s"/>
 
     </actions>
   </attention>

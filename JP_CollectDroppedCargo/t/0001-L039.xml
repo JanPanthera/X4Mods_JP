@@ -3,9 +3,15 @@
 <language>
   <page id="8888888" voice="no">
     <!--  JP_CollectDroppedCargo -->
-    <t id="700">Vendere il carico raccolto?</t>
+    <t id="700">Utilizzare whitelist?</t>
+    <t id="701">Lista bianca delle merci</t>
+    <t id="710">Vendere il carico raccolto?</t>
+    <t id="711">Gamma di vendita?</t>
+    <t id="720">Trasferimento merci?</t>
+    <t id="721">Destinazione Di Trasferimento</t>
     <t id="760">Impostazioni dell'ordine salvate.</t>
     <t id="761">Impostazioni ordine reimpostate.</t>
+    <t id="762">Il vano di carico è pieno e la vendita automatica e il trasferimento del carico sono disabilitati. Andare inattivo..</t>
     <t id="780">Tempo Di Inattività</t>
     <t id="781">Inattivo: seguire?</t>
     <t id="782">Chi seguire?</t>
@@ -15,7 +21,8 @@
     <t id="786">In quale settore?</t>
     <t id="787">Inattivo: passa a?</t>
     <t id="788">Dove spostarsi?</t>
-    <t id="794">Aggiungi tag ordine?</t>
+    <t id="793">Aggiungi tag ordine?</t>
+    <t id="794">Posizione dell'etichetta di ordine</t>
     <t id="795">Salvare Le Impostazioni Dell'Ordine?</t>
     <t id="796">Ripristina Le Impostazioni Dell'Ordine?</t>
     <t id="797">\033#B600CCCC#</t>

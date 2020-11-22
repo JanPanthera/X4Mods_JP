@@ -3,9 +3,15 @@
 <language>
   <page id="8888888" voice="no">
     <!--  JP_CollectDroppedCargo -->
-    <t id="700">Vender carga recogida?</t>
+    <t id="700">¿Usa la lista blanca?</t>
+    <t id="701">Lista blanca de productos</t>
+    <t id="710">Vender carga recogida?</t>
+    <t id="711">Rango de venta?</t>
+    <t id="720">Transferencia de carga?</t>
+    <t id="721">Objetivo de transferencia</t>
     <t id="760">Configuración de orden guardada.</t>
     <t id="761">Ajustes de orden restablecidos.</t>
+    <t id="762">La bahía de carga está llena y la venta automática y la transferencia de carga están deshabilitadas. Ir inactivo..</t>
     <t id="780">Tiempo de inactividad</t>
     <t id="781">Inactivo: ¿Seguir?</t>
     <t id="782">¿A quién seguir?</t>
@@ -15,7 +21,8 @@
     <t id="786">En que sector</t>
     <t id="787">Inactivo: ¿Mover a?</t>
     <t id="788">Hacia donde moverse</t>
-    <t id="794">Agregar etiqueta de pedido?</t>
+    <t id="793">Agregar etiqueta de pedido?</t>
+    <t id="794">Posición de la etiqueta de pedido</t>
     <t id="795">Guardar la configuración de la orden?</t>
     <t id="796">¿Restablecer la configuración del pedido?</t>
     <t id="797">\033#B600CCCC#</t>

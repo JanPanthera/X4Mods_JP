@@ -3,9 +3,15 @@
 <language>
   <page id="8888888" voice="no">
     <!--  JP_CollectDroppedCargo -->
-    <t id="700">Vendre la cargaison collectée?</t>
+    <t id="700">Utilisation de la liste blanche?</t>
+    <t id="701">Marchandises blanche</t>
+    <t id="710">Vendre la cargaison collectée?</t>
+    <t id="711">La vente de la gamme?</t>
+    <t id="720">Transfert de cargaison?</t>
+    <t id="721">Le Transfert De La Cible</t>
     <t id="760">Paramètres de commande enregistrés.</t>
     <t id="761">Paramètres de commande réinitialisés.</t>
+    <t id="762">La soute est pleine et la vente automatique et le transfert de cargaison sont désactivés. Va au ralenti..</t>
     <t id="780">Le Temps D'Inactivité</t>
     <t id="781">Inactif: suivre?</t>
     <t id="782">Qui suivre?</t>
@@ -15,7 +21,8 @@
     <t id="786">Dans quel secteur?</t>
     <t id="787">Inactif: passer à?</t>
     <t id="788">Où déménager?</t>
-    <t id="794">Ajouter une étiquette de commande?</t>
+    <t id="793">Ajouter une étiquette de commande?</t>
+    <t id="794">Position de l'étiquette de commande</t>
     <t id="795">Enregistrer Les Paramètres De Commande?</t>
     <t id="796">Réinitialiser Les Paramètres De Commande?</t>
     <t id="797">\033#B600CCCC#</t>

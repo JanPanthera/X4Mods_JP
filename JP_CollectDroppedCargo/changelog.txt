@@ -1,4 +1,9 @@
 V1.22
+~ Added: Whitelist for choosing the wares the ship should collect.. (toggleable)
+~ Added: Order tag position chooseable (left = 0, right = 1)
+~ Added: The script shows now the current target visual on the map.. the drop what the ship will collect now.. ship/station where to sell or transfer wares
+~ Added: IdleReturnHome shows visual where to idle
 ~ Updated: language files
 ~ Updated: refactored/recreated save and load order settings function
+~ Changed: IdleReturnHome creates now a sub order.. with that you can easily cancel it manually
 ~ Updated: added a _ before the color code of the behaviour name, ai routines of the base game are now arranged at top of the routines list
