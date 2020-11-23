@@ -5,9 +5,33 @@
   <order id="JP_CollectDrop_CDC" name="_CollectDrop_CDC" category="internal" infinite="false">
     <params>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="DROP_TO_COLLECT" text="DropToCollect" type="object" default="null"/>
+      <param name="PLACE_HOLDER_000" text="----------------------------------" type="object" default="null">
+        <input_param name="class" value="[]"/>
+      </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="DEBUG" text="Debug" type="bool" default="false"/>
+      <param name="DROP_TO_COLLECT" text="DropToCollect" type="object" default="null" advanced="true"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="PLACE_HOLDER_001" text="----------------------------------" type="object" default="null" advanced="true">
+        <input_param name="class" value="[]"/>
+      </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="ADD_ORDER_TAG"  text="{8888888, 793}" comment="Add Order tag?" type="bool" default="true"/>
+      <param name="ORDER_TAG" text="Order tag" comment="internal!" type="internal" default="''"/>
+      <param name="ORDER_TAG_POSITION" text="{8888888, 794}" comment="Order tag position" type="number" default="1">
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="1"/>
+        <input_param name="step" value="1"/>
+      </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="PLACE_HOLDER_998" text="----------------------------------" type="object" default="null">
+        <input_param name="class" value="[]"/>
+      </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="DEBUG" text="Debug" type="bool" default="false" advanced="true"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="PLACE_HOLDER_999" text="----------------------------------" type="object" default="null" advanced="true">
+        <input_param name="class" value="[]"/>
+      </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     </params>
     <location object="$LocationUsedInUI" condition="@$LocationUsedInUI != null"/>
@@ -27,32 +51,35 @@
   </interrupts>
 
   <init>
-    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <do_if value="$DEBUG">
-      <set_value name="$DebugScriptName" exact="'JP_IdleReturnHome_CDC'"/>
+      <set_value name="$DebugScriptName" exact="'JP_CollectDrop_CDC'"/>
       <set_value name="$DebugFolderName" exact="'JP_CollectDroppedCargo.logs'"/>
       <set_value name="$DebugFileName" exact="this.ship.idcode + '.' + $DebugScriptName + '.xml.log'"/>
       <debug_to_file append="false" directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
       <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Started ~~' + '\n'"/>
     </do_if>
-    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <set_value name="$Ship" exact="this.ship"/>
     <set_value name="$LocationUsedInUI" exact="$DROP_TO_COLLECT"/>
-    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <do_if value="$ADD_ORDER_TAG">
+      <set_value name="$ShipName" exact="$Ship.knownname"/>
+      <set_object_name object="$Ship" name="(if $ORDER_TAG_POSITION == 0 then (('\033#FFA95908#' + $ORDER_TAG + '\033X') + ' ') else '') + $ShipName + (if $ORDER_TAG_POSITION == 1 then (' ' + ('\033#FFA95908#' + $ORDER_TAG + '\033X')) else '')"/>
+    </do_if>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
   </init>
 
   <attention min="unknown">
     <actions>
 
-      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-
       <label name="INIT_LBL"/>
-      <wait exact="1ms"/>
+      <wait min="1s" max="3s"/>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-      <set_command command="command.move" param="$DROP_TO_COLLECT"/>
-      
+      <set_command command="command.collect" param="$DROP_TO_COLLECT"/>
+
       <label name="MOVING_LBL"/>
       <get_safe_pos result="$_TempPosition" zone="$DROP_TO_COLLECT.sector" object="$DROP_TO_COLLECT" directionobject="$Ship" radius="$Ship.size" ignored="$Ship"/>
       <move_to object="$Ship" destination="$DROP_TO_COLLECT.sector" finishonapproach="false" forceposition="true" travel="true">
@@ -64,10 +91,19 @@
       </do_if>
       <remove_value name="$_TempPosition"/>
       <stop_moving object="$Ship"/>
+      <wait min="3s" max="6s"/>
+
+      <collect_drop object="$Ship" drop="$DROP_TO_COLLECT"/>
 
       <label name="FINISH_LBL"/>
+      <do_if value="$ADD_ORDER_TAG and $ShipName?">
+        <do_if value="$Ship.knownname != $ShipName">
+          <set_object_name object="$Ship" name="$ShipName"/>
+        </do_if>
+      </do_if>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
       <do_if value="$DEBUG">
         <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Finished ~~'"/>
         <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
@@ -75,19 +111,26 @@
         <remove_value name="$DebugFolderName"/>
         <remove_value name="$DebugScriptName"/>
       </do_if>
-      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
       <label name="CLEANUP_LBL"/>
-      <remove_value name="$LocationUsedInUI"/>
       <remove_value name="$Ship"/>
+      <remove_value name="$LocationUsedInUI"/>
+      <do_if value="$ADD_ORDER_TAG and $ShipName?">
+        <remove_value name="$ShipName"/>
+      </do_if>
 
       <label name="END_LBL"/>
-      <wait exact="1ms"/>
+      <wait min="1s" max="3s"/>
 
     </actions>
   </attention>
 
   <on_abort>
+    <do_if value="$ADD_ORDER_TAG and $ShipName?">
+      <do_if value="$Ship.knownname != $ShipName">
+        <set_object_name object="$Ship" name="$ShipName"/>
+      </do_if>
+    </do_if>
   </on_abort>
 
 </aiscript>
