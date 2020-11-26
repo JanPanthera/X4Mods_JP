@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Portuguese (Brazil) ~~ Português (Brasil) -->
+<language>
+  <page id="8888888" voice="no">
+    <!-- JP_CollectMyScatteredInventoryItems -->
+    <t id="2180">Tempo ocioso</t>
+    <t id="2181">Inativo: Seguir?</t>
+    <t id="2182">Quem seguir?</t>
+    <t id="2183">Inativo: Ancoragem?</t>
+    <t id="2184">Onde atracar?</t>
+    <t id="2185">Ocioso: movimento aleatório?</t>
+    <t id="2186">Em qual setor?</t>
+    <t id="2187">Inativo: Mover para?</t>
+    <t id="2188">Para onde ir?</t>
+    <t id="2191">Adicionar etiqueta de encomenda?</t>
+    <t id="2192">Posição da marca de encomenda</t>
+    <t id="2193">Gravar A Configuração Da Ordem?</t>
+    <t id="2194">Reiniciar A Configuração Da Ordem?</t>
+    <t id="2195">A configuração da ordem foi gravada.</t>
+    <t id="2196">Configuração da ordem reinicializada.</t>
+    <t id="2197">\033#B600CCCC#</t>
+    <t id="2198">\033#FF00CC66#</t>
+    <t id="2199">\033X</t>
+  </page>
+</language>

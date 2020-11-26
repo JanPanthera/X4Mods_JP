@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Simplified Chinese ~~ 简体中文 -->
+<language>
+  <page id="8888888" voice="no">
+    <!-- JP_CollectMyScatteredInventoryItems -->
+    <t id="2180">空闲时间</t>
+    <t id="2181">闲置：跟随？</t>
+    <t id="2182">跟踪谁？</t>
+    <t id="2183">空闲：坞站？</t>
+    <t id="2184">在哪里停靠？</t>
+    <t id="2185">闲置：随机移动？</t>
+    <t id="2186">在哪个部门？</t>
+    <t id="2187">闲置：移动到？</t>
+    <t id="2188">移动到哪里？</t>
+    <t id="2191">添加订单标签？</t>
+    <t id="2192">订单标签位置</t>
+    <t id="2193">保存订单设置？</t>
+    <t id="2194">重置订单设置？</t>
+    <t id="2195">订单设置已保存。</t>
+    <t id="2196">订单设置重置。</t>
+    <t id="2197">\033#B600CCCC#</t>
+    <t id="2198">\033#FF00CC66#</t>
+    <t id="2199">\033倍</t>
+  </page>
+</language>

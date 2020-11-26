@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- French ~~ Français -->
+<language>
+  <page id="8888888" voice="no">
+    <!-- JP_CollectMyScatteredInventoryItems -->
+    <t id="2180">Temps d'inactivité</t>
+    <t id="2181">Inactif: suivre?</t>
+    <t id="2182">Qui suivre?</t>
+    <t id="2183">Inactif: amarrage?</t>
+    <t id="2184">Où accoster?</t>
+    <t id="2185">Inactif: mouvement aléatoire?</t>
+    <t id="2186">Dans quel secteur?</t>
+    <t id="2187">Inactif: passer à?</t>
+    <t id="2188">Où déménager?</t>
+    <t id="2191">Ajouter une étiquette de commande?</t>
+    <t id="2192">Position de l'étiquette de commande</t>
+    <t id="2193">Enregistrer Les Paramètres De Commande?</t>
+    <t id="2194">Réinitialiser Les Paramètres De Commande?</t>
+    <t id="2195">Paramètres de commande enregistrés.</t>
+    <t id="2196">Paramètres de commande réinitialisés.</t>
+    <t id="2197">\033#B600CCCC#</t>
+    <t id="2198">\033#FF00CC66#</t>
+    <t id="2199">\033X</t>
+  </page>
+</language>

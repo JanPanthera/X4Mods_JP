@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Default ~~ English -->
+<language>
+  <page id="8888888" voice="no">
+    <!-- JP_CollectMyScatteredInventoryItems -->
+    <t id="2180">Idle Time</t>
+    <t id="2181">Idle: Follow?</t>
+    <t id="2182">Who to follow?</t>
+    <t id="2183">Idle: Docking?</t>
+    <t id="2184">Where to dock?</t>
+    <t id="2185">Idle: Random movement?</t>
+    <t id="2186">In which sector?</t>
+    <t id="2187">Idle: Move to?</t>
+    <t id="2188">Where to move?</t>
+    <t id="2191">Add Order tag?</t>
+    <t id="2192">Order tag position</t>
+    <t id="2193">Save Order Settings?</t>
+    <t id="2194">Reset Order Settings?</t>
+    <t id="2195">Order settings saved.</t>
+    <t id="2196">Order settings resetted.</t>
+    <t id="2197">\033#B600CCCC#</t>
+    <t id="2198">\033#FF00CC66#</t>
+    <t id="2199">\033X</t>
+  </page>
+</language>

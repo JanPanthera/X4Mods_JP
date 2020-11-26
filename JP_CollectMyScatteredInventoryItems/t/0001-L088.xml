@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Traditional Chinese ~~ 繁體中文 -->
+<language>
+  <page id="8888888" voice="no">
+    <!-- JP_CollectMyScatteredInventoryItems -->
+    <t id="2180">閒置時間</t>
+    <t id="2181">閒置：跟隨？</t>
+    <t id="2182">誰跟著？</t>
+    <t id="2183">閒置：停靠？</t>
+    <t id="2184">在哪裡停靠？</t>
+    <t id="2185">閒置：隨機移動？</t>
+    <t id="2186">在哪個部門？</t>
+    <t id="2187">閒置：移至？</t>
+    <t id="2188">搬到哪裡去？</t>
+    <t id="2191">是否要新增訂單標籤？</t>
+    <t id="2192">訂單標籤位置</t>
+    <t id="2193">保存訂單設置？</t>
+    <t id="2194">重置訂單設置？</t>
+    <t id="2195">訂單設置已保存。</t>
+    <t id="2196">訂單設置已重置。</t>
+    <t id="2197">\033#B600CCCC#</t>
+    <t id="2198">\033#FF00CC66#</t>
+    <t id="2199">\033X</t>
+  </page>
+</language>

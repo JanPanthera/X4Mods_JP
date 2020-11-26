@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Spanish ~~ Español -->
+<language>
+  <page id="8888888" voice="no">
+    <!-- JP_CollectMyScatteredInventoryItems -->
+    <t id="2180">Tiempo de inactividad</t>
+    <t id="2181">Inactivo: ¿Seguir?</t>
+    <t id="2182">¿A quién seguir?</t>
+    <t id="2183">Inactivo: ¿Atraque?</t>
+    <t id="2184">¿Dónde atracar?</t>
+    <t id="2185">Inactivo: ¿movimiento aleatorio?</t>
+    <t id="2186">En que sector</t>
+    <t id="2187">Inactivo: ¿Mover a?</t>
+    <t id="2188">Hacia donde moverse</t>
+    <t id="2191">Agregar etiqueta de pedido?</t>
+    <t id="2192">Posición de la etiqueta de pedido</t>
+    <t id="2193">Guardar la configuración de la orden?</t>
+    <t id="2194">¿Restablecer la configuración del pedido?</t>
+    <t id="2195">Configuración de orden guardada.</t>
+    <t id="2196">Ajustes de orden restablecidos.</t>
+    <t id="2197">\033#B600CCCC#</t>
+    <t id="2198">\033#FF00CC66#</t>
+    <t id="2199">\033X</t>
+  </page>
+</language>

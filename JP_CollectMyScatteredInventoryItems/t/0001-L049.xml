@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- German ~~ Deutsch -->
+<language>
+  <page id="8888888" voice="no">
+    <!-- JP_CollectMyScatteredInventoryItems -->
+    <t id="2180">Leerlaufzeit</t>
+    <t id="2181">Leerlauf: Folgen?</t>
+    <t id="2182">Wem Folgen?</t>
+    <t id="2183">Leerlauf: Andocken?</t>
+    <t id="2184">Wo andocken?</t>
+    <t id="2185">Leerlauf: Zufällige Bewegung?</t>
+    <t id="2186">In welchem Sektor?</t>
+    <t id="2187">Leerlauf: Zu Position bewegen?</t>
+    <t id="2188">Wohin?</t>
+    <t id="2191">Befehlskürzel hinzufügen?</t>
+    <t id="2192">Befehlskürzel position</t>
+    <t id="2193">Auftragseinstellungen Speichern?</t>
+    <t id="2194">Auftragseinstellungen Zurücksetzen?</t>
+    <t id="2195">Auftragseinstellungen gespeichert.</t>
+    <t id="2196">Auftragseinstellungen zurückgesetzt.</t>
+    <t id="2197">\033#B600CCCC#</t>
+    <t id="2198">\033#FF00CC66#</t>
+    <t id="2199">\033X</t>
+  </page>
+</language>
