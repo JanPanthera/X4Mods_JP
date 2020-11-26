@@ -10,9 +10,7 @@
     <t id="712">Prefer own stations?</t>
     <t id="720">Cargo transfer?</t>
     <t id="721">Transfer Target</t>
-    <t id="760">Order settings saved.</t>
-    <t id="761">Order settings resetted.</t>
-    <t id="762">Cargo bay is full and automatic selling and Cargo transfer are disabled. Going idle..</t>
+    <t id="722">Cargo bay is full and automatic selling and Cargo transfer are disabled. Going idle..</t>
     <t id="780">Idle Time</t>
     <t id="781">Idle: Follow?</t>
     <t id="782">Who to follow?</t>
@@ -22,10 +20,12 @@
     <t id="786">In which sector?</t>
     <t id="787">Idle: Move to?</t>
     <t id="788">Where to move?</t>
-    <t id="793">Add Order tag?</t>
-    <t id="794">Order tag position</t>
-    <t id="795">Save Order Settings?</t>
-    <t id="796">Reset Order Settings?</t>
+    <t id="791">Add Order tag?</t>
+    <t id="792">Order tag position</t>
+    <t id="793">Save Order Settings?</t>
+    <t id="794">Reset Order Settings?</t>
+    <t id="795">Order settings saved.</t>
+    <t id="796">Order settings resetted.</t>
     <t id="797">\033#B600CCCC#</t>
     <t id="798">\033#FF00CC66#</t>
     <t id="799">\033X</t>

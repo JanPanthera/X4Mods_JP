@@ -10,9 +10,7 @@
     <t id="712">Prefere estações próprias?</t>
     <t id="720">Transferência de carga?</t>
     <t id="721">Alvo De Transferência</t>
-    <t id="760">A configuração da ordem foi gravada.</t>
-    <t id="761">Configuração da ordem reinicializada.</t>
-    <t id="762">O compartimento de carga está cheio e a venda automática e a transferência de carga estão desactivadas. A ficar ocioso..</t>
+    <t id="722">O compartimento de carga está cheio e a venda automática e a transferência de carga estão desactivadas. A ficar ocioso..</t>
     <t id="780">Tempo De Inactividade</t>
     <t id="781">Inativo: Seguir?</t>
     <t id="782">Quem seguir?</t>
@@ -22,10 +20,12 @@
     <t id="786">Em qual setor?</t>
     <t id="787">Inativo: Mover para?</t>
     <t id="788">Para onde ir?</t>
-    <t id="793">Adicionar etiqueta de encomenda?</t>
-    <t id="794">Posição da marca de encomenda</t>
-    <t id="795">Gravar A Configuração Da Ordem?</t>
-    <t id="796">Reiniciar A Configuração Da Ordem?</t>
+    <t id="791">Adicionar etiqueta de encomenda?</t>
+    <t id="792">Posição da marca de encomenda</t>
+    <t id="793">Gravar A Configuração Da Ordem?</t>
+    <t id="794">Reiniciar A Configuração Da Ordem?</t>
+    <t id="795">A configuração da ordem foi gravada.</t>
+    <t id="796">Configuração da ordem reinicializada.</t>
     <t id="797">\033#B600CCCC#</t>
     <t id="798">\033#FF00CC66#</t>
     <t id="799">\033X</t>

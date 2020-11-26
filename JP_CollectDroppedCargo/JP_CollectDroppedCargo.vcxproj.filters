@@ -58,6 +58,7 @@
     <Xml Include="aiscripts\JP_EmptyCargoBay_CDC.xml" />
     <Xml Include="aiscripts\JP_CollectDroppedCargoS.xml" />
     <Xml Include="aiscripts\JP_CollectDrop_CDC.xml" />
+    <Xml Include="libraries\experiences.xml" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="changelog.txt" />

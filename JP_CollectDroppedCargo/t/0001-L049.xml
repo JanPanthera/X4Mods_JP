@@ -10,9 +10,7 @@
     <t id="712">Eigene Stationen bevorzugen?</t>
     <t id="720">Frachttransfer?</t>
     <t id="721">Transfer Ziel</t>
-    <t id="760">Auftragseinstellungen gespeichert.</t>
-    <t id="761">Auftragseinstellungen zurückgesetzt.</t>
-    <t id="762">Frachtraum ist voll und automatischer Verkauf und Frachttransfer sind deaktiviert. Untätig bleiben..</t>
+    <t id="722">Frachtraum ist voll und automatischer Verkauf und Frachttransfer sind deaktiviert. Untätig bleiben..</t>
     <t id="780">Leerlaufzeit</t>
     <t id="781">Leerlauf: Folgen?</t>
     <t id="782">Wem Folgen?</t>
@@ -22,10 +20,12 @@
     <t id="786">In welchem Sektor?</t>
     <t id="787">Leerlauf: Zu Position bewegen?</t>
     <t id="788">Wohin?</t>
-    <t id="793">Befehlskürzel hinzufügen?</t>
-    <t id="794">Befehlskürzel position</t>
-    <t id="795">Auftragseinstellungen Speichern?</t>
-    <t id="796">Auftragseinstellungen Zurücksetzen?</t>
+    <t id="791">Befehlskürzel hinzufügen?</t>
+    <t id="792">Befehlskürzel position</t>
+    <t id="793">Auftragseinstellungen Speichern?</t>
+    <t id="794">Auftragseinstellungen Zurücksetzen?</t>
+    <t id="795">Auftragseinstellungen gespeichert.</t>
+    <t id="796">Auftragseinstellungen zurückgesetzt.</t>
     <t id="797">\033#B600CCCC#</t>
     <t id="798">\033#FF00CC66#</t>
     <t id="799">\033X</t>

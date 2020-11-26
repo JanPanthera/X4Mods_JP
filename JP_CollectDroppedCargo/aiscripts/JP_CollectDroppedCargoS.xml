@@ -73,14 +73,14 @@
         <input_param name="class" value="[]"/>
       </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="ADD_ORDER_TAG" text="{8888888, 793}" comment="Add Order tag?" type="bool" default="if global.$CollectDroppedCargo_Settings? then global.$CollectDroppedCargo_Settings.{17} else true"/>
-      <param name="ORDER_TAG_POSITION" text="{8888888, 794}" comment="Order tag position" type="number" default="if global.$CollectDroppedCargo_Settings? then global.$CollectDroppedCargo_Settings.{18} else 1">
+      <param name="ADD_ORDER_TAG" text="{8888888, 791}" comment="Add Order tag?" type="bool" default="if global.$CollectDroppedCargo_Settings? then global.$CollectDroppedCargo_Settings.{17} else true"/>
+      <param name="ORDER_TAG_POSITION" text="{8888888, 792}" comment="Order tag position" type="number" default="if global.$CollectDroppedCargo_Settings? then global.$CollectDroppedCargo_Settings.{18} else 1">
         <input_param name="min" value="0"/>
         <input_param name="max" value="1"/>
         <input_param name="step" value="1"/>
       </param>
-      <param name="SAVE_ORDER_SETTINGS" text="{8888888, 795}" comment="Save Order Settings?" type="bool" default="false"/>
-      <param name="RESET_ORDER_SETTINGS" text="{8888888, 796}" comment="Reset Order Settings?" type="bool" default="false"/>
+      <param name="SAVE_ORDER_SETTINGS" text="{8888888, 793}" comment="Save Order Settings?" type="bool" default="false"/>
+      <param name="RESET_ORDER_SETTINGS" text="{8888888, 794}" comment="Reset Order Settings?" type="bool" default="false"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="PLACE_HOLDER_998" text="----------------------------------" type="object" default="null">
         <input_param name="class" value="[]"/>
@@ -97,7 +97,7 @@
     <requires>
       <match shiptype="shiptype.lasertower" negate="true"/>
     </requires>
-    <location object="$LocationObjectToMoveTo" condition="$LocationObjectToMoveTo? and @$LocationObjectToMoveTo != null"/>
+    <location object="$LocationObjectUsedInUI" condition="$LocationObjectUsedInUI? and @$LocationObjectUsedInUI != null"/>
   </order>
 
   <interrupts>
@@ -131,10 +131,6 @@
       <set_object_name object="$Ship" name="(if $ORDER_TAG_POSITION == 0 then (('\033#FFA95908#' + $OrderTag + '\033X') + ' ') else '') + $ShipName + (if $ORDER_TAG_POSITION == 1 then (' ' + ('\033#FFA95908#' + $OrderTag + '\033X')) else '')"/>
     </do_if>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-    <!-- remove it in a later version.. give time for deleting this unused chunk of memory -->
-    <remove_value name="this.$GO_SELLING"/>
-    <remove_value name="this.$CurrentSector"/>
-    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <do_if value="$SAVE_ORDER_SETTINGS">
       <create_list name="$_SettingsList"/>
       <append_list_elements name="$_SettingsList" other="[$USE_WHITELIST, $WARES_WHITELIST,
@@ -155,7 +151,7 @@
         </do_for_each>
       </do_else>
       <remove_value name="$_SettingsList"/>
-      <show_help duration="5s" allowclose="true" log="true" custom="'JP_CollectDroppedCargoS ~\n' + this.ship.knownname + ' [' + this.ship.idcode + ']\n\n' + '{8888888, 760}'"/>
+      <show_help duration="5s" allowclose="true" log="true" custom="$DebugScriptName + ' ~\n' + this.ship.knownname + ' [' + this.ship.idcode + ']\n\n' + '{8888888, 795}'"/>
       <cancel_order order="this.ship.order"/>
     </do_if>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -163,7 +159,7 @@
       <do_if value="global.$CollectDroppedCargo_Settings?">
         <remove_value name="global.$CollectDroppedCargo_Settings"/>
       </do_if>
-      <show_help duration="5s" allowclose="true" log="true" custom="'JP_CollectDroppedCargoS ~\n' + this.ship.knownname + ' [' + this.ship.idcode + ']\n\n' + '{8888888, 761}'"/>
+      <show_help duration="5s" allowclose="true" log="true" custom="$DebugScriptName + ' ~\n' + this.ship.knownname + ' [' + this.ship.idcode + ']\n\n' + '{8888888, 796}'"/>
       <cancel_order order="this.ship.order"/>
     </do_if>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -198,7 +194,7 @@
           </create_order>
         </do_if>
         <do_else>
-          <show_help duration="5s" allowclose="true" log="true" custom="'JP_CollectDroppedCargoS ~\n' + this.ship.knownname + ' [' + this.ship.idcode + ']\n\n' + '{8888888, 762}'"/>
+          <show_help duration="5s" allowclose="true" log="true" custom="'JP_CollectDroppedCargoS ~\n' + this.ship.knownname + ' [' + this.ship.idcode + ']\n\n' + '{8888888, 722}'"/>
           <resume label="IDLE_RETURN_HOME_LBL"/>
         </do_else>
       </do_if>
@@ -208,7 +204,7 @@
       <label name="MOVE_TO_SECTOR_LBL"/>
       <do_if value="$Ship.sector != $SECTOR">
         <set_command command="command.move" param="$SECTOR"/>
-        <set_value name="$LocationObjectToMoveTo" exact="$SECTOR"/>
+        <set_value name="$LocationObjectUsedInUI" exact="$SECTOR"/>
         <run_script name="'move.generic'">
           <param name="destination" value="$SECTOR"/>
           <param name="endintargetzone" value="true"/>
@@ -222,7 +218,7 @@
           <remove_value name="$_SafePos"/>
         </do_if>
         <wait min="1s" max="3s"/>
-        <remove_value name="$LocationObjectToMoveTo"/>
+        <remove_value name="$LocationObjectUsedInUI"/>
         <do_if value="$Ship.sector != $SECTOR">
           <resume label="MOVE_TO_SECTOR_LBL"/>
         </do_if>
@@ -269,6 +265,17 @@
       </do_for_each>
       <remove_value name="$_FoundCargoDrops"/>
 
+      <!-- $_CollectableDrops filtered debug -->
+      <do_if value="$DEBUG">
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="' ~ filtered - $_CollectableDrops.count: ' + $_CollectableDrops.count"/>
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <do_for_each name="$_CollectableDrop" in="$_CollectableDrops">
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'$_CollectableDrop.wares.list.last: ' + $_CollectableDrop.wares.list.last"/>
+        </do_for_each>
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+      </do_if>
+
       <!-- Nothing found go idle -->
       <do_if value="$_CollectableDrops.count le 0">
         <remove_value name="$_CollectableDrops"/>
@@ -290,11 +297,11 @@
             <param name="ORDER_TAG_POSITION" value="$ORDER_TAG_POSITION"/>
             <param name="DEBUG" value="$DEBUG"/>
           </create_order>
+          <!-- Give time for creation and execution of the order -->
+          <wait min="1s" max="3s"/>
         </do_if>
-        <wait min="1s" max="3s"/>
       </do_for_each>
       <remove_value name="$_CollectableDrops"/>
-
       <wait min="1s" max="3s"/>
       <resume label="RESUME_LBL"/>
 
@@ -320,6 +327,7 @@
 
 
       <label name="FINISH_LBL"/>
+      <wait min="1s" max="3s"/>
       <do_if value="$ADD_ORDER_TAG and $ShipName?">
         <do_if value="$Ship.knownname != $ShipName">
           <set_object_name object="$Ship" name="$ShipName"/>
@@ -338,7 +346,7 @@
 
       <label name="CLEANUP_LBL"/>
       <remove_value name="$Ship"/>
-      <do_if value="$ADD_ORDER_TAG and $ShipName?">
+      <do_if value="$ADD_ORDER_TAG">
         <remove_value name="$ShipName"/>
         <remove_value name="$OrderTag"/>
       </do_if>

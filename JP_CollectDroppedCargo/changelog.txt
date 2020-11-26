@@ -1,11 +1,2 @@
-V1.30
-~ Added: Transfer wares to target.. when target has free space in cargo and has the ware as trade offer (ship/station)
-~ Added: Better selling of collected wares.. icludes x4 game blacklist and searches in specified range and choose the trade with the best ware unit price
-~ Added: Whitelist for choosing the wares the ship should collect.. (toggleable)
-~ Added: Order tag position chooseable (left = 0, right = 1)
-~ Added: The script shows now the current target visual on the map.. the drop what the ship will collect now.. ship/station where to sell or transfer wares
-~ Changed: IdleReturnHome creates now a sub order.. with that you can easily cancel it manually
-~ Updated: language files all languages included.. but google translated.. please tell if translation is bad here or there
-~ Updated: refactored/recreated save and load order settings function
-~ Updated: added a _ before the color code of the behaviour name, ai routines of the base game are now arranged at top of the routines list
-~ Updated: general improvements and bug prevention stuff
+V1.32
+~ Added: experience gain

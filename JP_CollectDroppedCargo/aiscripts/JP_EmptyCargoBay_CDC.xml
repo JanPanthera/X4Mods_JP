@@ -28,9 +28,9 @@
         <input_param name="class" value="[]"/>
       </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="ADD_ORDER_TAG"  text="{8888888, 793}" comment="Add Order tag?" type="bool" default="true"/>
+      <param name="ADD_ORDER_TAG"  text="{8888888, 791}" comment="Add Order tag?" type="bool" default="true"/>
       <param name="ORDER_TAG" text="Order tag" comment="internal!" type="internal" default="''"/>
-      <param name="ORDER_TAG_POSITION" text="{8888888, 794}" comment="Order tag position" type="number" default="1">
+      <param name="ORDER_TAG_POSITION" text="{8888888, 792}" comment="Order tag position" type="number" default="1">
         <input_param name="min" value="0"/>
         <input_param name="max" value="1"/>
         <input_param name="step" value="1"/>
@@ -259,6 +259,7 @@
 
 
       <label name="FINISH_LBL"/>
+      <wait min="1s" max="3s"/>
       <do_if value="$ADD_ORDER_TAG and $ShipName?">
         <do_if value="$Ship.knownname != $ShipName">
           <set_object_name object="$Ship" name="$ShipName"/>
@@ -277,7 +278,6 @@
 
       <label name="CLEANUP_LBL"/>
       <remove_value name="$Ship"/>
-      <remove_value name="$LocationObject"/>
       <do_if value="$ADD_ORDER_TAG and $ShipName?">
         <remove_value name="$ShipName"/>
       </do_if>
