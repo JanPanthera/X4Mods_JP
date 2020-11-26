@@ -12,9 +12,12 @@
     <t id="2086">In which sector?</t>
     <t id="2087">Idle: Move to?</t>
     <t id="2088">Where to move?</t>
-    <t id="2094">Add order tag?</t>
-    <t id="2095">Save Settings?</t>
-    <t id="2096">Delete Settings?</t>
+    <t id="2091">Add Order tag?</t>
+    <t id="2092">Order tag position</t>
+    <t id="2093">Save Order Settings?</t>
+    <t id="2094">Reset Order Settings?</t>
+    <t id="2095">Order settings saved.</t>
+    <t id="2096">Order settings resetted.</t>
     <t id="2097">\033#B600CCCC#</t>
     <t id="2098">\033#FF00CC66#</t>
     <t id="2099">\033X</t>

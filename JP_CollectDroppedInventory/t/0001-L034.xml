@@ -12,9 +12,12 @@
     <t id="2086">En que sector</t>
     <t id="2087">Inactivo: ¿Mover a?</t>
     <t id="2088">Hacia donde moverse</t>
-    <t id="2094">Añadir etiqueta de pedido?</t>
-    <t id="2095">¿Guardar ajustes?</t>
-    <t id="2096">¿Eliminar configuración?</t>
+    <t id="2091">Agregar etiqueta de pedido?</t>
+    <t id="2092">Posición de la etiqueta de pedido</t>
+    <t id="2093">Guardar la configuración de la orden?</t>
+    <t id="2094">¿Restablecer la configuración del pedido?</t>
+    <t id="2095">Configuración de orden guardada.</t>
+    <t id="2096">Ajustes de orden restablecidos.</t>
     <t id="2097">\033#B600CCCC#</t>
     <t id="2098">\033#FF00CC66#</t>
     <t id="2099">\033X</t>

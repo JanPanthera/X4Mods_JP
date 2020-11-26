@@ -12,9 +12,12 @@
     <t id="2086">In welchem Sektor?</t>
     <t id="2087">Leerlauf: Zu Position bewegen?</t>
     <t id="2088">Wohin?</t>
-    <t id="2094">Befehlskürzel hinzufügen?</t>
-    <t id="2095">Einstellungen Speichern?</t>
-    <t id="2096">Einstellungen Löschen?</t>
+    <t id="2091">Befehlskürzel hinzufügen?</t>
+    <t id="2092">Befehlskürzel position</t>
+    <t id="2093">Auftragseinstellungen Speichern?</t>
+    <t id="2094">Auftragseinstellungen Zurücksetzen?</t>
+    <t id="2095">Auftragseinstellungen gespeichert.</t>
+    <t id="2096">Auftragseinstellungen zurückgesetzt.</t>
     <t id="2097">\033#B600CCCC#</t>
     <t id="2098">\033#FF00CC66#</t>
     <t id="2099">\033X</t>

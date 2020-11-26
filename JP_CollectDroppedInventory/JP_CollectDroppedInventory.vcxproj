@@ -139,8 +139,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <Xml Include="aiscripts\JP_CollectDroppedInventory.xml" />
-    <Xml Include="aiscripts\JP_GoCollectDroppedInventoryItem.xml" />
+    <Xml Include="aiscripts\JP_CollectDroppedInventoryS.xml" />
+    <Xml Include="aiscripts\JP_CollectDrop_CDI.xml" />
     <Xml Include="aiscripts\JP_IdleReturnHome_CDI.xml" />
     <Xml Include="content.xml" />
     <Xml Include="libraries\experiences.xml" />

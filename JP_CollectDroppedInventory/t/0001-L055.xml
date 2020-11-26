@@ -12,9 +12,12 @@
     <t id="2086">Em qual setor?</t>
     <t id="2087">Inativo: Mover para?</t>
     <t id="2088">Para onde ir?</t>
-    <t id="2094">Adicionar etiqueta de pedido?</t>
-    <t id="2095">Salvar configurações?</t>
-    <t id="2096">Excluir configurações?</t>
+    <t id="2091">Adicionar etiqueta de encomenda?</t>
+    <t id="2092">Posição da marca de encomenda</t>
+    <t id="2093">Gravar A Configuração Da Ordem?</t>
+    <t id="2094">Reiniciar A Configuração Da Ordem?</t>
+    <t id="2095">A configuração da ordem foi gravada.</t>
+    <t id="2096">Configuração da ordem reinicializada.</t>
     <t id="2097">\033#B600CCCC#</t>
     <t id="2098">\033#FF00CC66#</t>
     <t id="2099">\033X</t>
