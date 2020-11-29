@@ -3,4 +3,7 @@
 <icons>
   <icon name="order_jp_collectplaceabless" texture="assets\fx\gui\textures\order\order_collect.tga" height="32" width="32"></icon>
   <icon name="order_jp_collectplaceablesg" texture="assets\fx\gui\textures\order\order_collect.tga" height="32" width="32"></icon>
+  <icon name="order_jp_collectplaceable_cp" texture="assets\fx\gui\textures\order\order_collect.tga" height="32" width="32"></icon>
+  <icon name="order_jp_emptyplaceablesstorage_cp" texture="assets\fx\gui\textures\order\order_traderoutine.tga" height="32" width="32"></icon>
+  <icon name="order_jp_idlereturnhome_cp" texture="assets\fx\gui\textures\order\order_moveandwait.tga" height="32" width="32"></icon>
 </icons>

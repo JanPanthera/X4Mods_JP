@@ -131,8 +131,9 @@
   <ItemGroup>
     <Xml Include="aiscripts\JP_CollectPlaceablesG.xml" />
     <Xml Include="aiscripts\JP_CollectPlaceablesS.xml" />
-    <Xml Include="aiscripts\JP_CollectPlaced.xml" />
-    <Xml Include="aiscripts\JP_GetNearestPlacedObjectWeCanCollect.xml" />
+    <Xml Include="aiscripts\JP_CollectPlaceable_CP.xml" />
+    <Xml Include="aiscripts\JP_EmptyPlaceablesStorage_CP.xml" />
+    <Xml Include="aiscripts\JP_IdleReturnHome_CP.xml" />
     <Xml Include="content.xml" />
     <Xml Include="JP_CollectPlaceables\aiscripts\JP_CollectPlaceables.xml" />
     <Xml Include="JP_CollectPlaceables\content.xml" />

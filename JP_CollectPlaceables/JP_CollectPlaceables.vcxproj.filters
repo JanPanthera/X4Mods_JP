@@ -53,11 +53,12 @@
     <Xml Include="t\0001-L088.xml" />
     <Xml Include="aiscripts\JP_CollectPlaceablesG.xml" />
     <Xml Include="aiscripts\JP_CollectPlaceablesS.xml" />
-    <Xml Include="aiscripts\JP_CollectPlaced.xml" />
     <Xml Include="libraries\icons.xml" />
     <Xml Include="libraries\experiences.xml" />
     <Xml Include="t\0001.xml" />
-    <Xml Include="aiscripts\JP_GetNearestPlacedObjectWeCanCollect.xml" />
+    <Xml Include="aiscripts\JP_IdleReturnHome_CP.xml" />
+    <Xml Include="aiscripts\JP_EmptyPlaceablesStorage_CP.xml" />
+    <Xml Include="aiscripts\JP_CollectPlaceable_CP.xml" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="changelog.txt" />

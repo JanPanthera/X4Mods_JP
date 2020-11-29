@@ -3,18 +3,26 @@
 <language>
   <page id="8888888" voice="no">
     <!-- JP_CollectPlaceables -->
-    <t id="800">Feindliche Sektoren?</t> 
-    <t id="801">Neutrale Sektoren?</t> 
-    <t id="802">Befreundete Sektoren?</t> 
-    <t id="810">Minen aufsammeln?</t> 
-    <t id="811">Satelliten aufsammeln?</t> 
-    <t id="812">Navigationsbaken aufsammeln?</t> 
-    <t id="813">Ressourcensonden aufsammeln?</t> 
-    <t id="814">Lasertürme aufsammeln?</t> 
-    <t id="820">Instantan aufsammeln?</t> 
-    <t id="894">Befehlskürzel hinzufügen?</t> 
-    <t id="895">Speichere Einstellungen?</t> 
-    <t id="896">Lösche Einstellugen?</t> 
+    <t id="810">Collect Mines?</t>
+    <t id="811">Collect Satellites?</t>
+    <t id="812">Collect Navigation Beacons?</t>
+    <t id="813">Collect Resource Probes?</t>
+    <t id="814">Collect Laser Towers?</t>
+    <t id="880">Idle Time</t>
+    <t id="881">Idle: Follow?</t>
+    <t id="882">Who to follow?</t>
+    <t id="883">Idle: Docking?</t>
+    <t id="884">Where to dock?</t>
+    <t id="885">Idle: Random movement?</t>
+    <t id="886">In which sector?</t>
+    <t id="887">Idle: Move to?</t>
+    <t id="888">Where to move?</t>
+    <t id="891">Add Order tag?</t>
+    <t id="892">Order tag position</t>
+    <t id="893">Save Order Settings?</t>
+    <t id="894">Reset Order Settings?</t>
+    <t id="895">Order settings saved.</t>
+    <t id="896">Order settings resetted.</t>
     <t id="897">\033#B600CCCC#</t>
     <t id="898">\033#FF00CC66#</t>
     <t id="899">\033X</t>
