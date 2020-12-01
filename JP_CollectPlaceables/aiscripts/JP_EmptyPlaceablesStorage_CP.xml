@@ -4,8 +4,9 @@
 
   <order id="JP_EmptyPlaceablesStorage_CP" name="_EmptyPlaceablesStorage_CP" category="internal" infinite="false">
     <params>
-      <param name="SELL_RANGE"  text="SellRange" type="internal" default="3"/>
+      <param name="SELL_RANGE" type="internal" default="3"/>
     </params>
+    <location object="$LOCATION_OBJECT_USED_IN_UI" condition="$LOCATION_OBJECT_USED_IN_UI? and @$LOCATION_OBJECT_USED_IN_UI != null"/>
   </order>
 
   <interrupts>
@@ -24,10 +25,11 @@
   <init>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <set_value name="$Ship" exact="this.ship"/>
+    <set_value name="$LOCATION_OBJECT_USED_IN_UI" exact="null"/>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <set_value chance="this.$DEBUG" name="$DebugScriptName" exact="'JP_EmptyPlaceablesStorage_CP'"/>
     <set_value chance="this.$DEBUG" name="$DebugFileName" exact="$Ship.idcode + '.' + $DebugScriptName + '.xml.log'"/>
-    <debug_to_file chance="this.$DEBUG" append="false" directory="this.$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+    <debug_to_file chance="this.$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'" append="false"/>
     <debug_to_file chance="this.$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Started ~~' + '\n'"/>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <include_interrupt_actions ref="GetBlacklistgroup"/>
@@ -54,51 +56,38 @@
       </do_if>
 
       <!-- $Ship.ammostorage.deployable debug -->
-      <debug_to_file chance="$DEBUG" directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-      <debug_to_file chance="$DEBUG" directory="$DebugFolderName" name="$DebugFileName" text="' ~ $Ship.ammostorage.deployable.count: ' + $Ship.ammostorage.deployable.count"/>
-      <debug_to_file chance="$DEBUG" directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-      <do_for_each chance="$DEBUG" name="$_Deployable" in="$Ship.ammostorage.deployable.list">
-        <debug_to_file chance="$DEBUG" directory="$DebugFolderName" name="$DebugFileName" text="'$_Deployable: ' + $_Deployable"/>
+      <debug_to_file chance="this.$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+      <debug_to_file chance="this.$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="' ~ $Ship.ammostorage.deployable.count: ' + $Ship.ammostorage.deployable.count"/>
+      <debug_to_file chance="this.$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+      <do_for_each chance="this.$DEBUG" name="$_Deployable" in="$Ship.ammostorage.deployable.list">
+        <debug_to_file chance="this.$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="'$_Deployable: ' + $_Deployable"/>
       </do_for_each>
-      <debug_to_file chance="$DEBUG" directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+      <debug_to_file chance="this.$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
 
       <do_for_each name="$_Deployable" in="$Ship.ammostorage.deployable.list">
-
-
-
       </do_for_each>
 
       <wait min="3s" max="6s"/>
       <resume label="RESUME_LBL"/>
 
-
-      <label name="FINISH_LBL"/>
-      <wait min="1s" max="3s"/>
-
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-      <do_if value="$DEBUG">
-        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Finished ~~'"/>
-        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
-        <remove_value name="$DebugFileName"/>
-        <remove_value name="$DebugFolderName"/>
-        <remove_value name="$DebugScriptName"/>
-      </do_if>
+      <label name="FINISH_LBL"/>
+      <debug_to_file chance="this.$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Finished ~~'"/>
+      <debug_to_file chance="this.$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+      <wait min="1s" max="3s"/>
 
       <label name="CLEANUP_LBL"/>
-      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <remove_value chance="this.$DEBUG" name="$DebugFileName"/>
+      <remove_value chance="this.$DEBUG" name="$DebugScriptName"/>
       <do_if value="$Ship.defaultorder.id != 'JP_CollectPlaceablesS' and $Ship.defaultorder.id != 'JP_CollectPlaceablesG'">
         <set_object_name object="$Ship" name="this.$ShipName"/>
-        <remove_value chance="this.$DEBUG" name="this.$DEBUG"/>
         <remove_value chance="this.$DEBUG" name="this.$DebugFolderName"/>
+        <remove_value chance="this.$DEBUG" name="this.$DEBUG"/>
         <remove_value chance="this.$AddOrderTag" name="this.$ShipName"/>
         <remove_value chance="this.$AddOrderTag" name="this.$AddOrderTag"/>
       </do_if>
-      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <remove_value name="$Ship"/>
-      <remove_value chance="this.$DEBUG" name="$DebugFileName"/>
-      <remove_value chance="this.$DEBUG" name="$DebugScriptName"/>
-      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
       <label name="END_LBL"/>
       <wait min="1s" max="3s"/>
@@ -107,19 +96,16 @@
   </attention>
 
   <on_abort>
-    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <remove_value chance="this.$DEBUG" name="$DebugFileName"/>
+    <remove_value chance="this.$DEBUG" name="$DebugScriptName"/>
     <do_if value="$Ship.defaultorder.id != 'JP_CollectPlaceablesS' and $Ship.defaultorder.id != 'JP_CollectPlaceablesG'">
       <set_object_name object="$Ship" name="this.$ShipName"/>
-      <remove_value chance="this.$DEBUG" name="this.$DEBUG"/>
       <remove_value chance="this.$DEBUG" name="this.$DebugFolderName"/>
+      <remove_value chance="this.$DEBUG" name="this.$DEBUG"/>
       <remove_value chance="this.$AddOrderTag" name="this.$ShipName"/>
       <remove_value chance="this.$AddOrderTag" name="this.$AddOrderTag"/>
     </do_if>
-    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <remove_value name="$Ship"/>
-    <remove_value chance="this.$DEBUG" name="$DebugFileName"/>
-    <remove_value chance="this.$DEBUG" name="$DebugScriptName"/>
-    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
   </on_abort>
 
 </aiscript>

@@ -19,26 +19,27 @@
         <input_param name="class" value="[]"/>
       </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="IDLE_TIME" text="{8888888, 880}" comment="Idle Time" type="time" default="if global.$CollectPlaceablesG_Settings? then global.$CollectPlaceablesG_Settings.{6} else 600s">
+      <param name="IDLE" text="{8888888, 880}" comment="Idle?" type="bool" default="if global.$CollectPlaceablesG_Settings? then global.$CollectPlaceablesG_Settings.{6} else true"/>
+      <param name="IDLE_TIME" text="{8888888, 881}" comment="Idle Time" type="time" default="if global.$CollectPlaceablesG_Settings? then global.$CollectPlaceablesG_Settings.{7} else 600s">
         <input_param name="min" value="60s"/>
         <input_param name="max" value="3600s"/>
         <input_param name="step" value="10s"/>
       </param>
-      <param name="IDLE_FOLLOW" text="{8888888, 881}" comment="Idle: Follow?" type="bool" default="if global.$CollectPlaceablesG_Settings? then global.$CollectPlaceablesG_Settings.{7} else false"/>
-      <param name="WHO_TO_FOLLOW" text="- {8888888, 882}" comment="Who to follow?" type="object" default="if global.$CollectPlaceablesG_Settings? then global.$CollectPlaceablesG_Settings.{8} else null">
+      <param name="IDLE_FOLLOW" text="{8888888, 882}" comment="Idle: Follow?" type="bool" default="if global.$CollectPlaceablesG_Settings? then global.$CollectPlaceablesG_Settings.{8} else false"/>
+      <param name="WHO_TO_FOLLOW" text="- {8888888, 883}" comment="Who to follow?" type="object" default="if global.$CollectPlaceablesG_Settings? then global.$CollectPlaceablesG_Settings.{9} else null">
         <input_param name="class" value="[class.ship]"/>
         <input_param name="owner" value="this.ship.owner"/>
       </param>
-      <param name="IDLE_DOCKING" text="{8888888, 883}" comment="Idle: Docking?" type="bool" default="if global.$CollectPlaceablesG_Settings? then global.$CollectPlaceablesG_Settings.{9} else false"/>
-      <param name="WHERE_TO_DOCK" text="- {8888888, 884}" comment="Where to dock?" type="object" default="if global.$CollectPlaceablesG_Settings? then global.$CollectPlaceablesG_Settings.{10} else null">
+      <param name="IDLE_DOCKING" text="{8888888, 884}" comment="Idle: Docking?" type="bool" default="if global.$CollectPlaceablesG_Settings? then global.$CollectPlaceablesG_Settings.{10} else false"/>
+      <param name="WHERE_TO_DOCK" text="- {8888888, 885}" comment="Where to dock?" type="object" default="if global.$CollectPlaceablesG_Settings? then global.$CollectPlaceablesG_Settings.{11} else null">
         <input_param name="class" value="if this.ship.isclass.[class.ship_s, class.ship_xs] then [class.station, class.ship_m, class.ship_l, class.ship_xl] else [class.station, class.ship_l, class.ship_xl]"/>
       </param>
-      <param name="IDLE_RANDOM_MOVEMENT" text="{8888888, 885}" comment="Idle: Movement?" type="bool" default="if global.$CollectPlaceablesG_Settings? then global.$CollectPlaceablesG_Settings.{11} else false"/>
-      <param name="IN_WHICH_SECTOR" text="- {8888888, 886}" comment="In which sector?" type="position" default="if global.$CollectPlaceablesG_Settings? then global.$CollectPlaceablesG_Settings.{12} else [this.ship.sector, this.ship.position]">
+      <param name="IDLE_RANDOM_MOVEMENT" text="{8888888, 886}" comment="Idle: Movement?" type="bool" default="if global.$CollectPlaceablesG_Settings? then global.$CollectPlaceablesG_Settings.{12} else false"/>
+      <param name="IN_WHICH_SECTOR" text="- {8888888, 887}" comment="In which sector?" type="position" default="if global.$CollectPlaceablesG_Settings? then global.$CollectPlaceablesG_Settings.{13} else [this.ship.sector, this.ship.position]">
         <input_param name="class" value="class.sector"/>
       </param>
-      <param name="IDLE_MOVE_TO" text="{8888888, 887}" comment="Idle: Move to?" type="bool" default="if global.$CollectPlaceablesG_Settings? then global.$CollectPlaceablesG_Settings.{13} else false"/>
-      <param name="WHERE_TO_MOVE" text="- {8888888, 888}" comment="Where to move?" type="position" default="if global.$CollectPlaceablesG_Settings? then global.$CollectPlaceablesG_Settings.{14} else [this.ship.sector, this.ship.position]">
+      <param name="IDLE_MOVE_TO" text="{8888888, 888}" comment="Idle: Move to?" type="bool" default="if global.$CollectPlaceablesG_Settings? then global.$CollectPlaceablesG_Settings.{14} else false"/>
+      <param name="WHERE_TO_MOVE" text="- {8888888, 889}" comment="Where to move?" type="position" default="if global.$CollectPlaceablesG_Settings? then global.$CollectPlaceablesG_Settings.{15} else [this.ship.sector, this.ship.position]">
         <input_param name="class" value="class.sector"/>
       </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -46,8 +47,8 @@
         <input_param name="class" value="[]"/>
       </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="ADD_ORDER_TAG" text="{8888888, 891}" comment="Add order tag?" type="bool" default="if global.$CollectPlaceablesG_Settings? then global.$CollectPlaceablesG_Settings.{15} else true"/>
-      <param name="ORDER_TAG_POSITION" text="{8888888, 892}" comment="Order tag position" type="number" default="if global.$CollectPlaceablesG_Settings? then global.$CollectPlaceablesG_Settings.{16} else 1">
+      <param name="ADD_ORDER_TAG" text="{8888888, 891}" comment="Add order tag?" type="bool" default="if global.$CollectPlaceablesG_Settings? then global.$CollectPlaceablesG_Settings.{16} else true"/>
+      <param name="ORDER_TAG_POSITION" text="{8888888, 892}" comment="Order tag position" type="number" default="if global.$CollectPlaceablesG_Settings? then global.$CollectPlaceablesG_Settings.{17} else 1">
         <input_param name="min" value="0"/>
         <input_param name="max" value="1"/>
         <input_param name="step" value="1"/>
@@ -59,7 +60,11 @@
         <input_param name="class" value="[]"/>
       </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="DEBUG" text="Debug" type="bool" default="if global.$CollectPlaceablesG_Settings? then global.$CollectPlaceablesG_Settings.{17} else false" advanced="true"/>
+      <param name="DEBUG" text="Debug" type="number" default="if global.$CollectPlaceablesG_Settings? then global.$CollectPlaceablesG_Settings.{18} else 0" advanced="true">
+        <input_param name="step" value="100"/>
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="100"/>
+      </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="PLACE_HOLDER_999" text="----------------------------------" type="object" default="null" advanced="true">
         <input_param name="class" value="[]"/>
@@ -70,7 +75,7 @@
     <requires>
       <match shiptype="shiptype.lasertower" negate="true"/>
     </requires>
-    <location object="$LocationObjectUsedInUI" condition="$LocationObjectUsedInUI? and @$LocationObjectUsedInUI != null"/>
+    <location object="$LOCATION_OBJECT_USED_IN_UI" condition="$LOCATION_OBJECT_USED_IN_UI? and @$LOCATION_OBJECT_USED_IN_UI != null"/>
   </order>
 
   <interrupts>
@@ -88,22 +93,21 @@
 
   <init>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-    <do_if value="$DEBUG">
-      <set_value name="$DebugScriptName" exact="'JP_CollectPlaceablesG'"/>
-      <set_value name="$DebugFolderName" exact="'JP_CollectPlaceables.logs'"/>
-      <set_value name="$DebugFileName" exact="this.ship.idcode + '.' + $DebugScriptName + '.xml.log'"/>
-      <debug_to_file append="false" directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-      <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Started ~~' + '\n'"/>
-    </do_if>
-    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <set_value name="$Ship" exact="this.ship"/>
-    <set_value name="$ExpTotalMultiplier" exact="0.84"/>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-    <do_if value="$ADD_ORDER_TAG">
-      <set_value name="$ORDER_TAG" exact="'#CP-G'"/>
-      <set_value name="$ShipName" exact="$Ship.knownname"/>
-      <set_object_name object="$Ship" name="(if $ORDER_TAG_POSITION == 0 then (('\033#FFA95908#' + $ORDER_TAG + '\033X') + ' ') else '') + $ShipName + (if $ORDER_TAG_POSITION == 1 then (' ' + ('\033#FFA95908#' + $ORDER_TAG + '\033X')) else '')"/>
+    <set_value chance="$DEBUG" name="this.$DEBUG" exact="$DEBUG"/>
+    <set_value chance="$DEBUG" name="$DebugScriptName" exact="'JP_CollectPlaceablesG'"/>
+    <set_value chance="$DEBUG" name="this.$DebugFolderName" exact="'JP_CollectPlaceables.logs'"/>
+    <set_value chance="$DEBUG" name="$DebugFileName" exact="$Ship.idcode + '.' + $DebugScriptName + '.xml.log'"/>
+    <debug_to_file chance="this.$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'" append="false"/>
+    <debug_to_file chance="this.$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Started ~~' + '\n'"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <set_value chance="if $ADD_ORDER_TAG then 100 else 0" name="this.$AddOrderTag" exact="if $ADD_ORDER_TAG then 100 else 0"/>
+    <set_value chance="this.$AddOrderTag" name="$OrderTag" exact="'#CP-G'"/>
+    <do_if chance="this.$AddOrderTag" value="not this.$ShipName?">
+      <set_value chance="this.$AddOrderTag" name="this.$ShipName" exact="$Ship.knownname"/>
     </do_if>
+    <set_object_name chance="this.$AddOrderTag" object="$Ship" name="(if $ORDER_TAG_POSITION then '' else (' \033#FFA95908#' + $OrderTag + '\033X')) + this.$ShipName + (if $ORDER_TAG_POSITION then (' \033#FFA95908#' + $OrderTag + '\033X') else '')"/>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <!-- remove it in a later version.. give time for deleting this unused chunk of memory -->
     <do_if value="true">
@@ -124,7 +128,7 @@
     <do_if value="$SAVE_ORDER_SETTINGS">
       <create_list name="$_SettingsList"/>
       <append_list_elements name="$_SettingsList" other="[$MINES, $SATELLITES, $NAVBEACONS, $RESOURCEPROBES, $LASERTOWERS,
-                            $IDLE_TIME, $IDLE_FOLLOW, $WHO_TO_FOLLOW, $IDLE_DOCKING, $WHERE_TO_DOCK,
+                            $IDLE, $IDLE_TIME, $IDLE_FOLLOW, $WHO_TO_FOLLOW, $IDLE_DOCKING, $WHERE_TO_DOCK,
                             $IDLE_RANDOM_MOVEMENT, $IN_WHICH_SECTOR, $IDLE_MOVE_TO, $WHERE_TO_MOVE,
                             $ADD_ORDER_TAG, $ORDER_TAG_POSITION, $DEBUG]"/>
       <do_if value="not global.$CollectPlaceablesG_Settings?">
@@ -139,16 +143,16 @@
         </do_for_each>
       </do_else>
       <remove_value name="$_SettingsList"/>
-      <show_help duration="5s" allowclose="true" log="true" custom="$DebugScriptName + ' ~\n' + this.ship.knownname + ' [' + this.ship.idcode + ']\n\n' + '{8888888, 895}'"/>
-      <cancel_order order="this.ship.order"/>
+      <show_help duration="5s" allowclose="true" log="true" custom="$DebugScriptName + ' ~\n' + $Ship.knownname + ' [' + $Ship.idcode + ']\n\n' + '{8888888, 895}'"/>
+      <cancel_order order="$Ship.order"/>
     </do_if>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <do_if value="$RESET_ORDER_SETTINGS">
       <do_if value="global.$CollectPlaceablesG_Settings?">
         <remove_value name="global.$CollectPlaceablesG_Settings"/>
       </do_if>
-      <show_help duration="5s" allowclose="true" log="true" custom="$DebugScriptName + ' ~\n' + this.ship.knownname + ' [' + this.ship.idcode + ']\n\n' + '{8888888, 896}'"/>
-      <cancel_order order="this.ship.order"/>
+      <show_help duration="5s" allowclose="true" log="true" custom="$DebugScriptName + ' ~\n' + $Ship.knownname + ' [' + $Ship.idcode + ']\n\n' + '{8888888, 896}'"/>
+      <cancel_order order="$Ship.order"/>
     </do_if>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
   </init>
@@ -176,7 +180,7 @@
           <wait min="1s" max="3s"/>
         </do_if>
         <do_else>
-          <show_help duration="5s" allowclose="true" log="true" custom="$DebugScriptName + ' ~\n' + this.ship.knownname + ' [' + this.ship.idcode + ']\n\n' + '{8888888, 820}'"/>
+          <show_help duration="5s" allowclose="true" log="true" custom="$DebugScriptName + ' ~\n' + $Ship.knownname + ' [' + $Ship.idcode + ']\n\n' + '{8888888, 820}'"/>
           <wait min="1s" max="3s"/>
           <resume label="IDLE_RETURN_HOME_LBL"/>
         </do_else>
@@ -186,7 +190,7 @@
       <label name="MOVE_TO_SECTOR_LBL"/>
       <do_if value="$Ship.sector != $SECTOR">
         <set_command command="command.move" param="$SECTOR"/>
-        <set_value name="$LocationObjectUsedInUI" exact="$SECTOR"/>
+        <set_value name="$LOCATION_OBJECT_USED_IN_UI" exact="$SECTOR"/>
         <run_script name="'move.generic'">
           <param name="destination" value="$SECTOR"/>
           <param name="endintargetzone" value="true"/>
@@ -200,59 +204,53 @@
           <remove_value name="$_SafePos"/>
         </do_if>
         <wait min="1s" max="3s"/>
-        <remove_value name="$LocationObjectUsedInUI"/>
+        <remove_value name="$LOCATION_OBJECT_USED_IN_UI"/>
         <do_if value="$Ship.sector != $SECTOR">
           <resume label="MOVE_TO_SECTOR_LBL"/>
         </do_if>
       </do_if>
 
-      
-      
+      <!-- ~~~~~~~ -->
+
+
+
+      <!-- ~~~~~~~ -->
+
       <!-- Nothing to do.. idle a bit and try again -->
       <label name="IDLE_RETURN_HOME_LBL"/>
-      <create_order id="'JP_IdleReturnHome_CP'" object="$Ship">
-        <param name="IDLE_TIME" value="$IDLE_TIME"/>
-        <param name="IDLE_FOLLOW" value="$IDLE_FOLLOW"/>
-        <param name="WHO_TO_FOLLOW" value="$WHO_TO_FOLLOW"/>
-        <param name="IDLE_DOCKING" value="$IDLE_DOCKING"/>
-        <param name="WHERE_TO_DOCK" value="$WHERE_TO_DOCK"/>
-        <param name="IDLE_RANDOM_MOVEMENT" value="$IDLE_RANDOM_MOVEMENT"/>
-        <param name="IN_WHICH_SECTOR" value="$IN_WHICH_SECTOR"/>
-        <param name="IDLE_MOVE_TO" value="$IDLE_MOVE_TO"/>
-        <param name="WHERE_TO_MOVE" value="$WHERE_TO_MOVE"/>
-        <param name="ADD_ORDER_TAG" value="$ADD_ORDER_TAG"/>
-        <param name="ORDER_TAG" value="$ORDER_TAG"/>
-        <param name="ORDER_TAG_POSITION" value="$ORDER_TAG_POSITION"/>
-        <param name="DEBUG" value="$DEBUG"/>
-      </create_order>
+      <do_if value="$IDLE">
+        <create_order id="'JP_IdleReturnHome_CP'" object="$Ship">
+          <param name="IDLE_TIME" value="$IDLE_TIME"/>
+          <param name="IDLE_FOLLOW" value="$IDLE_FOLLOW"/>
+          <param name="WHO_TO_FOLLOW" value="$WHO_TO_FOLLOW"/>
+          <param name="IDLE_DOCKING" value="$IDLE_DOCKING"/>
+          <param name="WHERE_TO_DOCK" value="$WHERE_TO_DOCK"/>
+          <param name="IDLE_RANDOM_MOVEMENT" value="$IDLE_RANDOM_MOVEMENT"/>
+          <param name="IN_WHICH_SECTOR" value="$IN_WHICH_SECTOR"/>
+          <param name="IDLE_MOVE_TO" value="$IDLE_MOVE_TO"/>
+          <param name="WHERE_TO_MOVE" value="$WHERE_TO_MOVE"/>
+        </create_order>
+      </do_if>
       <wait min="3s" max="6s"/>
       <resume label="RESUME_LBL"/>
-      
-      
-      <label name="FINISH_LBL"/>
-      <wait min="1s" max="3s"/>
-      <do_if value="$ADD_ORDER_TAG and $ShipName?">
-        <do_if value="$Ship.knownname != $ShipName">
-          <set_object_name object="$Ship" name="$ShipName"/>
-        </do_if>
-      </do_if>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-      <do_if value="$DEBUG">
-        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Finished ~~'"/>
-        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
-        <remove_value name="$DebugFileName"/>
-        <remove_value name="$DebugFolderName"/>
-        <remove_value name="$DebugScriptName"/>
-      </do_if>
+      <label name="FINISH_LBL"/>
+      <debug_to_file chance="$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Finished ~~'"/>
+      <debug_to_file chance="$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+      <wait min="1s" max="3s"/>
 
       <label name="CLEANUP_LBL"/>
+      <set_object_name chance="this.$AddOrderTag" object="$Ship" name="$this.ShipName"/>
+      <remove_value chance="this.$AddOrderTag" name="$OrderTag"/>
+      <remove_value chance="this.$AddOrderTag" name="this.$ShipName"/>
+      <remove_value chance="this.$AddOrderTag" name="this.$AddOrderTag"/>
+      <remove_value chance="$DEBUG" name="this.$DEBUG"/>
+      <remove_value chance="$DEBUG" name="$DebugFileName"/>
+      <remove_value chance="$DEBUG" name="this.$DebugFolderName"/>
+      <remove_value chance="$DEBUG" name="$DebugScriptName"/>
       <remove_value name="$Ship"/>
-      <remove_value name="$ExpTotalMultiplier"/>
-      <do_if value="$ADD_ORDER_TAG">
-        <remove_value name="$ShipName"/>
-      </do_if>
 
       <label name="END_LBL"/>
       <set_order_syncpoint_reached order="this.ship.order"/>
@@ -263,10 +261,16 @@
   </attention>
 
   <on_abort>
-    <do_if value="$ADD_ORDER_TAG and $ShipName?">
-      <do_if value="$Ship.knownname != $ShipName">
-        <set_object_name object="$Ship" name="$ShipName"/>
-      </do_if>
+    <do_if value="$Ship.orders.count == 0">
+      <set_object_name chance="this.$AddOrderTag" object="$Ship" name="$this.ShipName"/>
+      <remove_value chance="this.$AddOrderTag" name="$OrderTag"/>
+      <remove_value chance="this.$AddOrderTag" name="this.$ShipName"/>
+      <remove_value chance="this.$AddOrderTag" name="this.$AddOrderTag"/>
+      <remove_value chance="$DEBUG" name="this.$DEBUG"/>
+      <remove_value chance="$DEBUG" name="$DebugFileName"/>
+      <remove_value chance="$DEBUG" name="this.$DebugFolderName"/>
+      <remove_value chance="$DEBUG" name="$DebugScriptName"/>
+      <remove_value name="$Ship"/>
     </do_if>
   </on_abort>
 

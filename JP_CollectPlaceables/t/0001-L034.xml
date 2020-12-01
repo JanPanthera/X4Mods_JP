@@ -3,18 +3,33 @@
 <language>
   <page id="8888888" voice="no">
     <!-- JP_CollectPlaceables -->
-    <t id="800">¿Sectores enemigos?</t>
-    <t id="801">Sectores neutros?</t>
-    <t id="802">¿Sectores amigables?</t>
-    <t id="810">¿Recoger minas?</t>
-    <t id="811">¿Recoger satélites?</t>
-    <t id="812">¿Recoger balizas de navegación?</t>
-    <t id="813">¿Recopilar sondas de recursos?</t>
-    <t id="814">¿Recoger torres láser?</t>
-    <t id="820">¿Recolección instantánea?</t>
-    <t id="894">Añadir etiqueta de pedido?</t>
-    <t id="895">¿Guardar ajustes?</t>
-    <t id="896">¿Eliminar configuración?</t>
+    <t id="810">Recoger minas?</t>
+    <t id="811">Recoger satélites?</t>
+    <t id="812">Recoger balizas de navegación?</t>
+    <t id="813">Recoger sondas de recursos?</t>
+    <t id="814">Recoger torres láser?</t>
+    <t id="820">Rango de venta?</t>
+    <t id="870">\033#FFCEFBA1# ~ Inactivo - siguiendo..\033X</t>
+    <t id="871">\033#FFCEFBA1# ~ Inactivo - acoplamiento en %1\033X</t>
+    <t id="872">\033#FFCEFBA1# ~ Inactivo - moviéndose aleatoriamente..\033X</t>
+    <t id="873">\033#FFCEFBA1# ~ Inactivo - moviéndose a la posición de espera..\033X</t>
+    <t id="874">\033#FFCEFBA1# ~ Inactivo - moviéndose al sector inactivo..\033X</t>
+    <t id="880">¿Acciones inactivas?</t>
+    <t id="881">Tiempo de inactividad</t>
+    <t id="882">Inactivo: ¿Seguir?</t>
+    <t id="883">¿A quién seguir?</t>
+    <t id="884">Inactivo: ¿Atraque?</t>
+    <t id="885">¿Dónde atracar?</t>
+    <t id="886">Inactivo: ¿movimiento aleatorio?</t>
+    <t id="887">En que sector</t>
+    <t id="888">Inactivo: ¿Mover a?</t>
+    <t id="889">Hacia donde moverse</t>
+    <t id="891">Agregar etiqueta de pedido?</t>
+    <t id="892">Posición de la etiqueta de pedido</t>
+    <t id="893">Guardar la configuración de la orden?</t>
+    <t id="894">¿Restablecer la configuración del pedido?</t>
+    <t id="895">Configuración de orden guardada.</t>
+    <t id="896">Ajustes de orden restablecidos.</t>
     <t id="897">\033#B600CCCC#</t>
     <t id="898">\033#FF00CC66#</t>
     <t id="899">\033X</t>

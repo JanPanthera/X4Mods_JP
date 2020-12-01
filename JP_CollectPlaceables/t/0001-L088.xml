@@ -3,18 +3,33 @@
 <language>
   <page id="8888888" voice="no">
     <!-- JP_CollectPlaceables -->
-    <t id="800">Enemy Sectors?</t>
-    <t id="801">Neutral Sectors?</t>
-    <t id="802">Friendly Sectors?</t>
-    <t id="810">Collect Mines?</t>
-    <t id="811">Collect Satellites?</t>
-    <t id="812">Collect Navigation Beacons?</t>
-    <t id="813">Collect Resource Probes?</t>
-    <t id="814">Collect Laser Towers?</t>
-    <t id="820">Instant Collect?</t>
-    <t id="894">Add order tag?</t>
-    <t id="895">Save Settings?</t>
-    <t id="896">Delete Settings?</t>
+    <t id="810">收集地雷？</t>
+    <t id="811">收集衛星？</t>
+    <t id="812">收集導航信標？</t>
+    <t id="813">收集資源探針？</t>
+    <t id="814">收集激光塔？</t>
+    <t id="820">銷售範圍？</t>
+    <t id="870">\033#FFCEFBA1# ~ 閒 - 以下..\033X</t>
+    <t id="871">\033#FFCEFBA1# ~ 閒 - 停靠在 %1\033X</t>
+    <t id="872">\033#FFCEFBA1# ~ 閒 - 隨機移動..\033X</t>
+    <t id="873">\033#FFCEFBA1# ~ 閒 - 移至等待位置..\033X</t>
+    <t id="874">\033#FFCEFBA1# ~ 閒 - 轉移到閒置部門..\033X</t>
+    <t id="880">空轉的動作？</t>
+    <t id="881">閒置時間</t>
+    <t id="882">閒置：跟隨？</t>
+    <t id="883">誰跟著？</t>
+    <t id="884">閒置：停靠？</t>
+    <t id="885">在哪裡停靠？</t>
+    <t id="886">閒置：隨機移動？</t>
+    <t id="887">在哪個部門？</t>
+    <t id="888">閒置：移至？</t>
+    <t id="889">搬到哪裡去？</t>
+    <t id="891">是否要新增訂單標籤？</t>
+    <t id="892">訂單標籤位置</t>
+    <t id="893">保存訂單設置？</t>
+    <t id="894">重置訂單設置？</t>
+    <t id="895">訂單設置已保存。</t>
+    <t id="896">訂單設置已重置。</t>
     <t id="897">\033#B600CCCC#</t>
     <t id="898">\033#FF00CC66#</t>
     <t id="899">\033X</t>

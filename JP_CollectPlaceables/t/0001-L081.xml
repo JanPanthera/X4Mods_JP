@@ -3,18 +3,33 @@
 <language>
   <page id="8888888" voice="no">
     <!-- JP_CollectPlaceables -->
-    <t id="800">Enemy Sectors?</t>
-    <t id="801">Neutral Sectors?</t>
-    <t id="802">Friendly Sectors?</t>
-    <t id="810">Collect Mines?</t>
-    <t id="811">Collect Satellites?</t>
-    <t id="812">Collect Navigation Beacons?</t>
-    <t id="813">Collect Resource Probes?</t>
-    <t id="814">Collect Laser Towers?</t>
-    <t id="820">Instant Collect?</t>
-    <t id="894">Add order tag?</t>
-    <t id="895">Save Settings?</t>
-    <t id="896">Delete Settings?</t>
+    <t id="810">地雷を集める？</t>
+    <t id="811">衛星を収集しますか？</t>
+    <t id="812">ナビゲーションビーコンを収集しますか？</t>
+    <t id="813">リソースプローブを収集しますか？</t>
+    <t id="814">レーザータワーを収集しますか？</t>
+    <t id="820">販売範囲？</t>
+    <t id="870">\033#FFCEFBA1# ~ 中性 - 以下..\033X</t>
+    <t id="871">\033#FFCEFBA1# ~ 中性 - でドッキング..\033X</t>
+    <t id="872">\033#FFCEFBA1# ~ 中性 - ランダムに動く..\033X</t>
+    <t id="873">\033#FFCEFBA1# ~ 中性 - 待機位置に移動..\033X</t>
+    <t id="874">\033#FFCEFBA1# ~ 中性 - アイドルセクターへの移行..\033X</t>
+    <t id="880">アイドルアクション？</t>
+    <t id="881">アイドルタイム</t>
+    <t id="882">アイドル：フォロー？</t>
+    <t id="883">誰をフォローしますか？</t>
+    <t id="884">アイドル：ドッキング？</t>
+    <t id="885">どこにドッキングしますか？</t>
+    <t id="886">アイドル：ランダムな動き？</t>
+    <t id="887">どのセクターで？</t>
+    <t id="888">アイドル：移動しますか？</t>
+    <t id="889">どこに移動しますか？</t>
+    <t id="891">Orderタグを追加しますか？</t>
+    <t id="892">注文タグの位置</t>
+    <t id="893">注文設定を保存しますか？</t>
+    <t id="894">注文設定をリセットしますか？</t>
+    <t id="895">注文設定が保存されました。</t>
+    <t id="896">注文設定がリセットされました。</t>
     <t id="897">\033#B600CCCC#</t>
     <t id="898">\033#FF00CC66#</t>
     <t id="899">\033X</t>

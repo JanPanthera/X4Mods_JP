@@ -3,18 +3,33 @@
 <language>
   <page id="8888888" voice="no">
     <!-- JP_CollectPlaceables -->
-    <t id="800">Settori nemici?</t>
-    <t id="801">Settori neutrali?</t>
-    <t id="802">Settori amichevoli?</t>
-    <t id="810">Collezionare miniere?</t>
-    <t id="811">Collezionare i satelliti?</t>
-    <t id="812">Raccogliere i beacon di navigazione?</t>
-    <t id="813">Collezionare sonde di risorse?</t>
-    <t id="814">Raccogliere torri laser?</t>
-    <t id="820">Immediata raccogliere?</t>
-    <t id="894">Aggiungi tag ordine?</t>
-    <t id="895">Salva le impostazioni?</t>
-    <t id="896">Elimina impostazioni?</t>
+    <t id="810">Raccogliere Mine?</t>
+    <t id="811">Raccogliere Satelliti?</t>
+    <t id="812">Raccogliere Fari Di Navigazione?</t>
+    <t id="813">Raccogliere Sonde Di Risorse?</t>
+    <t id="814">Raccogliere Torri Laser?</t>
+    <t id="820">Gamma di vendita?</t>
+    <t id="870">\033#FFCEFBA1# ~ Neutro - a seguire..\033X</t>
+    <t id="871">\033#FFCEFBA1# ~ Neutro - attracco a %1\033X</t>
+    <t id="872">\033#FFCEFBA1# ~ Neutro - muovendosi in modo casuale..\033X</t>
+    <t id="873">\033#FFCEFBA1# ~ Neutro - passare alla posizione di attesa..\033X</t>
+    <t id="874">\033#FFCEFBA1# ~ Neutro - passaggio al settore inattivo..\033X</t>
+    <t id="880">Azioni inattive?</t>
+    <t id="881">Tempo Di Inattività</t>
+    <t id="882">Inattivo: seguire?</t>
+    <t id="883">Chi seguire?</t>
+    <t id="884">Inattivo: Attracco?</t>
+    <t id="885">Dove attraccare?</t>
+    <t id="886">Inattivo: movimento casuale?</t>
+    <t id="887">In quale settore?</t>
+    <t id="888">Inattivo: passa a?</t>
+    <t id="889">Dove spostarsi?</t>
+    <t id="891">Aggiungi tag ordine?</t>
+    <t id="892">Posizione dell'etichetta di ordine</t>
+    <t id="893">Salvare Le Impostazioni Dell'Ordine?</t>
+    <t id="894">Ripristina Le Impostazioni Dell'Ordine?</t>
+    <t id="895">Impostazioni dell'ordine salvate.</t>
+    <t id="896">Impostazioni ordine reimpostate.</t>
     <t id="897">\033#B600CCCC#</t>
     <t id="898">\033#FF00CC66#</t>
     <t id="899">\033X</t>

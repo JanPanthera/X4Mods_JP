@@ -4,11 +4,9 @@
 
   <order id="JP_CollectPlaceable_CP" name="_CollectPlaceable_CP" category="navigation" infinite="false">
     <params>
-      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="PLACEABLE" text="Placeable" type="internal" default="null"/>
-      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="PLACEABLE" type="internal" default="null"/>
     </params>
-    <location object="$LocationObjectUsedInUI" condition="$LocationObjectUsedInUI? and @$LocationObjectUsedInUI != null"/>
+    <location object="$LOCATION_OBJECT_USED_IN_UI" condition="$LOCATION_OBJECT_USED_IN_UI? and @$LOCATION_OBJECT_USED_IN_UI != null"/>
   </order>
 
   <interrupts>
@@ -28,11 +26,11 @@
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <set_value name="$Ship" exact="this.ship"/>
     <set_value name="$ExpMultiplier" exact="0.88"/>
-    <set_value name="$LocationObjectUsedInUI" exact="$PLACEABLE"/>
+    <set_value name="$LOCATION_OBJECT_USED_IN_UI" exact="$PLACEABLE"/>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <set_value chance="this.$DEBUG" name="$DebugScriptName" exact="'JP_CollectPlaceable_CP'"/>
     <set_value chance="this.$DEBUG" name="$DebugFileName" exact="$Ship.idcode + '.' + $DebugScriptName + '.xml.log'"/>
-    <debug_to_file chance="this.$DEBUG" append="false" directory="this.$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+    <debug_to_file chance="this.$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'" append="false"/>
     <debug_to_file chance="this.$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Started ~~' + '\n'"/>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
   </init>
@@ -60,36 +58,30 @@
       <stop_moving object="$Ship" immediate="true"/>
       <wait min="3s" max="6s"/>
 
-      <collect_deployable  object="$Ship" deployable="$PLACEABLE"/>
+      <collect_deployable object="$Ship" deployable="$PLACEABLE"/>
       <apply_experience entity="$Ship.pilot" experience="'JP_SHIP_PLACEABLE_COLLECTED'" factor="$ExpMultiplier"/>
       <apply_experience object="$Ship" experience="'JP_SHIP_PLACEABLE_COLLECTED'" role="entityrole.service" factor="$ExpMultiplier"/>
-      <remove_value name="$LocationObjectUsedInUI"/>
-
-
-      <label name="FINISH_LBL"/>
-      <wait min="1s" max="3s"/>
+      <remove_value name="$LOCATION_OBJECT_USED_IN_UI"/>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
+      <label name="FINISH_LBL"/>
       <debug_to_file chance="this.$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Finished ~~'"/>
       <debug_to_file chance="this.$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+      <wait min="1s" max="3s"/>
 
       <label name="CLEANUP_LBL"/>
-      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <do_if value="$Ship.defaultorder.id != 'JP_CollectPlaceablesS' and $Ship.defaultorder.id != 'JP_CollectPlaceablesG'">
-        <set_object_name object="$Ship" name="$ShipName"/>
-        <remove_value chance="this.$DEBUG" name="this.$DEBUG"/>
-        <remove_value chance="this.$DEBUG" name="this.$DebugFolderName"/>
-        <remove_value chance="this.$AddOrderTag" name="$ShipName"/>
-        <remove_value chance="this.$AddOrderTag" name="this.$AddOrderTag"/>
-      </do_if>
-      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <remove_value name="$Ship"/>
-      <remove_value name="$ExpMultiplier"/>
-      <remove_value name="$LocationObjectUsedInUI"/>
       <remove_value chance="this.$DEBUG" name="$DebugFileName"/>
       <remove_value chance="this.$DEBUG" name="$DebugScriptName"/>
-      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <do_if value="$Ship.defaultorder.id != 'JP_CollectPlaceablesS' and $Ship.defaultorder.id != 'JP_CollectPlaceablesG'">
+        <set_object_name object="$Ship" name="this.$ShipName"/>
+        <remove_value chance="this.$DEBUG" name="this.$DebugFolderName"/>
+        <remove_value chance="this.$DEBUG" name="this.$DEBUG"/>
+        <remove_value chance="this.$AddOrderTag" name="this.$ShipName"/>
+        <remove_value chance="this.$AddOrderTag" name="this.$AddOrderTag"/>
+      </do_if>
+      <remove_value name="$ExpMultiplier"/>
+      <remove_value name="$Ship"/>
 
       <label name="END_LBL"/>
       <wait min="1s" max="3s"/>
@@ -98,21 +90,17 @@
   </attention>
 
   <on_abort>
-    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-    <do_if value="$Ship.defaultorder.id != 'JP_CollectPlaceablesS' and $Ship.defaultorder.id != 'JP_CollectPlaceablesG'">
-      <set_object_name object="$Ship" name="$ShipName"/>
-      <remove_value chance="this.$DEBUG" name="this.$DEBUG"/>
-      <remove_value chance="this.$DEBUG" name="this.$DebugFolderName"/>
-      <remove_value chance="this.$AddOrderTag" name="$ShipName"/>
-      <remove_value chance="this.$AddOrderTag" name="this.$AddOrderTag"/>
-    </do_if>
-    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-    <remove_value name="$Ship"/>
-    <remove_value name="$ExpMultiplier"/>
-    <remove_value name="$LocationObjectUsedInUI"/>
     <remove_value chance="this.$DEBUG" name="$DebugFileName"/>
     <remove_value chance="this.$DEBUG" name="$DebugScriptName"/>
-    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <do_if value="$Ship.defaultorder.id != 'JP_CollectPlaceablesS' and $Ship.defaultorder.id != 'JP_CollectPlaceablesG'">
+      <set_object_name object="$Ship" name="this.$ShipName"/>
+      <remove_value chance="this.$DEBUG" name="this.$DebugFolderName"/>
+      <remove_value chance="this.$DEBUG" name="this.$DEBUG"/>
+      <remove_value chance="this.$AddOrderTag" name="this.$ShipName"/>
+      <remove_value chance="this.$AddOrderTag" name="this.$AddOrderTag"/>
+    </do_if>
+    <remove_value name="$ExpMultiplier"/>
+    <remove_value name="$Ship"/>
   </on_abort>
 
 </aiscript>

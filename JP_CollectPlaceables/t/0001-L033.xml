@@ -3,18 +3,33 @@
 <language>
   <page id="8888888" voice="no">
     <!-- JP_CollectPlaceables -->
-    <t id="800">Secteurs ennemis?</t> 
-    <t id="801">Secteurs neutres?</t> 
-    <t id="802">Secteurs amis?</t> 
-    <t id="810">Collectionner des mines?</t> 
-    <t id="811">Collectionner des satellites?</t> 
-    <t id="812">Récupérer des balises de navigation?</t> 
-    <t id="813">Collecter des sondes de ressources?</t> 
-    <t id="814">Collectionner des tours laser?</t> 
-    <t id="820">Collecte instantanée?</t> 
-    <t id="894">Ajouter une étiquette de commande?</t> 
-    <t id="895">Enregistrer les paramètres?</t> 
-    <t id="896">Supprimer les paramètres?</t> 
+    <t id="810">Collecter Des Mines?</t>
+    <t id="811">Collecter Des Satellites?</t>
+    <t id="812">Collecter Des Balises De Navigation?</t>
+    <t id="813">Recueillir Des Sondes De Ressources?</t>
+    <t id="814">Collecter Des Tours Laser?</t>
+    <t id="820">La vente de la gamme?</t>
+    <t id="870">\033#FFCEFBA1# ~ Neutre - suivante..\033X</t>
+    <t id="871">\033#FFCEFBA1# ~ Neutre - amarrage à %1\033X</t>
+    <t id="872">\033#FFCEFBA1# ~ Neutre - se déplaçant au hasard..\033X</t>
+    <t id="873">\033#FFCEFBA1# ~ Neutre - passer en position d'attente..\033X</t>
+    <t id="874">\033#FFCEFBA1# ~ Neutre - passage au secteur inactif..\033X</t>
+    <t id="880">Actions inactives?</t>
+    <t id="881">Le Temps D'Inactivité</t>
+    <t id="882">Inactif: suivre?</t>
+    <t id="883">Qui suivre?</t>
+    <t id="884">Inactif: amarrage?</t>
+    <t id="885">Où accoster?</t>
+    <t id="886">Inactif: mouvement aléatoire?</t>
+    <t id="887">Dans quel secteur?</t>
+    <t id="888">Inactif: passer à?</t>
+    <t id="889">Où déménager?</t>
+    <t id="891">Ajouter une étiquette de commande?</t>
+    <t id="892">Position de l'étiquette de commande</t>
+    <t id="893">Enregistrer Les Paramètres De Commande?</t>
+    <t id="894">Réinitialiser Les Paramètres De Commande?</t>
+    <t id="895">Paramètres de commande enregistrés.</t>
+    <t id="896">Paramètres de commande réinitialisés.</t>
     <t id="897">\033#B600CCCC#</t>
     <t id="898">\033#FF00CC66#</t>
     <t id="899">\033X</t>
