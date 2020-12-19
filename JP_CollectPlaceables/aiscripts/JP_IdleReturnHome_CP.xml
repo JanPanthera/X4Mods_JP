@@ -36,10 +36,54 @@
     <set_value name="$ShipsCurrentName" exact="$Ship.knownname"/>
     <set_value name="$LOCATION_OBJECT_USED_IN_UI" exact="null"/>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-    <set_value chance="this.$DEBUG" name="$DebugScriptName" exact="'JP_IdleReturnHome_CP'"/>
-    <set_value chance="this.$DEBUG" name="$DebugFileName" exact="$Ship.idcode + '.' + $DebugScriptName + '.xml.log'"/>
-    <debug_to_file chance="this.$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'" append="false"/>
-    <debug_to_file chance="this.$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Started ~~' + '\n'"/>
+    <do_if value="$Ship.defaultorder.$DEBUG">
+      <set_value name="$DebugScriptName" exact="'JP_IdleReturnHome_CP'"/>
+      <set_value name="$DebugFileName" exact="$Ship.idcode + '.' + $DebugScriptName + '.xml.log'"/>
+      <debug_to_file directory="this.$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'" append="false"/>
+      <debug_to_file directory="this.$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Started ~~' + '\n'"/>
+    </do_if>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <do_if value="$IDLE_FOLLOW">
+      <do_if value="not $WHO_TO_FOLLOW? or not @$WHO_TO_FOLLOW.isclass.{class.ship}">
+        <set_value name="$IDLE_FOLLOW" exact="false"/>
+        <set_value name="$IDLE_RANDOM_MOVEMENT" exact="true"/>
+      </do_if>
+    </do_if>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <do_if value="$IDLE_DOCKING">
+      <do_if value="$WHERE_TO_DOCK?">
+        <find_dockingbay name="$_FoundDockingBay" object="$WHERE_TO_DOCK">
+          <match_dock size="$Ship.docksize" free="true"/>
+        </find_dockingbay>
+      </do_if>
+      <do_if value="not $_FoundDockingBay?">
+        <set_value name="$IDLE_DOCKING" exact="false"/>
+        <do_if value="$WHERE_TO_DOCK.isclass.{class.station}">
+          <set_value name="$IDLE_MOVE_TO" exact="true"/>
+          <set_value name="$WHERE_TO_MOVE" exact="[$WHERE_TO_DOCK, position.[0m, 0m, 0m]]"/>
+        </do_if>
+        <do_elseif value="$WHERE_TO_DOCK.isclass.{class.ship}">
+          <set_value name="$IDLE_FOLLOW" exact="true"/>
+          <set_value name="$WHO_TO_FOLLOW" exact="$WHERE_TO_DOCK"/>
+        </do_elseif>
+        <do_else>
+          <set_value name="$IDLE_RANDOM_MOVEMENT" exact="true"/>
+        </do_else>
+      </do_if>
+    </do_if>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <do_if value="$IDLE_RANDOM_MOVEMENT">
+      <do_if value="not $IN_WHICH_SECTOR? or not @$IN_WHICH_SECTOR.{1}.isclass.{class.sector}">
+        <set_value name="$IN_WHICH_SECTOR" exact="[$Ship.sector, $Ship.position]"/>
+      </do_if>
+    </do_if>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <do_if value="$IDLE_MOVE_TO">
+      <do_if value="not $IN_WHICH_SECTOR? or (not @$IN_WHICH_SECTOR.{1}.isclass.{class.sector} and not @$IN_WHICH_SECTOR.{1}.isclass.{class.ship} and not @$IN_WHICH_SECTOR.{1}.isclass.{class.station})">
+        <set_value name="$IDLE_MOVE_TO" exact="false"/>
+        <set_value name="$IDLE_RANDOM_MOVEMENT" exact="true"/>
+      </do_if>
+    </do_if>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
   </init>
 
@@ -57,200 +101,140 @@
       <set_command command="command.wait"/>
       <set_command_action commandaction="commandaction.standingby"/>
 
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <label name="MOVE_FOLLOW_LBL"/>
       <do_if value="$IDLE_FOLLOW">
-        <do_if value="true">
-          <debug_to_file chance="this.$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-          <debug_to_file chance="this.$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="' ~ IDLE_FOLLOW_LBL'"/>
-          <debug_to_file chance="this.$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-          <debug_to_file chance="this.$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="'@$WHO_TO_FOLLOW: ' + @$WHO_TO_FOLLOW"/>
-          <debug_to_file chance="this.$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="'@$WHO_TO_FOLLOW.class: ' + @$WHO_TO_FOLLOW.class"/>
-          <debug_to_file chance="this.$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="'@$WHO_TO_FOLLOW.knownname: ' + @$WHO_TO_FOLLOW.knownname"/>
-          <debug_to_file chance="this.$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
-        </do_if>
-        <do_if value="@$WHO_TO_FOLLOW == null">
-          <set_value name="$IDLE_FOLLOW" exact="false"/>
-          <set_value name="$IDLE_RANDOM_MOVEMENT" exact="true"/>
-          <resume label="RESUME_LBL"/>
-        </do_if>
         <set_value name="$CurrentSector" exact="$WHO_TO_FOLLOW.sector"/>
         <set_value name="$LOCATION_OBJECT_USED_IN_UI" exact="[$WHO_TO_FOLLOW, position.[0m, 0m, 0m]]"/>
         <do_if value="$Ship.sector != $CurrentSector">
+          <wait min="1s" max="3s"/>
           <resume label="MOVE_TO_SECTOR_LBL"/>
         </do_if>
         <set_command command="command.follow" param="$WHO_TO_FOLLOW"/>
         <set_object_name object="$Ship" name="$ShipsCurrentName + '{8888888, 870}'" comment="$ShipsCurrentName + '\033#FFCEFBA1# ~ Idle - following..\033X'"/>
-        <resume label="IDLE_FOLLOW_LBL"/>
-      </do_if>
-
-      <do_if value="$IDLE_DOCKING">
-        <do_if value="true">
-          <debug_to_file chance="this.$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-          <debug_to_file chance="this.$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="' ~ IDLE_DOCKING_LBL'"/>
-          <debug_to_file chance="this.$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-          <debug_to_file chance="this.$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="'@$WHERE_TO_DOCK: ' + @$WHERE_TO_DOCK"/>
-          <debug_to_file chance="this.$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="'@$WHERE_TO_DOCK.class: ' + @$WHERE_TO_DOCK.class"/>
-          <debug_to_file chance="this.$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="'@$WHERE_TO_DOCK.knownname: ' + @$WHERE_TO_DOCK.knownname"/>
-          <debug_to_file chance="this.$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+        <set_value name="$_InitialTime" exact="player.age"/>
+        <get_safe_pos result="$SafePosition" zone="$CurrentSector" object="$WHO_TO_FOLLOW" directionobject="$Ship" radius="($WHO_TO_FOLLOW.size + $Ship.size) / 2"/>
+        <do_if value="$Ship.distanceto.{$WHO_TO_FOLLOW} gt ((($WHO_TO_FOLLOW.size / 2) + ($Ship.size / 2) + 100m) + 4km)">
+          <get_safe_pos result="$SafePosition" zone="$CurrentSector" object="$WHO_TO_FOLLOW" directionobject="$Ship" radius="($WHO_TO_FOLLOW.size + $Ship.size) / 2"/>
         </do_if>
-        <do_if value="@$WHERE_TO_DOCK == null">
-          <set_value name="$IDLE_DOCKING" exact="false"/>
-          <set_value name="$IDLE_RANDOM_MOVEMENT" exact="true"/>
+        <do_if value="$Ship.sector != $WHO_TO_FOLLOW.sector">
+          <remove_value name="$_InitialTime"/>
+          <remove_value name="$SafePosition"/>
+          <wait min="1s" max="3s"/>
           <resume label="RESUME_LBL"/>
         </do_if>
+        <do_if value="$Ship.distanceto.{$WHO_TO_FOLLOW} gt (($WHO_TO_FOLLOW.size / 2) + ($Ship.size / 2) + 100m)">
+          <move_to object="$Ship" destination="$CurrentSector" forceposition="true" travel="true">
+            <position value="$SafePosition"/>
+            <interrupt_after_time time="2s"/>
+          </move_to>
+        </do_if>
+        <do_else>
+          <wait exact="2s"/>
+        </do_else>
+        <do_if value="((player.age - $_InitialTime)s lt $IDLE_TIME)">
+          <wait min="1s" max="3s"/>
+          <resume label="MOVE_FOLLOW_LBL"/>
+        </do_if>
+        <set_object_name object="$Ship" name="$ShipsCurrentName"/>
+        <remove_value name="$_InitialTime"/>
+        <wait min="1s" max="3s"/>
+        <resume label="FINISH_LBL"/>
+      </do_if>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <do_if value="$IDLE_DOCKING">
         <find_dockingbay name="$_FoundDockingBay" object="$WHERE_TO_DOCK">
           <match_dock size="$Ship.docksize" free="true"/>
         </find_dockingbay>
-        <do_if value="@$_FoundDockingBay == null">
+        <do_if value="not $_FoundDockingBay?">
+          <debug_to_file chance="$Ship.defaultorder.$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file chance="$Ship.defaultorder.$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="'~ Found no docking bay!'"/>
+          <debug_to_file chance="$Ship.defaultorder.$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
           <do_if value="$WHERE_TO_DOCK.isclass.{class.station}">
             <set_value name="$WHERE_TO_MOVE" exact="[$WHERE_TO_DOCK, position.[0m, 0m, 0m]]"/>
+            <wait min="1s" max="3s"/>
             <resume label="IDLE_MOVE_TO_LBL"/>
           </do_if>
           <do_if value="$WHERE_TO_DOCK.isclass.{class.ship}">
             <set_value name="$WHO_TO_FOLLOW" exact="$WHERE_TO_DOCK"/>
+            <wait min="1s" max="3s"/>
             <resume label="IDLE_FOLLOW_LBL"/>
           </do_if>
         </do_if>
         <set_value name="$CurrentSector" exact="$WHERE_TO_DOCK.sector"/>
         <set_value name="$LOCATION_OBJECT_USED_IN_UI" exact="[$WHERE_TO_DOCK, position.[0m, 0m, 0m]]"/>
         <do_if value="$Ship.sector != $CurrentSector">
+          <wait min="1s" max="3s"/>
           <resume label="MOVE_TO_SECTOR_LBL"/>
         </do_if>
         <set_command command="command.dockat" param="$WHERE_TO_DOCK"/>
-        <set_object_name object="$Ship" name="$ShipsCurrentName + '{8888888, 871}'" comment="$ShipsCurrentName + '\033#FFCEFBA1# ~ Idle - docking at %1\033X'"/>
+        <set_object_name object="$Ship" name="$ShipsCurrentName + '{8888888, 871}'" comment="$ShipsCurrentName + '\033#FFCEFBA1# ~ Idle - docking at %1\033X'.[$WHERE_TO_DOCK.knownname]"/>
+        <create_order object="$Ship" id="'DockAndWait'" immediate="true">
+          <param name="destination" value="$WHERE_TO_DOCK"/>
+          <param name="timeout" value="$IDLE_TIME"/>
+          <param name="dockfollowers" value="true"/>
+        </create_order>
+        <set_object_name object="$Ship" name="$ShipsCurrentName"/>
+        <remove_value name="$_FoundDockingBay"/>
+        <wait min="1s" max="3s"/>
+        <resume label="FINISH_LBL"/>
       </do_if>
 
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
       <do_if value="$IDLE_RANDOM_MOVEMENT">
-        <do_if value="true">
-          <debug_to_file chance="this.$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-          <debug_to_file chance="this.$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="' ~ IDLE_RANDOM_MOVEMENT_LBL'"/>
-          <debug_to_file chance="this.$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-          <debug_to_file chance="this.$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="'@IN_WHICH_SECTOR.{1}: ' + @IN_WHICH_SECTOR.{1}"/>
-          <debug_to_file chance="this.$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="'@IN_WHICH_SECTOR.{1}.class: ' + @IN_WHICH_SECTOR.{1}.class"/>
-          <debug_to_file chance="this.$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="'@IN_WHICH_SECTOR.{1}.knownname: ' + @IN_WHICH_SECTOR.{1}.knownname"/>
-          <debug_to_file chance="this.$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="'@IN_WHICH_SECTOR.{2}: ' + @IN_WHICH_SECTOR.{2}"/>
-          <debug_to_file chance="this.$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="'@IN_WHICH_SECTOR.{2}.class: ' + @IN_WHICH_SECTOR.{2}.class"/>
-          <debug_to_file chance="this.$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="'@IN_WHICH_SECTOR.{2}.knownname: ' + @IN_WHICH_SECTOR.{2}.knownname"/>
-          <debug_to_file chance="this.$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
-        </do_if>
-        <do_if value="@$IN_WHICH_SECTOR == null">
-          <set_value name="$IN_WHICH_SECTOR" exact="[$Ship.sector, $Ship.position]"/>
-        </do_if>
         <set_value name="$CurrentSector" exact="$IN_WHICH_SECTOR.{1}"/>
         <set_value name="$LOCATION_OBJECT_USED_IN_UI" exact="[$IN_WHICH_SECTOR.{1}, $IN_WHICH_SECTOR.{2}]"/>
         <do_if value="$Ship.sector != $CurrentSector">
+          <wait min="1s" max="3s"/>
           <resume label="MOVE_TO_SECTOR_LBL"/>
         </do_if>
         <set_command command="command.wait"/>
         <set_command_action commandaction="commandaction.calculating"/>
         <set_object_name object="$Ship" name="$ShipsCurrentName + '{8888888, 872}'" comment="$ShipsCurrentName + '\033#FFCEFBA1# ~ Idle - moving randomly..\033X'"/>
-        <resume label="IDLE_RANDOM_MOVEMENT_LBL"/>
+        <run_script name="'move.random'">
+          <param name="TimeOut" value="$IDLE_TIME"/>
+          <param name="Anchor" value="$CurrentSector"/>
+          <param name="Offset" value="$IN_WHICH_SECTOR.{2}"/>
+          <param name="MaxDistance" value="10km"/>
+        </run_script>
+        <set_object_name object="$Ship" name="$ShipsCurrentName"/>
+        <wait min="1s" max="3s"/>
+        <resume label="FINISH_LBL"/>
       </do_if>
 
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
       <do_if value="$IDLE_MOVE_TO">
-        <do_if value="true">
-          <debug_to_file chance="this.$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-          <debug_to_file chance="this.$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="' ~ IDLE_MOVE_TO_LBL'"/>
-          <debug_to_file chance="this.$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-          <debug_to_file chance="this.$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="'@$WHERE_TO_MOVE.{1}: ' + @$WHERE_TO_MOVE.{1}"/>
-          <debug_to_file chance="this.$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="'@$WHERE_TO_MOVE.{1}.class: ' + @$WHERE_TO_MOVE.{1}.class"/>
-          <debug_to_file chance="this.$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="'@$WHERE_TO_MOVE.{1}.knownname: ' + @$WHERE_TO_MOVE.{1}.knownname"/>
-          <debug_to_file chance="this.$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="'@$WHERE_TO_MOVE.{2}: ' + @$WHERE_TO_MOVE.{2}"/>
-          <debug_to_file chance="this.$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="'@$WHERE_TO_MOVE.{2}.class: ' + @$WHERE_TO_MOVE.{2}.class"/>
-          <debug_to_file chance="this.$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="'@$WHERE_TO_MOVE.{2}.knownname: ' + @$WHERE_TO_MOVE.{2}.knownname"/>
-          <debug_to_file chance="this.$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
-        </do_if>
-        <do_if value="@$WHERE_TO_MOVE.{1} == null">
-          <set_value name="$IDLE_MOVE_TO" exact="false"/>
-          <set_value name="$IDLE_RANDOM_MOVEMENT" exact="true"/>
-          <resume label="RESUME_LBL"/>
-        </do_if>
         <set_value name="$CurrentSector" exact="if $WHERE_TO_MOVE.{1}.isclass.{class.sector} then $WHERE_TO_MOVE.{1} else $WHERE_TO_MOVE.{1}.sector"/>
         <set_value name="$LOCATION_OBJECT_USED_IN_UI" exact="[$WHERE_TO_MOVE.{1}, $WHERE_TO_MOVE.{2}]"/>
         <do_if value="$WHERE_TO_MOVE.{1}.isclass.{class.ship} or $WHERE_TO_MOVE.{1}.isclass.{class.station}">
           <set_value name="$_ObjectToMoveTo" exact="$WHERE_TO_MOVE.{1}"/>
         </do_if>
         <do_if value="$Ship.sector != $CurrentSector">
+          <wait min="1s" max="3s"/>
           <resume label="MOVE_TO_SECTOR_LBL"/>
         </do_if>
         <set_command command="command.move" param="$WHERE_TO_MOVE.{1}"/>
         <set_object_name object="$Ship" name="$ShipsCurrentName + '{8888888, 873}'" comment="$ShipsCurrentName + '\033#FFCEFBA1# ~ Idle - moving to waiting position..\033X'"/>
-        <resume label="IDLE_MOVE_TO_LBL"/>
-      </do_if>
-
-      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-
-      <label name="IDLE_FOLLOW_LBL"/>
-      <set_value name="$_InitialTime" exact="player.age"/>
-      <get_safe_pos result="$SafePosition" zone="$CurrentSector" object="$WHO_TO_FOLLOW" directionobject="$Ship" radius="($WHO_TO_FOLLOW.size + $Ship.size) / 2"/>
-      <label name="MOVE_FOLLOW_LBL"/>
-      <do_if value="$Ship.distanceto.{$WHO_TO_FOLLOW} gt ((($WHO_TO_FOLLOW.size / 2) + ($Ship.size / 2) + 100m) + 4km)">
-        <get_safe_pos result="$SafePosition" zone="$CurrentSector" object="$WHO_TO_FOLLOW" directionobject="$Ship" radius="($WHO_TO_FOLLOW.size + $Ship.size) / 2"/>
-      </do_if>
-      <do_if value="$Ship.distanceto.{$WHO_TO_FOLLOW} gt (($WHO_TO_FOLLOW.size / 2) + ($Ship.size / 2) + 100m)">
-        <move_to object="$Ship" destination="$CurrentSector" forceposition="true" travel="true">
-          <position value="$SafePosition"/>
-          <interrupt_after_time time="2s"/>
+        <move_to object="$Ship" destination="$WHERE_TO_MOVE.{1}" finishonapproach="false" forceposition="true" travel="true">
+          <position value="$WHERE_TO_MOVE.{2}"/>
         </move_to>
+        <stop_moving object="$Ship"/>
+        <set_object_name object="$Ship" name="$ShipsCurrentName + '\033#FFCEFBA1# ~ Idle - waiting some time\033X'"/>
+        <wait exact="$IDLE_TIME"/>
+        <set_object_name object="$Ship" name="$ShipsCurrentName"/>
+        <remove_value chance="if $_ObjectToMoveTo? then 100 else 0" name="$_ObjectToMoveTo"/>
+        <wait min="1s" max="3s"/>
+        <resume label="FINISH_LBL"/>
       </do_if>
-      <do_else>
-        <wait exact="2s"/>
-      </do_else>
-      <do_if value="((player.age - $_InitialTime)s lt $IDLE_TIME)">
-        <wait exact="1s"/>
-        <resume label="MOVE_FOLLOW_LBL"/>
-      </do_if>
-      <set_object_name object="$Ship" name="$ShipsCurrentName"/>
-      <remove_value name="$_InitialTime"/>
-      <wait min="1s" max="3s"/>
-      <resume label="FINISH_LBL"/>
-
-      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-
-      <label name="IDLE_DOCKING_LBL"/>
-      <create_order object="$Ship" id="'DockAndWait'" immediate="true">
-        <param name="destination" value="$WHERE_TO_DOCK"/>
-        <param name="timeout" value="$IDLE_TIME"/>
-        <param name="dockfollowers" value="true"/>
-      </create_order>
-      <set_object_name object="$Ship" name="$ShipsCurrentName"/>
-      <remove_value name="$_FoundDockingBay"/>
-      <wait min="1s" max="3s"/>
-      <resume label="FINISH_LBL"/>
-
-      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-
-      <label name="IDLE_RANDOM_MOVEMENT_LBL"/>
-      <!-- TODO: create order? -->
-      <run_script name="'move.random'">
-        <param name="TimeOut" value="$IDLE_TIME"/>
-        <param name="Anchor" value="$CurrentSector"/>
-        <param name="Offset" value="$IN_WHICH_SECTOR.{2}"/>
-        <param name="MaxDistance" value="10km"/>
-      </run_script>
-      <set_object_name object="$Ship" name="$ShipsCurrentName"/>
-      <wait min="1s" max="3s"/>
-      <resume label="FINISH_LBL"/>
-
-      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-
-      <label name="IDLE_MOVE_TO_LBL"/>
-      <move_to object="$Ship" destination="$WHERE_TO_MOVE.{1}" finishonapproach="false" forceposition="true" travel="true">
-        <position value="$WHERE_TO_MOVE.{2}"/>
-      </move_to>
-      <stop_moving object="$Ship"/>
-      <set_object_name object="$Ship" name="$ShipsCurrentName + '\033#FFCEFBA1# ~ Idle - waiting some time\033X'"/>
-      <wait exact="$IDLE_TIME"/>
-      <set_object_name object="$Ship" name="$ShipsCurrentName"/>
-      <remove_value chance="if $_ObjectToMoveTo? then 100 else 0" name="$_ObjectToMoveTo"/>
-      <wait min="1s" max="3s"/>
-      <resume label="FINISH_LBL"/>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
       <label name="MOVE_TO_SECTOR_LBL"/>
-      <debug_to_file chance="this.$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-      <debug_to_file chance="this.$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="' ~ MOVE_TO_SECTOR_LBL'"/>
-      <debug_to_file chance="this.$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
       <set_command command="command.move" param="$CurrentSector"/>
       <set_object_name object="$Ship" name="$ShipsCurrentName + '{8888888, 874}'" comment="$ShipsCurrentName + '\033#FFCEFBA1# ~ Idle - moving to Idle Sector..\033X'"/>
       <run_script name="'move.generic'">
@@ -259,30 +243,34 @@
         <param name="recallsubordinates" value="true"/>
       </run_script>
       <set_object_name object="$Ship" name="$ShipsCurrentName"/>
-      <wait exact="1s"/>
+      <wait min="1s" max="3s"/>
       <resume label="RESUME_LBL"/>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
       <label name="FINISH_LBL"/>
-      <debug_to_file chance="this.$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Finished ~~'"/>
-      <debug_to_file chance="this.$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+      <debug_to_file chance="$Ship.defaultorder.$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Finished ~~'"/>
+      <debug_to_file chance="$Ship.defaultorder.$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
       <wait min="1s" max="3s"/>
 
       <label name="CLEANUP_LBL"/>
       <do_if value="$Ship.knownname != $ShipsCurrentName">
         <set_object_name object="$Ship" name="$ShipsCurrentName"/>
+        <remove_value name="$ShipsCurrentName"/>
       </do_if>
-      <remove_value name="$ShipsCurrentName"/>
-      <remove_value chance="this.$DEBUG" name="$DebugFileName"/>
-      <remove_value chance="this.$DEBUG" name="$DebugScriptName"/>
       <do_if value="$Ship.defaultorder.id != 'JP_CollectPlaceablesS' and $Ship.defaultorder.id != 'JP_CollectPlaceablesG'">
-        <set_object_name object="$Ship" name="this.$ShipName"/>
-        <remove_value chance="this.$DEBUG" name="this.$DebugFolderName"/>
-        <remove_value chance="this.$DEBUG" name="this.$DEBUG"/>
-        <remove_value chance="this.$AddOrderTag" name="this.$ShipName"/>
-        <remove_value chance="this.$AddOrderTag" name="this.$AddOrderTag"/>
+        <do_if value="this.$AddOrderTag">
+          <set_object_name object="$Ship" name="this.$ShipName"/>
+          <remove_value name="this.$AddOrderTag"/>
+          <remove_value name="this.$ShipName"/>
+        </do_if>
+        <do_if value="this.$DEBUG">
+          <remove_value name="this.$DebugFolderName"/>
+          <remove_value name="this.$DEBUG"/>
+        </do_if>
       </do_if>
+      <remove_value name="$DebugFileName"/>
+      <remove_value name="$DebugScriptName"/>
       <remove_value name="$CurrentSector"/>
       <remove_value name="$Ship"/>
 
@@ -295,17 +283,21 @@
   <on_abort>
     <do_if value="$Ship.knownname != $ShipsCurrentName">
       <set_object_name object="$Ship" name="$ShipsCurrentName"/>
+      <remove_value name="$ShipsCurrentName"/>
     </do_if>
-    <remove_value name="$ShipsCurrentName"/>
-    <remove_value chance="this.$DEBUG" name="$DebugFileName"/>
-    <remove_value chance="this.$DEBUG" name="$DebugScriptName"/>
     <do_if value="$Ship.defaultorder.id != 'JP_CollectPlaceablesS' and $Ship.defaultorder.id != 'JP_CollectPlaceablesG'">
-      <set_object_name object="$Ship" name="this.$ShipName"/>
-      <remove_value chance="this.$DEBUG" name="this.$DebugFolderName"/>
-      <remove_value chance="this.$DEBUG" name="this.$DEBUG"/>
-      <remove_value chance="this.$AddOrderTag" name="this.$ShipName"/>
-      <remove_value chance="this.$AddOrderTag" name="this.$AddOrderTag"/>
+      <do_if value="this.$AddOrderTag">
+        <set_object_name object="$Ship" name="this.$ShipName"/>
+        <remove_value name="this.$AddOrderTag"/>
+        <remove_value name="this.$ShipName"/>
+      </do_if>
+      <do_if value="this.$DEBUG">
+        <remove_value name="this.$DebugFolderName"/>
+        <remove_value name="this.$DEBUG"/>
+      </do_if>
     </do_if>
+    <remove_value name="$DebugFileName"/>
+    <remove_value name="$DebugScriptName"/>
     <remove_value name="$CurrentSector"/>
     <remove_value name="$Ship"/>
   </on_abort>

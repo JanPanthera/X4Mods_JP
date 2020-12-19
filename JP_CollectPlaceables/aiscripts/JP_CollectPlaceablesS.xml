@@ -114,19 +114,23 @@
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <set_value name="$Ship" exact="this.ship"/>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-    <set_value chance="$DEBUG" name="this.$DEBUG" exact="$DEBUG"/>
-    <set_value chance="$DEBUG" name="$DebugScriptName" exact="'JP_CollectPlaceablesS'"/>
-    <set_value chance="$DEBUG" name="this.$DebugFolderName" exact="'JP_CollectPlaceables.logs'"/>
-    <set_value chance="$DEBUG" name="$DebugFileName" exact="$Ship.idcode + '.' + $DebugScriptName + '.xml.log'"/>
-    <debug_to_file chance="this.$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'" append="false"/>
-    <debug_to_file chance="this.$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Started ~~' + '\n'"/>
-    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-    <set_value chance="if $ADD_ORDER_TAG then 100 else 0" name="this.$AddOrderTag" exact="if $ADD_ORDER_TAG then 100 else 0"/>
-    <set_value name="$OrderTag" exact="'#CP-S'"/>
-    <do_if chance="this.$AddOrderTag" value="not this.$ShipName?">
-      <set_value chance="this.$AddOrderTag" name="this.$ShipName" exact="$Ship.knownname"/>
+    <do_if value="$DEBUG">
+      <set_value name="this.$DEBUG" exact="$DEBUG"/>
+      <set_value name="this.$DebugFolderName" exact="'JP_CollectPlaceables.logs'"/>
+      <set_value name="$DebugScriptName" exact="'JP_CollectPlaceablesS'"/>
+      <set_value name="$DebugFileName" exact="$Ship.idcode + '.' + $DebugScriptName + '.xml.log'"/>
+      <debug_to_file directory="this.$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'" append="false"/>
+      <debug_to_file directory="this.$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Started ~~' + '\n'"/>
     </do_if>
-    <set_object_name chance="this.$AddOrderTag" object="$Ship" name="(if $ORDER_TAG_POSITION then '' else (' \033#FFA95908#' + $OrderTag + '\033X')) + this.$ShipName + (if $ORDER_TAG_POSITION then (' \033#FFA95908#' + $OrderTag + '\033X') else '')"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <do_if value="$ADD_ORDER_TAG">
+      <set_value name="$OrderTag" exact="'#CP-S'"/>
+      <do_if value="not this.$ShipName?">
+        <set_value name="this.$ShipName" exact="$Ship.knownname"/>
+      </do_if>
+      <set_value name="this.$AddOrderTag" exact="$ADD_ORDER_TAG"/>
+      <set_object_name object="$Ship" name="(if $ORDER_TAG_POSITION then '' else (' \033#FFA95908#' + $OrderTag + '\033X')) + this.$ShipName + (if $ORDER_TAG_POSITION then (' \033#FFA95908#' + $OrderTag + '\033X') else '')"/>
+    </do_if>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <!-- remove it in a later version.. give time for deleting this unused chunk of memory -->
     <do_if value="true">
@@ -324,34 +328,46 @@
       <wait min="1s" max="3s"/>
 
       <label name="CLEANUP_LBL"/>
-      <set_object_name chance="this.$AddOrderTag" object="$Ship" name="this.$ShipName"/>
-      <remove_value chance="this.$AddOrderTag" name="$OrderTag"/>
-      <remove_value chance="this.$AddOrderTag" name="this.$ShipName"/>
-      <remove_value chance="this.$AddOrderTag" name="this.$AddOrderTag"/>
-      <remove_value chance="$DEBUG" name="this.$DEBUG"/>
-      <remove_value chance="$DEBUG" name="$DebugFileName"/>
-      <remove_value chance="$DEBUG" name="this.$DebugFolderName"/>
-      <remove_value chance="$DEBUG" name="$DebugScriptName"/>
+      <do_if value="$ADD_ORDER_TAG">
+        <do_if value="this.$ShipName?">
+          <set_object_name object="$Ship" name="this.$ShipName"/>
+        </do_if>
+        <remove_value name="$OrderTag"/>
+        <remove_value name="this.$AddOrderTag"/>
+        <remove_value name="this.$ShipName"/>
+      </do_if>
+      <do_if value="$DEBUG gt 0">
+        <remove_value name="$DebugFileName"/>
+        <remove_value name="$DebugScriptName"/>
+        <remove_value name="this.$DebugFolderName"/>
+        <remove_value name="this.$DEBUG"/>
+      </do_if>
       <remove_value name="$Ship"/>
 
       <label name="END_LBL"/>
       <set_order_syncpoint_reached order="this.ship.order"/>
       <wait min="1s" max="3s"/>
-      <cancel_all_orders object="this.ship"/>
+      <cancel_order order="this.ship.defaultorder"/>
 
     </actions>
   </attention>
 
   <on_abort>
     <do_if value="$Ship.orders.count == 0">
-      <set_object_name chance="this.$AddOrderTag" object="$Ship" name="this.$ShipName"/>
-      <remove_value chance="this.$AddOrderTag" name="$OrderTag"/>
-      <remove_value chance="this.$AddOrderTag" name="this.$ShipName"/>
-      <remove_value chance="this.$AddOrderTag" name="this.$AddOrderTag"/>
-      <remove_value chance="$DEBUG" name="this.$DEBUG"/>
-      <remove_value chance="$DEBUG" name="$DebugFileName"/>
-      <remove_value chance="$DEBUG" name="this.$DebugFolderName"/>
-      <remove_value chance="$DEBUG" name="$DebugScriptName"/>
+      <do_if value="$ADD_ORDER_TAG">
+        <do_if value="this.$ShipName?">
+          <set_object_name object="$Ship" name="this.$ShipName"/>
+        </do_if>
+        <remove_value name="$OrderTag"/>
+        <remove_value name="this.$AddOrderTag"/>
+        <remove_value name="this.$ShipName"/>
+      </do_if>
+      <do_if value="$DEBUG gt 0">
+        <remove_value name="$DebugFileName"/>
+        <remove_value name="$DebugScriptName"/>
+        <remove_value name="this.$DebugFolderName"/>
+        <remove_value name="this.$DEBUG"/>
+      </do_if>
       <remove_value name="$Ship"/>
     </do_if>
   </on_abort>
