@@ -4,6 +4,7 @@
 
   <order id="JP_IdleReturnHome_CP" name="_IdleReturnHome_CP" category="internal" infinite="false">
     <params>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="IDLE_TIME" type="internal" default="600s"/>
       <param name="IDLE_FOLLOW" type="internal" default="false"/>
       <param name="WHO_TO_FOLLOW" type="internal" default="null"/>
@@ -13,6 +14,10 @@
       <param name="IN_WHICH_SECTOR" type="internal" default="[this.ship.sector, this.ship.position]"/>
       <param name="IDLE_MOVE_TO" type="internal" default="false"/>
       <param name="WHERE_TO_MOVE" type="internal" default="[this.ship.sector, this.ship.position]"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="DEBUG_FOLDER_NAME" type="internal" default="''"/>
+      <param name="DEBUG" type="internal" default="0"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     </params>
     <location object="$LOCATION_OBJECT_USED_IN_UI.{1}" position="$LOCATION_OBJECT_USED_IN_UI.{2}" condition="@$LOCATION_OBJECT_USED_IN_UI.{1} and @$LOCATION_OBJECT_USED_IN_UI.{2}"/>
   </order>
@@ -36,11 +41,12 @@
     <set_value name="$ShipsCurrentName" exact="$Ship.knownname"/>
     <set_value name="$LOCATION_OBJECT_USED_IN_UI" exact="null"/>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-    <do_if value="$Ship.defaultorder.$DEBUG">
+    <do_if value="$DEBUG">
+      <set_value name="$DebugFolderName" exact="$DEBUG_FOLDER_NAME"/>
       <set_value name="$DebugScriptName" exact="'JP_IdleReturnHome_CP'"/>
       <set_value name="$DebugFileName" exact="$Ship.idcode + '.' + $DebugScriptName + '.xml.log'"/>
-      <debug_to_file directory="this.$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'" append="false"/>
-      <debug_to_file directory="this.$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Started ~~' + '\n'"/>
+      <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'" append="false"/>
+      <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Started ~~' + '\n'"/>
     </do_if>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <do_if value="$IDLE_FOLLOW">
@@ -150,9 +156,9 @@
           <match_dock size="$Ship.docksize" free="true"/>
         </find_dockingbay>
         <do_if value="not $_FoundDockingBay?">
-          <debug_to_file chance="$Ship.defaultorder.$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-          <debug_to_file chance="$Ship.defaultorder.$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="'~ Found no docking bay!'"/>
-          <debug_to_file chance="$Ship.defaultorder.$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+          <debug_to_file chance="$DEBUG" directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file chance="$DEBUG" directory="$DebugFolderName" name="$DebugFileName" text="'~ Found no docking bay!'"/>
+          <debug_to_file chance="$DEBUG" directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
           <do_if value="$WHERE_TO_DOCK.isclass.{class.station}">
             <set_value name="$WHERE_TO_MOVE" exact="[$WHERE_TO_DOCK, position.[0m, 0m, 0m]]"/>
             <wait min="1s" max="3s"/>
@@ -249,29 +255,18 @@
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
       <label name="FINISH_LBL"/>
-      <debug_to_file chance="$Ship.defaultorder.$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Finished ~~'"/>
-      <debug_to_file chance="$Ship.defaultorder.$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+      <debug_to_file chance="$DEBUG" directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Finished ~~'"/>
+      <debug_to_file chance="$DEBUG" directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
       <wait min="1s" max="3s"/>
 
       <label name="CLEANUP_LBL"/>
-      <do_if value="$Ship.knownname != $ShipsCurrentName">
-        <set_object_name object="$Ship" name="$ShipsCurrentName"/>
-        <remove_value name="$ShipsCurrentName"/>
+      <set_object_name object="$Ship" name="$ShipsCurrentName"/>
+      <do_if value="$DEBUG gt 0">
+        <remove_value name="$DebugFileName"/>
+        <remove_value name="$DebugScriptName"/>
+        <remove_value name="$CurrentSector"/>
       </do_if>
-      <do_if value="$Ship.defaultorder.id != 'JP_CollectPlaceablesS' and $Ship.defaultorder.id != 'JP_CollectPlaceablesG'">
-        <do_if value="this.$AddOrderTag">
-          <set_object_name object="$Ship" name="this.$ShipName"/>
-          <remove_value name="this.$AddOrderTag"/>
-          <remove_value name="this.$ShipName"/>
-        </do_if>
-        <do_if value="this.$DEBUG">
-          <remove_value name="this.$DebugFolderName"/>
-          <remove_value name="this.$DEBUG"/>
-        </do_if>
-      </do_if>
-      <remove_value name="$DebugFileName"/>
-      <remove_value name="$DebugScriptName"/>
-      <remove_value name="$CurrentSector"/>
+      <remove_value name="$ShipsCurrentName"/>
       <remove_value name="$Ship"/>
 
       <label name="END_LBL"/>
@@ -281,24 +276,13 @@
   </attention>
 
   <on_abort>
-    <do_if value="$Ship.knownname != $ShipsCurrentName">
-      <set_object_name object="$Ship" name="$ShipsCurrentName"/>
-      <remove_value name="$ShipsCurrentName"/>
+    <set_object_name object="$Ship" name="$ShipsCurrentName"/>
+    <do_if value="$DEBUG gt 0">
+      <remove_value name="$DebugFileName"/>
+      <remove_value name="$DebugScriptName"/>
+      <remove_value name="$CurrentSector"/>
     </do_if>
-    <do_if value="$Ship.defaultorder.id != 'JP_CollectPlaceablesS' and $Ship.defaultorder.id != 'JP_CollectPlaceablesG'">
-      <do_if value="this.$AddOrderTag">
-        <set_object_name object="$Ship" name="this.$ShipName"/>
-        <remove_value name="this.$AddOrderTag"/>
-        <remove_value name="this.$ShipName"/>
-      </do_if>
-      <do_if value="this.$DEBUG">
-        <remove_value name="this.$DebugFolderName"/>
-        <remove_value name="this.$DEBUG"/>
-      </do_if>
-    </do_if>
-    <remove_value name="$DebugFileName"/>
-    <remove_value name="$DebugScriptName"/>
-    <remove_value name="$CurrentSector"/>
+    <remove_value name="$ShipsCurrentName"/>
     <remove_value name="$Ship"/>
   </on_abort>
 

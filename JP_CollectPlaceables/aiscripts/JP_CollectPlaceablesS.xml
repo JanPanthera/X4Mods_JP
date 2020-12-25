@@ -9,7 +9,7 @@
         <input_param name="class" value="[]"/>
       </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="SECTOR" text="{20001, 201}" comment="Sector" type="object" default="this.sector">
+      <param name="SECTOR" text="{20001, 201}" comment="Sector" type="object" default="this.ship.sector">
         <input_param name="class" value="[class.sector]"/>
       </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -17,48 +17,58 @@
         <input_param name="class" value="[]"/>
       </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="MINES" text="{8888888, 810}" comment="Collect Mines?" type="bool" default="if global.$CollectPlaceablesS_Settings? then global.$CollectPlaceablesS_Settings.{1} else false"/>
-      <param name="SATELLITES" text="{8888888, 811}" comment="Collect Satellites?" type="bool" default="if global.$CollectPlaceablesS_Settings? then global.$CollectPlaceablesS_Settings.{2} else false"/>
-      <param name="NAVBEACONS" text="{8888888, 812}" comment="Collect Navigation Beacons?" type="bool" default="if global.$CollectPlaceablesS_Settings? then global.$CollectPlaceablesS_Settings.{3} else false"/>
-      <param name="RESOURCEPROBES" text="{8888888, 813}" comment="Collect Resource Probes?" type="bool" default="if global.$CollectPlaceablesS_Settings? then global.$CollectPlaceablesS_Settings.{4} else false"/>
-      <param name="LASERTOWERS" text="{8888888, 814}" comment="Collect Laser Towers?" type="bool" default="if global.$CollectPlaceablesS_Settings? then global.$CollectPlaceablesS_Settings.{5} else false"/>
+      <param name="COLLECT_MINES" text="{8888888, 810}" comment="Collect Mines?" type="bool" default="if global.$CollectPlaceablesS_Settings? then global.$CollectPlaceablesS_Settings.{1} else false"/>
+      <param name="COLLECT_SATELLITES" text="{8888888, 811}" comment="Collect Satellites?" type="bool" default="if global.$CollectPlaceablesS_Settings? then global.$CollectPlaceablesS_Settings.{2} else false"/>
+      <param name="COLLECT_NAVBEACONS" text="{8888888, 812}" comment="Collect Navigation Beacons?" type="bool" default="if global.$CollectPlaceablesS_Settings? then global.$CollectPlaceablesS_Settings.{3} else false"/>
+      <param name="COLLECT_RESOURCEPROBES" text="{8888888, 813}" comment="Collect Resource Probes?" type="bool" default="if global.$CollectPlaceablesS_Settings? then global.$CollectPlaceablesS_Settings.{4} else false"/>
+      <param name="COLLECT_LASERTOWERS" text="{8888888, 814}" comment="Collect Laser Towers?" type="bool" default="if global.$CollectPlaceablesS_Settings? then global.$CollectPlaceablesS_Settings.{5} else false"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="PLACE_HOLDER_002" text="----------------------------------" type="object" default="null">
         <input_param name="class" value="[]"/>
       </param>
-      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="SELL_PLACEABLES" text="{8888888, 710}" comment="Sell collected Cargo?" type="bool" default="if global.$CollectDroppedCargo_Settings? then global.$CollectDroppedCargo_Settings.{3} else true"/>
-      <param name="SELL_RANGE" text="{8888888, 711}" comment="Selling range?" type="number" default="if global.$CollectDroppedCargo_Settings? then global.$CollectDroppedCargo_Settings.{4} else 3">
+      <param name="SELL_PLACEABLES" text="{8888888, 820}" comment="Sell Deployables/Placeables?" type="bool" default="if global.$CollectPlaceablesS_Settings? then global.$CollectPlaceablesS_Settings.{6} else true"/>
+      <param name="SELL_RANGE" text="{8888888, 821}" comment="Selling range?" type="number" default="if global.$CollectPlaceablesS_Settings? then global.$CollectPlaceablesS_Settings.{7} else 3">
         <input_param name="min" value="0"/>
         <input_param name="max" value="30"/>
         <input_param name="step" value="1"/>
       </param>
+      <param name="PREFER_BEST_PRICE" text="{8888888, 822}" comment="Prefer best price?" type="bool" default="if global.$CollectPlaceablesS_Settings? then global.$CollectPlaceablesS_Settings.{8} else true"/>
+      <param name="PREFER_OWN_STATIONS" text="{8888888, 823}" comment="Prefer own stations?" type="bool" default="if global.$CollectPlaceablesS_Settings? then global.$CollectPlaceablesS_Settings.{9} else true"/>
+      <param name="SELL_SATELLITE_MK1" text="{8888888, 830}" comment="Sell satellites Mk1?" type="bool" default="if global.$CollectPlaceablesS_Settings? then global.$CollectPlaceablesS_Settings.{10} else true"/>
+      <param name="SELL_SATELLITE_MK2" text="{8888888, 831}" comment="Sell satellites Mk2?" type="bool" default="if global.$CollectPlaceablesS_Settings? then global.$CollectPlaceablesS_Settings.{11} else true"/>
+      <param name="SELL_RESOURCEPROBE" text="{8888888, 832}" comment="Sell resourceprobes?" type="bool" default="if global.$CollectPlaceablesS_Settings? then global.$CollectPlaceablesS_Settings.{12} else true"/>
+      <param name="SELL_WAYPOINTMARKER" text="{8888888, 833}" comment="Sell Navigationbecaons?" type="bool" default="if global.$CollectPlaceablesS_Settings? then global.$CollectPlaceablesS_Settings.{13} else true"/>
+      <param name="SELL_MINE" text="{8888888, 834}" comment="Sell Mines?" type="bool" default="if global.$CollectPlaceablesS_Settings? then global.$CollectPlaceablesS_Settings.{14} else true"/>
+      <param name="SELL_MINE_TRACKER" text="{8888888, 835}" comment="Sell tracker Mines?" type="bool" default="if global.$CollectPlaceablesS_Settings? then global.$CollectPlaceablesS_Settings.{15} else true"/>
+      <param name="SELL_MINE_FRIEND_FOE" text="{8888888, 836}" comment="Sell Friend/Foe Mines?" type="bool" default="if global.$CollectPlaceablesS_Settings? then global.$CollectPlaceablesS_Settings.{16} else true"/>
+      <param name="SELL_LASERTOWER_MK1" text="{8888888, 837}" comment="Sell Lasertowers Mk1?" type="bool" default="if global.$CollectPlaceablesS_Settings? then global.$CollectPlaceablesS_Settings.{17} else true"/>
+      <param name="SELL_LASERTOWER_MK2" text="{8888888, 838}" comment="Sell Lasertowers Mk2?" type="bool" default="if global.$CollectPlaceablesS_Settings? then global.$CollectPlaceablesS_Settings.{18} else true"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="PLACE_HOLDER_003" text="----------------------------------" type="object" default="null">
         <input_param name="class" value="[]"/>
       </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="IDLE" text="{8888888, 880}" comment="Idle?" type="bool" default="if global.$CollectPlaceablesS_Settings? then global.$CollectPlaceablesS_Settings.{6} else true"/>
-      <param name="IDLE_TIME" text="{8888888, 881}" comment="Idle Time" type="time" default="if global.$CollectPlaceablesS_Settings? then global.$CollectPlaceablesS_Settings.{7} else 600s">
+      <param name="IDLE" text="{8888888, 880}" comment="Idle?" type="bool" default="if global.$CollectPlaceablesS_Settings? then global.$CollectPlaceablesS_Settings.{19} else true"/>
+      <param name="IDLE_TIME" text="{8888888, 881}" comment="Idle Time" type="time" default="if global.$CollectPlaceablesS_Settings? then global.$CollectPlaceablesS_Settings.{20} else 600s">
         <input_param name="min" value="60s"/>
         <input_param name="max" value="3600s"/>
         <input_param name="step" value="10s"/>
       </param>
-      <param name="IDLE_FOLLOW" text="{8888888, 882}" comment="Idle: Follow?" type="bool" default="if global.$CollectPlaceablesS_Settings? then global.$CollectPlaceablesS_Settings.{8} else false"/>
-      <param name="WHO_TO_FOLLOW" text="- {8888888, 883}" comment="Who to follow?" type="object" default="if global.$CollectPlaceablesS_Settings? then global.$CollectPlaceablesS_Settings.{9} else null">
+      <param name="IDLE_FOLLOW" text="{8888888, 882}" comment="Idle: Follow?" type="bool" default="if global.$CollectPlaceablesS_Settings? then global.$CollectPlaceablesS_Settings.{21} else false"/>
+      <param name="WHO_TO_FOLLOW" text="- {8888888, 883}" comment="Who to follow?" type="object" default="if global.$CollectPlaceablesS_Settings? then global.$CollectPlaceablesS_Settings.{22} else null">
         <input_param name="class" value="[class.ship]"/>
         <input_param name="owner" value="this.ship.owner"/>
       </param>
-      <param name="IDLE_DOCKING" text="{8888888, 884}" comment="Idle: Docking?" type="bool" default="if global.$CollectPlaceablesS_Settings? then global.$CollectPlaceablesS_Settings.{10} else false"/>
-      <param name="WHERE_TO_DOCK" text="- {8888888, 885}" comment="Where to dock?" type="object" default="if global.$CollectPlaceablesS_Settings? then global.$CollectPlaceablesS_Settings.{11} else null">
+      <param name="IDLE_DOCKING" text="{8888888, 884}" comment="Idle: Docking?" type="bool" default="if global.$CollectPlaceablesS_Settings? then global.$CollectPlaceablesS_Settings.{23} else false"/>
+      <param name="WHERE_TO_DOCK" text="- {8888888, 885}" comment="Where to dock?" type="object" default="if global.$CollectPlaceablesS_Settings? then global.$CollectPlaceablesS_Settings.{24} else null">
         <input_param name="class" value="if this.ship.isclass.[class.ship_s, class.ship_xs] then [class.station, class.ship_m, class.ship_l, class.ship_xl] else [class.station, class.ship_l, class.ship_xl]"/>
       </param>
-      <param name="IDLE_RANDOM_MOVEMENT" text="{8888888, 886}" comment="Idle: Movement?" type="bool" default="if global.$CollectPlaceablesS_Settings? then global.$CollectPlaceablesS_Settings.{12} else false"/>
-      <param name="IN_WHICH_SECTOR" text="- {8888888, 887}" comment="In which sector?" type="position" default="if global.$CollectPlaceablesS_Settings? then global.$CollectPlaceablesS_Settings.{13} else [this.ship.sector, this.ship.position]">
+      <param name="IDLE_RANDOM_MOVEMENT" text="{8888888, 886}" comment="Idle: Movement?" type="bool" default="if global.$CollectPlaceablesS_Settings? then global.$CollectPlaceablesS_Settings.{25} else false"/>
+      <param name="IN_WHICH_SECTOR" text="- {8888888, 887}" comment="In which sector?" type="position" default="if global.$CollectPlaceablesS_Settings? then global.$CollectPlaceablesS_Settings.{26} else [this.ship.sector, this.ship.position]">
         <input_param name="class" value="class.sector"/>
       </param>
-      <param name="IDLE_MOVE_TO" text="{8888888, 888}" comment="Idle: Move to?" type="bool" default="if global.$CollectPlaceablesS_Settings? then global.$CollectPlaceablesS_Settings.{14} else false"/>
-      <param name="WHERE_TO_MOVE" text="- {8888888, 889}" comment="Where to move?" type="position" default="if global.$CollectPlaceablesS_Settings? then global.$CollectPlaceablesS_Settings.{15} else [this.ship.sector, this.ship.position]">
+      <param name="IDLE_MOVE_TO" text="{8888888, 888}" comment="Idle: Move to?" type="bool" default="if global.$CollectPlaceablesS_Settings? then global.$CollectPlaceablesS_Settings.{27} else false"/>
+      <param name="WHERE_TO_MOVE" text="- {8888888, 889}" comment="Where to move?" type="position" default="if global.$CollectPlaceablesS_Settings? then global.$CollectPlaceablesS_Settings.{28} else [this.ship.sector, this.ship.position]">
         <input_param name="class" value="class.sector"/>
       </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -66,8 +76,8 @@
         <input_param name="class" value="[]"/>
       </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="ADD_ORDER_TAG" text="{8888888, 891}" comment="Add order tag?" type="bool" default="if global.$CollectPlaceablesS_Settings? then global.$CollectPlaceablesS_Settings.{16} else true"/>
-      <param name="ORDER_TAG_POSITION" text="{8888888, 892}" comment="Order tag position" type="number" default="if global.$CollectPlaceablesS_Settings? then global.$CollectPlaceablesS_Settings.{17} else 1">
+      <param name="ADD_ORDER_TAG" text="{8888888, 891}" comment="Add order tag?" type="bool" default="if global.$CollectPlaceablesS_Settings? then global.$CollectPlaceablesS_Settings.{29} else true"/>
+      <param name="ORDER_TAG_POSITION" text="{8888888, 892}" comment="Order tag position" type="number" default="if global.$CollectPlaceablesS_Settings? then global.$CollectPlaceablesS_Settings.{30} else 1">
         <input_param name="min" value="0"/>
         <input_param name="max" value="1"/>
         <input_param name="step" value="1"/>
@@ -79,7 +89,7 @@
         <input_param name="class" value="[]"/>
       </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="DEBUG" text="Debug" type="number" default="if global.$CollectPlaceablesS_Settings? then global.$CollectPlaceablesS_Settings.{18} else 0" advanced="true">
+      <param name="DEBUG" text="Debug" type="number" default="if global.$CollectPlaceablesS_Settings? then global.$CollectPlaceablesS_Settings.{31} else 0" advanced="true">
         <input_param name="step" value="100"/>
         <input_param name="min" value="0"/>
         <input_param name="max" value="100"/>
@@ -115,21 +125,20 @@
     <set_value name="$Ship" exact="this.ship"/>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <do_if value="$DEBUG">
-      <set_value name="this.$DEBUG" exact="$DEBUG"/>
-      <set_value name="this.$DebugFolderName" exact="'JP_CollectPlaceables.logs'"/>
+      <set_value name="$DebugFolderName" exact="'JP_CollectPlaceables.logs'"/>
       <set_value name="$DebugScriptName" exact="'JP_CollectPlaceablesS'"/>
       <set_value name="$DebugFileName" exact="$Ship.idcode + '.' + $DebugScriptName + '.xml.log'"/>
-      <debug_to_file directory="this.$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'" append="false"/>
-      <debug_to_file directory="this.$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Started ~~' + '\n'"/>
+      <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'" append="false"/>
+      <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Started ~~' + '\n'"/>
     </do_if>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <do_if value="$ADD_ORDER_TAG">
-      <set_value name="$OrderTag" exact="'#CP-S'"/>
-      <do_if value="not this.$ShipName?">
-        <set_value name="this.$ShipName" exact="$Ship.knownname"/>
+      <substitute_text source="$Ship.knownname" text="$_ResultName">
+        <replace string="(' \033#FFA95908#' + '#CP-S' + '\033X')" with="''"/>
+      </substitute_text>
+      <do_if value="$Ship.knownname == $_ResultName">
+        <set_object_name object="$Ship" name="(if $ORDER_TAG_POSITION then '' else (' \033#FFA95908#' + '#CP-S' + '\033X')) + $Ship.knownname + (if $ORDER_TAG_POSITION then (' \033#FFA95908#' + '#CP-S' + '\033X') else '')"/>
       </do_if>
-      <set_value name="this.$AddOrderTag" exact="$ADD_ORDER_TAG"/>
-      <set_object_name object="$Ship" name="(if $ORDER_TAG_POSITION then '' else (' \033#FFA95908#' + $OrderTag + '\033X')) + this.$ShipName + (if $ORDER_TAG_POSITION then (' \033#FFA95908#' + $OrderTag + '\033X') else '')"/>
     </do_if>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <!-- remove it in a later version.. give time for deleting this unused chunk of memory -->
@@ -148,7 +157,11 @@
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <do_if value="$SAVE_ORDER_SETTINGS">
       <create_list name="$_SettingsList"/>
-      <append_list_elements name="$_SettingsList" other="[$MINES, $SATELLITES, $NAVBEACONS, $RESOURCEPROBES, $LASERTOWERS,
+      <append_list_elements name="$_SettingsList" other="[$COLLECT_MINES, $COLLECT_SATELLITES, 
+                            $COLLECT_NAVBEACONS, $COLLECT_RESOURCEPROBES, $COLLECT_LASERTOWERS,
+                            $SELL_PLACEABLES, $SELL_RANGE, $PREFER_BEST_PRICE, $PREFER_OWN_STATIONS,
+                            $SELL_SATELLITE_MK1, $SELL_SATELLITE_MK2, $SELL_RESOURCEPROBE, $SELL_WAYPOINTMARKER,
+                            $SELL_MINE, $SELL_MINE_TRACKER, $SELL_MINE_FRIEND_FOE, $SELL_LASERTOWER_MK1, $SELL_LASERTOWER_MK2,
                             $IDLE, $IDLE_TIME, $IDLE_FOLLOW, $WHO_TO_FOLLOW, $IDLE_DOCKING, $WHERE_TO_DOCK,
                             $IDLE_RANDOM_MOVEMENT, $IN_WHICH_SECTOR, $IDLE_MOVE_TO, $WHERE_TO_MOVE,
                             $ADD_ORDER_TAG, $ORDER_TAG_POSITION, $DEBUG]"/>
@@ -196,7 +209,24 @@
       <do_if value="$Ship.ammostorage.deployable.free le 0">
         <do_if value="$SELL_PLACEABLES">
           <create_order object="$Ship" id="'JP_EmptyPlaceablesStorage_CP'">
+            <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
             <param name="SELL_RANGE" value="$SELL_RANGE"/>
+            <param name="PREFER_BEST_PRICE" value="$PREFER_BEST_PRICE"/>
+            <param name="PREFER_OWN_STATIONS" value="$PREFER_OWN_STATIONS"/>
+            <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+            <param name="SELL_SATELLITE_MK1" value="$SELL_SATELLITE_MK1"/>
+            <param name="SELL_SATELLITE_MK2" value="$SELL_SATELLITE_MK2"/>
+            <param name="SELL_RESOURCEPROBE" value="$SELL_RESOURCEPROBE"/>
+            <param name="SELL_WAYPOINTMARKER" value="$SELL_WAYPOINTMARKER"/>
+            <param name="SELL_MINE" value="$SELL_MINE"/>
+            <param name="SELL_MINE_TRACKER" value="$SELL_MINE_TRACKER"/>
+            <param name="SELL_MINE_FRIEND_FOE" value="$SELL_MINE_FRIEND_FOE"/>
+            <param name="SELL_LASERTOWER_MK1" value="$SELL_LASERTOWER_MK1"/>
+            <param name="SELL_LASERTOWER_MK2" value="$SELL_LASERTOWER_MK2"/>
+            <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+            <param name="DEBUG_FOLDER_NAME" value="$DebugFolderName"/>
+            <param name="DEBUG" value="$DEBUG"/>
+            <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
           </create_order>
           <wait min="1s" max="3s"/>
         </do_if>
@@ -233,16 +263,16 @@
 
       <!-- which placeables do we want to collect -->
       <create_list name="$_PlaceablesClassesToCollect"/>
-      <do_if value="$MINES">
+      <do_if value="$COLLECT_MINES">
         <append_to_list name="$_PlaceablesClassesToCollect" exact="class.mine"/>
       </do_if>
-      <do_if value="$SATELLITES">
+      <do_if value="$COLLECT_SATELLITES">
         <append_to_list name="$_PlaceablesClassesToCollect" exact="class.satellite"/>
       </do_if>
-      <do_if value="$NAVBEACONS">
+      <do_if value="$COLLECT_NAVBEACONS">
         <append_to_list name="$_PlaceablesClassesToCollect" exact="class.navbeacon"/>
       </do_if>
-      <do_if value="$RESOURCEPROBES">
+      <do_if value="$COLLECT_RESOURCEPROBES">
         <append_to_list name="$_PlaceablesClassesToCollect" exact="class.resourceprobe"/>
       </do_if>
 
@@ -255,21 +285,12 @@
         </find_object>
       </do_if>
       <remove_value name="$_PlaceablesClassesToCollect"/>
-      <do_if value="$LASERTOWERS">
+      <do_if value="$COLLECT_LASERTOWERS">
         <find_object name="$_FoundPlaceables" space="$SECTOR" multiple="true" append="true">
           <match shiptype="shiptype.lasertower"/>
           <match trueowner="$Ship.owner"/>
         </find_object>
       </do_if>
-
-      <!-- $_FoundPlaceables debug -->
-      <debug_to_file chance="$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-      <debug_to_file chance="$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="' ~ $_FoundPlaceables.count: ' + $_FoundPlaceables.count"/>
-      <debug_to_file chance="$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-      <do_for_each chance="$DEBUG" name="$_FoundPlaceable" in="$_FoundPlaceables">
-        <debug_to_file chance="$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="'$_FoundPlaceable: ' + $_FoundPlaceable"/>
-      </do_for_each>
-      <debug_to_file chance="$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
 
       <!-- Nothing found go idle -->
       <do_if value="$_FoundPlaceables.count le 0">
@@ -287,6 +308,8 @@
         <do_if value="$Ship.ammostorage.deployable.free gt 0">
           <create_order id="'JP_CollectPlaceable_CP'" object="$Ship">
             <param name="PLACEABLE" value="$_FoundPlaceable"/>
+            <param name="DEBUG_FOLDER_NAME" value="$DebugFolderName"/>
+            <param name="DEBUG" value="$DEBUG"/>
           </create_order>
           <!-- Give time for creation and execution of the order -->
           <wait min="1s" max="3s"/>
@@ -315,6 +338,8 @@
           <param name="IN_WHICH_SECTOR" value="$IN_WHICH_SECTOR"/>
           <param name="IDLE_MOVE_TO" value="$IDLE_MOVE_TO"/>
           <param name="WHERE_TO_MOVE" value="$WHERE_TO_MOVE"/>
+          <param name="DEBUG_FOLDER_NAME" value="$DebugFolderName"/>
+          <param name="DEBUG" value="$DEBUG"/>
         </create_order>
       </do_if>
       <wait min="3s" max="6s"/>
@@ -323,24 +348,17 @@
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
       <label name="FINISH_LBL"/>
-      <debug_to_file chance="$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Finished ~~'"/>
-      <debug_to_file chance="$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+      <do_if value="$DEBUG gt 0">
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Finished ~~'"/>
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+      </do_if>
       <wait min="1s" max="3s"/>
 
       <label name="CLEANUP_LBL"/>
-      <do_if value="$ADD_ORDER_TAG">
-        <do_if value="this.$ShipName?">
-          <set_object_name object="$Ship" name="this.$ShipName"/>
-        </do_if>
-        <remove_value name="$OrderTag"/>
-        <remove_value name="this.$AddOrderTag"/>
-        <remove_value name="this.$ShipName"/>
-      </do_if>
       <do_if value="$DEBUG gt 0">
         <remove_value name="$DebugFileName"/>
         <remove_value name="$DebugScriptName"/>
-        <remove_value name="this.$DebugFolderName"/>
-        <remove_value name="this.$DEBUG"/>
+        <remove_value name="$DebugFolderName"/>
       </do_if>
       <remove_value name="$Ship"/>
 
@@ -353,23 +371,12 @@
   </attention>
 
   <on_abort>
-    <do_if value="$Ship.orders.count == 0">
-      <do_if value="$ADD_ORDER_TAG">
-        <do_if value="this.$ShipName?">
-          <set_object_name object="$Ship" name="this.$ShipName"/>
-        </do_if>
-        <remove_value name="$OrderTag"/>
-        <remove_value name="this.$AddOrderTag"/>
-        <remove_value name="this.$ShipName"/>
-      </do_if>
-      <do_if value="$DEBUG gt 0">
-        <remove_value name="$DebugFileName"/>
-        <remove_value name="$DebugScriptName"/>
-        <remove_value name="this.$DebugFolderName"/>
-        <remove_value name="this.$DEBUG"/>
-      </do_if>
-      <remove_value name="$Ship"/>
+    <do_if value="$DEBUG gt 0">
+      <remove_value name="$DebugFileName"/>
+      <remove_value name="$DebugScriptName"/>
+      <remove_value name="$DebugFolderName"/>
     </do_if>
+    <remove_value name="$Ship"/>
   </on_abort>
 
 </aiscript>

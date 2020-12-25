@@ -4,7 +4,12 @@
 
   <order id="JP_CollectPlaceable_CP" name="_CollectPlaceable_CP" category="navigation" infinite="false">
     <params>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="PLACEABLE" type="internal" default="null"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="DEBUG_FOLDER_NAME" type="internal" default="''"/>
+      <param name="DEBUG" type="internal" default="0"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     </params>
     <location object="$LOCATION_OBJECT_USED_IN_UI" condition="$LOCATION_OBJECT_USED_IN_UI? and @$LOCATION_OBJECT_USED_IN_UI != null"/>
   </order>
@@ -25,13 +30,16 @@
   <init>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <set_value name="$Ship" exact="this.ship"/>
-    <set_value name="$ExpMultiplier" exact="0.88"/>
+    <set_value name="$ExpMultiplier" exact="0.86"/>
     <set_value name="$LOCATION_OBJECT_USED_IN_UI" exact="$PLACEABLE"/>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-    <set_value chance="this.$DEBUG" name="$DebugScriptName" exact="'JP_CollectPlaceable_CP'"/>
-    <set_value chance="this.$DEBUG" name="$DebugFileName" exact="$Ship.idcode + '.' + $DebugScriptName + '.xml.log'"/>
-    <debug_to_file chance="this.$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'" append="false"/>
-    <debug_to_file chance="this.$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Started ~~' + '\n'"/>
+    <do_if value="$DEBUG gt 0">
+      <set_value name="$DebugFolderName" exact="$DEBUG_FOLDER_NAME"/>
+      <set_value name="$DebugScriptName" exact="'JP_CollectPlaceable_CP'"/>
+      <set_value name="$DebugFileName" exact="$Ship.idcode + '.' + $DebugScriptName + '.xml.log'"/>
+      <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'" append="false"/>
+      <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Started ~~' + '\n'"/>
+    </do_if>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
   </init>
 
@@ -56,7 +64,7 @@
       </do_if>
       <remove_value name="$_TempPosition"/>
       <stop_moving object="$Ship" immediate="true"/>
-      <wait min="3s" max="6s"/>
+      <wait min="2s" max="5s"/>
 
       <collect_deployable object="$Ship" deployable="$PLACEABLE"/>
       <apply_experience entity="$Ship.pilot" experience="'JP_SHIP_PLACEABLE_COLLECTED'" factor="$ExpMultiplier"/>
@@ -66,19 +74,17 @@
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
       <label name="FINISH_LBL"/>
-      <debug_to_file chance="this.$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Finished ~~'"/>
-      <debug_to_file chance="this.$DEBUG" directory="this.$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+      <do_if value="$DEBUG gt 0">
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Finished ~~'"/>
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+      </do_if>
       <wait min="1s" max="3s"/>
 
       <label name="CLEANUP_LBL"/>
-      <remove_value chance="this.$DEBUG" name="$DebugFileName"/>
-      <remove_value chance="this.$DEBUG" name="$DebugScriptName"/>
-      <do_if value="$Ship.defaultorder.id != 'JP_CollectPlaceablesS' and $Ship.defaultorder.id != 'JP_CollectPlaceablesG'">
-        <set_object_name object="$Ship" name="this.$ShipName"/>
-        <remove_value chance="this.$DEBUG" name="this.$DebugFolderName"/>
-        <remove_value chance="this.$DEBUG" name="this.$DEBUG"/>
-        <remove_value chance="this.$AddOrderTag" name="this.$ShipName"/>
-        <remove_value chance="this.$AddOrderTag" name="this.$AddOrderTag"/>
+      <do_if value="$DEBUG gt 0">
+        <remove_value name="$DebugFileName"/>
+        <remove_value name="$DebugScriptName"/>
+        <remove_value name="$CurrentSector"/>
       </do_if>
       <remove_value name="$ExpMultiplier"/>
       <remove_value name="$Ship"/>
@@ -90,14 +96,10 @@
   </attention>
 
   <on_abort>
-    <remove_value chance="this.$DEBUG" name="$DebugFileName"/>
-    <remove_value chance="this.$DEBUG" name="$DebugScriptName"/>
-    <do_if value="$Ship.defaultorder.id != 'JP_CollectPlaceablesS' and $Ship.defaultorder.id != 'JP_CollectPlaceablesG'">
-      <set_object_name object="$Ship" name="this.$ShipName"/>
-      <remove_value chance="this.$DEBUG" name="this.$DebugFolderName"/>
-      <remove_value chance="this.$DEBUG" name="this.$DEBUG"/>
-      <remove_value chance="this.$AddOrderTag" name="this.$ShipName"/>
-      <remove_value chance="this.$AddOrderTag" name="this.$AddOrderTag"/>
+    <do_if value="$DEBUG gt 0">
+      <remove_value name="$DebugFileName"/>
+      <remove_value name="$DebugScriptName"/>
+      <remove_value name="$CurrentSector"/>
     </do_if>
     <remove_value name="$ExpMultiplier"/>
     <remove_value name="$Ship"/>

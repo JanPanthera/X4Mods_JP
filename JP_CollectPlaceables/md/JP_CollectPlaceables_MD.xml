@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<mdscript name="JP_CollectPlaceables_MD" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="md.xsd">
+  <cues>
+
+    <cue name="JP_CollectPlaceablesDebug_MD" instantiate="true" checkinterval="1s" checktime="player.age">
+      <conditions>
+      </conditions>
+      <actions>
+
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <set_value name="$DEBUG" exact="0"/>
+        <do_if value="$DEBUG gt 0">
+          <set_value name="$DebugScriptName" exact="'JP_CollectPlaceablesDebug_MD'"/>
+          <set_value name="$DebugFolderName" exact="'JP_CollectPlaceables.logs'"/>
+          <set_value name="$DebugFileName" exact="$DebugScriptName + '.xml.log'"/>
+          <debug_to_file append="false" directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Started ~~' + '\n'"/>
+        </do_if>
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+        <do_if value="$DEBUG gt 0">
+
+          <do_if value="global.$CollectPlaceablesS_Settings?">
+            <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+            <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'global.$CollectPlaceablesS_Settings'"/>
+            <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+            <do_for_each name="$_Entry" in="global.$CollectPlaceablesS_Settings">
+              <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="' ~ ' + $_Entry"/>
+            </do_for_each>
+            <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+          </do_if>
+
+          <do_if value="global.$CollectPlaceablesG_Settings?">
+            <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+            <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'global.$CollectPlaceablesG_Settings'"/>
+            <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+            <do_for_each name="$_Entry" in="global.$CollectPlaceablesG_Settings">
+              <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="' ~ ' + $_Entry"/>
+            </do_for_each>
+            <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+          </do_if>
+
+        </do_if>
+
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <do_if value="$DEBUG gt 0">
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Finished ~~'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+          <remove_value name="$DebugFileName"/>
+          <remove_value name="$DebugFolderName"/>
+          <remove_value name="$DebugScriptName"/>
+          <remove_value name="$DEBUG"/>
+        </do_if>
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      </actions>
+    </cue>
+
+    <cue name="JP_CollectPlaceablesCleanup_MD" instantiate="true" checkinterval="1s" checktime="player.age + 1s">
+      <conditions>
+      </conditions>
+      <actions>
+
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <set_value name="$DEBUG" exact="0"/>
+        <do_if value="$DEBUG gt 0">
+          <set_value name="$DebugScriptName" exact="'JP_CollectPlaceablesCleanup_MD'"/>
+          <set_value name="$DebugFolderName" exact="'JP_CollectPlaceables.logs'"/>
+          <set_value name="$DebugFileName" exact="$DebugScriptName + '.xml.log'"/>
+          <debug_to_file append="false" directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Started ~~' + '\n'"/>
+        </do_if>
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+        <find_ship name="$Ships" space="player.galaxy" multiple="true">
+          <match owner="faction.player"/>
+        </find_ship>
+
+        <do_if value="$Ships.count gt 0">
+          <do_for_each name="$_Ship" in="$Ships">
+
+            <!-- Get rid of the Order tag -->
+            <do_if value="@$_Ship.defaultorder.id != 'JP_CollectPlaceablesS' and @$_Ship.defaultorder.id != 'JP_CollectPlaceablesG'">
+              <substitute_text source="$_Ship.knownname" text="$_ResultName">
+                <replace string="(' \033#FFA95908#' + '#CP-S' + '\033X')" with="''"/>
+                <replace string="(' \033#FFA95908#' + '#CP-G' + '\033X')" with="''"/>
+              </substitute_text>
+              <do_if value="$_Ship.knownname != $_ResultName">
+                <set_object_name object="$_Ship" name="$_ResultName"/>
+              </do_if>
+            </do_if>
+
+          </do_for_each>
+        </do_if>
+
+        <remove_value name="$Ships"/>
+
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <do_if value="$DEBUG gt 0">
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Finished ~~'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+          <remove_value name="$DebugFileName"/>
+          <remove_value name="$DebugFolderName"/>
+          <remove_value name="$DebugScriptName"/>
+          <remove_value name="$DEBUG"/>
+        </do_if>
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      </actions>
+    </cue>
+
+  </cues>
+</mdscript>

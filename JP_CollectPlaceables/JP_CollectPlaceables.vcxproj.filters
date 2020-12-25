@@ -59,6 +59,7 @@
     <Xml Include="aiscripts\JP_IdleReturnHome_CP.xml" />
     <Xml Include="aiscripts\JP_EmptyPlaceablesStorage_CP.xml" />
     <Xml Include="aiscripts\JP_CollectPlaceable_CP.xml" />
+    <Xml Include="md\JP_CollectPlaceables_MD.xml" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="changelog.txt" />

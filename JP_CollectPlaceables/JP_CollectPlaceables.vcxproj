@@ -150,6 +150,7 @@
     <Xml Include="JP_CollectPlaceables\t\0001-L088.xml" />
     <Xml Include="libraries\experiences.xml" />
     <Xml Include="libraries\icons.xml" />
+    <Xml Include="md\JP_CollectPlaceables_MD.xml" />
     <Xml Include="t\0001-L007.xml" />
     <Xml Include="t\0001-L033.xml" />
     <Xml Include="t\0001-L034.xml" />
