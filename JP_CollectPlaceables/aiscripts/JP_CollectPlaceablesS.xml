@@ -26,7 +26,7 @@
       <param name="PLACE_HOLDER_002" text="----------------------------------" type="object" default="null">
         <input_param name="class" value="[]"/>
       </param>
-      <param name="SELL_PLACEABLES" text="{8888888, 820}" comment="Sell Deployables/Placeables?" type="bool" default="if global.$CollectPlaceablesS_Settings? then global.$CollectPlaceablesS_Settings.{6} else true"/>
+      <param name="SELL_PLACEABLES" text="{8888888, 820}" comment="Sell Placeables?" type="bool" default="if global.$CollectPlaceablesS_Settings? then global.$CollectPlaceablesS_Settings.{6} else true"/>
       <param name="SELL_RANGE" text="{8888888, 821}" comment="Selling range?" type="number" default="if global.$CollectPlaceablesS_Settings? then global.$CollectPlaceablesS_Settings.{7} else 3">
         <input_param name="min" value="0"/>
         <input_param name="max" value="30"/>
@@ -34,15 +34,15 @@
       </param>
       <param name="PREFER_BEST_PRICE" text="{8888888, 822}" comment="Prefer best price?" type="bool" default="if global.$CollectPlaceablesS_Settings? then global.$CollectPlaceablesS_Settings.{8} else true"/>
       <param name="PREFER_OWN_STATIONS" text="{8888888, 823}" comment="Prefer own stations?" type="bool" default="if global.$CollectPlaceablesS_Settings? then global.$CollectPlaceablesS_Settings.{9} else true"/>
-      <param name="SELL_SATELLITE_MK1" text="{8888888, 830}" comment="Sell satellites Mk1?" type="bool" default="if global.$CollectPlaceablesS_Settings? then global.$CollectPlaceablesS_Settings.{10} else true"/>
-      <param name="SELL_SATELLITE_MK2" text="{8888888, 831}" comment="Sell satellites Mk2?" type="bool" default="if global.$CollectPlaceablesS_Settings? then global.$CollectPlaceablesS_Settings.{11} else true"/>
-      <param name="SELL_RESOURCEPROBE" text="{8888888, 832}" comment="Sell resourceprobes?" type="bool" default="if global.$CollectPlaceablesS_Settings? then global.$CollectPlaceablesS_Settings.{12} else true"/>
-      <param name="SELL_WAYPOINTMARKER" text="{8888888, 833}" comment="Sell Navigationbecaons?" type="bool" default="if global.$CollectPlaceablesS_Settings? then global.$CollectPlaceablesS_Settings.{13} else true"/>
-      <param name="SELL_MINE" text="{8888888, 834}" comment="Sell Mines?" type="bool" default="if global.$CollectPlaceablesS_Settings? then global.$CollectPlaceablesS_Settings.{14} else true"/>
-      <param name="SELL_MINE_TRACKER" text="{8888888, 835}" comment="Sell tracker Mines?" type="bool" default="if global.$CollectPlaceablesS_Settings? then global.$CollectPlaceablesS_Settings.{15} else true"/>
-      <param name="SELL_MINE_FRIEND_FOE" text="{8888888, 836}" comment="Sell Friend/Foe Mines?" type="bool" default="if global.$CollectPlaceablesS_Settings? then global.$CollectPlaceablesS_Settings.{16} else true"/>
-      <param name="SELL_LASERTOWER_MK1" text="{8888888, 837}" comment="Sell Lasertowers Mk1?" type="bool" default="if global.$CollectPlaceablesS_Settings? then global.$CollectPlaceablesS_Settings.{17} else true"/>
-      <param name="SELL_LASERTOWER_MK2" text="{8888888, 838}" comment="Sell Lasertowers Mk2?" type="bool" default="if global.$CollectPlaceablesS_Settings? then global.$CollectPlaceablesS_Settings.{18} else true"/>
+      <param name="SELL_SATELLITE_MK1" text="- {8888888, 830}" comment="Sell satellites Mk1?" type="bool" default="if global.$CollectPlaceablesS_Settings? then global.$CollectPlaceablesS_Settings.{10} else true"/>
+      <param name="SELL_SATELLITE_MK2" text="- {8888888, 831}" comment="Sell satellites Mk2?" type="bool" default="if global.$CollectPlaceablesS_Settings? then global.$CollectPlaceablesS_Settings.{11} else true"/>
+      <param name="SELL_RESOURCEPROBE" text="- {8888888, 832}" comment="Sell resourceprobes?" type="bool" default="if global.$CollectPlaceablesS_Settings? then global.$CollectPlaceablesS_Settings.{12} else true"/>
+      <param name="SELL_WAYPOINTMARKER" text="- {8888888, 833}" comment="Sell Navigationbecaons?" type="bool" default="if global.$CollectPlaceablesS_Settings? then global.$CollectPlaceablesS_Settings.{13} else true"/>
+      <param name="SELL_MINE" text="- {8888888, 834}" comment="Sell Mines?" type="bool" default="if global.$CollectPlaceablesS_Settings? then global.$CollectPlaceablesS_Settings.{14} else true"/>
+      <param name="SELL_MINE_TRACKER" text="- {8888888, 835}" comment="Sell tracker Mines?" type="bool" default="if global.$CollectPlaceablesS_Settings? then global.$CollectPlaceablesS_Settings.{15} else true"/>
+      <param name="SELL_MINE_FRIEND_FOE" text="- {8888888, 836}" comment="Sell Friend/Foe Mines?" type="bool" default="if global.$CollectPlaceablesS_Settings? then global.$CollectPlaceablesS_Settings.{16} else true"/>
+      <param name="SELL_LASERTOWER_MK1" text="- {8888888, 837}" comment="Sell Lasertowers Mk1?" type="bool" default="if global.$CollectPlaceablesS_Settings? then global.$CollectPlaceablesS_Settings.{17} else true"/>
+      <param name="SELL_LASERTOWER_MK2" text="- {8888888, 838}" comment="Sell Lasertowers Mk2?" type="bool" default="if global.$CollectPlaceablesS_Settings? then global.$CollectPlaceablesS_Settings.{18} else true"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="PLACE_HOLDER_003" text="----------------------------------" type="object" default="null">
         <input_param name="class" value="[]"/>
@@ -133,12 +133,14 @@
     </do_if>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <do_if value="$ADD_ORDER_TAG">
+      <set_value name="$_OrderTag" exact="'#CP-S'"/>
       <substitute_text source="$Ship.knownname" text="$_ResultName">
-        <replace string="(' \033#FFA95908#' + '#CP-S' + '\033X')" with="''"/>
+        <replace string="(' \033#FFA95908#' + $_OrderTag + '\033X')" with="''"/>
       </substitute_text>
       <do_if value="$Ship.knownname == $_ResultName">
-        <set_object_name object="$Ship" name="(if $ORDER_TAG_POSITION then '' else (' \033#FFA95908#' + '#CP-S' + '\033X')) + $Ship.knownname + (if $ORDER_TAG_POSITION then (' \033#FFA95908#' + '#CP-S' + '\033X') else '')"/>
+        <set_object_name object="$Ship" name="(if $ORDER_TAG_POSITION then '' else (' \033#FFA95908#' + $_OrderTag + '\033X')) + $Ship.knownname + (if $ORDER_TAG_POSITION then (' \033#FFA95908#' + $_OrderTag + '\033X') else '')"/>
       </do_if>
+      <remove_value name="$_OrderTag"/>
     </do_if>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <!-- remove it in a later version.. give time for deleting this unused chunk of memory -->
@@ -224,7 +226,7 @@
             <param name="SELL_LASERTOWER_MK1" value="$SELL_LASERTOWER_MK1"/>
             <param name="SELL_LASERTOWER_MK2" value="$SELL_LASERTOWER_MK2"/>
             <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-            <param name="DEBUG_FOLDER_NAME" value="$DebugFolderName"/>
+            <param name="DEBUG_FOLDER_NAME" value="@$DebugFolderName"/>
             <param name="DEBUG" value="$DEBUG"/>
             <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
           </create_order>
@@ -235,30 +237,6 @@
           <wait min="1s" max="3s"/>
           <resume label="IDLE_RETURN_HOME_LBL"/>
         </do_else>
-      </do_if>
-
-      <!-- Are we in the right sector? -->
-      <label name="MOVE_TO_SECTOR_LBL"/>
-      <do_if value="$Ship.sector != $SECTOR">
-        <set_command command="command.move" param="$SECTOR"/>
-        <set_value name="$LOCATION_OBJECT_USED_IN_UI" exact="$SECTOR"/>
-        <run_script name="'move.generic'">
-          <param name="destination" value="$SECTOR"/>
-          <param name="endintargetzone" value="true"/>
-          <param name="recallsubordinates" value="true"/>
-        </run_script>
-        <do_if value="this.zone.isclass.highway">
-          <get_safe_pos result="$_SafePos" zone="$Ship.zone" object="$Ship" direction="quadrant.front" radius="$Ship.size" angle="45deg"/>
-          <move_to object="$Ship" destination="$Ship.zone" uselocalhighways="false" finishonapproach="true" abortpath="true">
-            <position value="$_SafePos"/>
-          </move_to>
-          <remove_value name="$_SafePos"/>
-        </do_if>
-        <wait min="1s" max="3s"/>
-        <remove_value name="$LOCATION_OBJECT_USED_IN_UI"/>
-        <do_if value="$Ship.sector != $SECTOR">
-          <resume label="MOVE_TO_SECTOR_LBL"/>
-        </do_if>
       </do_if>
 
       <!-- which placeables do we want to collect -->
@@ -308,7 +286,7 @@
         <do_if value="$Ship.ammostorage.deployable.free gt 0">
           <create_order id="'JP_CollectPlaceable_CP'" object="$Ship">
             <param name="PLACEABLE" value="$_FoundPlaceable"/>
-            <param name="DEBUG_FOLDER_NAME" value="$DebugFolderName"/>
+            <param name="DEBUG_FOLDER_NAME" value="@$DebugFolderName"/>
             <param name="DEBUG" value="$DEBUG"/>
           </create_order>
           <!-- Give time for creation and execution of the order -->
@@ -338,7 +316,7 @@
           <param name="IN_WHICH_SECTOR" value="$IN_WHICH_SECTOR"/>
           <param name="IDLE_MOVE_TO" value="$IDLE_MOVE_TO"/>
           <param name="WHERE_TO_MOVE" value="$WHERE_TO_MOVE"/>
-          <param name="DEBUG_FOLDER_NAME" value="$DebugFolderName"/>
+          <param name="DEBUG_FOLDER_NAME" value="@$DebugFolderName"/>
           <param name="DEBUG" value="$DEBUG"/>
         </create_order>
       </do_if>

@@ -1,6 +1,8 @@
-~ Added: saving and deleting of the most settings
+~ Added: selling of the collected deployables/placables
+~ Added: saving and deleting of the order settings
 ~ Added: order name is now colored
 ~ Updated: refactoring
 ~ Updated: language files restructuring
 ~ Updated: added some translations.. (google translate)
-~ Updated: refactored IdleReturnHome a bit
+~ Updated: refactored IdleReturnHome
+~ Updated: reworked Order Tag.. how it will added and removed again..

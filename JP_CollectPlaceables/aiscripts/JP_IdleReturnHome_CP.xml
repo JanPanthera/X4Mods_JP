@@ -91,6 +91,11 @@
       </do_if>
     </do_if>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <do_if value="not $IDLE_FOLLOW and not $IDLE_DOCKING and not $IDLE_RANDOM_MOVEMENT and not $IDLE_MOVE_TO">
+      <set_value name="$IDLE_RANDOM_MOVEMENT" exact="true"/>
+    </do_if>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
   </init>
 
   <attention min="unknown">

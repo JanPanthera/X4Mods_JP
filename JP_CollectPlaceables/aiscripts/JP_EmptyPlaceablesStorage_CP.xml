@@ -117,7 +117,7 @@
         <match cansupplyclass="$Ship.class"/>
         <match knownto="$Ship.owner"/>
         <match_relation_to faction="$Ship.owner" comparison="ge" relation="neutral"/>
-        <match_gate_distance object="$Ship.defaultorder.$SECTOR" max="$SELL_RANGE"/>
+        <match_gate_distance object="$Ship.sector" max="$SELL_RANGE"/>
         <match_use_blacklist object="$Ship" type="blacklisttype.sectortravel" group="$blacklistgroup"/>
         <match_use_blacklist object="$Ship" type="blacklisttype.sectoractivity" group="$blacklistgroup"/>
         <match_use_blacklist object="$Ship" type="blacklisttype.objectactivity" group="$blacklistgroup"/>
@@ -135,11 +135,13 @@
         <!-- Do we want sell at the station with the best prices? -->
         <do_if value="$PREFER_BEST_PRICE">
           <do_if value="$PREFER_OWN_STATIONS">
-            <do_for_each name="$_Station" in="$_Stations" counter="$_it">
-              <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+            <debug_to_file chance="$DEBUG" directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+            <debug_to_file chance="$DEBUG" directory="$DebugFolderName" name="$DebugFileName" text="'Found stations: ' + $_Stations.count"/>
+            <debug_to_file chance="$DEBUG" directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+            <do_for_each chance="$DEBUG" name="$_Station" in="$_Stations" counter="$_it">
               <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'$_Station.knownname: ' + $_Station.knownname + ' ~ ' + '$_Station.owner: ' + $_Station.owner"/>
-              <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
             </do_for_each>
+            <debug_to_file chance="$DEBUG" directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
             <do_for_each name="$_Station" in="$_Stations" counter="$_it">
               <do_if value="$_Station.owner == $Ship.owner">
                 <set_value name="$Station" exact="$_Stations.{$_it}"/>
@@ -168,7 +170,7 @@
           </do_if>
         </do_if>
         <do_else>
-          <!-- Or do we want sell just at the nearest station? -->
+          <!-- Or do we want to sell just at the nearest station? -->
           <set_value name="$MoneyToTransfer" exact="0Cr"/>
           <do_if value="$PREFER_OWN_STATIONS">
             <do_for_each name="$_Station_it" in="$_Stations" counter="$_it">
@@ -186,10 +188,12 @@
           </do_for_each>
         </do_else>
 
-        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'$_Station.knownname: ' + $_Station.knownname"/>
-        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'$MoneyToTransfer: ' + $MoneyToTransfer + ' Cr'"/>
-        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+        <do_if value="$DEBUG gt 0">
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'$_Station.knownname: ' + $_Station.knownname"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'$MoneyToTransfer: ' + $MoneyToTransfer + ' Cr'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+        </do_if>
 
         <add_build_to_modify_ship buildobject="$Ship" object="$_Station" ammo="$_ResupplyAmmoTable" immediate="true" price="$MoneyToTransfer" internal="true"/>
         <set_value name="this.$_Station" exact="$_Station"/>

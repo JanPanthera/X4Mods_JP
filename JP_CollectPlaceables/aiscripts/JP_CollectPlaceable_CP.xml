@@ -31,7 +31,7 @@
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <set_value name="$Ship" exact="this.ship"/>
     <set_value name="$ExpMultiplier" exact="0.86"/>
-    <set_value name="$LOCATION_OBJECT_USED_IN_UI" exact="$PLACEABLE"/>
+    <set_value name="$LOCATION_OBJECT_USED_IN_UI" exact="null"/>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <do_if value="$DEBUG gt 0">
       <set_value name="$DebugFolderName" exact="$DEBUG_FOLDER_NAME"/>
@@ -51,9 +51,35 @@
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
+      <!-- Are we in the right sector? -->
+      <label name="MOVE_TO_SECTOR_LBL"/>
+      <do_if value="$Ship.sector != $PLACEABLE.sector">
+        <set_command command="command.move" param="$PLACEABLE.sector"/>
+        <set_value name="$LOCATION_OBJECT_USED_IN_UI" exact="$PLACEABLE.sector"/>
+        <run_script name="'move.generic'">
+          <param name="destination" value="$PLACEABLE.sector"/>
+          <param name="endintargetzone" value="true"/>
+          <param name="recallsubordinates" value="true"/>
+        </run_script>
+        <wait min="1s" max="2s"/>
+        <do_if value="this.zone.isclass.highway">
+          <get_safe_pos result="$_SafePos" zone="$Ship.zone" object="$Ship" direction="quadrant.front" radius="$Ship.size" angle="45deg"/>
+          <move_to object="$Ship" destination="$Ship.zone" uselocalhighways="false" finishonapproach="true" abortpath="true">
+            <position value="$_SafePos"/>
+          </move_to>
+          <remove_value name="$_SafePos"/>
+        </do_if>
+        <wait min="1s" max="3s"/>
+        <remove_value name="$LOCATION_OBJECT_USED_IN_UI"/>
+        <do_if value="$Ship.sector != $PLACEABLE.sector">
+          <resume label="MOVE_TO_SECTOR_LBL"/>
+        </do_if>
+      </do_if>
+
       <set_command command="command.collect" param="$PLACEABLE"/>
 
       <label name="MOVING_LBL"/>
+      <set_value name="$LOCATION_OBJECT_USED_IN_UI" exact="$PLACEABLE"/>
       <get_safe_pos result="$_TempPosition" zone="$PLACEABLE.sector" object="$PLACEABLE" directionobject="$Ship" radius="$Ship.size" ignored="$Ship"/>
       <move_to object="$Ship" destination="$PLACEABLE.sector" finishonapproach="false" forceposition="true" travel="true">
         <position value="$_TempPosition"/>
