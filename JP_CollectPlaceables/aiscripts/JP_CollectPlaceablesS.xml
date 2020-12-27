@@ -26,6 +26,7 @@
       <param name="PLACE_HOLDER_002" text="----------------------------------" type="object" default="null">
         <input_param name="class" value="[]"/>
       </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="SELL_PLACEABLES" text="{8888888, 820}" comment="Sell Placeables?" type="bool" default="if global.$CollectPlaceablesS_Settings? then global.$CollectPlaceablesS_Settings.{6} else true"/>
       <param name="SELL_RANGE" text="{8888888, 821}" comment="Selling range?" type="number" default="if global.$CollectPlaceablesS_Settings? then global.$CollectPlaceablesS_Settings.{7} else 3">
         <input_param name="min" value="0"/>
@@ -341,7 +342,7 @@
       <remove_value name="$Ship"/>
 
       <label name="END_LBL"/>
-      <set_order_syncpoint_reached order="this.ship.order"/>
+      <set_order_syncpoint_reached order="this.ship.defaultorder"/>
       <wait min="1s" max="3s"/>
       <cancel_order order="this.ship.defaultorder"/>
 

@@ -93,11 +93,11 @@
       </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     </params>
-    <skill min="25"/>
+    <skill min="30"/>
     <requires>
       <match shiptype="shiptype.lasertower" negate="true"/>
     </requires>
-    <location object="$LOCATION_OBJECT_USED_IN_UI" condition="$LOCATION_OBJECT_USED_IN_UI? and @$LOCATION_OBJECT_USED_IN_UI != null"/>
+    <location object="$LOCATION_OBJECT_USED_IN_UI" condition="@$LOCATION_OBJECT_USED_IN_UI != null"/>
   </order>
 
   <interrupts>
@@ -230,7 +230,7 @@
           <wait min="1s" max="3s"/>
         </do_if>
         <do_else>
-          <show_help duration="5s" allowclose="true" log="true" custom=" $DebugScriptName + ' ~\n' + $Ship.knownname + ' [' + $Ship.idcode + ']\n\n' + '{8888888, 820}'"/>
+          <show_help duration="5s" allowclose="true" log="true" custom="$DebugScriptName + ' ~\n' + $Ship.knownname + ' [' + $Ship.idcode + ']\n\n' + '{8888888, 820}'"/>
           <wait min="1s" max="3s"/>
           <resume label="IDLE_RETURN_HOME_LBL"/>
         </do_else>
@@ -344,9 +344,9 @@
       <remove_value name="$Ship"/>
 
       <label name="END_LBL"/>
-      <set_order_syncpoint_reached order="this.ship.order"/>
+      <set_order_syncpoint_reached order="this.ship.defaultorder"/>
       <wait min="1s" max="3s"/>
-      <cancel_all_orders object="this.ship"/>
+      <cancel_order order="this.ship.defaultorder"/>
 
     </actions>
   </attention>

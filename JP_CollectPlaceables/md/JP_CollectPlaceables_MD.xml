@@ -5,11 +5,12 @@
 
     <cue name="JP_CollectPlaceablesDebug_MD" instantiate="true" checkinterval="1s" checktime="player.age">
       <conditions>
+        <check_value value="false"/>
       </conditions>
       <actions>
 
         <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-        <set_value name="$DEBUG" exact="0"/>
+        <set_value name="$DEBUG" exact="100"/>
         <do_if value="$DEBUG gt 0">
           <set_value name="$DebugScriptName" exact="'JP_CollectPlaceablesDebug_MD'"/>
           <set_value name="$DebugFolderName" exact="'JP_CollectPlaceables.logs'"/>
@@ -79,7 +80,6 @@
 
         <do_if value="$Ships.count gt 0">
           <do_for_each name="$_Ship" in="$Ships">
-
             <!-- Get rid of the Order tag -->
             <do_if value="@$_Ship.defaultorder.id != 'JP_CollectPlaceablesS' and @$_Ship.defaultorder.id != 'JP_CollectPlaceablesG'">
               <substitute_text source="$_Ship.knownname" text="$_ResultName">
@@ -90,7 +90,6 @@
                 <set_object_name object="$_Ship" name="$_ResultName"/>
               </do_if>
             </do_if>
-
           </do_for_each>
         </do_if>
 

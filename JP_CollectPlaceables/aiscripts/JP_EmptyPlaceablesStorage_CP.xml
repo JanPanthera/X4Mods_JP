@@ -23,7 +23,7 @@
       <param name="DEBUG" type="internal" default="0"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     </params>
-    <location object="$LOCATION_OBJECT_USED_IN_UI" condition="$LOCATION_OBJECT_USED_IN_UI? and @$LOCATION_OBJECT_USED_IN_UI != null"/>
+    <location object="$LOCATION_OBJECT_USED_IN_UI" condition="@$LOCATION_OBJECT_USED_IN_UI != null"/>
   </order>
 
   <interrupts>
@@ -112,10 +112,10 @@
       <!-- Find stations where we can sell our deployables/placeables -->
       <create_list name="$_Stations"/>
       <find_station name="$_Stations" space="player.galaxy" multiple="true">
-        <match checkoperational="true"/>
-        <match mayattack="$Ship" negate="true"/>
-        <match cansupplyclass="$Ship.class"/>
         <match knownto="$Ship.owner"/>
+        <match checkoperational="true"/>
+        <match cansupplyclass="$Ship.class"/>
+        <match mayattack="$Ship" negate="true"/>
         <match_relation_to faction="$Ship.owner" comparison="ge" relation="neutral"/>
         <match_gate_distance object="$Ship.sector" max="$SELL_RANGE"/>
         <match_use_blacklist object="$Ship" type="blacklisttype.sectortravel" group="$blacklistgroup"/>

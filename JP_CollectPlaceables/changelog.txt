@@ -1,8 +1,8 @@
-~ Added: selling of the collected deployables/placables
+~ V1.20 -- Release --
+~ Added: selling of the collected deployables/placables (placed objects like satellites)
 ~ Added: saving and deleting of the order settings
-~ Added: order name is now colored
-~ Updated: refactoring
-~ Updated: language files restructuring
-~ Updated: added some translations.. (google translate)
-~ Updated: refactored IdleReturnHome
-~ Updated: reworked Order Tag.. how it will added and removed again..
+~ Added: order name is now colored and ordered below the default x4 orders.. (behaviours)
+~ Updated: IdleReturnHome.. should work better.. internal.. 
+~ Updated: Reworked Order Tag.. how it will added and removed again..
+~ Updated: ..general refactoring..
+~ Updated: ..language files restructuring.. added some translations.. (google translate)

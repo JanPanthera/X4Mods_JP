@@ -11,7 +11,7 @@
       <param name="DEBUG" type="internal" default="0"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     </params>
-    <location object="$LOCATION_OBJECT_USED_IN_UI" condition="$LOCATION_OBJECT_USED_IN_UI? and @$LOCATION_OBJECT_USED_IN_UI != null"/>
+    <location object="$LOCATION_OBJECT_USED_IN_UI" condition="@$LOCATION_OBJECT_USED_IN_UI != null"/>
   </order>
 
   <interrupts>
@@ -31,7 +31,7 @@
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <set_value name="$Ship" exact="this.ship"/>
     <set_value name="$ExpMultiplier" exact="0.86"/>
-    <set_value name="$LOCATION_OBJECT_USED_IN_UI" exact="null"/>
+    <set_value name="$LOCATION_OBJECT_USED_IN_UI" exact="$PLACEABLE"/>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <do_if value="$DEBUG gt 0">
       <set_value name="$DebugFolderName" exact="$DEBUG_FOLDER_NAME"/>
@@ -55,7 +55,6 @@
       <label name="MOVE_TO_SECTOR_LBL"/>
       <do_if value="$Ship.sector != $PLACEABLE.sector">
         <set_command command="command.move" param="$PLACEABLE.sector"/>
-        <set_value name="$LOCATION_OBJECT_USED_IN_UI" exact="$PLACEABLE.sector"/>
         <run_script name="'move.generic'">
           <param name="destination" value="$PLACEABLE.sector"/>
           <param name="endintargetzone" value="true"/>
@@ -79,7 +78,6 @@
       <set_command command="command.collect" param="$PLACEABLE"/>
 
       <label name="MOVING_LBL"/>
-      <set_value name="$LOCATION_OBJECT_USED_IN_UI" exact="$PLACEABLE"/>
       <get_safe_pos result="$_TempPosition" zone="$PLACEABLE.sector" object="$PLACEABLE" directionobject="$Ship" radius="$Ship.size" ignored="$Ship"/>
       <move_to object="$Ship" destination="$PLACEABLE.sector" finishonapproach="false" forceposition="true" travel="true">
         <position value="$_TempPosition"/>
@@ -96,6 +94,8 @@
       <apply_experience entity="$Ship.pilot" experience="'JP_SHIP_PLACEABLE_COLLECTED'" factor="$ExpMultiplier"/>
       <apply_experience object="$Ship" experience="'JP_SHIP_PLACEABLE_COLLECTED'" role="entityrole.service" factor="$ExpMultiplier"/>
       <remove_value name="$LOCATION_OBJECT_USED_IN_UI"/>
+
+      <wait min="3s" max="6s"/>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
