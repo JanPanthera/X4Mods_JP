@@ -133,7 +133,7 @@
     <Xml Include="aiscripts\JP_AnotherExplorerV2G.xml" />
     <Xml Include="aiscripts\JP_AnotherExplorerV2S.xml" />
     <Xml Include="aiscripts\JP_CreateColorString_AEV2.xml" />
-    <Xml Include="aiscripts\JP_ExploreObject.xml" />
+    <Xml Include="aiscripts\JP_ExploreObject_AEV2.xml" />
     <Xml Include="aiscripts\JP_GetNearestUnknownObject_AEV2.xml" />
     <Xml Include="aiscripts\JP_IdleReturnHome_AEV2.xml" />
     <Xml Include="content.xml" />
@@ -157,7 +157,7 @@
     <Xml Include="JP_AnotherExplorerV2\t\0001-L088.xml" />
     <Xml Include="libraries\experiences.xml" />
     <Xml Include="libraries\icons.xml" />
-    <Xml Include="md\JP_UpdateAnotherExplorerV2Fleet.xml" />
+    <Xml Include="md\JP_AnotherExplorerV2_MD.xml" />
     <Xml Include="t\0001-L007.xml" />
     <Xml Include="t\0001-L033.xml" />
     <Xml Include="t\0001-L034.xml" />

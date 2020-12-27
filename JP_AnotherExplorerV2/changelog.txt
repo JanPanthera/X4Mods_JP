@@ -1,4 +1,9 @@
-V1.36
-~ Updated: language files
-~ Updated: refactored/recreated save and load order settings function
-~ Updated: added a _ before the color code of the behaviour name, ai routines of the base game are now arranged at top of the routines list
+~ repo update - 2020-12-27 -
+~ Fixed: flying to nill? please....... ;-)
+~ Changed: removed options for Enemy Sectors, Friendly Sectors and Neutral Sectors..
+you can use x4's blacklists.. doing the same job.. and are vanilla 
+~ Updated: Reworked Order Tag.. how it will added and removed again..
+~ Updated: IdleReturnHome.. should work better.. internal..
+~ Updated: ..general refactoring..
+~ Removed: Own fleet creation.. will do tests with the new Mimic behaviour of x4 Beta 4.0
+also you can set the color of the fleets name via the mod SetFleetNameColor of me...

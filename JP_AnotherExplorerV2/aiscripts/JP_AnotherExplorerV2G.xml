@@ -5,92 +5,71 @@
   <order id="JP_AnotherExplorerV2G" name="_{8888888, 497}AnotherExplorerV2 - {8888888, 499}{8888888, 498}{20001, 901}{8888888, 499}" category="navigation" infinite="true">
     <params>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="PLACE_HOLDER_00" text="----------------------------------" type="object" default="null">
+      <param name="PLACE_HOLDER_000" text="----------------------------------" type="object" default="null">
         <input_param name="class" value="[]"/>
       </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="ENEMY_SECTORS" text="{8888888, 400}" comment="Enemy Sectors?" type="bool" default="if global.$AnotherExplorerV2G_Settings? then global.$AnotherExplorerV2G_Settings.{1} else false"/>
-      <param name="NEUTRAL_SECTORS" text="{8888888, 401}" comment="Neutral Sectors?" type="bool" default="if global.$AnotherExplorerV2G_Settings? then global.$AnotherExplorerV2G_Settings.{2} else true"/>
-      <param name="FRIENDLY_SECTORS" text="{8888888, 402}" comment="Friendly Sectors?" type="bool" default="if global.$AnotherExplorerV2G_Settings? then global.$AnotherExplorerV2G_Settings.{3} else true"/>
-      <param name="UNKNOWN_SECTORS" text="{8888888, 403}" comment="Unknown Sectors?" type="bool" default="if global.$AnotherExplorerV2G_Settings? then global.$AnotherExplorerV2G_Settings.{4} else true"/>
+      <param name="UNKNOWN_SECTORS" text="{8888888, 400}" comment="Unknown Sectors?" type="bool" default="if global.$AnotherExplorerV2G_Settings? then global.$AnotherExplorerV2G_Settings.{1} else true"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="PLACE_HOLDER_01" text="----------------------------------" type="object" default="null">
+      <param name="PLACE_HOLDER_001" text="----------------------------------" type="object" default="null">
         <input_param name="class" value="[]"/>
       </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="GATES" text="{8888888, 410}" comment="Gates?" type="bool" default="if global.$AnotherExplorerV2G_Settings? then global.$AnotherExplorerV2G_Settings.{5} else true"/>
-      <param name="STATIONS" text="{8888888, 411}" comment="Stations?" type="bool" default="if global.$AnotherExplorerV2G_Settings? then global.$AnotherExplorerV2G_Settings.{6} else true"/>
-      <param name="ENEMY_STATIONS" text="- {8888888, 412}" comment="Enemy Stations?" type="bool" default="if global.$AnotherExplorerV2G_Settings? then global.$AnotherExplorerV2G_Settings.{7} else false"/>
-      <param name="FRIENDLY_STATIONS" text="- {8888888, 413}" comment="Friendly Stations?" type="bool" default="if global.$AnotherExplorerV2G_Settings? then global.$AnotherExplorerV2G_Settings.{8} else true"/>
+      <param name="JUMP_GATES" text="{8888888, 410}" comment="Jump Gates?" type="bool" default="if global.$AnotherExplorerV2G_Settings? then global.$AnotherExplorerV2G_Settings.{2} else true"/>
+      <param name="STATIONS" text="{8888888, 411}" comment="Stations?" type="bool" default="if global.$AnotherExplorerV2G_Settings? then global.$AnotherExplorerV2G_Settings.{3} else true"/>
+      <param name="ENEMY_STATIONS" text="- {8888888, 412}" comment="Enemy Stations?" type="bool" default="if global.$AnotherExplorerV2G_Settings? then global.$AnotherExplorerV2G_Settings.{4} else false"/>
+      <param name="FRIENDLY_STATIONS" text="- {8888888, 413}" comment="Friendly Stations?" type="bool" default="if global.$AnotherExplorerV2G_Settings? then global.$AnotherExplorerV2G_Settings.{5} else true"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="PLACE_HOLDER_02" text="----------------------------------" type="object" default="null">
+      <param name="PLACE_HOLDER_002" text="----------------------------------" type="object" default="null">
         <input_param name="class" value="[]"/>
       </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="AUTOMATIC_FLEET" text="{8888888, 420}" comment="Automatic fleet?" type="bool" default="if global.$AnotherExplorerV2G_Settings? then global.$AnotherExplorerV2G_Settings.{9} else false"/>
-      <param name="IS_FLEET_LEADER" text="- {8888888, 421}" comment="Is fleet Leader?" type="bool" default="false"/>
-      <param name="COLORIZE_FLEET_NAME" text="- {8888888, 422}" comment="Colorize fleet name?" type="bool" default="if global.$AnotherExplorerV2G_Settings? then global.$AnotherExplorerV2G_Settings.{10} else true"/>
-      <param name="FLEET_NAME_ALPHA" text="- {8888888, 470}" comment="Transparency" type="number" default="if global.$AnotherExplorerV2G_Settings? then global.$AnotherExplorerV2G_Settings.{11} else 255">
-        <input_param name="step" value="1"/>
-        <input_param name="min" value="0"/>
-        <input_param name="max" value="255"/>
-      </param>
-      <param name="FLEET_NAME_RED" text="- {8888888, 471}" comment="Red" type="number" default="if global.$AnotherExplorerV2G_Settings? then global.$AnotherExplorerV2G_Settings.{12} else 3">
-        <input_param name="step" value="1"/>
-        <input_param name="min" value="0"/>
-        <input_param name="max" value="255"/>
-      </param>
-      <param name="FLEET_NAME_GREEN" text="- {8888888, 472}" comment="Green" type="number" default="if global.$AnotherExplorerV2G_Settings? then global.$AnotherExplorerV2G_Settings.{13} else 161">
-        <input_param name="step" value="1"/>
-        <input_param name="min" value="0"/>
-        <input_param name="max" value="255"/>
-      </param>
-      <param name="FLEET_NAME_BLUE" text="- {8888888, 473}" comment="Blue" type="number" default="if global.$AnotherExplorerV2G_Settings? then global.$AnotherExplorerV2G_Settings.{14} else 252">
-        <input_param name="step" value="1"/>
-        <input_param name="min" value="0"/>
-        <input_param name="max" value="255"/>
-      </param>
-      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="PLACE_HOLDER_03" text="----------------------------------" type="object" default="null">
-        <input_param name="class" value="[]"/>
-      </param>
-      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="IDLE_TIME" text="{8888888, 480}" comment="Idle Time" type="time" default="if global.$AnotherExplorerV2G_Settings? then global.$AnotherExplorerV2G_Settings.{15} else 600s">
+      <param name="IDLE" text="{8888888, 480}" comment="Idle actions??" type="bool" default="if global.$AnotherExplorerV2G_Settings? then global.$AnotherExplorerV2G_Settings.{6} else true"/>
+      <param name="IDLE_TIME" text="{8888888, 481}" comment="Idle Time" type="time" default="if global.$AnotherExplorerV2G_Settings? then global.$AnotherExplorerV2G_Settings.{7} else 600s">
         <input_param name="min" value="60s"/>
         <input_param name="max" value="3600s"/>
         <input_param name="step" value="10s"/>
       </param>
-      <param name="IDLE_FOLLOW" text="{8888888, 481}" comment="Idle: Follow?" type="bool" default="if global.$AnotherExplorerV2G_Settings? then global.$AnotherExplorerV2G_Settings.{16} else false"/>
-      <param name="WHO_TO_FOLLOW" text="- {8888888, 482}" comment="Who to follow?" type="object" default="if global.$AnotherExplorerV2G_Settings? then global.$AnotherExplorerV2G_Settings.{17} else null">
+      <param name="IDLE_FOLLOW" text="{8888888, 482}" comment="Idle: Follow?" type="bool" default="if global.$AnotherExplorerV2G_Settings? then global.$AnotherExplorerV2G_Settings.{8} else false"/>
+      <param name="WHO_TO_FOLLOW" text="- {8888888, 483}" comment="Who to follow?" type="object" default="if global.$AnotherExplorerV2G_Settings? then global.$AnotherExplorerV2G_Settings.{9} else null">
         <input_param name="class" value="[class.ship]"/>
         <input_param name="owner" value="this.ship.owner"/>
       </param>
-      <param name="IDLE_DOCKING" text="{8888888, 483}" comment="Idle: Docking?" type="bool" default="if global.$AnotherExplorerV2G_Settings? then global.$AnotherExplorerV2G_Settings.{18} else false"/>
-      <param name="WHERE_TO_DOCK" text="- {8888888, 484}" comment="Where to dock?" type="object" default="if global.$AnotherExplorerV2G_Settings? then global.$AnotherExplorerV2G_Settings.{19} else null">
+      <param name="IDLE_DOCKING" text="{8888888, 484}" comment="Idle: Docking?" type="bool" default="if global.$AnotherExplorerV2G_Settings? then global.$AnotherExplorerV2G_Settings.{10} else false"/>
+      <param name="WHERE_TO_DOCK" text="- {8888888, 485}" comment="Where to dock?" type="object" default="if global.$AnotherExplorerV2G_Settings? then global.$AnotherExplorerV2G_Settings.{11} else null">
         <input_param name="class" value="if this.ship.isclass.[class.ship_s, class.ship_xs] then [class.station, class.ship_m, class.ship_l, class.ship_xl] else [class.station, class.ship_l, class.ship_xl]"/>
       </param>
-      <param name="IDLE_RANDOM_MOVEMENT" text="{8888888, 485}" comment="Idle: Movement?" type="bool" default="if global.$AnotherExplorerV2G_Settings? then global.$AnotherExplorerV2G_Settings.{20} else false"/>
-      <param name="IN_WHICH_SECTOR" text="- {8888888, 486}" comment="In which sector?" type="position" default="if global.$AnotherExplorerV2G_Settings? then global.$AnotherExplorerV2G_Settings.{21} else [this.ship.sector, this.ship.position]">
+      <param name="IDLE_RANDOM_MOVEMENT" text="{8888888, 486}" comment="Idle: Movement?" type="bool" default="if global.$AnotherExplorerV2G_Settings? then global.$AnotherExplorerV2G_Settings.{12} else false"/>
+      <param name="IN_WHICH_SECTOR" text="- {8888888, 487}" comment="In which sector?" type="position" default="if global.$AnotherExplorerV2G_Settings? then global.$AnotherExplorerV2G_Settings.{13} else [this.ship.sector, this.ship.position]">
         <input_param name="class" value="class.sector"/>
       </param>
-      <param name="IDLE_MOVE_TO" text="{8888888, 487}" comment="Idle: Move to?" type="bool" default="if global.$AnotherExplorerV2G_Settings? then global.$AnotherExplorerV2G_Settings.{22} else false"/>
-      <param name="WHERE_TO_MOVE" text="- {8888888, 488}" comment="Where to move?" type="position" default="if global.$AnotherExplorerV2G_Settings? then global.$AnotherExplorerV2G_Settings.{23} else [this.ship.sector, this.ship.position]">
+      <param name="IDLE_MOVE_TO" text="{8888888, 488}" comment="Idle: Move to?" type="bool" default="if global.$AnotherExplorerV2G_Settings? then global.$AnotherExplorerV2G_Settings.{14} else false"/>
+      <param name="WHERE_TO_MOVE" text="- {8888888, 489}" comment="Where to move?" type="position" default="if global.$AnotherExplorerV2G_Settings? then global.$AnotherExplorerV2G_Settings.{15} else [this.ship.sector, this.ship.position]">
         <input_param name="class" value="class.sector"/>
       </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="PLACE_HOLDER_04" text="----------------------------------" type="object" default="null">
+      <param name="PLACE_HOLDER_997" text="----------------------------------" type="object" default="null">
         <input_param name="class" value="[]"/>
       </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="ADD_ORDER_TAG" text="{8888888, 494}" comment="Add Order tag?" type="bool" default="if global.$AnotherExplorerV2G_Settings? then global.$AnotherExplorerV2G_Settings.{24} else true"/>
-      <param name="SAVE_ORDER_SETTINGS" text="{8888888, 495}" comment="Save Order Settings?" type="bool" default="false"/>
-      <param name="RESET_ORDER_SETTINGS" text="{8888888, 496}" comment="Reset Order Settings?" type="bool" default="false"/>
+      <param name="ADD_ORDER_TAG" text="{8888888, 491}" comment="Add order tag?" type="bool" default="if global.$AnotherExplorerV2G_Settings? then global.$AnotherExplorerV2G_Settings.{16} else true"/>
+      <param name="ORDER_TAG_POSITION" text="{8888888, 492}" comment="Order tag position" type="number" default="if global.$AnotherExplorerV2G_Settings? then global.$AnotherExplorerV2G_Settings.{17} else 1">
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="1"/>
+        <input_param name="step" value="1"/>
+      </param>
+      <param name="SAVE_ORDER_SETTINGS" text="{8888888, 493}" comment="Save Order Settings?" type="bool" default="false"/>
+      <param name="RESET_ORDER_SETTINGS" text="{8888888, 494}" comment="Reset Order Settings?" type="bool" default="false"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="PLACE_HOLDER_998" text="----------------------------------" type="object" default="null" advanced="true">
+      <param name="PLACE_HOLDER_998" text="----------------------------------" type="object" default="null">
         <input_param name="class" value="[]"/>
       </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="DEBUG" text="Debug" type="bool" default="if global.$AnotherExplorerV2G_Settings? then global.$AnotherExplorerV2G_Settings.{25} else false" advanced="true"/>
+      <param name="DEBUG" text="Debug" type="number" default="if global.$AnotherExplorerV2G_Settings? then global.$AnotherExplorerV2G_Settings.{18} else 0" advanced="true">
+        <input_param name="step" value="100"/>
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="100"/>
+      </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="PLACE_HOLDER_999" text="----------------------------------" type="object" default="null" advanced="true">
         <input_param name="class" value="[]"/>
@@ -118,32 +97,36 @@
   </interrupts>
 
   <init>
-    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <set_value name="$Ship" exact="this.ship"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <do_if value="$DEBUG">
-      <set_value name="$DebugScriptName" exact="'JP_AnotherExplorerV2G'"/>
       <set_value name="$DebugFolderName" exact="'JP_AnotherExplorerV2.logs'"/>
-      <set_value name="$DebugFileName" exact="this.ship.idcode + '.' + $DebugScriptName + '.xml.log'"/>
-      <debug_to_file append="false" directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+      <set_value name="$DebugScriptName" exact="'JP_AnotherExplorerV2G'"/>
+      <set_value name="$DebugFileName" exact="$Ship.idcode + '.' + $DebugScriptName + '.xml.log'"/>
+      <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'" append="false"/>
       <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Started ~~' + '\n'"/>
     </do_if>
-    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-    <set_value name="$Ship" exact="this.ship"/>
-    <set_value name="$ExpMultiplier" exact="0.87"/>
-    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <do_if value="$ADD_ORDER_TAG">
+      <set_value name="$_OrderTag" exact="'#AEV2-G'"/>
+      <substitute_text source="$Ship.knownname" text="$_ResultName">
+        <replace string="(' \033#FFA95908#' + $_OrderTag + '\033X')" with="''"/>
+      </substitute_text>
+      <do_if value="$Ship.knownname == $_ResultName">
+        <set_object_name object="$Ship" name="(if $ORDER_TAG_POSITION then '' else (' \033#FFA95908#' + $_OrderTag + '\033X')) + $Ship.knownname + (if $ORDER_TAG_POSITION then (' \033#FFA95908#' + $_OrderTag + '\033X') else '')"/>
+      </do_if>
+      <remove_value name="$_OrderTag"/>
+    </do_if>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <do_if value="not global.$AnotherExplorerV2SectorBlackList?">
       <create_list name="global.$AnotherExplorerV2SectorBlackList"/>
     </do_if>
     <do_if value="not global.$AnotherExplorerV2Ships?">
       <create_list name="global.$AnotherExplorerV2Ships"/>
     </do_if>
-    <append_to_list name="global.$AnotherExplorerV2Ships" exact="this.ship"/>
-    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-    <do_if value="$ADD_ORDER_TAG">
-      <set_value name="$ShipName" exact="$Ship.knownname"/>
-      <set_object_name object="$Ship" name="$ShipName + '\033#FFA95908# ' + '#AEV2-G' + '\033X'"/>
-    </do_if>
-    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-
+    <append_to_list name="global.$AnotherExplorerV2Ships" exact="$Ship"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <!-- remove it in a later version.. give time for deleting this unused chunk of memory -->
     <do_if value="true">
       <remove_value name="global.$DebugAEV2"/>
@@ -171,17 +154,17 @@
       <remove_value name="global.$FrienlySectorsAEV2"/>
       <remove_value name="global.$NeutralSectorsAEV2"/>
       <remove_value name="global.$EnemySectorsAEV2"/>
+      <remove_value name="global.$AEV2_AFCS"/>
     </do_if>
-
-    <!-- save settings? -->
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <do_if value="$SAVE_ORDER_SETTINGS">
       <create_list name="$_SettingsList"/>
-      <append_list_elements name="$_SettingsList" other="[$ENEMY_SECTORS, $NEUTRAL_SECTORS, $FRIENDLY_SECTORS, $UNKNOWN_SECTORS,
-                            $GATES, $STATIONS, $ENEMY_STATIONS, $FRIENDLY_STATIONS,
-                            $AUTOMATIC_FLEET, $COLORIZE_FLEET_NAME, $FLEET_NAME_ALPHA, $FLEET_NAME_RED, $FLEET_NAME_GREEN, $FLEET_NAME_BLUE,
-                            $IDLE_TIME, $IDLE_FOLLOW, $WHO_TO_FOLLOW, $IDLE_DOCKING, $WHERE_TO_DOCK,
+      <append_list_elements name="$_SettingsList" other="[
+                            $UNKNOWN_SECTORS,
+                            $JUMP_GATES, $STATIONS, $ENEMY_STATIONS, $FRIENDLY_STATIONS,
+                            $IDLE, $IDLE_TIME, $IDLE_FOLLOW, $WHO_TO_FOLLOW, $IDLE_DOCKING, $WHERE_TO_DOCK,
                             $IDLE_RANDOM_MOVEMENT, $IN_WHICH_SECTOR, $IDLE_MOVE_TO, $WHERE_TO_MOVE,
-                            $ADD_ORDER_TAG, $DEBUG]"/>
+                            $ADD_ORDER_TAG, $ORDER_TAG_POSITION, $DEBUG]"/>
       <do_if value="not global.$AnotherExplorerV2G_Settings?">
         <create_list name="global.$AnotherExplorerV2G_Settings"/>
         <append_list_elements name="global.$AnotherExplorerV2G_Settings" other="$_SettingsList"/>
@@ -194,140 +177,100 @@
         </do_for_each>
       </do_else>
       <remove_value name="$_SettingsList"/>
-      <show_help duration="5s" allowclose="true" log="true" custom="'JP_AnotherExplorerV2G ~ ' + this.ship.knownname + ' [' + this.ship.idcode + ']\n\n' + '{8888888, 460}'"/>
-      <cancel_order order="this.ship.order"/>
+      <show_help duration="5s" allowclose="true" log="true" custom="$DebugScriptName + ' ~\n' + $Ship.knownname + ' [' + $Ship.idcode + ']\n\n' + '{8888888, 495}'"/>
+      <cancel_order order="$Ship.order"/>
     </do_if>
-
-    <!-- reset settings? -->
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <do_if value="$RESET_ORDER_SETTINGS">
       <do_if value="global.$AnotherExplorerV2G_Settings?">
         <remove_value name="global.$AnotherExplorerV2G_Settings"/>
       </do_if>
-      <show_help duration="5s" allowclose="true" log="true" custom="'JP_AnotherExplorerV2G ~ ' + this.ship.knownname + ' [' + this.ship.idcode + ']\n\n' + '{8888888, 461}'"/>
-      <cancel_order order="this.ship.order"/>
+      <show_help duration="5s" allowclose="true" log="true" custom="$DebugScriptName + ' ~\n' + $Ship.knownname + ' [' + $Ship.idcode + ']\n\n' + '{8888888, 496}'"/>
+      <cancel_order order="$Ship.order"/>
     </do_if>
-
-    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
   </init>
 
   <attention min="unknown">
     <actions>
 
       <label name="INIT_LBL"/>
-      <wait exact="1ms"/>
+      <wait min="1s" max="3s"/>
 
-      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-
-      <label name="PRE_SETTING_UP_LBL"/>
-      <do_if value="$COLORIZE_FLEET_NAME">
-        <run_script name="'JP_CreateColorString_AEV2'">
-          <param name="ALPHA" value="$FLEET_NAME_ALPHA"/>
-          <param name="RED" value="$FLEET_NAME_RED"/>
-          <param name="GREEN" value="$FLEET_NAME_GREEN"/>
-          <param name="BLUE" value="$FLEET_NAME_BLUE"/>
-          <param name="DEBUG" value="$DEBUG"/>
-          <save_retval name="COLOR_STRING" variable="$_ColorString"/>
-        </run_script>
-        <do_if value="not global.$AEV2_AFCS? or @global.$AEV2_AFCS != $_ColorString">
-          <set_value name="global.$AEV2_AFCS" exact="$_ColorString"/>
-        </do_if>
-        <remove_value name="$_ColorString"/>
-      </do_if>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
       <label name="RESUME_LBL"/>
 
+      <!-- just for the ui -->
       <set_command command="command.explore"/>
       <set_command_action commandaction="commandaction.calculating"/>
 
       <run_script name="'JP_GetNearestUnknownObject_AEV2'">
-        <param name="ENEMY_SECTORS" value="$ENEMY_SECTORS"/>
-        <param name="NEUTRAL_SECTORS" value="$NEUTRAL_SECTORS"/>
-        <param name="FRIENDLY_SECTORS" value="$FRIENDLY_SECTORS"/>
-        <param name="GATES" value="$GATES"/>
+        <param name="JUMP_GATES" value="$JUMP_GATES"/>
         <param name="STATIONS" value="$STATIONS"/>
         <param name="ENEMY_STATIONS" value="$ENEMY_STATIONS"/>
         <param name="FRIENDLY_STATIONS" value="$FRIENDLY_STATIONS"/>
+        <param name="DEBUG_FOLDER_NAME" value="$DebugFolderName"/>
         <param name="DEBUG" value="$DEBUG"/>
         <save_retval name="NEAREST_UNKNOWN_OBJECT" variable="$_NearestUnknownObject"/>
       </run_script>
 
-      <do_if value="$_NearestUnknownObject == 'NoUnknownObjectFound'">
+      <!-- Nothing found go idle -->
+      <do_if value="@$_NearestUnknownObject == null">
+        <remove_value name="$_NearestUnknownObject"/>
         <resume label="IDLE_RETURN_HOME_LBL"/>
       </do_if>
 
-      <set_value name="this.$CurrentSector" exact="$_NearestUnknownObject.sector"/>
-      <append_to_list name="global.$AnotherExplorerV2SectorBlackList" exact="this.$CurrentSector"/>
-
-      <label name="MOVE_TO_SECTOR_LBL"/>
-      <do_if value="$Ship.sector != this.$CurrentSector">
-        <set_command command="command.move" param="this.$CurrentSector"/>
-        <run_script name="'move.generic'">
-          <param name="destination" value="this.$CurrentSector"/>
-          <param name="endintargetzone" value="true"/>
-          <param name="recallsubordinates" value="true"/>
-        </run_script>
-        <do_if value="this.zone.isclass.highway">
-          <get_safe_pos result="$_SafePos" zone="$Ship.zone" object="$Ship" direction="quadrant.front" radius="$Ship.size" angle="45deg"/>
-          <move_to object="$Ship" destination="$Ship.zone" uselocalhighways="false" finishonapproach="true" abortpath="true">
-            <position value="$_SafePos"/>
-          </move_to>
-          <remove_value name="$_SafePos"/>
-        </do_if>
-        <wait exact="1s"/>
-        <do_if value="$Ship.sector != this.$CurrentSector">
-          <resume label="MOVE_TO_SECTOR_LBL"/>
-        </do_if>
-      </do_if>
-
+      <!-- Exploring the object.. flying to it and making it visible -->
       <label name="EXPLORE_OBJECT_LBL"/>
-      <run_script name="'JP_ExploreObject_AEV2'">
+      <create_order id="'JP_ExploreObject_AEV2'" object="$Ship">
         <param name="OBJECT" value="$_NearestUnknownObject"/>
-        <param name="DEBUG" value="$DEBUG"/>
-      </run_script>
-      <apply_experience entity="$Ship.pilot" experience="'JP_SHIP_OBJECT_DISCOVERED'" factor="$ExpMultiplier"/>
-      <apply_experience object="$Ship" experience="'JP_SHIP_OBJECT_DISCOVERED'" role="entityrole.service" factor="$ExpMultiplier"/>
-
-      <remove_from_list name="global.$AnotherExplorerV2SectorBlackList" exact="this.$CurrentSector"/>
-      <remove_value name="$_NearestUnknownObject"/>
-
-      <wait exact="1s"/>
-      <resume label="RESUME_LBL"/>
-
-      <label name="IDLE_RETURN_HOME_LBL"/>
-      <create_order id="'JP_IdleReturnHome_AEV2'" object="$Ship">
-        <param name="IDLE_TIME" value="$IDLE_TIME"/>
-        <param name="IDLE_FOLLOW" value="$IDLE_FOLLOW"/>
-        <param name="WHO_TO_FOLLOW" value="$WHO_TO_FOLLOW"/>
-        <param name="IDLE_DOCKING" value="$IDLE_DOCKING"/>
-        <param name="WHERE_TO_DOCK" value="$WHERE_TO_DOCK"/>
-        <param name="IDLE_RANDOM_MOVEMENT" value="$IDLE_RANDOM_MOVEMENT"/>
-        <param name="IN_WHICH_SECTOR" value="$IN_WHICH_SECTOR"/>
-        <param name="IDLE_MOVE_TO" value="$IDLE_MOVE_TO"/>
-        <param name="WHERE_TO_MOVE" value="$WHERE_TO_MOVE"/>
-        <param name="ADD_ORDER_TAG" value="$ADD_ORDER_TAG"/>
-        <param name="ORDER_TAG" value="'#AEV2-G'"/>
+        <param name="DEBUG_FOLDER_NAME" value="@$DebugFolderName"/>
         <param name="DEBUG" value="$DEBUG"/>
       </create_order>
-      <wait exact="1s"/>
+      <remove_from_list name="global.$AnotherExplorerV2SectorBlackList" exact="this.$CurrentSector"/>
+      <remove_value name="$_NearestUnknownObject"/>
+      <set_command command="command.scan"/>
+      <set_command_action commandaction="commandaction.calculating"/>
+      <wait min="1s" max="3s"/>
       <resume label="RESUME_LBL"/>
 
-      <label name="FINISH_LBL"/>
+      <!-- Nothing to do.. idle a bit and try again -->
+      <label name="IDLE_RETURN_HOME_LBL"/>
+      <do_if value="$IDLE">
+        <create_order id="'JP_IdleReturnHome_AEV2'" object="$Ship">
+          <param name="IDLE_TIME" value="$IDLE_TIME"/>
+          <param name="IDLE_FOLLOW" value="$IDLE_FOLLOW"/>
+          <param name="WHO_TO_FOLLOW" value="$WHO_TO_FOLLOW"/>
+          <param name="IDLE_DOCKING" value="$IDLE_DOCKING"/>
+          <param name="WHERE_TO_DOCK" value="$WHERE_TO_DOCK"/>
+          <param name="IDLE_RANDOM_MOVEMENT" value="$IDLE_RANDOM_MOVEMENT"/>
+          <param name="IN_WHICH_SECTOR" value="$IN_WHICH_SECTOR"/>
+          <param name="IDLE_MOVE_TO" value="$IDLE_MOVE_TO"/>
+          <param name="WHERE_TO_MOVE" value="$WHERE_TO_MOVE"/>
+          <param name="DEBUG_FOLDER_NAME" value="@$DebugFolderName"/>
+          <param name="DEBUG" value="$DEBUG"/>
+        </create_order>
+      </do_if>
+      <set_command command="command.scan"/>
+      <set_command_action commandaction="commandaction.calculating"/>
+      <wait min="3s" max="6s"/>
+      <resume label="RESUME_LBL"/>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <do_if value="$DEBUG">
+
+      <label name="FINISH_LBL"/>
+      <do_if value="$DEBUG gt 0">
         <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Finished ~~'"/>
         <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
-        <remove_value name="$DebugFileName"/>
-        <remove_value name="$DebugFolderName"/>
-        <remove_value name="$DebugScriptName"/>
       </do_if>
-      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <wait min="1s" max="3s"/>
 
       <label name="CLEANUP_LBL"/>
-      <do_if value="$ADD_ORDER_TAG and $ShipName?">
-        <do_if value="$Ship.knownname != $ShipName">
-          <set_object_name object="$Ship" name="$ShipName"/>
-        </do_if>
+      <do_if value="$DEBUG gt 0">
+        <remove_value name="$DebugFileName"/>
+        <remove_value name="$DebugScriptName"/>
+        <remove_value name="$DebugFolderName"/>
       </do_if>
       <do_if value="global.$AnotherExplorerV2SectorBlackList? and @this.$CurrentSector != null">
         <remove_from_list name="global.$AnotherExplorerV2SectorBlackList" exact="this.$CurrentSector"/>
@@ -343,36 +286,37 @@
         <remove_value name="this.$CurrentSector"/>
       </do_if>
       <remove_value name="$Ship"/>
-      <remove_value name="$ShipName"/>
-      <remove_value name="$ExpMultiplier"/>
 
       <label name="END_LBL"/>
-      <set_order_syncpoint_reached order="this.ship.order"/>
-      <wait exact="1s"/>
-      <cancel_order order="this.ship.order" />
+      <set_order_syncpoint_reached order="this.ship.defaultorder"/>
+      <wait min="1s" max="3s"/>
+      <cancel_order order="this.ship.defaultorder"/>
 
     </actions>
   </attention>
 
   <on_abort>
-    <do_if value="$ADD_ORDER_TAG and $ShipName?">
-      <do_if value="$Ship.knownname != $ShipName">
-        <set_object_name object="$Ship" name="$ShipName"/>
+    <do_if value="$DEBUG gt 0">
+      <remove_value name="$DebugFileName"/>
+      <remove_value name="$DebugScriptName"/>
+      <remove_value name="$DebugFolderName"/>
+    </do_if>
+    <do_if value="$Ship.defaultorder.id != 'AnotherExplorerV2S' and $Ship.defaultorder.id != 'AnotherExplorerVG'">
+      <do_if value="global.$AnotherExplorerV2SectorBlackList? and @this.$CurrentSector != null">
+        <remove_from_list name="global.$AnotherExplorerV2SectorBlackList" exact="this.$CurrentSector"/>
+      </do_if>
+      <do_if value="global.$AnotherExplorerV2Ships?">
+        <remove_from_list name="global.$AnotherExplorerV2Ships" exact="this.ship"/>
+      </do_if>
+      <do_if value="@global.$AnotherExplorerV2Ships.count == 0">
+        <remove_value name="global.$AnotherExplorerV2Ships"/>
+        <remove_value name="global.$AnotherExplorerV2SectorBlackList"/>
+      </do_if>
+      <do_if value="this.$CurrentSector?">
+        <remove_value name="this.$CurrentSector"/>
       </do_if>
     </do_if>
-    <do_if value="global.$AnotherExplorerV2SectorBlackList? and @this.$CurrentSector != null">
-      <remove_from_list name="global.$AnotherExplorerV2SectorBlackList" exact="this.$CurrentSector"/>
-    </do_if>
-    <do_if value="global.$AnotherExplorerV2Ships?">
-      <remove_from_list name="global.$AnotherExplorerV2Ships" exact="this.ship"/>
-    </do_if>
-    <do_if value="@global.$AnotherExplorerV2Ships.count == 0">
-      <remove_value name="global.$AnotherExplorerV2Ships"/>
-      <remove_value name="global.$AnotherExplorerV2SectorBlackList"/>
-    </do_if>
-    <do_if value="this.$CurrentSector?">
-      <remove_value name="this.$CurrentSector"/>
-    </do_if>
+    <remove_value name="$Ship"/>
   </on_abort>
 
 </aiscript>

@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<mdscript name="JP_AnotherExplorerV2_MD" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="md.xsd">
+  <cues>
+
+    <cue name="JP_AnotherExplorerV2Debug_MD" instantiate="true" checkinterval="1s" checktime="player.age">
+      <conditions>
+        <check_value value="false"/>
+      </conditions>
+      <actions>
+
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <set_value name="$DEBUG" exact="100"/>
+        <do_if value="$DEBUG gt 0">
+          <set_value name="$DebugScriptName" exact="'JP_AnotherExplorerV2Debug_MD'"/>
+          <set_value name="$DebugFolderName" exact="'JP_AnotherExplorerV2.logs'"/>
+          <set_value name="$DebugFileName" exact="$DebugScriptName + '.xml.log'"/>
+          <debug_to_file append="false" directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Started ~~' + '\n'"/>
+        </do_if>
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+        <do_if value="$DEBUG gt 0">
+
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'global.$AnotherExplorerV2SectorBlackList'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <do_if value="global.$AnotherExplorerV2SectorBlackList?">
+            <do_for_each name="$_Sector" in="@global.$AnotherExplorerV2SectorBlackList">
+              <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~ Sector: %1 ~~ [%2].'.[@$_Sector.knownname, @$_Sector.owner.knownname]"/>
+            </do_for_each>
+          </do_if>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'global.$AnotherExplorerV2Ships'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <do_if value="global.$AnotherExplorerV2Ships?">
+            <do_for_each name="$_Ship" in="@global.$AnotherExplorerV2Ships">
+              <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~ Ship: %1 [%2] ~~ [%3].'.[@$_Ship.knownname, @$_Ship.idcode, @$_Ship.owner.knownname]"/>
+            </do_for_each>
+          </do_if>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'global.$AnotherExplorerV2S_Settings'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <do_if value="global.$AnotherExplorerV2S_Settings?">
+            <do_for_each name="$_Entry" in="global.$AnotherExplorerV2S_Settings">
+              <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="' ~ ' + $_Entry"/>
+            </do_for_each>
+          </do_if>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'global.$AnotherExplorerV2G_Settings'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <do_if value="global.$AnotherExplorerV2G_Settings?">
+            <do_for_each name="$_Entry" in="global.$AnotherExplorerV2G_Settings">
+              <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="' ~ ' + $_Entry"/>
+            </do_for_each>
+          </do_if>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+
+        </do_if>
+
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <do_if value="$DEBUG gt 0">
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Finished ~~'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+          <remove_value name="$DebugFileName"/>
+          <remove_value name="$DebugFolderName"/>
+          <remove_value name="$DebugScriptName"/>
+        </do_if>
+        <remove_value name="$DEBUG"/>
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      </actions>
+    </cue>
+
+    <cue name="JP_AnotherExplorerV2Cleanup_MD" instantiate="true" checkinterval="1s" checktime="player.age + 1s">
+      <conditions>
+      </conditions>
+      <actions>
+
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <set_value name="$DEBUG" exact="0"/>
+        <do_if value="$DEBUG gt 0">
+          <set_value name="$DebugScriptName" exact="'JP_AnotherExplorerV2Debug_MD'"/>
+          <set_value name="$DebugFolderName" exact="'JP_AnotherExplorerV2.logs'"/>
+          <set_value name="$DebugFileName" exact="$DebugScriptName + '.xml.log'"/>
+          <debug_to_file append="false" directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Started ~~' + '\n'"/>
+        </do_if>
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+        <find_ship name="$Ships" space="player.galaxy" multiple="true">
+          <match owner="faction.player"/>
+        </find_ship>
+
+        <do_if value="$Ships.count gt 0">
+          <do_for_each name="$_Ship" in="$Ships">
+            <!-- Get rid of the Order tag -->
+            <do_if value="@$_Ship.defaultorder.id != 'JP_AnotherExplorerV2S' and @$_Ship.defaultorder.id != 'JP_AnotherExplorerV2G'">
+              <substitute_text source="$_Ship.knownname" text="$_ResultName">
+                <replace string="(' \033#FFA95908#' + '#AEV2-S' + '\033X')" with="''"/>
+                <replace string="(' \033#FFA95908#' + '#AEV2-G' + '\033X')" with="''"/>
+              </substitute_text>
+              <do_if value="$_Ship.knownname != $_ResultName">
+                <set_object_name object="$_Ship" name="$_ResultName"/>
+              </do_if>
+            </do_if>
+          </do_for_each>
+        </do_if>
+
+        <remove_value name="$Ships"/>
+
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <do_if value="$DEBUG gt 0">
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Finished ~~'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+          <remove_value name="$DebugFileName"/>
+          <remove_value name="$DebugFolderName"/>
+          <remove_value name="$DebugScriptName"/>
+        </do_if>
+        <remove_value name="$DEBUG"/>
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      </actions>
+    </cue>
+
+  </cues>
+</mdscript>

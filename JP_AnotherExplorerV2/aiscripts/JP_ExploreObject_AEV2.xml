@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<aiscript name="JP_ExploreObject_AEV2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd">
+
+  <order id="JP_ExploreObject_AEV2" name="_ExploreObject_AEV2" category="internal" infinite="false">
+    <params>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="OBJECT" type="internal" default="null"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="DEBUG_FOLDER_NAME" type="internal" default="''"/>
+      <param name="DEBUG" type="internal" default="0"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    </params>
+    <location object="$LOCATION_OBJECT_USED_IN_UI" condition="@$LOCATION_OBJECT_USED_IN_UI != null"/>
+  </order>
+
+  <interrupts>
+    <handler ref="SectorChangeHandler"/>
+    <handler ref="TargetInvalidHandler"/>
+    <handler ref="AttackHandler"/>
+    <handler ref="MissileLockHandler"/>
+    <handler ref="ScannedHandler"/>
+    <handler ref="InspectedHandler"/>
+    <handler ref="FoundAbandonedHandler"/>
+    <handler ref="FoundLockboxHandler"/>
+    <handler ref="ResupplyHandler"/>
+    <handler ref="JobRemoveRequestHandler"/>
+  </interrupts>
+
+  <init>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <set_value name="$Ship" exact="this.ship"/>
+    <set_value name="$ExpMultiplier" exact="0.88"/>
+    <set_value name="$LOCATION_OBJECT_USED_IN_UI" exact="$OBJECT"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <do_if value="$DEBUG gt 0">
+      <set_value name="$DebugFolderName" exact="$DEBUG_FOLDER_NAME"/>
+      <set_value name="$DebugScriptName" exact="'JP_ExploreObject_AEV2'"/>
+      <set_value name="$DebugFileName" exact="$Ship.idcode + '.' + $DebugScriptName + '.xml.log'"/>
+      <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'" append="false"/>
+      <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Started ~~' + '\n'"/>
+    </do_if>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  </init>
+
+  <attention min="unknown">
+    <actions>
+
+      <label name="INIT_LBL"/>
+      <wait min="1s" max="3s"/>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <!-- Are we in the right sector? -->
+      <label name="MOVE_TO_SECTOR_LBL"/>
+      <do_if value="$Ship.sector != $PLACEABLE.sector">
+        <set_command command="command.move" param="$PLACEABLE.sector"/>
+        <run_script name="'move.generic'">
+          <param name="destination" value="$PLACEABLE.sector"/>
+          <param name="endintargetzone" value="true"/>
+          <param name="recallsubordinates" value="true"/>
+        </run_script>
+        <wait min="1s" max="2s"/>
+        <do_if value="this.zone.isclass.highway">
+          <get_safe_pos result="$_SafePos" zone="$Ship.zone" object="$Ship" direction="quadrant.front" radius="$Ship.size" angle="45deg"/>
+          <move_to object="$Ship" destination="$Ship.zone" uselocalhighways="false" finishonapproach="true" abortpath="true">
+            <position value="$_SafePos"/>
+          </move_to>
+          <remove_value name="$_SafePos"/>
+        </do_if>
+        <wait min="1s" max="3s"/>
+        <remove_value name="$LOCATION_OBJECT_USED_IN_UI"/>
+        <do_if value="$Ship.sector != $PLACEABLE.sector">
+          <resume label="MOVE_TO_SECTOR_LBL"/>
+        </do_if>
+      </do_if>
+      
+      <!-- Exploring the object -->
+      <set_command command="command.move" param="$OBJECT"/>
+      <label name="MOVING_LBL"/>
+      <get_safe_pos result="$_TempPosition" zone="$OBJECT.sector" object="$OBJECT" directionobject="$Ship" radius="($Ship.size + 2km)" ignored="$Ship"/>
+      <move_to object="$Ship" destination="$OBJECT.sector" finishonapproach="false" forceposition="true" travel="true">
+        <position value="$_TempPosition"/>
+        <interrupt_after_time time="1s"/>
+      </move_to>
+      <wait exact="1ms"/>
+      <do_if value="not $OBJECT.isknown or $Ship.distanceto.{$OBJECT} gt 600m">
+        <resume label="MOVING_LBL"/>
+      </do_if>
+      <remove_value name="$_TempPosition"/>
+      <stop_moving object="$Ship" immediate="true"/>
+      <set_command command="command.scan"/>
+      <wait min="2s" max="5s"/>
+
+      <apply_experience entity="$Ship.pilot" experience="'JP_SHIP_OBJECT_DISCOVERED'" factor="$ExpMultiplier"/>
+      <apply_experience object="$Ship" experience="'JP_SHIP_OBJECT_DISCOVERED'" role="entityrole.service" factor="$ExpMultiplier"/>
+      <remove_value name="$LOCATION_OBJECT_USED_IN_UI"/>
+      
+      
+      <wait min="3s" max="6s"/>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <label name="FINISH_LBL"/>
+      <do_if value="$DEBUG gt 0">
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Finished ~~'"/>
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+      </do_if>
+      <wait min="1s" max="3s"/>
+
+      <label name="CLEANUP_LBL"/>
+      <do_if value="$DEBUG gt 0">
+        <remove_value name="$DebugFileName"/>
+        <remove_value name="$DebugScriptName"/>
+        <remove_value name="$CurrentSector"/>
+      </do_if>
+      <remove_value name="$ExpMultiplier"/>
+      <remove_value name="$Ship"/>
+
+      <label name="END_LBL"/>
+      <wait min="1s" max="3s"/>
+
+    </actions>
+  </attention>
+
+  <on_abort>
+    <do_if value="$DEBUG gt 0">
+      <remove_value name="$DebugFileName"/>
+      <remove_value name="$DebugScriptName"/>
+      <remove_value name="$CurrentSector"/>
+    </do_if>
+    <remove_value name="$ExpMultiplier"/>
+    <remove_value name="$Ship"/>
+  </on_abort>
+
+</aiscript>
