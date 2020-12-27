@@ -19,7 +19,7 @@
       <param name="DEBUG" type="internal" default="0"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     </params>
-    <location object="$LOCATION_OBJECT_USED_IN_UI" condition="@$LOCATION_OBJECT_USED_IN_UI != null"/>
+    <location object="$LOCATION_OBJECT_USED_IN_UI.{1}" condition="@$LOCATION_OBJECT_USED_IN_UI != null"/>
   </order>
 
   <interrupts>
