@@ -47,20 +47,20 @@
     <actions>
 
       <label name="INIT_LBL"/>
-      <wait min="1s" max="3s"/>
+      <wait min="1ms"/>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
       <!-- Are we in the right sector? -->
       <label name="MOVE_TO_SECTOR_LBL"/>
-      <do_if value="$Ship.sector != $PLACEABLE.sector">
-        <set_command command="command.move" param="$PLACEABLE.sector"/>
+      <do_if value="$Ship.sector != $OBJECT.sector">
+        <set_command command="command.move" param="$OBJECT.sector"/>
         <run_script name="'move.generic'">
-          <param name="destination" value="$PLACEABLE.sector"/>
+          <param name="destination" value="$OBJECT.sector"/>
           <param name="endintargetzone" value="true"/>
           <param name="recallsubordinates" value="true"/>
         </run_script>
-        <wait min="1s" max="2s"/>
+        <wait min="1ms"/>
         <do_if value="this.zone.isclass.highway">
           <get_safe_pos result="$_SafePos" zone="$Ship.zone" object="$Ship" direction="quadrant.front" radius="$Ship.size" angle="45deg"/>
           <move_to object="$Ship" destination="$Ship.zone" uselocalhighways="false" finishonapproach="true" abortpath="true">
@@ -68,13 +68,13 @@
           </move_to>
           <remove_value name="$_SafePos"/>
         </do_if>
-        <wait min="1s" max="3s"/>
+        <wait min="1ms"/>
         <remove_value name="$LOCATION_OBJECT_USED_IN_UI"/>
-        <do_if value="$Ship.sector != $PLACEABLE.sector">
+        <do_if value="$Ship.sector != $OBJECT.sector">
           <resume label="MOVE_TO_SECTOR_LBL"/>
         </do_if>
       </do_if>
-      
+
       <!-- Exploring the object -->
       <set_command command="command.move" param="$OBJECT"/>
       <label name="MOVING_LBL"/>
@@ -84,20 +84,20 @@
         <interrupt_after_time time="1s"/>
       </move_to>
       <wait exact="1ms"/>
-      <do_if value="not $OBJECT.isknown or $Ship.distanceto.{$OBJECT} gt 600m">
+      <do_if value="not $OBJECT.isknown">
         <resume label="MOVING_LBL"/>
       </do_if>
       <remove_value name="$_TempPosition"/>
       <stop_moving object="$Ship" immediate="true"/>
       <set_command command="command.scan"/>
-      <wait min="2s" max="5s"/>
+      <wait min="1ms"/>
 
       <apply_experience entity="$Ship.pilot" experience="'JP_SHIP_OBJECT_DISCOVERED'" factor="$ExpMultiplier"/>
       <apply_experience object="$Ship" experience="'JP_SHIP_OBJECT_DISCOVERED'" role="entityrole.service" factor="$ExpMultiplier"/>
       <remove_value name="$LOCATION_OBJECT_USED_IN_UI"/>
-      
-      
-      <wait min="3s" max="6s"/>
+
+
+      <wait min="1ms"/>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
@@ -106,7 +106,7 @@
         <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Finished ~~'"/>
         <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
       </do_if>
-      <wait min="1s" max="3s"/>
+      <wait min="1ms"/>
 
       <label name="CLEANUP_LBL"/>
       <do_if value="$DEBUG gt 0">
@@ -118,7 +118,7 @@
       <remove_value name="$Ship"/>
 
       <label name="END_LBL"/>
-      <wait min="1s" max="3s"/>
+      <wait min="1ms"/>
 
     </actions>
   </attention>

@@ -45,10 +45,13 @@
     <actions>
 
       <label name="INIT_LBL"/>
-      <wait min="1s" max="3s"/>
+      <wait min="1ms"/>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
+      <set_command command="command.scan"/>
+      <set_command_action commandaction="commandaction.calculating"/>
+      
       <do_if value="@$SECTOR != null and @$SECTOR.isclass.{class.sector}">
         <create_list name="$_Sectors"/>
         <append_to_list name="$_Sectors" exact="$SECTOR"/>
@@ -73,7 +76,7 @@
       </do_else>
 
       <do_if value="global.$AnotherExplorerV2SectorBlackList?">
-        <remove_from_list name="$_TempSectors" list="global.$AnotherExplorerV2SectorBlackList"/>
+        <remove_from_list name="$_Sectors" list="global.$AnotherExplorerV2SectorBlackList"/>
       </do_if>
 
       <do_if value="$DEBUG">
@@ -151,7 +154,7 @@
       </do_if>
 
 
-      <wait min="3s" max="6s"/>
+      <wait min="1ms"/>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
@@ -160,7 +163,7 @@
         <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Finished ~~'"/>
         <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
       </do_if>
-      <wait min="1s" max="3s"/>
+      <wait min="1ms"/>
 
       <label name="CLEANUP_LBL"/>
       <do_if value="$DEBUG gt 0">
@@ -171,7 +174,7 @@
       <remove_value name="$Ship"/>
 
       <label name="END_LBL"/>
-      <wait min="1s" max="3s"/>
+      <wait min="1ms"/>
 
 
       <label name="RETURN_LBL"/>

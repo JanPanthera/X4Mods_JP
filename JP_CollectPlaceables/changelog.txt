@@ -1,2 +1,2 @@
-~ V1.21 -- Quick hotfix --
-~ Fixed: damn copy/paste mistake.. $LOCATION_OBJECT_USED_IN_UI to $LOCATION_OBJECT_USED_IN_UI.{1}
+~ V1.21 -- Fix --
+~ Fixed: OrderTag was not removed.. a function that does only the half of the work.. egosofts function ^^

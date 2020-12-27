@@ -5,7 +5,7 @@
 
     <cue name="JP_AnotherExplorerV2Debug_MD" instantiate="true" checkinterval="1s" checktime="player.age">
       <conditions>
-        <check_value value="false"/>
+        <check_value value="true"/>
       </conditions>
       <actions>
 
@@ -84,9 +84,9 @@
       <actions>
 
         <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-        <set_value name="$DEBUG" exact="0"/>
+        <set_value name="$DEBUG" exact="100"/>
         <do_if value="$DEBUG gt 0">
-          <set_value name="$DebugScriptName" exact="'JP_AnotherExplorerV2Debug_MD'"/>
+          <set_value name="$DebugScriptName" exact="'JP_AnotherExplorerV2Cleanup_MD'"/>
           <set_value name="$DebugFolderName" exact="'JP_AnotherExplorerV2.logs'"/>
           <set_value name="$DebugFileName" exact="$DebugScriptName + '.xml.log'"/>
           <debug_to_file append="false" directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
@@ -103,8 +103,10 @@
             <!-- Get rid of the Order tag -->
             <do_if value="@$_Ship.defaultorder.id != 'JP_AnotherExplorerV2S' and @$_Ship.defaultorder.id != 'JP_AnotherExplorerV2G'">
               <substitute_text source="$_Ship.knownname" text="$_ResultName">
-                <replace string="(' \033#FFA95908#' + '#AEV2-S' + '\033X')" with="''"/>
-                <replace string="(' \033#FFA95908#' + '#AEV2-G' + '\033X')" with="''"/>
+                <replace string="('\033#FFA95908#' + '#AEV2-S ' + '\033X')" with="''"/>
+                <replace string="('\033#FFA95908#' + '#AEV2-G ' + '\033X')" with="''"/>
+                <replace string="('\033#FFA95908#' + ' #AEV2-S' + '\033X')" with="''"/>
+                <replace string="('\033#FFA95908#' + ' #AEV2-G' + '\033X')" with="''"/>
               </substitute_text>
               <do_if value="$_Ship.knownname != $_ResultName">
                 <set_object_name object="$_Ship" name="$_ResultName"/>

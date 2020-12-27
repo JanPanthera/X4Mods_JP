@@ -100,21 +100,21 @@
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <set_value name="$Ship" exact="this.ship"/>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <set_value name="$DebugScriptName" exact="'JP_AnotherExplorerV2G'"/>
     <do_if value="$DEBUG">
       <set_value name="$DebugFolderName" exact="'JP_AnotherExplorerV2.logs'"/>
-      <set_value name="$DebugScriptName" exact="'JP_AnotherExplorerV2G'"/>
       <set_value name="$DebugFileName" exact="$Ship.idcode + '.' + $DebugScriptName + '.xml.log'"/>
       <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'" append="false"/>
       <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Started ~~' + '\n'"/>
     </do_if>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <do_if value="$ADD_ORDER_TAG">
-      <set_value name="$_OrderTag" exact="'#AEV2-G'"/>
+      <set_value name="$_OrderTag" exact="if $ORDER_TAG_POSITION == 0 then '#AEV2-G ' else ' #AEV2-G'"/>
       <substitute_text source="$Ship.knownname" text="$_ResultName">
-        <replace string="(' \033#FFA95908#' + $_OrderTag + '\033X')" with="''"/>
+        <replace string="('\033#FFA95908#' + $_OrderTag + '\033X')" with="''"/>
       </substitute_text>
       <do_if value="$Ship.knownname == $_ResultName">
-        <set_object_name object="$Ship" name="(if $ORDER_TAG_POSITION then '' else (' \033#FFA95908#' + $_OrderTag + '\033X')) + $Ship.knownname + (if $ORDER_TAG_POSITION then (' \033#FFA95908#' + $_OrderTag + '\033X') else '')"/>
+        <set_object_name object="$Ship" name="(if $ORDER_TAG_POSITION == 0 then ('\033#FFA95908#' + $_OrderTag + '\033X') else '') + $Ship.knownname + (if $ORDER_TAG_POSITION == 1 then ('\033#FFA95908#' + $_OrderTag + '\033X') else '')"/>
       </do_if>
       <remove_value name="$_OrderTag"/>
     </do_if>
@@ -178,7 +178,7 @@
       </do_else>
       <remove_value name="$_SettingsList"/>
       <show_help duration="5s" allowclose="true" log="true" custom="$DebugScriptName + ' ~\n' + $Ship.knownname + ' [' + $Ship.idcode + ']\n\n' + '{8888888, 495}'"/>
-      <cancel_order order="$Ship.order"/>
+      <set_value name="$Quit" exact="true"/>
     </do_if>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <do_if value="$RESET_ORDER_SETTINGS">
@@ -186,13 +186,17 @@
         <remove_value name="global.$AnotherExplorerV2G_Settings"/>
       </do_if>
       <show_help duration="5s" allowclose="true" log="true" custom="$DebugScriptName + ' ~\n' + $Ship.knownname + ' [' + $Ship.idcode + ']\n\n' + '{8888888, 496}'"/>
-      <cancel_order order="$Ship.order"/>
+      <set_value name="$Quit" exact="true"/>
     </do_if>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
   </init>
 
   <attention min="unknown">
     <actions>
+
+      <do_if value="$Quit?">
+        <resume label="FINISH_LBL"/>
+      </do_if>
 
       <label name="INIT_LBL"/>
       <wait min="1s" max="3s"/>
@@ -210,7 +214,7 @@
         <param name="STATIONS" value="$STATIONS"/>
         <param name="ENEMY_STATIONS" value="$ENEMY_STATIONS"/>
         <param name="FRIENDLY_STATIONS" value="$FRIENDLY_STATIONS"/>
-        <param name="DEBUG_FOLDER_NAME" value="$DebugFolderName"/>
+        <param name="DEBUG_FOLDER_NAME" value="@$DebugFolderName"/>
         <param name="DEBUG" value="$DEBUG"/>
         <save_retval name="NEAREST_UNKNOWN_OBJECT" variable="$_NearestUnknownObject"/>
       </run_script>
@@ -221,18 +225,20 @@
         <resume label="IDLE_RETURN_HOME_LBL"/>
       </do_if>
 
+      <set_value name="this.$CurrentSector" exact="$_NearestUnknownObject.sector"/>
+
       <!-- Exploring the object.. flying to it and making it visible -->
       <label name="EXPLORE_OBJECT_LBL"/>
-      <create_order id="'JP_ExploreObject_AEV2'" object="$Ship">
+      <run_script name="'JP_ExploreObject_AEV2'">
         <param name="OBJECT" value="$_NearestUnknownObject"/>
         <param name="DEBUG_FOLDER_NAME" value="@$DebugFolderName"/>
         <param name="DEBUG" value="$DEBUG"/>
-      </create_order>
+      </run_script>
       <remove_from_list name="global.$AnotherExplorerV2SectorBlackList" exact="this.$CurrentSector"/>
+      <wait min="1ms"/>
       <remove_value name="$_NearestUnknownObject"/>
       <set_command command="command.scan"/>
       <set_command_action commandaction="commandaction.calculating"/>
-      <wait min="1s" max="3s"/>
       <resume label="RESUME_LBL"/>
 
       <!-- Nothing to do.. idle a bit and try again -->
@@ -267,9 +273,9 @@
       <wait min="1s" max="3s"/>
 
       <label name="CLEANUP_LBL"/>
+      <remove_value name="$DebugScriptName"/>
       <do_if value="$DEBUG gt 0">
         <remove_value name="$DebugFileName"/>
-        <remove_value name="$DebugScriptName"/>
         <remove_value name="$DebugFolderName"/>
       </do_if>
       <do_if value="global.$AnotherExplorerV2SectorBlackList? and @this.$CurrentSector != null">
@@ -286,6 +292,7 @@
         <remove_value name="this.$CurrentSector"/>
       </do_if>
       <remove_value name="$Ship"/>
+      <remove_value name="$Quit"/>
 
       <label name="END_LBL"/>
       <set_order_syncpoint_reached order="this.ship.defaultorder"/>
@@ -296,9 +303,9 @@
   </attention>
 
   <on_abort>
+    <remove_value name="$DebugScriptName"/>
     <do_if value="$DEBUG gt 0">
       <remove_value name="$DebugFileName"/>
-      <remove_value name="$DebugScriptName"/>
       <remove_value name="$DebugFolderName"/>
     </do_if>
     <do_if value="$Ship.defaultorder.id != 'AnotherExplorerV2S' and $Ship.defaultorder.id != 'AnotherExplorerVG'">
@@ -317,6 +324,7 @@
       </do_if>
     </do_if>
     <remove_value name="$Ship"/>
+    <remove_value name="$Quit"/>
   </on_abort>
 
 </aiscript>
