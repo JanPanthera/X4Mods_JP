@@ -5,5 +5,5 @@
   <icon name="order_jp_afbv2_go_repair" texture="assets\fx\gui\textures\order\order_repair.tga" height="32" width="32"></icon>
   <icon name="order_jp_afbv2_interceptionsmall" texture="assets\fx\gui\textures\order\order_recon.tga" height="32" width="32"></icon>
   <icon name="order_jp_afbv2_defencesmall" texture="assets\fx\gui\textures\order\order_recon.tga" height="32" width="32"></icon>
-  <icon name="order_jp_afbv2_attacksmall" texture="assets\fx\gui\textures\order\order_recon.tga" height="32" width="32"></icon>
+  <icon name="order_jp_afbv2_attacker" texture="assets\fx\gui\textures\order\order_recon.tga" height="32" width="32"></icon>
 </icons>

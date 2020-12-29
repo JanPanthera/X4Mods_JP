@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<mdscript name="JP_AFBV2_HandleRepairNeeds" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="md.xsd">
+  <cues>
+
+    <cue name="JP_AFBV2_HandleRepairNeeds_LOOP" instantiate="false" checkinterval="1s">
+      <conditions>
+      </conditions>
+      <actions>
+        <set_value name="$DEBUG" exact="0"/>
+        <set_value name="$DebugFolderName" exact="'JP_AnotherFleetBehaviorV2.logs'"/>
+        <set_value name="$DebugFileName" exact="'JP_AFBV2_HandleRepairNeeds.xml.log'"/>
+
+        <do_if value="$DEBUG">
+          <debug_to_file append="false" directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_AFBV2_CheckForNeededRepair.xml ~ Started ~~' + '\n'"/>
+        </do_if>
+
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+        <create_list name="$_PlayerShips"/>
+        <find_ship_by_true_owner name="$_PlayerShips" space="player.galaxy" faction="faction.player" multiple="true">
+          <match unit="false"/>
+          <match class="class.ship"/>
+          <match_hull max="99"/>
+        </find_ship_by_true_owner>
+
+        <do_if value="$_PlayerShips.count gt 1">
+          <sort_list list="$_PlayerShips" sortbyvalue="loop.element.type"/>
+        </do_if>
+
+        <do_if value="$DEBUG">
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'$_PlayerShips: ' + $_PlayerShips.count"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <do_for_each name="$_PlayerShip" in="$_PlayerShips">
+            <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'$_PlayerShip: ' + $_PlayerShip.knownname + ' [' + $_PlayerShip.idcode + ']' + ' -- ' + $_PlayerShip.typename + ' ~ ' + 'Hullpercentage: [' + $_PlayerShip.hullpercentage + ']'"/>
+          </do_for_each>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+        </do_if>
+
+        <do_for_each name="$_PlayerShip" in="$_PlayerShips">
+
+          <set_value name="$_AlreadyGoingToRepair" exact="false"/>
+          <do_for_each name="$_Order" in="$_PlayerShip.orders">
+            <do_if value="$_Order.id == 'JP_AFBV2_Go_Repair'">
+              <set_value name="$_AlreadyGoingToRepair" exact="true"/>
+            </do_if>
+          </do_for_each>
+
+          <do_if value="$_AlreadyGoingToRepair == false">
+            <set_value name="$_GoRepairHullPercentage" exact="if @$_PlayerShip.defaultorder.$GoRepairHullPercentage then @$_PlayerShip.defaultorder.$GoRepairHullPercentage else 90"/>
+            <do_if value="$_PlayerShip.hullpercentage le $_GoRepairHullPercentage">
+              <cancel_all_orders object="$_PlayerShip"/>
+              <create_order object="$_PlayerShip" id="'JP_AFBV2_Go_Repair'">
+                <!-- TODO : LOOK_FOR_FRIENDLY_STATIONS_WHERE_WE_CAN_REPAIR and STATION_SEARCH_MAX_GATE_DISTANCE -->
+                <param name="LOOK_FOR_FRIENDLY_STATIONS_WHERE_WE_CAN_REPAIR" value="false"/>
+                <param name="STATION_SEARCH_MAX_GATE_DISTANCE" value="1"/>
+                <param name="DEBUG" value="$DEBUG"/>
+              </create_order>
+            </do_if>
+            <remove_value name="$_GoRepairHullPercentage"/>
+
+          </do_if>
+          <remove_value name="$_AlreadyGoingToRepair"/>
+
+        </do_for_each>
+
+        <remove_value name="$_PlayerShips"/>
+
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+        <do_if value="$DEBUG">
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_AFBV2_CheckForNeededRepair.xml ~ Finished ~~'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+        </do_if>
+
+        <remove_value name="$DebugFileName"/>
+        <remove_value name="$DebugFolderName"/>
+        <remove_value name="$DEBUG"/>
+      </actions>
+    </cue>
+
+  </cues>
+</mdscript>

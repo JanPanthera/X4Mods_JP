@@ -40,8 +40,8 @@
 
   <init>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-    <do_if value="$DEBUG gt 0">
-      <set_value name="$DebugDirectory" exact="'JP_AnotherFleetBehaviorV2.logs'"/>
+    <do_if value="$DEBUG">
+      <set_value name="$DebugFolderName" exact="'JP_AnotherFleetBehaviorV2.logs'"/>
       <set_value name="$DebugFileName" exact="this.ship.idcode + '.JP_AFBV2_InterceptionSmall.xml.log'"/>
     </do_if>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -56,9 +56,9 @@
       <wait exact="1s"/>
       <label name="START_LBL"/>
 
-      <do_if value="$DEBUG gt 0">
-        <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_AFBV2_InterceptionSmall.xml ~ Started ~~' + '\n'"/>
+      <do_if value="$DEBUG">
+        <debug_to_file append="false" directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_AFBV2_InterceptionSmall.xml ~ Started ~~' + '\n'"/>
       </do_if>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -115,17 +115,17 @@
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-      <do_if value="$DEBUG gt 0">
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_AFBV2_InterceptionSmall.xml ~ Finished ~~'"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+      <do_if value="$DEBUG">
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_AFBV2_InterceptionSmall.xml ~ Finished ~~'"/>
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
       </do_if>
 
       <label name="CLEANUP_LBL"/>
       <remove_value name="$FleetCommander"/>
       <remove_value name="$Ship"/>
-      <do_if value="$DEBUG gt 0">
+      <do_if value="$DEBUG">
         <remove_value name="$DebugFileName"/>
-        <remove_value name="$DebugDirectory"/>
+        <remove_value name="$DebugFolderName"/>
       </do_if>
 
       <label name="END_LBL"/>

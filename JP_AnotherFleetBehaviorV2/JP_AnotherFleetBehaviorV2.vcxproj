@@ -143,7 +143,7 @@
     <Xsd Include="md\md.xsd" />
   </ItemGroup>
   <ItemGroup>
-    <Xml Include="aiscripts\JP_AFBV2_AttackSmall.xml" />
+    <Xml Include="aiscripts\JP_AFBV2_Attacker.xml" />
     <Xml Include="aiscripts\JP_AFBV2_DefenceSmall.xml" />
     <Xml Include="aiscripts\JP_AFBV2_GoRepair.xml" />
     <Xml Include="aiscripts\JP_AFBV2_InterceptonSmall.xml" />
@@ -151,7 +151,8 @@
     <Xml Include="content.xml" />
     <Xml Include="libraries\experiences.xml" />
     <Xml Include="libraries\icons.xml" />
-    <Xml Include="md\JP_AFBV2_UpdateFleetOrders.xml" />
+    <Xml Include="md\JP_AFBV2_Handle_Attacker.xml" />
+    <Xml Include="md\JP_AFBV2_HandleRepairNeeds.xml" />
     <Xml Include="t\0001-L007.xml" />
     <Xml Include="t\0001-L033.xml" />
     <Xml Include="t\0001-L034.xml" />

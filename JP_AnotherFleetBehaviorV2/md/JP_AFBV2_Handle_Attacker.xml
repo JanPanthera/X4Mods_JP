@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<mdscript name="JP_AFBV2_Handle_Attacker" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="md.xsd">
+  <cues>
+
+    <cue name="JP_AFBV2_Handle_Attacker_LOOP" instantiate="false" checkinterval="1s">
+      <conditions>
+      </conditions>
+      <actions>
+        <set_value name="$DEBUG" exact="0"/>
+        <set_value name="$DebugFolderName" exact="'JP_AnotherFleetBehaviorV2.logs'"/>
+        <set_value name="$DebugFileName" exact="'JP_AFBV2_Handle_Attacker.xml.log'"/>
+
+        <do_if value="$DEBUG">
+          <debug_to_file append="false" directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_AFBV2_Handle_Attacker.xml ~ Started ~~' + '\n'"/>
+        </do_if>
+
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+        <create_list name="$_FoundPlayerShips"/>
+        <find_ship_by_true_owner name="$_FoundPlayerShips" space="player.galaxy" faction="faction.player" multiple="true">
+          <match class="[class.ship]"/>
+          <match unit="false"/>
+        </find_ship_by_true_owner>
+
+        <do_if value="$_FoundPlayerShips.count gt 0">
+          <do_for_each name="$_FoundPlayerShip" in="$_FoundPlayerShips">
+
+            <do_if value="@$_FoundPlayerShip.fleet.commander.defaultorder.id != 'JP_AnotherFleetBehaviorV2' and (@$_FoundPlayerShip.defaultorder.id == 'JP_AFBV2_InterceptionSmall' or @$_FoundPlayerShip.defaultorder.id == 'JP_AFBV2_DefenceSmall' or @$_FoundPlayerShip.defaultorder.id == 'JP_AFBV2_Attacker')">
+              <cancel_all_orders object="$_FoundPlayerShip"/>
+              <create_order object="$_FoundPlayerShip" id="'Escort'" default="true">
+                <param name="target" value="$_FoundPlayerShip.fleet.commander"/>
+              </create_order>
+            </do_if>
+
+            <!-- Is it an attacker? -->
+            <do_if value="$_FoundPlayerShip.assignment != assignment.attack">
+              <continue/>
+            </do_if>
+
+            <!-- Is it a subordinate of an "AnotherFleetBehaviorV2" Fleet? -->
+            <do_if value="@$_FoundPlayerShip.commander == null">
+              <continue/>
+            </do_if>
+            <do_else>
+              <do_if value="$_FoundPlayerShip.commander.defaultorder.id != 'JP_AnotherFleetBehaviorV2'">
+                <continue/>
+              </do_if>
+            </do_else>
+
+            <!-- Has the ship a repair order? -->
+            <do_for_each name="$_Order" in="$_FoundPlayerShip.orders">
+              <do_if value="$_Order.id == 'JP_AFBV2_Go_Repair'">
+                <set_value name="$_HasRepairOrder" exact="true"/>
+                <break/>
+              </do_if>
+            </do_for_each>
+            <do_if value="@$_HasRepairOrder">
+              <remove_value name="$_HasRepairOrder"/>
+              <continue/>
+            </do_if>
+
+            <!-- Has it a flee order? -->
+            <do_for_each name="$_Order" in="$_FoundPlayerShip.orders">
+              <do_if value="$_Order.id == 'Flee'">
+                <set_value name="$_HasFleeOrder" exact="true"/>
+                <break/>
+              </do_if>
+            </do_for_each>
+            <do_if value="@$_HasFleeOrder">
+              <remove_value name="$_HasFleeOrder"/>
+              <continue/>
+            </do_if>
+
+            <!-- Do we have an attack order? -->
+            <do_for_each name="$_Order" in="$_FoundPlayerShip.orders">
+              <do_if value="$_Order.id == 'Attack'">
+                <set_value name="$_HasAttackOrder" exact="true"/>
+                <set_value name="$_CurrentTarget" exact="$_Order.$primarytarget"/>
+                <break/>
+              </do_if>
+            </do_for_each>
+
+            <do_if value="@$_HasAttackOrder">
+
+              <!-- Is actual enemy what we should attack? -->
+              <do_if value="@$_FoundPlayerShip.defaultorder.$PRIMARY_TARGET and
+                              not $_FoundPlayerShip.defaultorder.$PRIMARY_TARGET.iswreck and
+                              $_FoundPlayerShip.fleet.commander.distanceto.{$_FoundPlayerShip.defaultorder.$PRIMARY_TARGET} lt $_FoundPlayerShip.defaultorder.$COMBAT_RANGE and 
+                              $_CurrentTarget != $_FoundPlayerShip.defaultorder.$PRIMARY_TARGET">
+                <cancel_all_orders object="$_FoundPlayerShip"/>
+                <continue/>
+              </do_if>
+              <do_else>
+
+                <do_if value="$_CurrentTarget.iswreck or $_FoundPlayerShip.fleet.commander.distanceto.{$_CurrentTarget} gt $_FoundPlayerShip.defaultorder.$COMBAT_RANGE">
+                  <cancel_all_orders object="$_FoundPlayerShip"/>
+                  <continue/>
+                </do_if>
+
+              </do_else>
+
+            </do_if>
+            <do_else>
+              <!-- Actual PRIMARY_TARGET valid and near? -->
+              <do_if value="@$_FoundPlayerShip.defaultorder.$PRIMARY_TARGET != null and not $_FoundPlayerShip.defaultorder.$PRIMARY_TARGET.iswreck">
+                <do_if value="@$_FoundPlayerShip.fleet.commander.distanceto.{$_FoundPlayerShip.defaultorder.$PRIMARY_TARGET} lt $_FoundPlayerShip.defaultorder.$COMBAT_RANGE">
+                  <cancel_all_orders object="$_FoundPlayerShip"/>
+                  <continue/>
+                </do_if>
+              </do_if>
+              <do_else>
+                <!-- Any enemys near that we can attack? -->
+                <create_list name="$_FoundEnemyShips"/>
+                <find_object name="$_FoundEnemyShips" space="$_FoundPlayerShip.sector" multiple="true">
+                  <match_relation_to object="$_FoundPlayerShip" relation="enemy"/>
+                  <match mayattack="$_FoundPlayerShip"/>
+                  <match knownto="$_FoundPlayerShip.owner"/>
+                  <match class="$_FoundPlayerShip.defaultorder.$CLASSES_TO_ATTACK"/>
+                  <match_distance object="$_FoundPlayerShip.fleet.commander" max="$_FoundPlayerShip.defaultorder.$COMBAT_RANGE"/>
+                </find_object>
+                <do_if value="$_FoundEnemyShips.count gt 0">
+                  <remove_value name="$_FoundEnemyShips"/>
+                  <cancel_all_orders object="$_FoundPlayerShip"/>
+                  <continue/>
+                </do_if>
+              </do_else>
+            </do_else>
+
+          </do_for_each>
+        </do_if>
+
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+        <do_if value="$DEBUG">
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_AFBV2_Handle_Attacker.xml ~ Finished ~~'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+        </do_if>
+
+        <remove_value name="$DebugFileName"/>
+        <remove_value name="$DebugFolderName"/>
+        <remove_value name="$DEBUG"/>
+      </actions>
+    </cue>
+
+    <cue name="JP_ASBV2_SYNC_ORDER_PARAMETERS_WITH_LEADER" instantiate="false" checkinterval="1s">
+      <conditions>
+      </conditions>
+      <actions>
+
+        <create_list name="$_FoundPlayerShips"/>
+        <find_ship_by_true_owner name="$_FoundPlayerShips" space="player.galaxy" faction="faction.player" multiple="true">
+          <match class="[class.ship]"/>
+          <match unit="false"/>
+        </find_ship_by_true_owner>
+
+        <do_for_each name="$_FoundPlayerShip" in="$_FoundPlayerShips">
+
+          <do_if value="$_FoundPlayerShip.defaultorder.id == 'JP_AFBV2_Attacker'">
+
+            <!-- Update $PRIMARY_TARGET -->
+            <do_if value="$_FoundPlayerShip.class == class.ship_s">
+              <do_if value="$_FoundPlayerShip.defaultorder.$PRIMARY_TARGET != $_FoundPlayerShip.fleet.commander.defaultorder.$S_ATTACK_PRIMARY_TARGET">
+                <edit_order_param order="$_FoundPlayerShip.defaultorder" param="'PRIMARY_TARGET'" value="$_FoundPlayerShip.fleet.commander.defaultorder.$S_ATTACK_PRIMARY_TARGET"/>
+              </do_if>
+            </do_if>
+            <do_if value="$_FoundPlayerShip.class == class.ship_m">
+              <do_if value="$_FoundPlayerShip.defaultorder.$PRIMARY_TARGET != $_FoundPlayerShip.fleet.commander.defaultorder.$M_ATTACK_PRIMARY_TARGET">
+                <edit_order_param order="$_FoundPlayerShip.defaultorder" param="'PRIMARY_TARGET'" value="$_FoundPlayerShip.fleet.commander.defaultorder.$M_ATTACK_PRIMARY_TARGET"/>
+              </do_if>
+            </do_if>
+            <do_if value="$_FoundPlayerShip.class == class.ship_l">
+              <do_if value="$_FoundPlayerShip.defaultorder.$PRIMARY_TARGET != $_FoundPlayerShip.fleet.commander.defaultorder.$L_ATTACK_PRIMARY_TARGET">
+                <edit_order_param order="$_FoundPlayerShip.defaultorder" param="'PRIMARY_TARGET'" value="$_FoundPlayerShip.fleet.commander.defaultorder.$L_ATTACK_PRIMARY_TARGET"/>
+              </do_if>
+            </do_if>
+            <do_if value="$_FoundPlayerShip.class == class.ship_xl">
+              <do_if value="$_FoundPlayerShip.defaultorder.$PRIMARY_TARGET != $_FoundPlayerShip.fleet.commander.defaultorder.$XL_ATTACK_PRIMARY_TARGET">
+                <edit_order_param order="$_FoundPlayerShip.defaultorder" param="'PRIMARY_TARGET'" value="$_FoundPlayerShip.fleet.commander.defaultorder.$XL_ATTACK_PRIMARY_TARGET"/>
+              </do_if>
+            </do_if>
+
+            <!-- Update $COMBAT_RANGE -->
+            <do_if value="$_FoundPlayerShip.class == class.ship_s">
+              <do_if value="$_FoundPlayerShip.defaultorder.$COMBAT_RANGE != $_FoundPlayerShip.fleet.commander.defaultorder.$S_ATTACK_RANGE">
+                <edit_order_param order="$_FoundPlayerShip.defaultorder" param="'COMBAT_RANGE'" value="$_FoundPlayerShip.fleet.commander.defaultorder.$S_ATTACK_RANGE"/>
+              </do_if>
+            </do_if>
+            <do_if value="$_FoundPlayerShip.class == class.ship_m">
+              <do_if value="$_FoundPlayerShip.defaultorder.$COMBAT_RANGE != $_FoundPlayerShip.fleet.commander.defaultorder.$M_ATTACK_RANGE">
+                <edit_order_param order="$_FoundPlayerShip.defaultorder" param="'COMBAT_RANGE'" value="$_FoundPlayerShip.fleet.commander.defaultorder.$M_ATTACK_RANGE"/>
+              </do_if>
+            </do_if>
+            <do_if value="$_FoundPlayerShip.class == class.ship_l">
+              <do_if value="$_FoundPlayerShip.defaultorder.$COMBAT_RANGE != $_FoundPlayerShip.fleet.commander.defaultorder.$L_ATTACK_RANGE">
+                <edit_order_param order="$_FoundPlayerShip.defaultorder" param="'COMBAT_RANGE'" value="$_FoundPlayerShip.fleet.commander.defaultorder.$L_ATTACK_RANGE"/>
+              </do_if>
+            </do_if>
+            <do_if value="$_FoundPlayerShip.class == class.ship_xl">
+              <do_if value="$_FoundPlayerShip.defaultorder.$COMBAT_RANGE != $_FoundPlayerShip.fleet.commander.defaultorder.$XL_ATTACK_RANGE">
+                <edit_order_param order="$_FoundPlayerShip.defaultorder" param="'COMBAT_RANGE'" value="$_FoundPlayerShip.fleet.commander.defaultorder.$XL_ATTACK_RANGE"/>
+              </do_if>
+            </do_if>
+
+          </do_if>
+
+        </do_for_each>
+
+        <remove_value name="$_FoundPlayerShips"/>
+
+      </actions>
+    </cue>
+
+  </cues>
+</mdscript>

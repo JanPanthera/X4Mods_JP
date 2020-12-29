@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<aiscript name="JP_AFBV2_Attacker" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd" version="1">
+
+  <order id="JP_AFBV2_Attacker" name="AFBV2_Attacker" category="internal" infinite="true">
+    <params>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="PRIMARY_TARGET" text="PrimaryTarget" type="object" default="null"/>
+      <param name="COMBAT_RANGE" text="S_Attack_Range" type="number" default="20km">
+        <input_param name="min" value="1km"/>
+        <input_param name="max" value="200km"/>
+        <input_param name="step" value="1km"/>
+      </param>
+      <param name="CLASSES_TO_ATTACK" text="ClassesToAttack" type="list" default="[class.ship_xs, class.ship_s, class.ship_m, class.ship_l, class.ship_xl, class.station]"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <!-- DEBUG -->
+      <param name="DEBUG" text="DebugText" type="number" default="0" advanced="true">
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="100"/>
+        <input_param name="step" value="100"/>
+      </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    </params>
+    <skill min="0"/>
+    <requires>
+      <match shiptype="shiptype.lasertower" negate="true"/>
+    </requires>
+    <location object="this.ship.fleet.commander" radius="$COMBAT_RANGE" condition="@this.ship.fleet.commander"/>
+  </order>
+
+  <interrupts>
+    <handler ref="SectorChangeHandler"/>
+    <handler ref="TargetInvalidHandler"/>
+    <handler ref="AttackHandler"/>
+    <handler ref="MissileLockHandler"/>
+    <handler ref="ScannedHandler"/>
+    <handler ref="InspectedHandler"/>
+    <handler ref="ResupplyHandler"/>
+    <handler ref="JobRemoveRequestHandler"/>
+  </interrupts>
+
+  <init>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <do_if value="$DEBUG">
+      <set_value name="$DebugFolderName" exact="'JP_AnotherFleetBehaviorV2.logs'"/>
+      <set_value name="$DebugFileName" exact="this.ship.idcode + '.JP_AFBV2_Attacker.xml.log'"/>
+    </do_if>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <set_value name="$Ship" exact="this.ship"/>
+    <set_value name="$FleetCommander" exact="$Ship.fleet.commander"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  </init>
+
+  <attention min="unknown">
+    <actions>
+
+      <wait exact="1s"/>
+      <label name="START_LBL"/>
+
+      <do_if value="$DEBUG">
+        <debug_to_file append="false" directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_AFBV2_Attacker.xml ~ Started ~~' + '\n'"/>
+      </do_if>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <label name="RESUME_LBL"/>
+
+      <set_value name="$_HasAttackOrder" exact="false"/>
+      <do_for_each name="$_Order" in="$Ship.orders">
+        <do_if value="$Ship.order.id == 'Attack'">
+          <set_value name="$_HasAttackOrder" exact="true"/>
+        </do_if>
+      </do_for_each>
+      
+      <do_if value="not $_HasAttackOrder">
+        <do_if value="$PRIMARY_TARGET != null and not $PRIMARY_TARGET.iswreck">
+          <set_value name="$_Target" exact="$PRIMARY_TARGET"/>
+        </do_if>
+        <do_else>
+          <create_list name="$_FoundEnemyShips"/>
+          <find_object name="$_FoundEnemyShips" space="$Ship.sector" multiple="true">
+            <match_relation_to object="$Ship" relation="enemy"/>
+            <match mayattack="$Ship"/>
+            <match knownto="$Ship.owner"/>
+            <match class="$CLASSES_TO_ATTACK"/>
+            <match_distance object="$Ship.fleet.commander" max="$COMBAT_RANGE"/>
+          </find_object>
+          <do_if value="$_FoundEnemyShips.count gt 0">
+            <do_if value="$_FoundEnemyShips.count gt 1">
+              <sort_list list="$_FoundEnemyShips" sortbyvalue="$Ship.distanceto.{loop.element}"/>
+            </do_if>
+            <set_value name="$_RandomizedTargedNumber" min="1" max="[$_FoundEnemyShips.count, 8].min" profile="flat"/>
+            <set_value name="$_Target" exact="$_FoundEnemyShips.{$_RandomizedTargedNumber}"/>
+            <remove_value name="$_RandomizedTargedNumber"/>
+            <remove_value name="$_FoundEnemyShips"/>
+          </do_if>
+        </do_else>
+        <do_if value="@$_Target">
+          <cancel_all_orders object="$Ship"/>
+          <create_order object="$Ship" id="'Attack'" immediate="true">
+            <param name="primarytarget" value="$_Target"/>
+            <param name="pursuetargets" value="true"/>
+            <param name="pursuedistance" value="$COMBAT_RANGE"/>
+          </create_order>
+        </do_if>
+        <do_else>
+          <set_value name="$_HasDockOrder" exact="false"/>
+          <do_for_each name="$_Order" in="$Ship.orders">
+            <do_if value="$_Order.id == 'DockAndWait' or $_Order.id == 'Follow'">
+              <set_value name="$_HasDockOrder" exact="true"/>
+              <break/>
+            </do_if>
+          </do_for_each>
+          <do_if value="not $_HasDockOrder">
+            <do_if value="$Ship.fleet.commander.dockingallowed.{$Ship}">
+              <cancel_all_orders object="$Ship"/>
+              <create_order object="$Ship" id="'DockAndWait'" immediate="true">
+                <param name="destination" value="$Ship.fleet.commander"/>
+                <param name="dockfollowers" value="true"/>
+                <param name="timeout" value="0s"/>
+              </create_order>
+            </do_if>
+            <do_else>
+              <cancel_all_orders object="$Ship"/>
+              <create_order object="$Ship" id="'Follow'" immediate="true">
+                <param name="target" value="$Ship.fleet.commander"/>
+              </create_order>
+            </do_else>
+          </do_if>
+        </do_else>
+      </do_if>
+
+      <wait exact="3s"/>
+      <resume label="RESUME_LBL"/>
+
+      <label name="FINISH_LBL"/>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <do_if value="$DEBUG">
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_AFBV2_Attacker.xml ~ Finished ~~'"/>
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+      </do_if>
+
+      <label name="CLEANUP_LBL"/>
+      <remove_value name="$FleetCommander"/>
+      <remove_value name="$Ship"/>
+      <do_if value="$DEBUG">
+        <remove_value name="$DebugFileName"/>
+        <remove_value name="$DebugFolderName"/>
+      </do_if>
+
+      <label name="END_LBL"/>
+      <wait exact="1ms"/>
+      <set_order_syncpoint_reached order="this.ship.order"/>
+      <cancel_order order="this.ship.order" />
+
+    </actions>
+  </attention>
+
+  <on_abort>
+  </on_abort>
+
+</aiscript>

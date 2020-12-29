@@ -5,169 +5,183 @@
   <order id="JP_AnotherFleetBehaviorV2" name="{8888888, 597}AnotherFleetBehaviorV2{8888888, 599}" category="combat" infinite="true">
     <params>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="S_ATTACK_PRIMARY_TARGET" text="S_ATTACK_PRIMARY_TARGET" type="object" default="null">
-        <input_param name="class" value="[class.ship_xs, class.ship_s, class.ship_m, class.ship_l, class.ship_xl, class.station]"/>
-      </param>
-      <param name="S_ATTACK_RANGE" text="S_ATTACK_RANGE" type="number" default="20km">
-        <input_param name="min" value="1km"/>
-        <input_param name="max" value="200km"/>
-        <input_param name="step" value="1km"/>
-      </param>
-      <param name="S_ATTACK_ENEMIES_IN_RANGE" text="S_ATTACK_ENEMIES_IN_RANGE" type="bool" default="false"/>
-      <param name="S_ATTACK_STAY_DOCKED" text="S_ATTACK_STAY_DOCKED" type="bool" default="true"/>
-      <param name="S_ATTACK_ATTACKS_XS" text="S_ATTACK_ATTACKS_XS" type="bool" default="true"/>
-      <param name="S_ATTACK_ATTACKS_S" text="S_ATTACK_ATTACKS_S" type="bool" default="true"/>
-      <param name="S_ATTACK_ATTACKS_M" text="S_ATTACK_ATTACKS_M" type="bool" default="true"/>
-      <param name="S_ATTACK_ATTACKS_L" text="S_ATTACK_ATTACKS_L" type="bool" default="false"/>
-      <param name="S_ATTACK_ATTACKS_XL" text="S_ATTACK_ATTACKS_XL" type="bool" default="false"/>
-      <param name="S_ATTACK_ATTACKS_STATIONS" text="S_ATTACK_ATTACKS_STATIONS" type="bool" default="false"/>
-
       <param name="PLACE_HOLDER_00" text="----------------------------------" type="object" default="null">
         <input_param name="class" value="[]"/>
       </param>
-
-      <param name="S_DEFENCE_RANGE" text="S_DEFENCE_RANGE" type="number" default="20km">
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="ALPHA_ATTACK_RANGE" text="ALPHA_ATTACK_RANGE" type="number" default="20km">
         <input_param name="min" value="1km"/>
         <input_param name="max" value="this.ship.maxradarrange"/>
         <input_param name="step" value="1km"/>
       </param>
-      <param name="S_DEFENCE_STAY_DOCKED" text="S_DEFENCE_STAY_DOCKED" type="bool" default="true"/>
-      <param name="S_DEFENCE_ATTACKS_XS" text="S_DEFENCE_ATTACKS_XS" type="bool" default="true"/>
-      <param name="S_DEFENCE_ATTACKS_S" text="S_DEFENCE_ATTACKS_S" type="bool" default="true"/>
-      <param name="S_DEFENCE_ATTACKS_M" text="S_DEFENCE_ATTACKS_M" type="bool" default="true"/>
-      <param name="S_DEFENCE_ATTACKS_L" text="S_DEFENCE_ATTACKS_L" type="bool" default="false"/>
-      <param name="S_DEFENCE_ATTACKS_XL" text="S_DEFENCE_ATTACKS_XL" type="bool" default="false"/>
-      <param name="S_DEFENCE_ATTACKS_STATIONS" text="S_DEFENCE_ATTACKS_STATIONS" type="bool" default="false"/>
-
+      <param name="ALPHA_ATTACKS_XS" text="ALPHA_ATTACKS_XS" type="bool" default="true"/>
+      <param name="ALPHA_ATTACKS_S" text="ALPHA_ATTACKS_S" type="bool" default="true"/>
+      <param name="ALPHA_ATTACKS_M" text="ALPHA_ATTACKS_M" type="bool" default="true"/>
+      <param name="ALPHA_ATTACKS_L" text="ALPHA_ATTACKS_L" type="bool" default="true"/>
+      <param name="ALPHA_ATTACKS_XL" text="ALPHA_ATTACKS_XL" type="bool" default="true"/>
+      <param name="ALPHA_ATTACKS_STATIONS" text="ALPHA_ATTACKS_STATIONS" type="bool" default="true"/>
+      <param name="ALPHA_ATTACKS_CLASS_LIST" text="ALPHA_ATTACKS_CLASS_LIST" type="internal" default="[]"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="PLACE_HOLDER_01" text="----------------------------------" type="object" default="null">
         <input_param name="class" value="[]"/>
       </param>
-
-      <param name="S_INTERCEPT_RANGE" text="S_INTERCEPT_RANGE" type="number" default="40km">
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="BETA_ATTACK_RANGE" text="BETA_ATTACK_RANGE" type="number" default="20km">
         <input_param name="min" value="1km"/>
         <input_param name="max" value="this.ship.maxradarrange"/>
         <input_param name="step" value="1km"/>
       </param>
-      <param name="S_INTERCEPT_STAY_DOCKED" text="S_INTERCEPT_STAY_DOCKED" type="bool" default="true"/>
-      <param name="S_INTERCEPT_ATTACKS_XS" text="S_INTERCEPT_ATTACKS_XS" type="bool" default="true"/>
-      <param name="S_INTERCEPT_ATTACKS_S" text="S_INTERCEPT_ATTACKS_S" type="bool" default="true"/>
-      <param name="S_INTERCEPT_ATTACKS_M" text="S_INTERCEPT_ATTACKS_M" type="bool" default="true"/>
-      <param name="S_INTERCEPT_ATTACKS_L" text="S_INTERCEPT_ATTACKS_L" type="bool" default="false"/>
-      <param name="S_INTERCEPT_ATTACKS_XL" text="S_INTERCEPT_ATTACKS_XL" type="bool" default="false"/>
-      <param name="S_INTERCEPT_ATTACKS_STATIONS" text="S_INTERCEPT_ATTACKS_STATIONS" type="bool" default="false"/>
-
-      <param name="PLACE_HOLDER_10" text="----------------------------------------" type="object" default="null">
+      <param name="BETA_ATTACKS_XS" text="BETA_ATTACKS_XS" type="bool" default="true"/>
+      <param name="BETA_ATTACKS_S" text="BETA_ATTACKS_S" type="bool" default="true"/>
+      <param name="BETA_ATTACKS_M" text="BETA_ATTACKS_M" type="bool" default="true"/>
+      <param name="BETA_ATTACKS_L" text="BETA_ATTACKS_L" type="bool" default="true"/>
+      <param name="BETA_ATTACKS_XL" text="BETA_ATTACKS_XL" type="bool" default="true"/>
+      <param name="BETA_ATTACKS_STATIONS" text="BETA_ATTACKS_STATIONS" type="bool" default="true"/>
+      <param name="BETA_ATTACKS_CLASS_LIST" text="BETA_ATTACKS_CLASS_LIST" type="internal" default="[]"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="PLACE_HOLDER_02" text="----------------------------------" type="object" default="null">
         <input_param name="class" value="[]"/>
       </param>
-
-      <param name="M_ATTACK_PRIMARY_TARGET" text="M_ATTACK_PRIMARY_TARGET" type="object" default="null">
-        <input_param name="class" value="[class.ship_xs, class.ship_s, class.ship_m, class.ship_l, class.ship_xl, class.station]"/>
-      </param>
-      <param name="M_ATTACK_RANGE" text="M_ATTACK_RANGE" type="number" default="20km">
-        <input_param name="min" value="1km"/>
-        <input_param name="max" value="200km"/>
-        <input_param name="step" value="1km"/>
-      </param>
-      <param name="M_ATTACK_ENEMIES_IN_RANGE" text="M_ATTACK_ENEMIES_IN_RANGE" type="bool" default="false"/>
-      <param name="M_ATTACK_STAY_DOCKED" text="M_ATTACK_STAY_DOCKED" type="bool" default="true"/>
-      <param name="M_ATTACK_ATTACKS_XS" text="M_ATTACK_ATTACKS_XS" type="bool" default="false"/>
-      <param name="M_ATTACK_ATTACKS_S" text="M_ATTACK_ATTACKS_S" type="bool" default="true"/>
-      <param name="M_ATTACK_ATTACKS_M" text="M_ATTACK_ATTACKS_M" type="bool" default="true"/>
-      <param name="M_ATTACK_ATTACKS_L" text="M_ATTACK_ATTACKS_L" type="bool" default="false"/>
-      <param name="M_ATTACK_ATTACKS_XL" text="M_ATTACK_ATTACKS_XL" type="bool" default="false"/>
-      <param name="M_ATTACK_ATTACKS_STATIONS" text="M_ATTACK_ATTACKS_STATIONS" type="bool" default="false"/>
-
-      <param name="PLACE_HOLDER_11" text="----------------------------------" type="object" default="null">
-        <input_param name="class" value="[]"/>
-      </param>
-
-      <param name="M_DEFENCE_RANGE" text="M_DEFENCE_RANGE" type="number" default="20km">
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="GAMMA_ATTACK_RANGE" text="GAMMA_ATTACK_RANGE" type="number" default="20km">
         <input_param name="min" value="1km"/>
         <input_param name="max" value="this.ship.maxradarrange"/>
         <input_param name="step" value="1km"/>
       </param>
-      <param name="M_DEFENCE_STAY_DOCKED" text="M_DEFENCE_STAY_DOCKED" type="bool" default="true"/>
-      <param name="M_DEFENCE_ATTACKS_XS" text="M_DEFENCE_ATTACKS_XS" type="bool" default="false"/>
-      <param name="M_DEFENCE_ATTACKS_S" text="M_DEFENCE_ATTACKS_S" type="bool" default="true"/>
-      <param name="M_DEFENCE_ATTACKS_M" text="M_DEFENCE_ATTACKS_M" type="bool" default="true"/>
-      <param name="M_DEFENCE_ATTACKS_L" text="M_DEFENCE_ATTACKS_L" type="bool" default="false"/>
-      <param name="M_DEFENCE_ATTACKS_XL" text="M_DEFENCE_ATTACKS_XL" type="bool" default="false"/>
-      <param name="M_DEFENCE_ATTACKS_STATIONS" text="M_DEFENCE_ATTACKS_STATIONS" type="bool" default="false"/>
-
-      <param name="PLACE_HOLDER_12" text="----------------------------------" type="object" default="null">
+      <param name="GAMMA_ATTACKS_XS" text="GAMMA_ATTACKS_XS" type="bool" default="true"/>
+      <param name="GAMMA_ATTACKS_S" text="GAMMA_ATTACKS_S" type="bool" default="true"/>
+      <param name="GAMMA_ATTACKS_M" text="GAMMA_ATTACKS_M" type="bool" default="true"/>
+      <param name="GAMMA_ATTACKS_L" text="GAMMA_ATTACKS_L" type="bool" default="true"/>
+      <param name="GAMMA_ATTACKS_XL" text="GAMMA_ATTACKS_XL" type="bool" default="true"/>
+      <param name="GAMMA_ATTACKS_STATIONS" text="GAMMA_ATTACKS_STATIONS" type="bool" default="true"/>
+      <param name="GAMMA_ATTACKS_CLASS_LIST" text="GAMMA_ATTACKS_CLASS_LIST" type="internal" default="[]"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="PLACE_HOLDER_03" text="----------------------------------" type="object" default="null">
         <input_param name="class" value="[]"/>
       </param>
-
-      <param name="M_INTERCEPT_RANGE" text="M_Intercept_Range" type="number" default="40km">
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="DELTA_ATTACK_RANGE" text="DELTA_ATTACK_RANGE" type="number" default="20km">
         <input_param name="min" value="1km"/>
         <input_param name="max" value="this.ship.maxradarrange"/>
         <input_param name="step" value="1km"/>
       </param>
-      <param name="M_INTERCEPT_STAY_DOCKED" text="M_Intercept_Stay_Docked" type="bool" default="true"/>
-      <param name="M_INTERCEPT_ATTACKS_XS" text="M_INTERCEPT_ATTACKS_XS" type="bool" default="false"/>
-      <param name="M_INTERCEPT_ATTACKS_S" text="M_INTERCEPT_ATTACKS_S" type="bool" default="true"/>
-      <param name="M_INTERCEPT_ATTACKS_M" text="M_INTERCEPT_ATTACKS_M" type="bool" default="true"/>
-      <param name="M_INTERCEPT_ATTACKS_L" text="M_INTERCEPT_ATTACKS_L" type="bool" default="false"/>
-      <param name="M_INTERCEPT_ATTACKS_XL" text="M_INTERCEPT_ATTACKS_XL" type="bool" default="false"/>
-      <param name="M_INTERCEPT_ATTACKS_STATIONS" text="M_INTERCEPT_ATTACKS_STATIONS" type="bool" default="false"/>
-
-      <param name="PLACE_HOLDER_20" text="----------------------------------------" type="object" default="null">
+      <param name="DELTA_ATTACKS_XS" text="DELTA_ATTACKS_XS" type="bool" default="true"/>
+      <param name="DELTA_ATTACKS_S" text="DELTA_ATTACKS_S" type="bool" default="true"/>
+      <param name="DELTA_ATTACKS_M" text="DELTA_ATTACKS_M" type="bool" default="true"/>
+      <param name="DELTA_ATTACKS_L" text="DELTA_ATTACKS_L" type="bool" default="true"/>
+      <param name="DELTA_ATTACKS_XL" text="DELTA_ATTACKS_XL" type="bool" default="true"/>
+      <param name="DELTA_ATTACKS_STATIONS" text="DELTA_ATTACKS_STATIONS" type="bool" default="true"/>
+      <param name="DELTA_ATTACKS_CLASS_LIST" text="DELTA_ATTACKS_CLASS_LIST" type="internal" default="[]"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="PLACE_HOLDER_04" text="----------------------------------" type="object" default="null">
         <input_param name="class" value="[]"/>
       </param>
-
-      <param name="L_ATTACK_PRIMARY_TARGET" text="L_ATTACK_PRIMARY_TARGET" type="object" default="null">
-        <input_param name="class" value="[class.ship_xs, class.ship_s, class.ship_m, class.ship_l, class.ship_xl, class.station]"/>
-      </param>
-      <param name="L_ATTACK_RANGE" text="L_ATTACK_RANGE" type="number" default="20km">
-        <input_param name="min" value="1km"/>
-        <input_param name="max" value="200km"/>
-        <input_param name="step" value="1km"/>
-      </param>
-      <param name="L_ATTACK_ENEMIES_IN_RANGE" text="L_ATTACK_ENEMIES_IN_RANGE" type="bool" default="false"/>
-      <param name="L_ATTACK_STAY_DOCKED" text="L_ATTACK_STAY_DOCKED" type="bool" default="true"/>
-      <param name="L_ATTACK_ATTACKS_XS" text="L_ATTACK_ATTACKS_XS" type="bool" default="false"/>
-      <param name="L_ATTACK_ATTACKS_S" text="L_ATTACK_ATTACKS_S" type="bool" default="false"/>
-      <param name="L_ATTACK_ATTACKS_M" text="L_ATTACK_ATTACKS_M" type="bool" default="true"/>
-      <param name="L_ATTACK_ATTACKS_L" text="L_ATTACK_ATTACKS_L" type="bool" default="true"/>
-      <param name="L_ATTACK_ATTACKS_XL" text="L_ATTACK_ATTACKS_XL" type="bool" default="true"/>
-      <param name="L_ATTACK_ATTACKS_STATIONS" text="L_ATTACK_ATTACKS_STATIONS" type="bool" default="true"/>
-
-      <param name="PLACE_HOLDER_21" text="----------------------------------" type="object" default="null">
-        <input_param name="class" value="[]"/>
-      </param>
-
-      <param name="L_DEFENCE_RANGE" text="L_DEFENCE_RANGE" type="number" default="20km">
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="EPSILON_ATTACK_RANGE" text="EPSILON_ATTACK_RANGE" type="number" default="20km">
         <input_param name="min" value="1km"/>
         <input_param name="max" value="this.ship.maxradarrange"/>
         <input_param name="step" value="1km"/>
       </param>
-      <param name="L_DEFENCE_STAY_DOCKED" text="L_DEFENCE_STAY_DOCKED" type="bool" default="true"/>
-      <param name="L_DEFENCE_ATTACKS_XS" text="L_DEFENCE_ATTACKS_XS" type="bool" default="false"/>
-      <param name="L_DEFENCE_ATTACKS_S" text="L_DEFENCE_ATTACKS_S" type="bool" default="false"/>
-      <param name="L_DEFENCE_ATTACKS_M" text="L_DEFENCE_ATTACKS_M" type="bool" default="true"/>
-      <param name="L_DEFENCE_ATTACKS_L" text="L_DEFENCE_ATTACKS_L" type="bool" default="true"/>
-      <param name="L_DEFENCE_ATTACKS_XL" text="L_DEFENCE_ATTACKS_XL" type="bool" default="true"/>
-      <param name="L_DEFENCE_ATTACKS_STATIONS" text="L_DEFENCE_ATTACKS_STATIONS" type="bool" default="false"/>
-
-      <param name="PLACE_HOLDER_22" text="----------------------------------" type="object" default="null">
+      <param name="EPSILON_ATTACKS_XS" text="EPSILON_ATTACKS_XS" type="bool" default="true"/>
+      <param name="EPSILON_ATTACKS_S" text="EPSILON_ATTACKS_S" type="bool" default="true"/>
+      <param name="EPSILON_ATTACKS_M" text="EPSILON_ATTACKS_M" type="bool" default="true"/>
+      <param name="EPSILON_ATTACKS_L" text="EPSILON_ATTACKS_L" type="bool" default="true"/>
+      <param name="EPSILON_ATTACKS_XL" text="EPSILON_ATTACKS_XL" type="bool" default="true"/>
+      <param name="EPSILON_ATTACKS_STATIONS" text="EPSILON_ATTACKS_STATIONS" type="bool" default="true"/>
+      <param name="EPSILON_ATTACKS_CLASS_LIST" text="EPSILON_ATTACKS_CLASS_LIST" type="internal" default="[]"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="PLACE_HOLDER_05" text="----------------------------------" type="object" default="null">
         <input_param name="class" value="[]"/>
       </param>
-
-      <param name="L_INTERCEPT_RANGE" text="L_INTERCEPT_RANGE" type="number" default="40km">
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="ZETA_ATTACK_RANGE" text="ZETA_ATTACK_RANGE" type="number" default="20km">
         <input_param name="min" value="1km"/>
         <input_param name="max" value="this.ship.maxradarrange"/>
         <input_param name="step" value="1km"/>
       </param>
-      <param name="L_INTERCEPT_STAY_DOCKED" text="L_INTERCEPT_STAY_DOCKED" type="bool" default="true"/>
-      <param name="L_INTERCEPT_ATTACKS_XS" text="L_INTERCEPT_ATTACKS_XS" type="bool" default="false"/>
-      <param name="L_INTERCEPT_ATTACKS_S" text="L_INTERCEPT_ATTACKS_S" type="bool" default="false"/>
-      <param name="L_INTERCEPT_ATTACKS_M" text="L_INTERCEPT_ATTACKS_M" type="bool" default="true"/>
-      <param name="L_INTERCEPT_ATTACKS_L" text="L_INTERCEPT_ATTACKS_L" type="bool" default="true"/>
-      <param name="L_INTERCEPT_ATTACKS_XL" text="L_INTERCEPT_ATTACKS_XL" type="bool" default="true"/>
-      <param name="L_INTERCEPT_ATTACKS_STATIONS" text="L_INTERCEPT_ATTACKS_STATIONS" type="bool" default="false"/>
+      <param name="ZETA_ATTACKS_XS" text="ZETA_ATTACKS_XS" type="bool" default="true"/>
+      <param name="ZETA_ATTACKS_S" text="ZETA_ATTACKS_S" type="bool" default="true"/>
+      <param name="ZETA_ATTACKS_M" text="ZETA_ATTACKS_M" type="bool" default="true"/>
+      <param name="ZETA_ATTACKS_L" text="ZETA_ATTACKS_L" type="bool" default="true"/>
+      <param name="ZETA_ATTACKS_XL" text="ZETA_ATTACKS_XL" type="bool" default="true"/>
+      <param name="ZETA_ATTACKS_STATIONS" text="ZETA_ATTACKS_STATIONS" type="bool" default="true"/>
+      <param name="ZETA_ATTACKS_CLASS_LIST" text="ZETA_ATTACKS_CLASS_LIST" type="internal" default="[]"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="PLACE_HOLDER_06" text="----------------------------------" type="object" default="null">
+        <input_param name="class" value="[]"/>
+      </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="ETAATTACK_RANGE" text="ETA_ATTACK_RANGE" type="number" default="20km">
+        <input_param name="min" value="1km"/>
+        <input_param name="max" value="this.ship.maxradarrange"/>
+        <input_param name="step" value="1km"/>
+      </param>
+      <param name="ETA_ATTACKS_XS" text="ETA_ATTACKS_XS" type="bool" default="true"/>
+      <param name="ETA_ATTACKS_S" text="ETA_ATTACKS_S" type="bool" default="true"/>
+      <param name="ETA_ATTACKS_M" text="ETA_ATTACKS_M" type="bool" default="true"/>
+      <param name="ETA_ATTACKS_L" text="ETA_ATTACKS_L" type="bool" default="true"/>
+      <param name="ETA_ATTACKS_XL" text="ETA_ATTACKS_XL" type="bool" default="true"/>
+      <param name="ETA_ATTACKS_STATIONS" text="ETA_ATTACKS_STATIONS" type="bool" default="true"/>
+      <param name="ETA_ATTACKS_CLASS_LIST" text="ETA_ATTACKS_CLASS_LIST" type="internal" default="[]"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="PLACE_HOLDER_07" text="----------------------------------" type="object" default="null">
+        <input_param name="class" value="[]"/>
+      </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="THETA_ATTACK_RANGE" text="THETA_ATTACK_RANGE" type="number" default="20km">
+        <input_param name="min" value="1km"/>
+        <input_param name="max" value="this.ship.maxradarrange"/>
+        <input_param name="step" value="1km"/>
+      </param>
+      <param name="THETA_ATTACKS_XS" text="THETA_ATTACKS_XS" type="bool" default="true"/>
+      <param name="THETA_ATTACKS_S" text="THETA_ATTACKS_S" type="bool" default="true"/>
+      <param name="THETA_ATTACKS_M" text="THETA_ATTACKS_M" type="bool" default="true"/>
+      <param name="THETA_ATTACKS_L" text="THETA_ATTACKS_L" type="bool" default="true"/>
+      <param name="THETA_ATTACKS_XL" text="THETA_ATTACKS_XL" type="bool" default="true"/>
+      <param name="THETA_ATTACKS_STATIONS" text="THETA_ATTACKS_STATIONS" type="bool" default="true"/>
+      <param name="THETA_ATTACKS_CLASS_LIST" text="THETA_ATTACKS_CLASS_LIST" type="internal" default="[]"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="PLACE_HOLDER_08" text="----------------------------------" type="object" default="null">
+        <input_param name="class" value="[]"/>
+      </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="IOTA_ATTACK_RANGE" text="IOTA_ATTACK_RANGE" type="number" default="20km">
+        <input_param name="min" value="1km"/>
+        <input_param name="max" value="this.ship.maxradarrange"/>
+        <input_param name="step" value="1km"/>
+      </param>
+      <param name="IOTA_ATTACKS_XS" text="IOTA_ATTACKS_XS" type="bool" default="true"/>
+      <param name="IOTA_ATTACKS_S" text="IOTA_ATTACKS_S" type="bool" default="true"/>
+      <param name="IOTA_ATTACKS_M" text="IOTA_ATTACKS_M" type="bool" default="true"/>
+      <param name="IOTA_ATTACKS_L" text="IOTA_ATTACKS_L" type="bool" default="true"/>
+      <param name="IOTA_ATTACKS_XL" text="IOTA_ATTACKS_XL" type="bool" default="true"/>
+      <param name="IOTA_ATTACKS_STATIONS" text="IOTA_ATTACKS_STATIONS" type="bool" default="true"/>
+      <param name="IOTA_ATTACKS_CLASS_LIST" text="IOTA_ATTACKS_CLASS_LIST" type="internal" default="[]"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="PLACE_HOLDER_09" text="----------------------------------" type="object" default="null">
+        <input_param name="class" value="[]"/>
+      </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="KAPPA_ATTACK_RANGE" text="KAPPA_ATTACK_RANGE" type="number" default="20km">
+        <input_param name="min" value="1km"/>
+        <input_param name="max" value="this.ship.maxradarrange"/>
+        <input_param name="step" value="1km"/>
+      </param>
+      <param name="KAPPA_ATTACKS_XS" text="KAPPA_ATTACKS_XS" type="bool" default="true"/>
+      <param name="KAPPA_ATTACKS_S" text="KAPPA_ATTACKS_S" type="bool" default="true"/>
+      <param name="KAPPA_ATTACKS_M" text="KAPPA_ATTACKS_M" type="bool" default="true"/>
+      <param name="KAPPA_ATTACKS_L" text="KAPPA_ATTACKS_L" type="bool" default="true"/>
+      <param name="KAPPA_ATTACKS_XL" text="KAPPA_ATTACKS_XL" type="bool" default="true"/>
+      <param name="KAPPA_ATTACKS_STATIONS" text="KAPPA_ATTACKS_STATIONS" type="bool" default="true"/>
+      <param name="KAPPA_ATTACKS_CLASS_LIST" text="KAPPA_ATTACKS_CLASS_LIST" type="internal" default="[]"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="PLACE_HOLDER_10" text="----------------------------------" type="object" default="null">
+        <input_param name="class" value="[]"/>
+      </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <!-- DEBUG -->
-      <param name="DEBUG" text="DebugText" type="number" default="0" advanced="true">
+      <param name="DEBUG" text="DebugText" type="number" default="1" advanced="true">
         <input_param name="min" value="0"/>
         <input_param name="max" value="100"/>
         <input_param name="step" value="100"/>
@@ -178,6 +192,7 @@
     <requires>
       <match shiptype="shiptype.lasertower" negate="true"/>
     </requires>
+    <location object="this.ship" radius="20km" condition="@this.ship"/>
   </order>
 
   <interrupts>
@@ -196,13 +211,78 @@
 
   <init>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-    <do_if value="$DEBUG gt 0">
-      <set_value name="$DebugDirectory" exact="'JP_AnotherFleetBehaviorV2.logs'"/>
+    <do_if value="$DEBUG">
+      <set_value name="$DebugFolderName" exact="'JP_AnotherFleetBehaviorV2.logs'"/>
       <set_value name="$DebugFileName" exact="this.ship.idcode + '.JP_AnotherFleetBehaviorV2.xml.log'"/>
+    </do_if>
+    <do_if value="$DEBUG">
+      <debug_to_file append="false" directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+      <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_AnotherFleetBehaviorV2.xml ~ Started ~~' + '\n'"/>
     </do_if>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <set_value name="$Assignedcontrolled" exact="this.assignedcontrolled"/>
     <set_value name="$FleetCommander" exact="this.ship"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <create_list name="$_Classes"/>
+    <append_list_elements name="$_Classes" other="[class.ship_xs, class.ship_s, class.ship_m, class.ship_l, class.ship_xl, class.station]"/>
+    <create_list name="$_AttackClassesLists"/>
+    <append_list_elements name="$_AttackClassesLists" other="[$ALPHA_ATTACKS_CLASS_LIST, $BETA_ATTACKS_CLASS_LIST, $GAMMA_ATTACKS_CLASS_LIST, $DELTA_ATTACKS_CLASS_LIST, $EPSILON_ATTACKS_CLASS_LIST,
+                                                               $ZETA_ATTACKS_CLASS_LIST, $ETA_ATTACKS_CLASS_LIST, $THETA_ATTACKS_CLASS_LIST, $IOTA_ATTACKS_CLASS_LIST, $KAPPA_ATTACKS_CLASS_LIST]"/>
+    <create_list name="$_AlphaAttackClasses"/>
+    <append_list_elements name="$_AlphaAttackClasses" other="[$ALPHA_ATTACKS_XS, $ALPHA_ATTACKS_S, $ALPHA_ATTACKS_M, $ALPHA_ATTACKS_L, $ALPHA_ATTACKS_XL, $ALPHA_ATTACKS_STATIONS]"/>
+    <create_list name="$_BetaAttackClasses"/>
+    <append_list_elements name="$_BetaAttackClasses" other="[$BETA_ATTACKS_XS, $BETA_ATTACKS_S, $BETA_ATTACKS_M, $BETA_ATTACKS_L, $BETA_ATTACKS_XL, $BETA_ATTACKS_STATIONS]"/>
+    <create_list name="$_GammaAttackClasses"/>
+    <append_list_elements name="$_GammaAttackClasses" other="[$GAMMA_ATTACKS_XS, $GAMMA_ATTACKS_S, $GAMMA_ATTACKS_M, $GAMMA_ATTACKS_L, $GAMMA_ATTACKS_XL, $GAMMA_ATTACKS_STATIONS]"/>
+    <create_list name="$_DeltaAttackClasses"/>
+    <append_list_elements name="$_DeltaAttackClasses" other="[$DELTA_ATTACKS_XS, $DELTA_ATTACKS_S, $DELTA_ATTACKS_M, $DELTA_ATTACKS_L, $DELTA_ATTACKS_XL, $DELTA_ATTACKS_STATIONS]"/>
+    <create_list name="$_EpsilonAttackClasses"/>
+    <append_list_elements name="$_EpsilonAttackClasses" other="[$EPSILON_ATTACKS_XS, $EPSILON_ATTACKS_S, $EPSILON_ATTACKS_M, $EPSILON_ATTACKS_L, $EPSILON_ATTACKS_XL, $EPSILON_ATTACKS_STATIONS]"/>
+    <create_list name="$_ZetaAttackClasses"/>
+    <append_list_elements name="$_ZetaAttackClasses" other="[$ZETA_ATTACKS_XS, $ZETA_ATTACKS_S, $ZETA_ATTACKS_M, $ZETA_ATTACKS_L, $ZETA_ATTACKS_XL, $ZETA_ATTACKS_STATIONS]"/>
+    <create_list name="$_EtaAttackClasses"/>
+    <append_list_elements name="$_EtaAttackClasses" other="[$ETA_ATTACKS_XS, $ETA_ATTACKS_S, $ETA_ATTACKS_M, $ETA_ATTACKS_L, $ETA_ATTACKS_XL, $ETA_ATTACKS_STATIONS]"/>
+    <create_list name="$_ThetaAttackClasses"/>
+    <append_list_elements name="$_ThetaAttackClasses" other="[$THETA_ATTACKS_XS, $THETA_ATTACKS_S, $THETA_ATTACKS_M, $THETA_ATTACKS_L, $THETA_ATTACKS_XL, $THETA_ATTACKS_STATIONS]"/>
+    <create_list name="$_IotaAttackClasses"/>
+    <append_list_elements name="$_IotaAttackClasses" other="[$IOTA_ATTACKS_XS, $IOTA_ATTACKS_S, $IOTA_ATTACKS_M, $IOTA_ATTACKS_L, $IOTA_ATTACKS_XL, $IOTA_ATTACKS_STATIONS]"/>
+    <create_list name="$_KappaAttackClasses"/>
+    <append_list_elements name="$_KappaAttackClasses" other="[$KAPPA_ATTACKS_XS, $KAPPA_ATTACKS_S, $KAPPA_ATTACKS_M, $KAPPA_ATTACKS_L, $KAPPA_ATTACKS_XL, $KAPPA_ATTACKS_STATIONS]"/>
+    <create_list name="$_AttackClassesGroups"/>
+    <append_list_elements name="$_AttackClassesGroups" other="[$_AlphaAttackClasses, $_BetaAttackClasses, $_GammaAttackClasses, $_DeltaAttackClasses, $_EpsilonAttackClasses,
+                                                               $_ZetaAttackClasses, $_EtaAttackClasses, $_ThetaAttackClasses, $_IotaAttackClasses, $_KappaAttackClasses]"/>
+    <do_if value="$ALPHA_ATTACKS_CLASS_LIST.count gt 0">
+      <do_for_each name="$_AttackClassesList" in="$_AttackClassesLists" counter="$_it">
+        <clear_list list="$_AttackClassesList"/>
+      </do_for_each>
+    </do_if>
+    <do_for_each name="$_AttackClassesList" in="$_AttackClassesLists" counter="$_it">
+      <do_for_each name="$_Class" in="$_Classes" counter="$_jt">
+        <do_if value="$_AttackClassesGroups.{$_it}.{$_jt}">
+          <append_to_list name="$_AttackClassesList" exact="$_Class"/>
+        </do_if>
+      </do_for_each>
+    </do_for_each>
+    <do_if value="$DEBUG">
+      <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+      <do_for_each name="$_AttackClassesList" in="$_AttackClassesLists">
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'$_AttackClassesList: ' + $_AttackClassesList"/>
+      </do_for_each>
+      <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+    </do_if>
+    <remove_value name="$_AlphaAttackClasses"/>
+    <remove_value name="$_BetaAttackClasses"/>
+    <remove_value name="$_GammaAttackClasses"/>
+    <remove_value name="$_DeltaAttackClasses"/>
+    <remove_value name="$_EpsilonAttackClasses"/>
+    <remove_value name="$_ZetaAttackClasses"/>
+    <remove_value name="$_EtaAttackClasses"/>
+    <remove_value name="$_ThetaAttackClasses"/>
+    <remove_value name="$_IotaAttackClasses"/>
+    <remove_value name="$_KappaAttackClasses"/>
+    <remove_value name="$_AttackClassesGroups"/>
+    <remove_value name="$_AttackClassesLists"/>
+    <remove_value name="$_Classes"/>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
   </init>
 
@@ -211,11 +291,6 @@
 
       <wait exact="1s"/>
       <label name="START_LBL"/>
-
-      <do_if value="$DEBUG gt 0">
-        <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_AnotherFleetBehaviorV2.xml ~ Started ~~' + '\n'"/>
-      </do_if>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
@@ -294,77 +369,72 @@
           <continue/>
         </do_if>
 
-        <do_if value="$_Subordinate.class == class.ship_s">
-
-          <do_if value="$_Subordinate.assignment == assignment.attack and $_Subordinate.defaultorder.id != 'JP_AFBV2_AttackSmall'">
-            <create_list name="$_Classes"/>
-            <create_list name="$_Classess"/>
-            <append_list_elements name="$_Classes" other="[class.ship_xs, class.ship_s, class.ship_m, class.ship_l, class.ship_xl, class.station]"/>
-            <append_list_elements name="$_Classess" other="[$S_ATTACK_ATTACKS_XS, $S_ATTACK_ATTACKS_S, $S_ATTACK_ATTACKS_M, $S_ATTACK_ATTACKS_L, $S_ATTACK_ATTACKS_XL, $S_ATTACK_ATTACKS_STATIONS]"/>
-            <create_list name="$_ClassesToAttack"/>
-            <do_for_each name="$_Class" in="$_Classess" counter="$_it">
-              <do_if value="$_Class">
-                <append_to_list name="$_ClassesToAttack" exact="$_Classes.{$_it}"/>
-              </do_if>
-            </do_for_each>
-            <remove_value name="$_Classess"/>
-            <remove_value name="$_Classes"/>
-            <cancel_all_orders object="$_Subordinate"/>
-            <create_order object="$_Subordinate" id="'JP_AFBV2_AttackSmall'" default="true">
-              <param name="PRIMARY_TARGET" value="$S_ATTACK_PRIMARY_TARGET"/>
-              <param name="COMBAT_RANGE" value="$S_ATTACK_RANGE"/>
-              <param name="ATTACK_ENEMIES_IN_RANGE" value="$S_ATTACK_ENEMIES_IN_RANGE"/>
-              <param name="CLASSES_TO_ATTACK" value="$_ClassesToAttack"/>
-              <param name="STAY_DOCKED" value="$S_ATTACK_STAY_DOCKED"/>
-              <param name="DEBUG" value="$DEBUG"/>
-            </create_order>
-          </do_if>
-
-          <do_if value="$_Subordinate.assignment == assignment.defence and $_Subordinate.defaultorder.id != 'JP_AFBV2_DefenceSmall'">
-            <create_list name="$_Classes"/>
-            <create_list name="$_Classess"/>
-            <append_list_elements name="$_Classes" other="[class.ship_xs, class.ship_s, class.ship_m, class.ship_l, class.ship_xl, class.station]"/>
-            <append_list_elements name="$_Classess" other="[$S_DEFENCE_ATTACKS_XS, $S_DEFENCE_ATTACKS_S, $S_DEFENCE_ATTACKS_M, $S_DEFENCE_ATTACKS_L, $S_DEFENCE_ATTACKS_XL, $S_DEFENCE_ATTACKS_STATIONS]"/>
-            <create_list name="$_ClassesToAttack"/>
-            <do_for_each name="$_Class" in="$_Classess" counter="$_it">
-              <do_if value="$_Class">
-                <append_to_list name="$_ClassesToAttack" exact="$_Classes.{$_it}"/>
-              </do_if>
-            </do_for_each>
-            <remove_value name="$_Classess"/>
-            <remove_value name="$_Classes"/>
-            <cancel_all_orders object="$_Subordinate"/>
-            <create_order object="$_Subordinate" id="'JP_AFBV2_DefenceSmall'" default="true">
-              <param name="COMBAT_RANGE" value="$S_DEFENCE_RANGE"/>
-              <param name="CLASSES_TO_ATTACK" value="$_ClassesToAttack"/>
-              <param name="STAY_DOCKED" value="$S_DEFENCE_STAY_DOCKED"/>
-              <param name="DEBUG" value="$DEBUG"/>
-            </create_order>
-          </do_if>
-
-          <do_if value="$_Subordinate.assignment == assignment.interception and $_Subordinate.defaultorder.id != 'JP_AFBV2_InterceptionSmall'">
-            <create_list name="$_Classes"/>
-            <create_list name="$_Classess"/>
-            <append_list_elements name="$_Classes" other="[class.ship_xs, class.ship_s, class.ship_m, class.ship_l, class.ship_xl, class.station]"/>
-            <append_list_elements name="$_Classess" other="[$S_INTERCEPT_ATTACKS_XS, $S_INTERCEPT_ATTACKS_S, $S_INTERCEPT_ATTACKS_M, $S_INTERCEPT_ATTACKS_L, $S_INTERCEPT_ATTACKS_XL, $S_INTERCEPT_ATTACKS_STATIONS]"/>
-            <create_list name="$_ClassesToAttack"/>
-            <do_for_each name="$_Class" in="$_Classess" counter="$_it">
-              <do_if value="$_Class">
-                <append_to_list name="$_ClassesToAttack" exact="$_Classes.{$_it}"/>
-              </do_if>
-            </do_for_each>
-            <remove_value name="$_Classess"/>
-            <remove_value name="$_Classes"/>
-            <cancel_all_orders object="$_Subordinate"/>
-            <create_order object="$_Subordinate" id="'JP_AFBV2_InterceptionSmall'" default="true">
-              <param name="COMBAT_RANGE" value="$S_INTERCEPT_RANGE"/>
-              <param name="CLASSES_TO_ATTACK" value="$_ClassesToAttack"/>
-              <param name="STAY_DOCKED" value="$S_INTERCEPT_STAY_DOCKED"/>
-              <param name="DEBUG" value="$DEBUG"/>
-            </create_order>
-          </do_if>
-
+        <do_if value="$_Subordinate.assignment == assignment.attack and $_Subordinate.defaultorder.id != 'JP_AFBV2_Attacker'">
+          <create_list name="$_Classes"/>
+          <create_list name="$_Classess"/>
+          <append_list_elements name="$_Classes" other="[class.ship_xs, class.ship_s, class.ship_m, class.ship_l, class.ship_xl, class.station]"/>
+          <append_list_elements name="$_Classess" other="[$S_ATTACK_ATTACKS_XS, $S_ATTACK_ATTACKS_S, $S_ATTACK_ATTACKS_M, $S_ATTACK_ATTACKS_L, $S_ATTACK_ATTACKS_XL, $S_ATTACK_ATTACKS_STATIONS]"/>
+          <create_list name="$_ClassesToAttack"/>
+          <do_for_each name="$_Class" in="$_Classess" counter="$_it">
+            <do_if value="$_Class">
+              <append_to_list name="$_ClassesToAttack" exact="$_Classes.{$_it}"/>
+            </do_if>
+          </do_for_each>
+          <remove_value name="$_Classess"/>
+          <remove_value name="$_Classes"/>
+          <cancel_all_orders object="$_Subordinate"/>
+          <create_order object="$_Subordinate" id="'JP_AFBV2_Attacker'" default="true">
+            <param name="PRIMARY_TARGET" value="$S_ATTACK_PRIMARY_TARGET"/>
+            <param name="COMBAT_RANGE" value="$S_ATTACK_RANGE"/>
+            <param name="CLASSES_TO_ATTACK" value="$_ClassesToAttack"/>
+            <param name="DEBUG" value="$DEBUG"/>
+          </create_order>
         </do_if>
+
+        <do_if value="$_Subordinate.assignment == assignment.defence and $_Subordinate.defaultorder.id != 'JP_AFBV2_DefenceSmall' and 0">
+          <create_list name="$_Classes"/>
+          <create_list name="$_Classess"/>
+          <append_list_elements name="$_Classes" other="[class.ship_xs, class.ship_s, class.ship_m, class.ship_l, class.ship_xl, class.station]"/>
+          <append_list_elements name="$_Classess" other="[$S_DEFENCE_ATTACKS_XS, $S_DEFENCE_ATTACKS_S, $S_DEFENCE_ATTACKS_M, $S_DEFENCE_ATTACKS_L, $S_DEFENCE_ATTACKS_XL, $S_DEFENCE_ATTACKS_STATIONS]"/>
+          <create_list name="$_ClassesToAttack"/>
+          <do_for_each name="$_Class" in="$_Classess" counter="$_it">
+            <do_if value="$_Class">
+              <append_to_list name="$_ClassesToAttack" exact="$_Classes.{$_it}"/>
+            </do_if>
+          </do_for_each>
+          <remove_value name="$_Classess"/>
+          <remove_value name="$_Classes"/>
+          <cancel_all_orders object="$_Subordinate"/>
+          <create_order object="$_Subordinate" id="'JP_AFBV2_DefenceSmall'" default="true">
+            <param name="COMBAT_RANGE" value="$S_DEFENCE_RANGE"/>
+            <param name="CLASSES_TO_ATTACK" value="$_ClassesToAttack"/>
+            <param name="STAY_DOCKED" value="$S_DEFENCE_STAY_DOCKED"/>
+            <param name="DEBUG" value="$DEBUG"/>
+          </create_order>
+        </do_if>
+
+        <do_if value="$_Subordinate.assignment == assignment.interception and $_Subordinate.defaultorder.id != 'JP_AFBV2_InterceptionSmall' and 0">
+          <create_list name="$_Classes"/>
+          <create_list name="$_Classess"/>
+          <append_list_elements name="$_Classes" other="[class.ship_xs, class.ship_s, class.ship_m, class.ship_l, class.ship_xl, class.station]"/>
+          <append_list_elements name="$_Classess" other="[$S_INTERCEPT_ATTACKS_XS, $S_INTERCEPT_ATTACKS_S, $S_INTERCEPT_ATTACKS_M, $S_INTERCEPT_ATTACKS_L, $S_INTERCEPT_ATTACKS_XL, $S_INTERCEPT_ATTACKS_STATIONS]"/>
+          <create_list name="$_ClassesToAttack"/>
+          <do_for_each name="$_Class" in="$_Classess" counter="$_it">
+            <do_if value="$_Class">
+              <append_to_list name="$_ClassesToAttack" exact="$_Classes.{$_it}"/>
+            </do_if>
+          </do_for_each>
+          <remove_value name="$_Classess"/>
+          <remove_value name="$_Classes"/>
+          <cancel_all_orders object="$_Subordinate"/>
+          <create_order object="$_Subordinate" id="'JP_AFBV2_InterceptionSmall'" default="true">
+            <param name="COMBAT_RANGE" value="$S_INTERCEPT_RANGE"/>
+            <param name="CLASSES_TO_ATTACK" value="$_ClassesToAttack"/>
+            <param name="STAY_DOCKED" value="$S_INTERCEPT_STAY_DOCKED"/>
+            <param name="DEBUG" value="$DEBUG"/>
+          </create_order>
+        </do_if>
+
       </do_for_each>
 
       <wait exact="1s"/>
@@ -374,17 +444,17 @@
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-      <do_if value="$DEBUG gt 0">
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_AnotherFleetBehaviorV2.xml ~ Finished ~~'"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+      <do_if value="$DEBUG">
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_AnotherFleetBehaviorV2.xml ~ Finished ~~'"/>
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
       </do_if>
 
       <label name="CLEANUP_LBL"/>
       <remove_value name="$FleetCommander"/>
       <remove_value name="$Assignedcontrolled"/>
-      <do_if value="$DEBUG gt 0">
+      <do_if value="$DEBUG">
         <remove_value name="$DebugFileName"/>
-        <remove_value name="$DebugDirectory"/>
+        <remove_value name="$DebugFolderName"/>
       </do_if>
 
       <label name="END_LBL"/>

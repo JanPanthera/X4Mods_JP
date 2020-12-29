@@ -40,10 +40,11 @@
     <Xml Include="content.xml" />
     <Xml Include="aiscripts\JP_AFBV2_GoRepair.xml" />
     <Xml Include="aiscripts\JP_AnotherFleetBehaviorV2.xml" />
-    <Xml Include="md\JP_AFBV2_UpdateFleetOrders.xml" />
     <Xml Include="aiscripts\JP_AFBV2_DefenceSmall.xml" />
-    <Xml Include="aiscripts\JP_AFBV2_AttackSmall.xml" />
     <Xml Include="aiscripts\JP_AFBV2_InterceptonSmall.xml" />
+    <Xml Include="md\JP_AFBV2_HandleRepairNeeds.xml" />
+    <Xml Include="md\JP_AFBV2_Handle_Attacker.xml" />
+    <Xml Include="aiscripts\JP_AFBV2_Attacker.xml" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="changelog.txt" />
