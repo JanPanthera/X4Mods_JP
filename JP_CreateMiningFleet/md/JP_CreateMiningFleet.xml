@@ -8,12 +8,12 @@
       </conditions>
       <actions>
         <set_value name="$DEBUG" exact="0"/>
-        <set_value name="$DebugDirectory" exact="'JP_CreateMiningFleet.logs'"/>
+        <set_value name="$DebugFolderName" exact="'JP_CreateMiningFleet.logs'"/>
         <set_value name="$DebugFileName" exact="'JP_CreateMiningFleet_MD.xml.log'"/>
 
-        <do_if value="$DEBUG gt 0">
-          <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_CreateMiningFleet_MD.xml ~ Started ~~' + '\n'"/>
+        <do_if value="$DEBUG">
+          <debug_to_file append="false" directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_CreateMiningFleet_MD.xml ~ Started ~~' + '\n'"/>
         </do_if>
 
         <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -24,11 +24,11 @@
         </find_ship_by_true_owner>
 
         <do_if value="$DEBUG gt 1">
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
           <do_for_each name="$_Ship" in="$_Ships">
-            <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="$_Ship.knownname + ' ~ ' + '[' + $_Ship.idcode + ']'"/>
+            <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="$_Ship.knownname + ' ~ ' + '[' + $_Ship.idcode + ']'"/>
           </do_for_each>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
         </do_if>
 
         <do_for_each name="$_Ship" in="$_Ships">
@@ -96,10 +96,10 @@
                   <set_value name="$_FleetName" exact="'\033#FF03A1FC#' + 'MiningRoutine ~ Sector ' + $_Ship.defaultorder.$range.knownname + ' [' + $_Ship.defaultorder.$warebasket + ']'"/>
                 </do_else>
 
-                <do_if value="$DEBUG gt 0">
-                  <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-                  <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="$_FleetName"/>
-                  <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+                <do_if value="$DEBUG">
+                  <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+                  <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="$_FleetName"/>
+                  <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
                 </do_if>
 
                 <do_if value="$_Ship.fleet.name != $_FleetName">
@@ -116,13 +116,13 @@
 
         <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-        <do_if value="$DEBUG gt 0">
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_CreateMiningFleet_MD.xml ~ Finished ~~'"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+        <do_if value="$DEBUG">
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_CreateMiningFleet_MD.xml ~ Finished ~~'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
         </do_if>
 
         <remove_value name="$DebugFileName"/>
-        <remove_value name="$DebugDirectory"/>
+        <remove_value name="$DebugFolderName"/>
         <remove_value name="$DEBUG"/>
       </actions>
     </cue>
