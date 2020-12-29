@@ -32,7 +32,7 @@
       <wait exact="1ms"/>
       <label name="INIT"/>
 
-      <do_if value="$DEBUG gt 0">
+      <do_if value="$DEBUG">
         <debug_to_file append="not $UseOwnFile" chance="$DebugChance" directory="$DEBUG_DIRECTORY" name="$DEBUG_FILE_NAME" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
         <debug_to_file chance="$DebugChance" directory="$DEBUG_DIRECTORY" name="$DEBUG_FILE_NAME" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ Running JP_IdleWait ~~ %1 [%2]'.[$SHIP.knownname, $SHIP.idcode] + '\n'"/>
       </do_if>
@@ -40,13 +40,13 @@
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
       <do_if value="$SHIP.class" list="[class.ship, class.ship_xs, class.ship_s, class.ship_m, class.ship_l, class.ship_xl]" negate="true">
-        <do_if value="$DEBUG gt 0">
+        <do_if value="$DEBUG">
           <debug_to_file directory="$DEBUG_DIRECTORY" name="$DEBUG_FILE_NAME" text="'~ Given parameter SHIP is not of class ship.\n'"/>
         </do_if>
         <resume label="END"/>
       </do_if>
       <do_if value="$SAFE_SECTOR_IDLING and $SECTOR.class != class.sector">
-        <do_if value="$DEBUG gt 0">
+        <do_if value="$DEBUG">
           <debug_to_file directory="$DEBUG_DIRECTORY" name="$DEBUG_FILE_NAME" text="'~ Given parameter SECTOR is not of class sector.\n'"/>
         </do_if>
         <resume label="END"/>
@@ -65,7 +65,7 @@
 
       <set_command_action commandaction="commandaction.calculating"/>
       <set_value name="$Timeout" min="$TIMEOUT_MIN" max="$TIMEOUT_MAX" profile="increasing"/>
-      <do_if value="$DEBUG gt 0">
+      <do_if value="$DEBUG">
         <debug_to_file directory="$DEBUG_DIRECTORY" name="$DEBUG_FILE_NAME" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
         <debug_to_file directory="$DEBUG_DIRECTORY" name="$DEBUG_FILE_NAME" text="'Ship %1 [%2] will idling for around %3 seconds.'.[$SHIP.knownname, $SHIP.idcode, $Timeout]"/>
       </do_if>
@@ -73,7 +73,7 @@
         <param name="TimeOut" value="$Timeout"/>
       </run_script>
       <remove_value name="$Timeout"/>
-      <do_if value="$DEBUG gt 0">
+      <do_if value="$DEBUG">
         <debug_to_file directory="$DEBUG_DIRECTORY" name="$DEBUG_FILE_NAME" text="'Done with idling we will continue.'"/>
         <debug_to_file directory="$DEBUG_DIRECTORY" name="$DEBUG_FILE_NAME" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
       </do_if>
@@ -82,7 +82,7 @@
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-      <do_if value="$DEBUG gt 0">
+      <do_if value="$DEBUG">
         <debug_to_file chance="$DebugChance" directory="$DEBUG_DIRECTORY" name="$DEBUG_FILE_NAME" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ Completed JP_IdleWait ~~ %1 [%2]'.[$SHIP.knownname, $SHIP.idcode]"/>
         <debug_to_file chance="$DebugChance" directory="$DEBUG_DIRECTORY" name="$DEBUG_FILE_NAME" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
       </do_if>
