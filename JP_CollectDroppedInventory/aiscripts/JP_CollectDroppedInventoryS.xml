@@ -68,7 +68,7 @@
     <requires>
       <match shiptype="shiptype.lasertower" negate="true"/>
     </requires>
-    <location object="$LocationObjectUsedInUI" condition="$LocationObjectUsedInUI? and @$LocationObjectUsedInUI != null"/>
+    <location object="$LOCATION_OBJECT_USED_IN_UI" condition="$LOCATION_OBJECT_USED_IN_UI? and @$LOCATION_OBJECT_USED_IN_UI != null"/>
   </order>
 
   <interrupts>
@@ -155,7 +155,7 @@
       <label name="MOVE_TO_SECTOR_LBL"/>
       <do_if value="$Ship.sector != $SECTOR">
         <set_command command="command.move" param="$SECTOR"/>
-        <set_value name="$LocationObjectUsedInUI" exact="$SECTOR"/>
+        <set_value name="$LOCATION_OBJECT_USED_IN_UI" exact="$SECTOR"/>
         <run_script name="'move.generic'">
           <param name="destination" value="$SECTOR"/>
           <param name="endintargetzone" value="true"/>
@@ -169,7 +169,7 @@
           <remove_value name="$_SafePos"/>
         </do_if>
         <wait min="1s" max="3s"/>
-        <remove_value name="$LocationObjectUsedInUI"/>
+        <remove_value name="$LOCATION_OBJECT_USED_IN_UI"/>
         <do_if value="$Ship.sector != $SECTOR">
           <resume label="MOVE_TO_SECTOR_LBL"/>
         </do_if>
