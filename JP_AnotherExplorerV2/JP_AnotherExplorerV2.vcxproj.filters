@@ -65,11 +65,11 @@
     <Xml Include="libraries\experiences.xml" />
     <Xml Include="t\0001.xml" />
     <Xml Include="aiscripts\JP_IdleReturnHome_AEV2.xml" />
-    <Xml Include="aiscripts\JP_GetNearestUnknownObject_AEV2.xml" />
     <Xml Include="aiscripts\JP_CreateColorString_AEV2.xml" />
     <Xml Include="t\JP_AnotherExplorerV2.xml" />
     <Xml Include="md\JP_AnotherExplorerV2_MD.xml" />
     <Xml Include="aiscripts\JP_ExploreObject_AEV2.xml" />
+    <Xml Include="aiscripts\JP_Lib_GetUnknownObjectsInSector_AEV2.xml" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="changelog.txt" />
