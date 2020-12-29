@@ -91,8 +91,8 @@
 
   <init>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-    <do_if value="$DEBUG gt 0">
-      <set_value name="$DebugDirectory" exact="'JP_TradeSubscriptionExplorer.logs'"/>
+    <do_if value="$DEBUG">
+      <set_value name="$DebugFolderName" exact="'JP_TradeSubscriptionExplorer.logs'"/>
       <set_value name="$DebugFileName" exact="this.ship.idcode + '.JP_TradeSubscriptionExplorerG.xml.log'"/>
     </do_if>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -210,12 +210,12 @@
   <attention min="unknown">
     <actions>
 
-      <wait exact="1ms"/>
+      <wait exact="1s"/>
       <label name="START_LBL"/>
 
-      <do_if value="$DEBUG gt 0">
-        <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_TradeSubscriptionExplorerG.xml ~ Started ~~' + '\n'"/>
+      <do_if value="$DEBUG">
+        <debug_to_file append="false" directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_TradeSubscriptionExplorerG.xml ~ Started ~~' + '\n'"/>
       </do_if>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -292,7 +292,7 @@
       <resume label="RESUME_LBL"/>
 
       <label name="IDLE_RETURN_HOME_LBL"/>
-      <run_script name="'JP_IdleReturnHome_TSE'">
+      <create_order id="'JP_IdleReturnHome_TSE'" object="$Ship">
         <param name="IDLE_TIME" value="$IDLE_TIME"/>
         <param name="IDLE_FOLLOW" value="$IDLE_FOLLOW"/>
         <param name="WHO_TO_FOLLOW" value="$WHO_TO_FOLLOW"/>
@@ -302,8 +302,10 @@
         <param name="IN_WHICH_SECTOR" value="$IN_WHICH_SECTOR"/>
         <param name="IDLE_MOVE_TO" value="$IDLE_MOVE_TO"/>
         <param name="WHERE_TO_MOVE" value="$WHERE_TO_MOVE"/>
+        <param name="ADD_ORDER_TAG" value="$ADD_ORDER_TAG"/>
+        <param name="ORDER_TAG" value="'#TSE-G'"/>
         <param name="DEBUG" value="$DEBUG"/>
-      </run_script>
+      </create_order>
       <wait exact="1s"/>
       <resume label="RESUME_LBL"/>
 
@@ -311,9 +313,9 @@
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-      <do_if value="$DEBUG gt 0">
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_TradeSubscriptionExplorerG.xml ~ Finished ~~'"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+      <do_if value="$DEBUG">
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_TradeSubscriptionExplorerG.xml ~ Finished ~~'"/>
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
       </do_if>
 
       <label name="CLEANUP_LBL"/>
@@ -341,13 +343,13 @@
 
       <remove_value name="$Ship"/>
       <remove_value name="$ExpMultiplier"/>
-      <do_if value="$DEBUG gt 0">
+      <do_if value="$DEBUG">
         <remove_value name="$DebugFileName"/>
-        <remove_value name="$DebugDirectory"/>
+        <remove_value name="$DebugFolderName"/>
       </do_if>
 
       <label name="END_LBL"/>
-      <wait exact="1ms"/>
+      <wait exact="1s"/>
       <set_order_syncpoint_reached order="this.ship.order"/>
       <cancel_order order="this.ship.order" />
 

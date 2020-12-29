@@ -3,5 +3,5 @@
 <icons>
   <icon name="order_jp_tradesubscriptionexplorers" texture="assets\fx\gui\textures\order\order_exploreupdate.tga" height="32" width="32"></icon>
   <icon name="order_jp_tradesubscriptionexplorerg" texture="assets\fx\gui\textures\order\order_exploreupdate.tga" height="32" width="32"></icon>
-  <icon name="order_jp_idlereturnhome_tse" texture="assets\fx\gui\textures\order\order_movewait.tga" height="32" width="32"></icon>
+  <icon name="order_jp_idlereturnhome_tse" texture="assets\fx\gui\textures\order\order_wait.tga" height="32" width="32"></icon>
 </icons>
