@@ -35,7 +35,7 @@
       <param name="DEBUG" text="Debug" type="bool" default="false"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     </params>
-    <location object="$LocationUsedInUI" condition="@$LocationUsedInUI != null"/>
+    <location object="$LOCATION_OBJECT_USED_IN_UI" condition="@$LOCATION_OBJECT_USED_IN_UI != null"/>
   </order>
 
   <interrupts>
@@ -108,7 +108,7 @@
         <wait exact="1s"/>
         <resume label="RESUME_LBL"/>
       </do_if>
-      <set_value name="$LocationUsedInUI" exact="$WHO_TO_FOLLOW"/>
+      <set_value name="$LOCATION_OBJECT_USED_IN_UI" exact="$WHO_TO_FOLLOW"/>
       <do_if value="$Ship.sector != $_IdleSector">
         <set_value name="$CurrentSector" exact="$_IdleSector"/>
         <wait exact="1s"/>
@@ -158,7 +158,7 @@
         <wait exact="1s"/>
         <resume label="RESUME_LBL"/>
       </do_if>
-      <set_value name="$LocationUsedInUI" exact="$WHERE_TO_DOCK"/>
+      <set_value name="$LOCATION_OBJECT_USED_IN_UI" exact="$WHERE_TO_DOCK"/>
       <do_if value="$Ship.sector != $_ObjectToDockAt.sector">
         <set_value name="$CurrentSector" exact="$_ObjectToDockAt.sector"/>
         <wait exact="1s"/>
@@ -185,7 +185,7 @@
         <wait exact="1s"/>
         <resume label="RESUME_LBL"/>
       </do_if>
-      <set_value name="$LocationUsedInUI" exact="$IN_WHICH_SECTOR.{1}"/>
+      <set_value name="$LOCATION_OBJECT_USED_IN_UI" exact="$IN_WHICH_SECTOR.{1}"/>
       <do_if value="$Ship.sector != $_IdleSector">
         <set_value name="$CurrentSector" exact="$_IdleSector"/>
         <wait exact="1s"/>
@@ -213,7 +213,7 @@
         <wait exact="1s"/>
         <resume label="RESUME_LBL"/>
       </do_if>
-      <set_value name="$LocationUsedInUI" exact="$WHERE_TO_MOVE.{1}"/>
+      <set_value name="$LOCATION_OBJECT_USED_IN_UI" exact="$WHERE_TO_MOVE.{1}"/>
       <do_if value="$Ship.sector != $_IdleSector">
         <set_value name="$CurrentSector" exact="$_IdleSector"/>
         <wait exact="1s"/>

@@ -127,6 +127,15 @@
           </do_for_each>
 
         </do_if>
+
+        <do_if value="$DEBUG">
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <do_for_each name="$_AbandonedShip" in="$_AbandonedShips">
+            <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="' ~ ' + $_AbandonedShip.knownname + ' ~ [' + $_AbandonedShip.owner.knownname + ']'"/>
+          </do_for_each>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+        </do_if>
+        
         <remove_value name="$_AbandonedShips"/>
 
         <do_if value="$NearestAbandonedShip != 'NoAbandonedShipFound'">

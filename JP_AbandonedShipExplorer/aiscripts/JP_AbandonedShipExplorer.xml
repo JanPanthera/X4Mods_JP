@@ -71,7 +71,7 @@
         <input_param name="class" value="[]"/>
       </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="DEBUG" text="Debug" type="bool" default="if global.$AddTag_Settings? then global.$AddTag_Settings.{17} else false" advanced="true"/>
+      <param name="DEBUG" text="Debug" type="bool" default="if global.$AbandonedShipExplorer_Settings? then global.$AbandonedShipExplorer_Settings.{20} else false" advanced="true"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="PLACE_HOLDER_999" text="----------------------------------" type="object" default="null" advanced="true">
         <input_param name="class" value="[]"/>
