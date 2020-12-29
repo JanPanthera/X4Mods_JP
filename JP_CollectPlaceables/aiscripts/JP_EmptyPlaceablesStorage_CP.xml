@@ -200,7 +200,7 @@
         <set_value name="this.$MoneyToTransfer" exact="$MoneyToTransfer"/>
         <remove_value name="$_Station"/>
         <remove_value name="$MoneyToTransfer"/>
-        <wait min="1s" max="2s"/>
+        <wait min="1ms"/>
 
         <remove_value name="$_ResupplyAmmoTable"/>
       </do_if>
@@ -223,6 +223,7 @@
       <do_if value="$DEBUG gt 0">
         <remove_value name="$DebugFileName"/>
         <remove_value name="$DebugScriptName"/>
+        <remove_value name="$DebugFolderName"/>
         <remove_value name="$CurrentSector"/>
       </do_if>
       <remove_value name="$Ship"/>
@@ -237,6 +238,7 @@
     <do_if value="$DEBUG gt 0">
       <remove_value name="$DebugFileName"/>
       <remove_value name="$DebugScriptName"/>
+      <remove_value name="$DebugFolderName"/>
       <remove_value name="$CurrentSector"/>
     </do_if>
     <remove_value name="$Ship"/>

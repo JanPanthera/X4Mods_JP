@@ -117,21 +117,21 @@
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <set_value name="$Ship" exact="this.ship"/>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <set_value name="$DebugScriptName" exact="'JP_CollectPlaceablesG'"/>
     <do_if value="$DEBUG">
       <set_value name="$DebugFolderName" exact="'JP_CollectPlaceables.logs'"/>
-      <set_value name="$DebugScriptName" exact="'JP_CollectPlaceablesG'"/>
       <set_value name="$DebugFileName" exact="$Ship.idcode + '.' + $DebugScriptName + '.xml.log'"/>
       <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'" append="false"/>
       <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Started ~~' + '\n'"/>
     </do_if>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <do_if value="$ADD_ORDER_TAG">
-      <set_value name="$_OrderTag" exact="'#CP-G'"/>
+      <set_value name="$_OrderTag" exact="if $ORDER_TAG_POSITION == 0 then '#CP-G ' else ' #CP-G'"/>
       <substitute_text source="$Ship.knownname" text="$_ResultName">
-        <replace string="(' \033#FFA95908#' + $_OrderTag + '\033X')" with="''"/>
+        <replace string="('\033#FFA95908#' + $_OrderTag + '\033X')" with="''"/>
       </substitute_text>
       <do_if value="$Ship.knownname == $_ResultName">
-        <set_object_name object="$Ship" name="(if $ORDER_TAG_POSITION then '' else (' \033#FFA95908#' + $_OrderTag + '\033X')) + $Ship.knownname + (if $ORDER_TAG_POSITION then (' \033#FFA95908#' + $_OrderTag + '\033X') else '')"/>
+        <set_object_name object="$Ship" name="(if $ORDER_TAG_POSITION == 0 then ('\033#FFA95908#' + $_OrderTag + '\033X ') else '') + $Ship.knownname + (if $ORDER_TAG_POSITION == 1 then (' \033#FFA95908#' + $_OrderTag + '\033X') else '')"/>
       </do_if>
       <remove_value name="$_OrderTag"/>
     </do_if>
@@ -175,7 +175,7 @@
       </do_else>
       <remove_value name="$_SettingsList"/>
       <show_help duration="5s" allowclose="true" log="true" custom="$DebugScriptName + ' ~\n' + $Ship.knownname + ' [' + $Ship.idcode + ']\n\n' + '{8888888, 895}'"/>
-      <cancel_order order="$Ship.order"/>
+      <set_value name="$Quit" exact="true"/>
     </do_if>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <do_if value="$RESET_ORDER_SETTINGS">
@@ -183,7 +183,7 @@
         <remove_value name="global.$CollectPlaceablesG_Settings"/>
       </do_if>
       <show_help duration="5s" allowclose="true" log="true" custom="$DebugScriptName + ' ~\n' + $Ship.knownname + ' [' + $Ship.idcode + ']\n\n' + '{8888888, 896}'"/>
-      <cancel_order order="$Ship.order"/>
+      <set_value name="$Quit" exact="true"/>
     </do_if>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <include_interrupt_actions ref="GetBlacklistgroup"/>
@@ -192,6 +192,10 @@
 
   <attention min="unknown">
     <actions>
+
+      <do_if value="$Quit?">
+        <resume label="FINISH_LBL"/>
+      </do_if>
 
       <label name="INIT_LBL"/>
       <wait min="1s" max="3s"/>
@@ -303,6 +307,8 @@
         </do_else>
       </do_for_each>
       <remove_value name="$_CollectableDrops"/>
+      <set_command command="command.scan"/>
+      <set_command_action commandaction="commandaction.calculating"/>
       <wait min="1s" max="3s"/>
       <resume label="RESUME_LBL"/>
 
@@ -323,6 +329,8 @@
           <param name="DEBUG" value="$DEBUG"/>
         </create_order>
       </do_if>
+      <set_command command="command.scan"/>
+      <set_command_action commandaction="commandaction.calculating"/>
       <wait min="3s" max="6s"/>
       <resume label="RESUME_LBL"/>
 
@@ -342,6 +350,7 @@
         <remove_value name="$DebugFolderName"/>
       </do_if>
       <remove_value name="$Ship"/>
+      <remove_value name="$Quit"/>
 
       <label name="END_LBL"/>
       <set_order_syncpoint_reached order="this.ship.defaultorder"/>
@@ -358,6 +367,7 @@
       <remove_value name="$DebugFolderName"/>
     </do_if>
     <remove_value name="$Ship"/>
+    <remove_value name="$Quit"/>
   </on_abort>
 
 </aiscript>

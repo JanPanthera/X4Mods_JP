@@ -105,7 +105,7 @@
     <requires>
       <match shiptype="shiptype.lasertower" negate="true"/>
     </requires>
-    <location object="$LOCATION_OBJECT_USED_IN_UI" condition="$LOCATION_OBJECT_USED_IN_UI? and @$LOCATION_OBJECT_USED_IN_UI != null"/>
+    <location object="$LOCATION_OBJECT_USED_IN_UI" condition="@$LOCATION_OBJECT_USED_IN_UI != null"/>
   </order>
 
   <interrupts>
@@ -125,21 +125,21 @@
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <set_value name="$Ship" exact="this.ship"/>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <set_value name="$DebugScriptName" exact="'JP_CollectPlaceablesS'"/>
     <do_if value="$DEBUG">
       <set_value name="$DebugFolderName" exact="'JP_CollectPlaceables.logs'"/>
-      <set_value name="$DebugScriptName" exact="'JP_CollectPlaceablesS'"/>
       <set_value name="$DebugFileName" exact="$Ship.idcode + '.' + $DebugScriptName + '.xml.log'"/>
       <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'" append="false"/>
       <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Started ~~' + '\n'"/>
     </do_if>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <do_if value="$ADD_ORDER_TAG">
-      <set_value name="$_OrderTag" exact="'#CP-S'"/>
+      <set_value name="$_OrderTag" exact="if $ORDER_TAG_POSITION == 0 then '#CP-S ' else ' #CP-S'"/>
       <substitute_text source="$Ship.knownname" text="$_ResultName">
-        <replace string="(' \033#FFA95908#' + $_OrderTag + '\033X')" with="''"/>
+        <replace string="('\033#FFA95908#' + $_OrderTag + '\033X')" with="''"/>
       </substitute_text>
       <do_if value="$Ship.knownname == $_ResultName">
-        <set_object_name object="$Ship" name="(if $ORDER_TAG_POSITION then '' else (' \033#FFA95908#' + $_OrderTag + '\033X')) + $Ship.knownname + (if $ORDER_TAG_POSITION then (' \033#FFA95908#' + $_OrderTag + '\033X') else '')"/>
+        <set_object_name object="$Ship" name="(if $ORDER_TAG_POSITION == 0 then ('\033#FFA95908#' + $_OrderTag + '\033X ') else '') + $Ship.knownname + (if $ORDER_TAG_POSITION == 1 then (' \033#FFA95908#' + $_OrderTag + '\033X') else '')"/>
       </do_if>
       <remove_value name="$_OrderTag"/>
     </do_if>
@@ -160,7 +160,8 @@
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <do_if value="$SAVE_ORDER_SETTINGS">
       <create_list name="$_SettingsList"/>
-      <append_list_elements name="$_SettingsList" other="[$COLLECT_MINES, $COLLECT_SATELLITES, 
+      <append_list_elements name="$_SettingsList" other="[
+                            $COLLECT_MINES, $COLLECT_SATELLITES, 
                             $COLLECT_NAVBEACONS, $COLLECT_RESOURCEPROBES, $COLLECT_LASERTOWERS,
                             $SELL_PLACEABLES, $SELL_RANGE, $PREFER_BEST_PRICE, $PREFER_OWN_STATIONS,
                             $SELL_SATELLITE_MK1, $SELL_SATELLITE_MK2, $SELL_RESOURCEPROBE, $SELL_WAYPOINTMARKER,
@@ -181,7 +182,7 @@
       </do_else>
       <remove_value name="$_SettingsList"/>
       <show_help duration="5s" allowclose="true" log="true" custom="$DebugScriptName + ' ~\n' + $Ship.knownname + ' [' + $Ship.idcode + ']\n\n' + '{8888888, 895}'"/>
-      <cancel_order order="$Ship.order"/>
+      <set_value name="$Quit" exact="true"/>
     </do_if>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <do_if value="$RESET_ORDER_SETTINGS">
@@ -189,13 +190,17 @@
         <remove_value name="global.$CollectPlaceablesS_Settings"/>
       </do_if>
       <show_help duration="5s" allowclose="true" log="true" custom="$DebugScriptName + ' ~\n' + $Ship.knownname + ' [' + $Ship.idcode + ']\n\n' + '{8888888, 896}'"/>
-      <cancel_order order="$Ship.order"/>
+      <set_value name="$Quit" exact="true"/>
     </do_if>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
   </init>
 
   <attention min="unknown">
     <actions>
+
+      <do_if value="$Quit?">
+        <resume label="FINISH_LBL"/>
+      </do_if>
 
       <label name="INIT_LBL"/>
       <wait min="1s" max="3s"/>
@@ -301,6 +306,8 @@
         </do_else>
       </do_for_each>
       <remove_value name="$_CollectableDrops"/>
+      <set_command command="command.scan"/>
+      <set_command_action commandaction="commandaction.calculating"/>
       <wait min="1s" max="3s"/>
       <resume label="RESUME_LBL"/>
 
@@ -321,6 +328,8 @@
           <param name="DEBUG" value="$DEBUG"/>
         </create_order>
       </do_if>
+      <set_command command="command.scan"/>
+      <set_command_action commandaction="commandaction.calculating"/>
       <wait min="3s" max="6s"/>
       <resume label="RESUME_LBL"/>
 
@@ -334,12 +343,13 @@
       <wait min="1s" max="3s"/>
 
       <label name="CLEANUP_LBL"/>
+      <remove_value name="$DebugScriptName"/>
       <do_if value="$DEBUG gt 0">
         <remove_value name="$DebugFileName"/>
-        <remove_value name="$DebugScriptName"/>
         <remove_value name="$DebugFolderName"/>
       </do_if>
       <remove_value name="$Ship"/>
+      <remove_value name="$Quit"/>
 
       <label name="END_LBL"/>
       <set_order_syncpoint_reached order="this.ship.defaultorder"/>
@@ -350,12 +360,13 @@
   </attention>
 
   <on_abort>
+    <remove_value name="$DebugScriptName"/>
     <do_if value="$DEBUG gt 0">
       <remove_value name="$DebugFileName"/>
-      <remove_value name="$DebugScriptName"/>
       <remove_value name="$DebugFolderName"/>
     </do_if>
     <remove_value name="$Ship"/>
+    <remove_value name="$Quit"/>
   </on_abort>
 
 </aiscript>

@@ -2,7 +2,7 @@
 
 <aiscript name="JP_CollectPlaceable_CP" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd">
 
-  <order id="JP_CollectPlaceable_CP" name="_CollectPlaceable_CP" category="navigation" infinite="false">
+  <order id="JP_CollectPlaceable_CP" name="_CollectPlaceable_CP" category="internal" infinite="false">
     <params>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="PLACEABLE" type="internal" default="null"/>
@@ -60,7 +60,7 @@
           <param name="endintargetzone" value="true"/>
           <param name="recallsubordinates" value="true"/>
         </run_script>
-        <wait min="1s" max="2s"/>
+        <wait min="1ms"/>
         <do_if value="this.zone.isclass.highway">
           <get_safe_pos result="$_SafePos" zone="$Ship.zone" object="$Ship" direction="quadrant.front" radius="$Ship.size" angle="45deg"/>
           <move_to object="$Ship" destination="$Ship.zone" uselocalhighways="false" finishonapproach="true" abortpath="true">
@@ -75,8 +75,8 @@
         </do_if>
       </do_if>
 
+      <!-- Collecting the placeable -->
       <set_command command="command.collect" param="$PLACEABLE"/>
-
       <label name="MOVING_LBL"/>
       <get_safe_pos result="$_TempPosition" zone="$PLACEABLE.sector" object="$PLACEABLE" directionobject="$Ship" radius="$Ship.size" ignored="$Ship"/>
       <move_to object="$Ship" destination="$PLACEABLE.sector" finishonapproach="false" forceposition="true" travel="true">
@@ -88,12 +88,14 @@
       </do_if>
       <remove_value name="$_TempPosition"/>
       <stop_moving object="$Ship" immediate="true"/>
+      <set_command command="command.scan"/>
       <wait min="2s" max="5s"/>
 
       <collect_deployable object="$Ship" deployable="$PLACEABLE"/>
       <apply_experience entity="$Ship.pilot" experience="'JP_SHIP_PLACEABLE_COLLECTED'" factor="$ExpMultiplier"/>
       <apply_experience object="$Ship" experience="'JP_SHIP_PLACEABLE_COLLECTED'" role="entityrole.service" factor="$ExpMultiplier"/>
       <remove_value name="$LOCATION_OBJECT_USED_IN_UI"/>
+
 
       <wait min="3s" max="6s"/>
 
@@ -110,6 +112,7 @@
       <do_if value="$DEBUG gt 0">
         <remove_value name="$DebugFileName"/>
         <remove_value name="$DebugScriptName"/>
+        <remove_value name="$DebugFolderName"/>
         <remove_value name="$CurrentSector"/>
       </do_if>
       <remove_value name="$ExpMultiplier"/>
@@ -125,6 +128,7 @@
     <do_if value="$DEBUG gt 0">
       <remove_value name="$DebugFileName"/>
       <remove_value name="$DebugScriptName"/>
+      <remove_value name="$DebugFolderName"/>
       <remove_value name="$CurrentSector"/>
     </do_if>
     <remove_value name="$ExpMultiplier"/>

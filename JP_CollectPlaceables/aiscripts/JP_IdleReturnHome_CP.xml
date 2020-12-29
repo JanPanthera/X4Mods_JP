@@ -41,7 +41,7 @@
     <set_value name="$ShipsCurrentName" exact="$Ship.knownname"/>
     <set_value name="$LOCATION_OBJECT_USED_IN_UI" exact="null"/>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-    <do_if value="$DEBUG">
+    <do_if value="$DEBUG gt 0">
       <set_value name="$DebugFolderName" exact="$DEBUG_FOLDER_NAME"/>
       <set_value name="$DebugScriptName" exact="'JP_IdleReturnHome_CP'"/>
       <set_value name="$DebugFileName" exact="$Ship.idcode + '.' + $DebugScriptName + '.xml.log'"/>
@@ -240,6 +240,7 @@
       <do_if value="$DEBUG gt 0">
         <remove_value name="$DebugFileName"/>
         <remove_value name="$DebugScriptName"/>
+        <remove_value name="$DebugFolderName"/>
         <remove_value name="$CurrentSector"/>
       </do_if>
       <remove_value name="$ShipsCurrentName"/>
@@ -256,6 +257,7 @@
     <do_if value="$DEBUG gt 0">
       <remove_value name="$DebugFileName"/>
       <remove_value name="$DebugScriptName"/>
+      <remove_value name="$DebugFolderName"/>
       <remove_value name="$CurrentSector"/>
     </do_if>
     <remove_value name="$ShipsCurrentName"/>
