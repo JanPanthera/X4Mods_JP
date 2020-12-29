@@ -21,12 +21,12 @@
         <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
         <set_value name="$DEBUG" exact="0"/>
         <set_value name="$DebugFileName" exact="'JP_SACT_LOOP.xml.log'"/>
-        <set_value name="$DebugDirectory" exact="'JP_StationAutoCreditTransfer.logs'"/>
+        <set_value name="$DebugFolderName" exact="'JP_StationAutoCreditTransfer.logs'"/>
         <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-        <do_if value="$DEBUG gt 0">
-          <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_SACT_LOOP.xml ~ Started ~~' + '\n'"/>
+        <do_if value="$DEBUG">
+          <debug_to_file append="false" directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_SACT_LOOP.xml ~ Started ~~' + '\n'"/>
           <show_help custom="'JP_SACT_LOOP'" duration="4s" allowclose="true"/>
         </do_if>
 
@@ -139,12 +139,12 @@
 
         <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-        <do_if value="$DEBUG gt 0">
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_SACT_LOOP.xml ~ Finished ~~'"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <do_if value="$DEBUG">
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_SACT_LOOP.xml ~ Finished ~~'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
         </do_if>
 
-        <remove_value name="$DebugDirectory"/>
+        <remove_value name="$DebugFolderName"/>
         <remove_value name="$DebugFileName"/>
         <remove_value name="$DEBUG"/>
         <remove_value name="$BuildstorageToPlayer"/>
@@ -159,6 +159,39 @@
       </actions>
     </cue>
 
+    <cue name="JP_SACT_CalculateNeeds_t" instantiate="true">
+      <conditions>
+        <event_cue_signalled/>
+      </conditions>
+      <actions>
+
+        <set_value name="$DEBUG" exact="JP_SACT_LOOP.$DEBUG"/>
+        <set_value name="$DebugFileName" exact="'JP_SACT_CalculateNeeds.xml.log'"/>
+        <set_value name="$DebugFolderName" exact="JP_SACT_LOOP.$DebugFolderName"/>
+
+        <do_if value="$DEBUG">
+          <debug_to_file append="false" directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_SACT_CalculateNeeds.xml ~ Started ~~' + '\n'"/>
+        </do_if>
+
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+        <set_value name="$_Station" exact="JP_SACT_LOOP.$_Station"/>
+
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+        <do_if value="$DEBUG">
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_SACT_CalculateNeeds.xml ~ Finished ~~'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        </do_if>
+
+        <remove_value name="$DebugFolderName"/>
+        <remove_value name="$DebugFileName"/>
+        <remove_value name="$DEBUG"/>
+
+      </actions>
+    </cue>
+
     <cue name="JP_SACT_CalculateNeeds" instantiate="true">
       <conditions>
         <event_cue_signalled/>
@@ -167,11 +200,11 @@
 
         <set_value name="$DEBUG" exact="JP_SACT_LOOP.$DEBUG"/>
         <set_value name="$DebugFileName" exact="'JP_SACT_CalculateNeeds.xml.log'"/>
-        <set_value name="$DebugDirectory" exact="JP_SACT_LOOP.$DebugDirectory"/>
+        <set_value name="$DebugFolderName" exact="JP_SACT_LOOP.$DebugFolderName"/>
 
-        <do_if value="$DEBUG gt 0">
-          <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_SACT_CalculateNeeds.xml ~ Started ~~' + '\n'"/>
+        <do_if value="$DEBUG">
+          <debug_to_file append="false" directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_SACT_CalculateNeeds.xml ~ Started ~~' + '\n'"/>
         </do_if>
 
         <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -194,11 +227,11 @@
           <remove_value name="$WareAmount"/>
         </do_if>
 
-        <do_if value="$DEBUG gt 0">
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'$StationName: ' + $_Station.knownname"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'$StationNeededResupplyMoney: ' + JP_SACT_LOOP.$StationNeeds + ' Cr'"/>
+        <do_if value="$DEBUG">
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'$StationName: ' + $_Station.knownname"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'$StationNeededResupplyMoney: ' + JP_SACT_LOOP.$StationNeeds + ' Cr'"/>
         </do_if>
 
         <set_value name="JP_SACT_LOOP.$StationNeeds" exact="(JP_SACT_LOOP.$StationNeeds + ($_Station.productionmoney / 100) + JP_SACT_LOOP.$AdditionalStationMoneyCap) - ($_Station.money / 100)"/>
@@ -207,33 +240,33 @@
         <set_value name="JP_SACT_LOOP.$BuildstorageAvailableMoney" exact="-(JP_SACT_LOOP.$BuildstorageNeeds)"/>
         <set_value name="JP_SACT_LOOP.$PlayerAvailableMoney" exact="(player.money / 100) - JP_SACT_LOOP.$PlayerBudgetCap"/>
 
-        <do_if value="$DEBUG gt 0">
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'$StationProductionMoney: ' + ($_Station.productionmoney / 100) + ' Cr'"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'$AdditionalStationMoneyCap: ' + JP_SACT_LOOP.$AdditionalStationMoneyCap + ' Cr'"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'$StationNeeds: ' + JP_SACT_LOOP.$StationNeeds + ' Cr'"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'$StationMoney: ' + ($_Station.money / 100) + ' Cr'"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'$StationAvailableMoney: ' + JP_SACT_LOOP.$StationAvailableMoney + ' Cr'"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'$BuildstorageNeeds: ' + JP_SACT_LOOP.$BuildstorageNeeds + ' Cr'"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'$BuildstorageMoney: ' + ($_Station.buildstorage.money / 100) + ' Cr'"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'$BuildstorageAvailableMoney: ' + JP_SACT_LOOP.$BuildstorageAvailableMoney + ' Cr'"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'$PlayerMoney: ' + (player.money / 100) + ' Cr'"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'$PlayerAvailableMoney: ' + JP_SACT_LOOP.$PlayerAvailableMoney + ' Cr'"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+        <do_if value="$DEBUG">
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'$StationProductionMoney: ' + ($_Station.productionmoney / 100) + ' Cr'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'$AdditionalStationMoneyCap: ' + JP_SACT_LOOP.$AdditionalStationMoneyCap + ' Cr'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'$StationNeeds: ' + JP_SACT_LOOP.$StationNeeds + ' Cr'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'$StationMoney: ' + ($_Station.money / 100) + ' Cr'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'$StationAvailableMoney: ' + JP_SACT_LOOP.$StationAvailableMoney + ' Cr'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'$BuildstorageNeeds: ' + JP_SACT_LOOP.$BuildstorageNeeds + ' Cr'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'$BuildstorageMoney: ' + ($_Station.buildstorage.money / 100) + ' Cr'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'$BuildstorageAvailableMoney: ' + JP_SACT_LOOP.$BuildstorageAvailableMoney + ' Cr'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'$PlayerMoney: ' + (player.money / 100) + ' Cr'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'$PlayerAvailableMoney: ' + JP_SACT_LOOP.$PlayerAvailableMoney + ' Cr'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
         </do_if>
 
         <remove_value name="$_Station"/>
 
         <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-        <do_if value="$DEBUG gt 0">
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_SACT_CalculateNeeds.xml ~ Finished ~~'"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <do_if value="$DEBUG">
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_SACT_CalculateNeeds.xml ~ Finished ~~'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
         </do_if>
 
-        <remove_value name="$DebugDirectory"/>
+        <remove_value name="$DebugFolderName"/>
         <remove_value name="$DebugFileName"/>
         <remove_value name="$DEBUG"/>
 
