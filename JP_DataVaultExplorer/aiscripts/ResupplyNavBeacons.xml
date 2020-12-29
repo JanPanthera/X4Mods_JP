@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+<return>
+  <retval name="RESULT" value="$Result"/>
+</return>
+-->
+
+<aiscript name="JP_ResupplyNavBeacons_DVE" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd">
+
+  <order id="JP_ResupplyNavBeacons_DVE" name="ResupplyNavBeacons" category="internal" infinite="false">
+    <params>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="RESTOCK_AMOUNT" text="RestockAmount" type="number" default="10">
+        <input_param name="min" value="1"/>
+        <input_param name="max" value="this.ship.ammostorage.deployable.capacity"/>
+        <input_param name="step" value="1"/>
+        <input_param name="startvalue" value="1"/>
+      </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <!-- DEBUG -->
+      <param name="DEBUG" text="DebugText" type="number" default="0" advanced="true">
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="100"/>
+        <input_param name="step" value="100"/>
+      </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    </params>
+    <requires>
+      <match shiptype="shiptype.lasertower" negate="true"/>
+    </requires>
+  </order>
+
+  <interrupts>
+  </interrupts>
+
+  <init>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <set_value name="$DebugFolderName" exact="'JP_DataVaultExplorer.logs'"/>
+    <set_value name="$DebugFileName" exact="this.ship.idcode + '.JP_ResupplyNavBeacons_DVE.xml.log'"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <set_value name="$Ship" exact="this.ship"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  </init>
+
+  <attention min="unknown">
+    <actions>
+
+      <wait exact="1ms"/>
+      <label name="INIT_LBL"/>
+
+      <do_if value="$DEBUG">
+        <debug_to_file append="false" directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_ResupplyNavBeacons_DVE.xml ~ Started ~~' + '\n'"/>
+      </do_if>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <set_command command="command.resupply"/>
+      <set_command_action commandaction="commandaction.calculating"/>
+
+      <wait min="1000ms" max="2000ms" profile="bell"/>
+
+      <set_value name="$_RestockAmount" exact="if $RESTOCK_AMOUNT gt $Ship.ammostorage.{ware.waypointmarker_01}.free then $Ship.ammostorage.{ware.waypointmarker_01}.free else $RESTOCK_AMOUNT"/>
+      <set_value name="$_ResupplyAmmoTable" exact="table[]"/>
+      <set_value name="$_ResupplyAmmoTable.{ware.waypointmarker_01}" exact="$_RestockAmount"/>
+
+      <create_list name="$_Stations"/>
+      <find_station name="$_Stations" space="player.galaxy" multiple="true">
+        <match checkoperational="true"/>
+        <match mayattack="$Ship" negate="true"/>
+        <match cansupplyclass="$Ship.class"/>
+        <match knownto="$Ship.owner"/>
+        <match_relation_to faction="$Ship.owner" comparison="ge" relation="neutral"/>
+        <match_use_blacklist object="$Ship" type="blacklisttype.sectortravel" group="blacklistgroup.civilian"/>
+        <match_use_blacklist object="$Ship" type="blacklisttype.sectoractivity" group="blacklistgroup.civilian"/>
+        <match_use_blacklist object="$Ship" type="blacklisttype.objectactivity" group="blacklistgroup.civilian"/>
+      </find_station>
+
+      <do_if value="$_Stations.count gt 0">
+        <do_if value="$_Stations.count gt 1">
+          <sort_list list="$_Stations" sortbyvalue="$Ship.distanceto.{loop.element}"/>
+        </do_if>
+        <set_value name="$_RestockPrice" exact="0Cr"/>
+        <set_value name="$_RestockPrice" operation="add" exact="$_Stations.{1}.buyprice.{ware.waypointmarker_01} * $_RestockAmount"/>
+        <do_if value="player.money gt $_RestockPrice">
+          <add_build_to_modify_ship buildobject="$Ship" object="$_Stations.{1}" ammo="$_ResupplyAmmoTable" price="$_RestockPrice"/>
+          <transfer_money from="$Ship.owner" to="$_Stations.{1}" amount="$_RestockPrice"/>
+          <write_to_logbook title="'MoneyTransfer'" text="'Ship ' + $Ship.knownname + ' bought ' + $_RestockAmount + ' satellites.'" category="upkeep" money="-($_RestockPrice)"/>
+        </do_if>
+        <do_else>
+          <do_if value="$DEBUG">
+            <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+            <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'Not enough mone for resuppling.'"/>
+            <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+          </do_if>
+          <show_help custom="'Ship: ' + $Ship.knownname + '[' + $Ship.idcode + ']' + '\n' + 'Not enough money for resuppling of navigation beacons.'" allowclose="true" duration="10s"/>
+          <wait exact="3s"/>
+        </do_else>
+      </do_if>
+      <do_else>
+        <do_if value="$DEBUG">
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'No stations found where we can resupply.'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+        </do_if>
+        <show_help custom="'Ship: ' + $Ship.knownname + '[' + $Ship.idcode + ']' + '\n' + 'No stations found where we can resuppling of navigation beacons.'" allowclose="true" duration="10s"/>
+        <wait exact="3s"/>
+      </do_else>
+
+      <remove_value name="$_RestockPrice"/>
+      <remove_value name="$_Stations"/>
+      <remove_value name="$_ResupplyAmmoTable"/>
+      <remove_value name="$_RestockAmount"/>
+
+      <label name="FINISH_LBL"/>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <do_if value="$DEBUG">
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_ResupplyNavBeacons_DVE.xml ~ Finished ~~'"/>
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+      </do_if>
+
+      <label name="CLEANUP_LBL"/>
+      <remove_value name="$Ship"/>
+      <remove_value name="$DebugFileName"/>
+      <remove_value name="$DebugFolderName"/>
+
+      <label name="END_LBL"/>
+      <wait exact="1ms"/>
+
+    </actions>
+  </attention>
+
+  <on_abort>
+  </on_abort>
+
+</aiscript>

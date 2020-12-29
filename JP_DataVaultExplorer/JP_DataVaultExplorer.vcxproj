@@ -132,6 +132,7 @@
     <Xml Include="aiscripts\JP_GetNearestDataVaultToMark.xml" />
     <Xml Include="aiscripts\JP_DataVaultExplorer.xml" />
     <Xml Include="aiscripts\JP_ExploreDataVault.xml" />
+    <Xml Include="aiscripts\ResupplyNavBeacons.xml" />
     <Xml Include="content.xml" />
     <Xml Include="JP_DataVaultExplorer\aiscripts\JP_DataVaultExplorer.xml" />
     <Xml Include="JP_DataVaultExplorer\aiscripts\JP_ExploreDataVault.xml" />

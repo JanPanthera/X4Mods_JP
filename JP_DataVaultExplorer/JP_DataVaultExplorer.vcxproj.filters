@@ -57,6 +57,7 @@
     <Xml Include="t\0001.xml" />
     <Xml Include="libraries\icons.xml" />
     <Xml Include="aiscripts\JP_GetNearestDataVaultToMark.xml" />
+    <Xml Include="aiscripts\ResupplyNavBeacons.xml" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="changelog.txt" />
