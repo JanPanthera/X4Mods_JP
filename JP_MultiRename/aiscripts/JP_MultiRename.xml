@@ -409,7 +409,7 @@
 
   <init>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-    <set_value name="$DebugDirectory" exact="'JP_MultiRename.logs'"/>
+    <set_value name="$DebugFolderName" exact="'JP_MultiRename.logs'"/>
     <set_value name="$DebugFileName" exact="this.ship.idcode + '.JP_MultiRename.xml.log'"/>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <set_value name="$Commander" exact="$OBJECT"/>
@@ -499,30 +499,30 @@
       <label name="INIT"/>
       <cancel_all_orders object="$Commander"/>
 
-      <do_if value="$DEBUG gt 0">
-        <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_MultiRename.xml ~ Started ~~' + '\n'"/>
+      <do_if value="$DEBUG">
+        <debug_to_file append="false" directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_MultiRename.xml ~ Started ~~' + '\n'"/>
       </do_if>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-      <do_if value="$DEBUG gt 0">
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'$SettingsMR'"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+      <do_if value="$DEBUG">
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'$SettingsMR'"/>
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
         <do_for_each name="$_Setting" in="@$SettingsMR">
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="' ~ $_Setting: ' + $_Setting"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="' ~ $_Setting: ' + $_Setting"/>
         </do_for_each>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'global.$SettingsMR'"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'global.$SettingsMR'"/>
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
         <do_if value="global.$SettingsMR?">
           <do_for_each name="$_Setting" in="global.$SettingsMR">
-            <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="' ~ $_Setting: ' + $_Setting"/>
+            <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="' ~ $_Setting: ' + $_Setting"/>
           </do_for_each>
         </do_if>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
       </do_if>
 
       <run_script name="'JP_SaveLoadReset_MR'">
@@ -850,9 +850,9 @@
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-      <do_if value="$DEBUG gt 0">
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_MultiRename.xml ~ Finished ~~'"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+      <do_if value="$DEBUG">
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_MultiRename.xml ~ Finished ~~'"/>
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
       </do_if>
 
       <label name="CLEANUP"/>
@@ -871,7 +871,7 @@
       <remove_value name="$NameTilesArrangement"/>
       <remove_value name="$Commander"/>
       <remove_value name="$DebugFileName"/>
-      <remove_value name="$DebugDirectory"/>
+      <remove_value name="$DebugFolderName"/>
 
       <label name="END"/>
       <wait exact="1ms"/>

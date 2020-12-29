@@ -44,7 +44,7 @@
 
   <init>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-    <set_value name="$DebugDirectory" exact="'JP_MultiRename.logs'"/>
+    <set_value name="$DebugFolderName" exact="'JP_MultiRename.logs'"/>
     <set_value name="$DebugFileName" exact="this.ship.idcode + '.JP_CreateName_MR.xml.log'"/>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <set_value name="$Ship" exact="$SHIP"/>
@@ -57,9 +57,9 @@
       <wait exact="1ms"/>
       <label name="INIT"/>
 
-      <do_if value="$DEBUG gt 0">
-        <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_CreateName_MR.xml ~ Started ~~' + '\n'"/>
+      <do_if value="$DEBUG">
+        <debug_to_file append="false" directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_CreateName_MR.xml ~ Started ~~' + '\n'"/>
       </do_if>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -76,10 +76,10 @@
           <do_else>
             <set_value name="$_CreatedName" exact="if @$_NameTile.{4} then $_NameTile.{4} else ''" operation="add"/>
           </do_else>
-          <do_if value="$DEBUG gt 0">
-            <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-            <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'After TAG: [' + $_CreatedName + ']'"/>
-            <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+          <do_if value="$DEBUG">
+            <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+            <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'After TAG: [' + $_CreatedName + ']'"/>
+            <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
           </do_if>
         </do_if>
 
@@ -104,10 +104,10 @@
             <set_value name="$_CreatedName" exact="$_NameTile.{4}.[if @$_ClassTag then $_ClassTag else '']" operation="add"/>
           </do_else>
           <remove_value name="$_ClassTag"/>
-          <do_if value="$DEBUG gt 0">
-            <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-            <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'After CLASS_TAG: [' + $_CreatedName + ']'"/>
-            <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+          <do_if value="$DEBUG">
+            <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+            <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'After CLASS_TAG: [' + $_CreatedName + ']'"/>
+            <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
           </do_if>
         </do_if>
 
@@ -119,10 +119,10 @@
           <do_else>
             <set_value name="$_CreatedName" exact="$_NameTile.{4}.[if @$Ship.typename then $Ship.typename else '']" operation="add"/>
           </do_else>
-          <do_if value="$DEBUG gt 0">
-            <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-            <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'After TYPE_NAME: [' + $_CreatedName + ']'"/>
-            <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+          <do_if value="$DEBUG">
+            <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+            <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'After TYPE_NAME: [' + $_CreatedName + ']'"/>
+            <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
           </do_if>
         </do_if>
 
@@ -159,10 +159,10 @@
             <set_value name="$_CreatedName" exact="$_NameTile.{4}.[if @$_ModelName then $_ModelName else '']" operation="add"/>
           </do_else>
           <remove_value name="$_ModelName"/>
-          <do_if value="$DEBUG gt 0">
-            <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-            <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'After MODEL_NAME: [' + $_CreatedName + ']'"/>
-            <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+          <do_if value="$DEBUG">
+            <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+            <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'After MODEL_NAME: [' + $_CreatedName + ']'"/>
+            <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
           </do_if>
         </do_if>
 
@@ -186,10 +186,10 @@
             </do_else>
             <remove_value name="$_Number"/>
           </do_if>
-          <do_if value="$DEBUG gt 0">
-            <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-            <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'After NUMBER: [' + $_CreatedName + ']'"/>
-            <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+          <do_if value="$DEBUG">
+            <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+            <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'After NUMBER: [' + $_CreatedName + ']'"/>
+            <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
           </do_if>
         </do_if>
 
@@ -201,10 +201,10 @@
           <do_else>
             <set_value name="$_CreatedName" exact="$_NameTile.{4}.[if @$Ship.owner.knownname then $Ship.owner.knownname else '']" operation="add"/>
           </do_else>
-          <do_if value="$DEBUG gt 0">
-            <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-            <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'After FACTION_NAME: [' + $_CreatedName + ']'"/>
-            <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+          <do_if value="$DEBUG">
+            <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+            <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'After FACTION_NAME: [' + $_CreatedName + ']'"/>
+            <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
           </do_if>
         </do_if>
 
@@ -218,10 +218,10 @@
             <set_value name="$_CreatedName" exact="$_NameTile.{4}.[if @$_OrderName then $_OrderName else '']" operation="add"/>
           </do_else>
           <remove_value name="$_OrderName"/>
-          <do_if value="$DEBUG gt 0">
-            <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-            <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'After ORDER_NAME: [' + $_CreatedName + ']'"/>
-            <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+          <do_if value="$DEBUG">
+            <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+            <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'After ORDER_NAME: [' + $_CreatedName + ']'"/>
+            <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
           </do_if>
         </do_if>
 
@@ -233,10 +233,10 @@
           <do_else>
             <set_value name="$_CreatedName" exact="$_NameTile.{4}.[if @$Ship.assignment.name then $Ship.assignment.name else '']" operation="add"/>
           </do_else>
-          <do_if value="$DEBUG gt 0">
-            <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-            <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'After ASSIGNMENT_NAME: [' + $_CreatedName + ']'"/>
-            <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+          <do_if value="$DEBUG">
+            <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+            <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'After ASSIGNMENT_NAME: [' + $_CreatedName + ']'"/>
+            <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
           </do_if>
         </do_if>
 
@@ -250,10 +250,10 @@
             <set_value name="$_CreatedName" exact="$_NameTile.{4}.[if @$_FleetName then $_FleetName else '']" operation="add"/>
           </do_else>
           <remove_value name="$_FleetName"/>
-          <do_if value="$DEBUG gt 0">
-            <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-            <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'After FLEET_NAME: [' + $_CreatedName + ']'"/>
-            <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+          <do_if value="$DEBUG">
+            <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+            <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'After FLEET_NAME: [' + $_CreatedName + ']'"/>
+            <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
           </do_if>
         </do_if>
 
@@ -265,10 +265,10 @@
           <do_else>
             <set_value name="$_CreatedName" exact="$_NameTile.{4}.[if @$Ship.dps.all then $Ship.dps.all else '']" operation="add"/>
           </do_else>
-          <do_if value="$DEBUG gt 0">
-            <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-            <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'After DPS_TAG: [' + $_CreatedName + ']'"/>
-            <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+          <do_if value="$DEBUG">
+            <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+            <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'After DPS_TAG: [' + $_CreatedName + ']'"/>
+            <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
           </do_if>
         </do_if>
 
@@ -278,25 +278,25 @@
 
       </do_for_each>
 
-      <do_if value="$DEBUG gt 0">
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'$_CreatedName: [' + $_CreatedName + ']'"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+      <do_if value="$DEBUG">
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'$_CreatedName: [' + $_CreatedName + ']'"/>
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
       </do_if>
 
       <label name="FINISH"/>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-      <do_if value="$DEBUG gt 0">
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_CreateName_MR.xml ~ Finished ~~'"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+      <do_if value="$DEBUG">
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_CreateName_MR.xml ~ Finished ~~'"/>
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
       </do_if>
 
       <label name="CLEANUP"/>
       <remove_value name="$Ship"/>
       <remove_value name="$DebugFileName"/>
-      <remove_value name="$DebugDirectory"/>
+      <remove_value name="$DebugFolderName"/>
 
       <label name="END"/>
       <wait exact="1ms"/>
