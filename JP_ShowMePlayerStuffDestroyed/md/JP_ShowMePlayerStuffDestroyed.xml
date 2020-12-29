@@ -3,7 +3,7 @@
 <mdscript name="JP_ShowMePlayerStuffDestroyed" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="md.xsd">
   <cues>
 
-    <cue name="IsOurStuffAttacked" instantiate="true">
+    <cue name="IsOurStuffAttacked" instantiate="false">
       <conditions>
         <check_all>
           <event_player_owned_attacked/>
@@ -14,11 +14,11 @@
       <actions>
 
         <set_value name="$DEBUG" exact="0"/>
-        <set_value name="$DebugDirectory" exact="'JP_ShowMePlayerStuffDestroyed.logs'"/>
+        <set_value name="$DebugFolderName" exact="'JP_ShowMePlayerStuffDestroyed.logs'"/>
 
-        <do_if value="$DEBUG gt 0">
-          <debug_to_file append="false" directory="$DebugDirectory" name="'IsOurStuffAttacked.log'" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-          <debug_to_file directory="$DebugDirectory" name="'IsOurStuffAttacked.log'" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_ShowMePlayerStuffDestroyed.xml ~ IsOurStuffAttacked ~~' + '\n'"/>
+        <do_if value="$DEBUG">
+          <debug_to_file append="false" directory="$DebugFolderName" name="'IsOurStuffAttacked.log'" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugFolderName" name="'IsOurStuffAttacked.log'" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_ShowMePlayerStuffDestroyed.xml ~ IsOurStuffAttacked ~~' + '\n'"/>
         </do_if>
 
         <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -33,13 +33,13 @@
                       $AttackedObject.maxshield gt 0 and $AttackedObject.shieldpercentage le 40 or
                       $AttackedObject.maxshield == 0 and $AttackedObject.hullpercentage le 80">
 
-          <do_if value="$DEBUG gt 0">
-            <debug_to_file directory="$DebugDirectory" name="'IsOurStuffAttacked.log'" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-            <debug_to_file directory="$DebugDirectory" name="'IsOurStuffAttacked.log'" text="' ~ $AttackedObject: ' + @$AttackedObject + '[' + @$AttackedObject.idcode + ']'"/>
-            <debug_to_file directory="$DebugDirectory" name="'IsOurStuffAttacked.log'" text="' ~ $Attacker: ' + @$Attacker.knownname + '[' + @$Attacker.idcode + ']'"/>
-            <debug_to_file directory="$DebugDirectory" name="'IsOurStuffAttacked.log'" text="' ~ $KillMethod: ' + $KillMethod"/>
-            <debug_to_file directory="$DebugDirectory" name="'IsOurStuffAttacked.log'" text="' ~ (player.age - @$TimeMessageWasShown) ~ ' + (player.age - @$TimeMessageWasShown) + ' ~ ' + 10s"/>
-            <debug_to_file directory="$DebugDirectory" name="'IsOurStuffAttacked.log'" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+          <do_if value="$DEBUG">
+            <debug_to_file directory="$DebugFolderName" name="'IsOurStuffAttacked.log'" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+            <debug_to_file directory="$DebugFolderName" name="'IsOurStuffAttacked.log'" text="' ~ $AttackedObject: ' + @$AttackedObject + '[' + @$AttackedObject.idcode + ']'"/>
+            <debug_to_file directory="$DebugFolderName" name="'IsOurStuffAttacked.log'" text="' ~ $Attacker: ' + @$Attacker.knownname + '[' + @$Attacker.idcode + ']'"/>
+            <debug_to_file directory="$DebugFolderName" name="'IsOurStuffAttacked.log'" text="' ~ $KillMethod: ' + $KillMethod"/>
+            <debug_to_file directory="$DebugFolderName" name="'IsOurStuffAttacked.log'" text="' ~ (player.age - @$TimeMessageWasShown) ~ ' + (player.age - @$TimeMessageWasShown) + ' ~ ' + 10s"/>
+            <debug_to_file directory="$DebugFolderName" name="'IsOurStuffAttacked.log'" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
           </do_if>
 
           <do_if value="$AttackedObject != @$LastAttackedObject or ($AttackedObject == @$LastAttackedObject) and (player.age - @$TimeMessageWasShown) gt 10s">
@@ -75,13 +75,13 @@
 
         <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-        <do_if value="$DEBUG gt 0">
-          <debug_to_file directory="$DebugDirectory" name="'IsOurStuffAttacked.log'" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_ShowMePlayerStuffDestroyed.xml ~ IsOurStuffAttacked ~~'"/>
-          <debug_to_file directory="$DebugDirectory" name="'IsOurStuffAttacked.log'" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+        <do_if value="$DEBUG">
+          <debug_to_file directory="$DebugFolderName" name="'IsOurStuffAttacked.log'" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_ShowMePlayerStuffDestroyed.xml ~ IsOurStuffAttacked ~~'"/>
+          <debug_to_file directory="$DebugFolderName" name="'IsOurStuffAttacked.log'" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
         </do_if>
 
         <remove_value name="$DEBUG"/>
-        <remove_value name="$DebugDirectory"/>
+        <remove_value name="$DebugFolderName"/>
 
       </actions>
     </cue>
@@ -96,11 +96,11 @@
       <actions>
 
         <set_value name="$DEBUG" exact="0"/>
-        <set_value name="$DebugDirectory" exact="'JP_ShowMePlayerStuffDestroyed.logs'"/>
+        <set_value name="$DebugFolderName" exact="'JP_ShowMePlayerStuffDestroyed.logs'"/>
 
-        <do_if value="$DEBUG gt 0">
-          <debug_to_file append="false" directory="$DebugDirectory" name="'WasAnythingDestroyed.log'" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-          <debug_to_file directory="$DebugDirectory" name="'WasAnythingDestroyed.log'" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_ShowMePlayerStuffDestroyed.xml ~ WasAnythingDestroyed ~~' + '\n'"/>
+        <do_if value="$DEBUG">
+          <debug_to_file append="false" directory="$DebugFolderName" name="'WasAnythingDestroyed.log'" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugFolderName" name="'WasAnythingDestroyed.log'" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_ShowMePlayerStuffDestroyed.xml ~ WasAnythingDestroyed ~~' + '\n'"/>
         </do_if>
 
         <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -109,12 +109,12 @@
         <set_value name="$KillerObject" exact="event.param2"/>
         <set_value name="$KillMethod" exact="event.param3"/>
 
-        <do_if value="$DEBUG gt 0">
-          <debug_to_file directory="$DebugDirectory" name="'WasAnythingDestroyed.log'" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-          <debug_to_file directory="$DebugDirectory" name="'WasAnythingDestroyed.log'" text="' ~ $KilledObject: ' + @$KilledObject + '[' + @$KilledObject.idcode + ']'"/>
-          <debug_to_file directory="$DebugDirectory" name="'WasAnythingDestroyed.log'" text="' ~ $KillerObject: ' + @$KillerObject + '[' + @$KillerObject.idcode + ']'"/>
-          <debug_to_file directory="$DebugDirectory" name="'WasAnythingDestroyed.log'" text="' ~ $KillMethod: ' + $KillMethod"/>
-          <debug_to_file directory="$DebugDirectory" name="'WasAnythingDestroyed.log'" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+        <do_if value="$DEBUG">
+          <debug_to_file directory="$DebugFolderName" name="'WasAnythingDestroyed.log'" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugFolderName" name="'WasAnythingDestroyed.log'" text="' ~ $KilledObject: ' + @$KilledObject + '[' + @$KilledObject.idcode + ']'"/>
+          <debug_to_file directory="$DebugFolderName" name="'WasAnythingDestroyed.log'" text="' ~ $KillerObject: ' + @$KillerObject + '[' + @$KillerObject.idcode + ']'"/>
+          <debug_to_file directory="$DebugFolderName" name="'WasAnythingDestroyed.log'" text="' ~ $KillMethod: ' + $KillMethod"/>
+          <debug_to_file directory="$DebugFolderName" name="'WasAnythingDestroyed.log'" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
         </do_if>
 
         <do_if value="$KillMethod != killmethod.removed and $KillMethod != killmethod.collected and $KilledObject != player.controlled">
@@ -131,13 +131,13 @@
 
         <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-        <do_if value="$DEBUG gt 0">
-          <debug_to_file directory="$DebugDirectory" name="'WasAnythingDestroyed.log'" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_ShowMePlayerStuffDestroyed.xml ~ WasAnythingDestroyed ~~'"/>
-          <debug_to_file directory="$DebugDirectory" name="'WasAnythingDestroyed.log'" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+        <do_if value="$DEBUG">
+          <debug_to_file directory="$DebugFolderName" name="'WasAnythingDestroyed.log'" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_ShowMePlayerStuffDestroyed.xml ~ WasAnythingDestroyed ~~'"/>
+          <debug_to_file directory="$DebugFolderName" name="'WasAnythingDestroyed.log'" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
         </do_if>
 
         <remove_value name="$DEBUG"/>
-        <remove_value name="$DebugDirectory"/>
+        <remove_value name="$DebugFolderName"/>
 
       </actions>
     </cue>
