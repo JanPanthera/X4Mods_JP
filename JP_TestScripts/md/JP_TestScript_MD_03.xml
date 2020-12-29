@@ -12,7 +12,6 @@
       </conditions>
       <actions>
         <show_help custom="'JP_TestScript_MD_03 initialized...'" duration="2s" allowclose="true"/>
-        <set_value name="$DEBUG" exact="100"/>
       </actions>
     </cue>
 
@@ -20,29 +19,31 @@
       <conditions>
       </conditions>
       <actions>
-        <set_value name="$DEBUG" exact="@JP_TestScript_MD_03_INIT.$DEBUG"/>
-        <set_value name="$DebugDirectory" exact="'JP_TestScripts.logs'"/>
-        <set_value name="$DebugFileName" exact="'JP_TestScript_MD_03.xml.log'"/>
 
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <set_value name="$DEBUG" exact="100"/>
         <do_if value="$DEBUG gt 0">
-          <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_TestScript_MD_03.xml ~ Started ~~' + '\n'"/>
+          <set_value name="$DebugFolderName" exact="'JP_TestScripts.logs'"/>
+          <set_value name="$DebugScriptName" exact="'JP_TestScript_MD_03_LOOP'"/>
+          <set_value name="$DebugFileName" exact="$DebugScriptName + '.xml.log'"/>
+          <debug_to_file append="false" directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Started ~~' + '\n'"/>
         </do_if>
-
         <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
 
 
         <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-
         <do_if value="$DEBUG gt 0">
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_TestScript_MD_03.xml ~ Finished ~~'"/>
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Finished ~~'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+          <remove_value name="$DebugFileName"/>
+          <remove_value name="$DebugFolderName"/>
+          <remove_value name="$DebugScriptName"/>
         </do_if>
-
-        <remove_value name="$DebugFileName"/>
-        <remove_value name="$DebugDirectory"/>
         <remove_value name="$DEBUG"/>
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
       </actions>
     </cue>
 
