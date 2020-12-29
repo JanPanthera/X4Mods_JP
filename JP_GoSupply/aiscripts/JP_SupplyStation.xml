@@ -49,7 +49,7 @@
 
   <init>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-    <set_value name="$DebugDirectory" exact="'JP_SupplyStation.logs'"/>
+    <set_value name="$DebugFolderName" exact="'JP_SupplyStation.logs'"/>
     <set_value name="$DebugFileName" exact="this.ship.idcode + '.JP_SupplyStation.log'"/>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <set_value name="this.$OldName" exact="this.ship.knownname"/>
@@ -67,8 +67,8 @@
       <wait exact="1ms"/>
       <label name="INIT"/>
 
-      <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'" chance="$DEBUG"/>
-      <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_SupplyStation.xml ~ Started ~~' + '\n'" chance="$DEBUG"/>
+      <debug_to_file append="false" directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'" chance="$DEBUG"/>
+      <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_SupplyStation.xml ~ Started ~~' + '\n'" chance="$DEBUG"/>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
@@ -113,11 +113,11 @@
         <!-- Add sell trade perform (if available) => This object buys (create_trade_order adds the reservation automatically) -->
         <create_trade_order name="$buyorder" object="$Ship" tradeoffer="$_PotentialSellOffers.{1}" amount="if $_BuyOffers.{1}.amount gt $Ship.cargo.{$_Ware}.free then $Ship.cargo.{$_Ware}.free else $_BuyOffers.{1}.amount" immediate="true"/>
 
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'" chance="$DEBUG"/>
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'" chance="$DEBUG"/>
         <do_for_each name="$_PotentialSellOffer" in="$_PotentialSellOffers">
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="$_PotentialSellOffer.seller.knownname + ' ~ ' + $_PotentialSellOffer.seller.sector.knownname + ' ~ ' + $_PotentialSellOffer.ware + ' ~ ' + ($_PotentialSellOffer.unitprice / 100) + 'Cr'" chance="$DEBUG"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="$_PotentialSellOffer.seller.knownname + ' ~ ' + $_PotentialSellOffer.seller.sector.knownname + ' ~ ' + $_PotentialSellOffer.ware + ' ~ ' + ($_PotentialSellOffer.unitprice / 100) + 'Cr'" chance="$DEBUG"/>
         </do_for_each>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'" chance="$DEBUG"/>
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'" chance="$DEBUG"/>
       </do_for_each>
 
       <remove_value name="$_BuyOffers"/>
@@ -135,13 +135,13 @@
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-      <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_SupplyStation.xml ~ Finished ~~'" chance="$DEBUG"/>
-      <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'" chance="$DEBUG"/>
+      <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_SupplyStation.xml ~ Finished ~~'" chance="$DEBUG"/>
+      <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'" chance="$DEBUG"/>
 
       <label name="CLEANUP"/>
       <remove_value name="$Ship"/>
       <remove_value name="$DebugFileName"/>
-      <remove_value name="$DebugDirectory"/>
+      <remove_value name="$DebugFolderName"/>
 
       <set_order_syncpoint_reached order="this.ship.order"/>
       <cancel_order order="this.ship.order" />

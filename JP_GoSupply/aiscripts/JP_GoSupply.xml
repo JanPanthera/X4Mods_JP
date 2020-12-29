@@ -35,7 +35,7 @@
 
   <init>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-    <set_value name="$DebugDirectory" exact="'JP_GoSupply.logs'"/>
+    <set_value name="$DebugFolderName" exact="'JP_GoSupply.logs'"/>
     <set_value name="$DebugFileName" exact="this.ship.idcode + '.JP_GoSupply.log'"/>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <set_value name="this.$OldName" exact="this.ship.knownname"/>
@@ -53,9 +53,9 @@
       <wait exact="1ms"/>
       <label name="INIT"/>
 
-      <do_if value="$DEBUG gt 0.0">
-        <debug_to_file append="false" directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_GoSupply.xml ~ Started ~~' + '\n'"/>
+      <do_if value="$DEBUG">
+        <debug_to_file append="false" directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_GoSupply.xml ~ Started ~~' + '\n'"/>
       </do_if>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -69,13 +69,13 @@
         <find_buy_offer result="$_BuyOffers" space="$Ship.sector" wares="$_Ware">
         </find_buy_offer>
 
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'" chance="$DEBUG"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="$_Station.knownname" chance="$DEBUG"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'" chance="$DEBUG"/>
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'" chance="$DEBUG"/>
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="$_Station.knownname" chance="$DEBUG"/>
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'" chance="$DEBUG"/>
         <do_for_each name="$_BuyOffer" in="$_BuyOffers">
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="$_BuyOffer.ware" chance="$DEBUG"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="$_BuyOffer.ware" chance="$DEBUG"/>
         </do_for_each>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'" chance="$DEBUG"/>
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'" chance="$DEBUG"/>
 
       </do_for_each>
 
@@ -88,21 +88,21 @@
         <find_buy_offer result="$_BuyOffers" space="$Ship.sector" wares="$_Ware" multiple="true">
         </find_buy_offer>
 
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'" chance="$DEBUG"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'$_SellOffers'" chance="$DEBUG"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'" chance="$DEBUG"/>
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'" chance="$DEBUG"/>
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'$_SellOffers'" chance="$DEBUG"/>
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'" chance="$DEBUG"/>
         <do_for_each name="$_SellOffer" in="$_SellOffers">
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="$_SellOffer" chance="$DEBUG"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="$_SellOffer" chance="$DEBUG"/>
         </do_for_each>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'" chance="$DEBUG"/>
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'" chance="$DEBUG"/>
 
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'" chance="$DEBUG"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'$_BuyOffers'" chance="$DEBUG"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'" chance="$DEBUG"/>
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'" chance="$DEBUG"/>
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'$_BuyOffers'" chance="$DEBUG"/>
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'" chance="$DEBUG"/>
         <do_for_each name="$_BuyOffer" in="$_BuyOffers">
-          <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="$_BuyOffer" chance="$DEBUG"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="$_BuyOffer" chance="$DEBUG"/>
         </do_for_each>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'" chance="$DEBUG"/>
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'" chance="$DEBUG"/>
 
       </do_for_each>-->
 
@@ -113,15 +113,15 @@
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-      <do_if value="$DEBUG gt 0.0">
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_GoSupply.xml ~ Finished ~~'"/>
-        <debug_to_file directory="$DebugDirectory" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+      <do_if value="$DEBUG">
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_GoSupply.xml ~ Finished ~~'"/>
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
       </do_if>
 
       <label name="CLEANUP"/>
       <remove_value name="$Ship"/>
       <remove_value name="$DebugFileName"/>
-      <remove_value name="$DebugDirectory"/>
+      <remove_value name="$DebugFolderName"/>
 
       <set_order_syncpoint_reached order="this.ship.order"/>
       <cancel_order order="this.ship.order" />
