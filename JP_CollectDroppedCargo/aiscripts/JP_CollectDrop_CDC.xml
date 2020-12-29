@@ -16,7 +16,7 @@
       </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="ADD_ORDER_TAG"  text="{8888888, 791}" comment="Add Order tag?" type="bool" default="true"/>
-      <param name="ORDER_TAG" text="Order tag" comment="internal!" type="internal" default="''" advanced="true"/>
+      <param name="ORDER_TAG" text="Order tag" comment="internal!" type="internal" default="''"/>
       <param name="ORDER_TAG_POSITION" text="{8888888, 792}" comment="Order tag position" type="number" default="1">
         <input_param name="min" value="0"/>
         <input_param name="max" value="1"/>
@@ -34,7 +34,7 @@
       </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     </params>
-    <location object="$LocationObjectUsedInUI" condition="$LocationObjectUsedInUI? and @$LocationObjectUsedInUI != null"/>
+    <location object="$LOCATION_OBJECT_USED_IN_UI" condition="$LOCATION_OBJECT_USED_IN_UI? and @$LOCATION_OBJECT_USED_IN_UI != null"/>
   </order>
 
   <interrupts>
@@ -62,7 +62,7 @@
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <set_value name="$Ship" exact="this.ship"/>
     <set_value name="$ExpMultiplier" exact="0.88"/>
-    <set_value name="$LocationObjectUsedInUI" exact="$DROP_TO_COLLECT"/>
+    <set_value name="$LOCATION_OBJECT_USED_IN_UI" exact="$DROP_TO_COLLECT"/>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <do_if value="$ADD_ORDER_TAG">
       <set_value name="$ShipName" exact="$Ship.knownname"/>
@@ -97,7 +97,7 @@
       <collect_drop object="$Ship" drop="$DROP_TO_COLLECT"/>
       <apply_experience entity="$Ship.pilot" experience="'JP_SHIP_CARGO_COLLECTED'" factor="$ExpMultiplier"/>
       <apply_experience object="$Ship" experience="'JP_SHIP_CARGO_COLLECTED'" role="entityrole.service" factor="$ExpMultiplier"/>
-      <remove_value name="$LocationObjectUsedInUI"/>
+      <remove_value name="$LOCATION_OBJECT_USED_IN_UI"/>
       
       
       <label name="FINISH_LBL"/>
@@ -121,7 +121,7 @@
       <label name="CLEANUP_LBL"/>
       <remove_value name="$Ship"/>
       <remove_value name="$ExpMultiplier"/>
-      <remove_value name="$LocationObjectUsedInUI"/>
+      <remove_value name="$LOCATION_OBJECT_USED_IN_UI"/>
       <do_if value="$ADD_ORDER_TAG and $ShipName?">
         <remove_value name="$ShipName"/>
       </do_if>
