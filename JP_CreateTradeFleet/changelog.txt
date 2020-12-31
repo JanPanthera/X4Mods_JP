@@ -1,1 +1,1 @@
-~ Changed: Only direct subordinates of the fleet leader will get the trade order
+~ Updated: Optimized a bit for performance.. just a bit..
