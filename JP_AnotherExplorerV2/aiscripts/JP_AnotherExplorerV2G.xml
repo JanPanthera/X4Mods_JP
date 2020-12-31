@@ -257,6 +257,7 @@
             <param name="DEBUG_FOLDER_NAME" value="@$DebugFolderName"/>
             <param name="DEBUG" value="$DEBUG"/>
           </create_order>
+          <wait min="1s" max="2s"/>
         </do_for_each>
       </do_if>
 
@@ -301,7 +302,7 @@
   </attention>
 
   <on_abort>
-    <do_if value="$Ship.defaultorder.id != 'AnotherExplorerV2S' and $Ship.defaultorder.id != 'AnotherExplorerVG'">
+    <do_if value="$Ship.defaultorder.id != 'AnotherExplorerV2S' and $Ship.defaultorder.id != 'AnotherExplorerVG' and $Ship.orders.count le 0">
       <do_if value="global.$AnotherExplorerV2SectorBlackList? and @this.$_Sector != null">
         <remove_from_list name="global.$AnotherExplorerV2SectorBlackList" exact="this.$_Sector"/>
       </do_if>

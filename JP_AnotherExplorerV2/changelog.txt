@@ -1,9 +1,10 @@
-~ repo update - 2020-12-27 -
+~ repo update - 2020-12-31 -
+
 ~ Fixed: flying to nill? please....... ;-)
+~ Changed: fleet creation.. create a fleet.. assignment is not relevant.. 
+rename the fleet to "AnotherExplorerV2Routine".. give the leader the AnotherExplorerV2 routine.. that's it
 ~ Changed: removed options for Enemy Sectors, Friendly Sectors and Neutral Sectors..
 you can use x4's blacklists.. doing the same job.. and are vanilla 
 ~ Updated: Reworked Order Tag.. how it will added and removed again..
 ~ Updated: IdleReturnHome.. should work better.. internal..
-~ Updated: ..general refactoring..
-~ Removed: Own fleet creation.. will do tests with the new Mimic behaviour of x4 Beta 4.0
-also you can set the color of the fleets name via the mod SetFleetNameColor of me...
+~ Updated: ..language files restructuring.. added some translations.. (google translate)
