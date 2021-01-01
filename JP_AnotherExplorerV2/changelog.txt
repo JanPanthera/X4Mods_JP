@@ -1,5 +1,4 @@
 ~ repo update ~ 2021-01-01 ~
+~ 04:21 PM ~
 
-~ Fixed: ui got stuck..
-~ Fixed: sectors sorted by distanceto ship.. now correctly gatedistance
-~ Fixed: problems with global blacklist and ships list..
+~ Fixed: order_jp_exploreobject_aev2 big question mark

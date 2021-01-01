@@ -3,5 +3,6 @@
 <icons>
   <icon name="order_jp_anotherexplorerv2s" texture="assets\fx\gui\textures\order\order_explore.tga" height="32" width="32"></icon>
   <icon name="order_jp_anotherexplorerv2g" texture="assets\fx\gui\textures\order\order_explore.tga" height="32" width="32"></icon>
+  <icon name="order_jp_exploreobject_aev2" texture="assets\fx\gui\textures\order\order_explore.tga" height="32" width="32"></icon>
   <icon name="order_jp_idlereturnhome_aev2" texture="assets\fx\gui\textures\order\order_wait.tga" height="32" width="32"></icon>
 </icons>
