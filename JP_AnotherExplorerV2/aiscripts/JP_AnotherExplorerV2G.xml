@@ -125,38 +125,7 @@
       <do_if value="not global.$AnotherExplorerV2Ships?">
         <create_list name="global.$AnotherExplorerV2Ships"/>
       </do_if>
-      <append_to_list name="global.$AnotherExplorerV2Ships" exact="$Ship"/>
-    </do_if>
-    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-    <!-- remove it in a later version.. give time for deleting this unused chunk of memory -->
-    <do_if value="true">
-      <remove_value name="global.$DebugAEV2"/>
-      <remove_value name="global.$WhereToMoveAEV2"/>
-      <remove_value name="global.$IdleMoveToAEV2"/>
-      <remove_value name="global.$InWhichSectorAEV2"/>
-      <remove_value name="global.$IdleRandomMovementAEV2"/>
-      <remove_value name="global.$WhereToDockAEV2"/>
-      <remove_value name="global.$IdleDockingAEV2"/>
-      <remove_value name="global.$WhoToFollowAEV2"/>
-      <remove_value name="global.$IdleFollowAEV2"/>
-      <remove_value name="global.$IdleTimeAEV2"/>
-      <remove_value name="global.$ColorAutoFleetNameAEV2"/>
-      <remove_value name="global.$AutoFleetNameAlphaAEV2"/>
-      <remove_value name="global.$AutoFleetNameRedAEV2"/>
-      <remove_value name="global.$AutoFleetNameGreenAEV2"/>
-      <remove_value name="global.$AutoFleetNameBlueAEV2"/>
-      <remove_value name="global.$AutoFleetAEV2"/>
-      <remove_value name="global.$AddOrderTagAEV2"/>
-      <remove_value name="global.$FriendlyStationsAEV2"/>
-      <remove_value name="global.$EnemyStationsAEV2"/>
-      <remove_value name="global.$StationsAEV2"/>
-      <remove_value name="global.$GatesAEV2"/>
-      <remove_value name="global.$UnknownSectorsAEV2"/>
-      <remove_value name="global.$FrienlySectorsAEV2"/>
-      <remove_value name="global.$NeutralSectorsAEV2"/>
-      <remove_value name="global.$EnemySectorsAEV2"/>
-      <remove_value name="global.$AEV2_AFCS"/>
-      <remove_value name="this.$CurrentSector"/>
+      <append_to_list name="global.$AnotherExplorerV2Ships" exact="[$Ship, null]"/>
     </do_if>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <do_if value="$SAVE_ORDER_SETTINGS">
@@ -201,24 +170,24 @@
       </do_if>
 
       <label name="INIT_LBL"/>
-      <wait min="1s" max="2s"/>
+      <wait min="500ms" max="1000ms"/>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
       <label name="RESUME_LBL"/>
-      <wait min="1s" max="2s"/>
+      <wait min="500ms" max="1000ms"/>
 
       <!-- just for the ui -->
       <set_command command="command.scan"/>
       <set_command_action commandaction="commandaction.calculating"/>
 
-      <do_if value="not this.$_Sector? and not this.$_UnknownObjects?">
-        <!-- Return value ~~ $_UnknownObjects -->
+      <!-- Return value ~~ $_UnknownObjects -->
+      <do_if value="@this.$CurrentSector == null">
         <include_interrupt_actions ref="JP_Lib_GetUnknownObjectsInSector_AEV2"/>
-
         <!-- Nothing found go idle -->
         <do_if value="@$_UnknownObjects == null">
           <remove_value name="$_UnknownObjects"/>
+          <remove_value name="$_UnknownObjectsSector"/>
           <!-- Nothing to do.. idle a bit and try again -->
           <do_if value="$IDLE">
             <create_order id="'JP_IdleReturnHome_AEV2'" object="$Ship">
@@ -234,59 +203,58 @@
               <param name="DEBUG_FOLDER_NAME" value="@$DebugFolderName"/>
               <param name="DEBUG" value="$DEBUG"/>
             </create_order>
+            <wait min="500ms" max="1000ms"/>
           </do_if>
           <resume label="RESUME_LBL"/>
         </do_if>
-
-        <set_value name="this.$_Sector" exact="$_UnknownObjects.last.sector"/>
-        <set_value name="this.$_UnknownObjects" exact="$_UnknownObjects"/>
-        <append_to_list name="global.$AnotherExplorerV2SectorBlackList" exact="this.$_Sector"/>
+        <set_value name="this.$CurrentSector" exact="$_UnknownObjectsSector"/>
+        <set_value name="this.$UnknownObjects" exact="$_UnknownObjects"/>
+        <append_to_list name="global.$AnotherExplorerV2SectorBlackList" exact="$_UnknownObjectsSector"/>
+        <do_for_each name="$_AnotherExplorerV2Ship" in="global.$AnotherExplorerV2Ships">
+          <do_if value="$_AnotherExplorerV2Ship.{1} == $Ship">
+            <set_value name="$_AnotherExplorerV2Ship.{2}" exact="$_UnknownObjectsSector"/>
+          </do_if>
+        </do_for_each>
+        <remove_value name="$_UnknownObjects"/>
+        <remove_value name="$_UnknownObjectsSector"/>
       </do_if>
 
       <!-- Exploring the objects.. flying to them and making them visible -->
       <set_command command="command.explore"/>
       <set_command_action commandaction="commandaction.calculating"/>
-      <do_if value="@this.$_UnknownObjects.count gt 0">
-        <do_for_each name="$_UnknownObject" in="this.$_UnknownObjects" reverse="true">
-          <do_if value="$_UnknownObject.isknown">
-            <remove_from_list name="this.$_UnknownObjects" exact="$_UnknownObject"/>
-            <continue/>
-          </do_if>
-          <create_order id="'JP_ExploreObject_AEV2'" object="$Ship">
-            <param name="OBJECT" value="$_UnknownObject"/>
-            <param name="DEBUG_FOLDER_NAME" value="@$DebugFolderName"/>
-            <param name="DEBUG" value="$DEBUG"/>
-          </create_order>
-          <wait min="1s" max="2s"/>
-        </do_for_each>
-      </do_if>
+      <sort_list list="this.$UnknownObjects" sortbyvalue="$Ship.distanceto.{loop.element}" sortdescending="true"/>
+      <do_while value="this.$UnknownObjects.count gt 0">
+        <do_if value="this.$UnknownObjects.last.isknown">
+          <remove_from_list name="this.$UnknownObjects" exact="this.$UnknownObjects.last"/>
+          <continue/>
+        </do_if>
+        <create_order id="'JP_ExploreObject_AEV2'" object="$Ship">
+          <param name="OBJECT" value="this.$UnknownObjects.last"/>
+          <param name="DEBUG_FOLDER_NAME" value="@$DebugFolderName"/>
+          <param name="DEBUG" value="$DEBUG"/>
+        </create_order>
+        <wait min="500ms" max="1000ms"/>
+      </do_while>
 
       <!-- cleanup and resume from top -->
-      <do_if value="global.$AnotherExplorerV2SectorBlackList? and @this.$_Sector != null">
-        <remove_from_list name="global.$AnotherExplorerV2SectorBlackList" exact="this.$_Sector"/>
+      <do_if value="global.$AnotherExplorerV2SectorBlackList?">
+        <remove_from_list name="global.$AnotherExplorerV2SectorBlackList" exact="this.$CurrentSector"/>
       </do_if>
-      <remove_value name="this.$_UnknownObjects"/>
-      <remove_value name="this.$_Sector"/>
+      <remove_value name="this.$UnknownObjects"/>
+      <remove_value name="this.$CurrentSector"/>
       <resume label="RESUME_LBL"/>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
       <label name="FINISH_LBL"/>
-      <wait min="1s" max="2s"/>
+      <wait min="500ms" max="1000ms"/>
       <do_if value="$DEBUG gt 0">
         <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Finished ~~'"/>
         <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
       </do_if>
 
       <label name="CLEANUP_LBL"/>
-      <wait min="1s" max="2s"/>
-      <do_if value="global.$AnotherExplorerV2Ships?">
-        <remove_from_list name="global.$AnotherExplorerV2Ships" exact="$Ship"/>
-      </do_if>
-      <do_if value="@global.$AnotherExplorerV2Ships.count == 0">
-        <remove_value name="global.$AnotherExplorerV2Ships"/>
-        <remove_value name="global.$AnotherExplorerV2SectorBlackList"/>
-      </do_if>
+      <wait min="500ms" max="1000ms"/>
       <remove_value name="$DebugFileName"/>
       <remove_value name="$DebugScriptName"/>
       <remove_value name="$DebugFolderName"/>
@@ -294,7 +262,7 @@
       <remove_value name="$Ship"/>
 
       <label name="END_LBL"/>
-      <wait min="1s" max="2s"/>
+      <wait min="500ms" max="1000ms"/>
       <set_order_syncpoint_reached order="this.ship.defaultorder"/>
       <cancel_order order="this.ship.defaultorder"/>
 
@@ -302,18 +270,13 @@
   </attention>
 
   <on_abort>
-    <do_if value="$Ship.defaultorder.id != 'AnotherExplorerV2S' and $Ship.defaultorder.id != 'AnotherExplorerVG' and $Ship.orders.count le 0">
-      <do_if value="global.$AnotherExplorerV2SectorBlackList? and @this.$_Sector != null">
-        <remove_from_list name="global.$AnotherExplorerV2SectorBlackList" exact="this.$_Sector"/>
-      </do_if>
-      <do_if value="global.$AnotherExplorerV2Ships?">
-        <remove_from_list name="global.$AnotherExplorerV2Ships" exact="$Ship"/>
-      </do_if>
-      <do_if value="@global.$AnotherExplorerV2Ships.count == 0">
-        <remove_value name="global.$AnotherExplorerV2Ships"/>
-        <remove_value name="global.$AnotherExplorerV2SectorBlackList"/>
+    <do_if value="$Ship.orders.count le 0">
+      <do_if value="global.$AnotherExplorerV2SectorBlackList?">
+        <remove_from_list name="global.$AnotherExplorerV2SectorBlackList" exact="this.$CurrentSector"/>
       </do_if>
     </do_if>
+    <remove_value name="this.$UnknownObjects"/>
+    <remove_value name="this.$CurrentSector"/>
     <remove_value name="$DebugFileName"/>
     <remove_value name="$DebugScriptName"/>
     <remove_value name="$DebugFolderName"/>

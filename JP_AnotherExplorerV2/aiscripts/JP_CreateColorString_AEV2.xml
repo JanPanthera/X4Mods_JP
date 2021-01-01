@@ -49,7 +49,7 @@
     <actions>
 
       <label name="INIT_LBL"/>
-      <wait exact="1ms"/>
+      <wait min="500ms" max="1000ms"/>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
@@ -89,7 +89,7 @@
             </do_elseif>
             <remove_value name="$Remainder"/>
             <set_value name="$ActualDecimal" exact="$ActualDecimal / 16"/>
-            <wait exact="1ms"/>
+            <wait min="500ms" max="1000ms"/>
           </do_while>
           <do_if value="$DEBUG">
             <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'Converted to %1'.[$TempHexNumber]"/>
@@ -124,7 +124,8 @@
       <remove_value name="$TempDecimalNumbers"/>
 
       <label name="FINISH_LBL"/>
-
+      <wait min="500ms" max="1000ms"/>
+      
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <do_if value="$DEBUG">
         <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Finished ~~'"/>
@@ -136,11 +137,13 @@
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
       <label name="CLEANUP_LBL"/>
+      <wait min="500ms" max="1000ms"/>
 
       <label name="END_LBL"/>
-      <wait exact="1ms"/>
+      <wait min="500ms" max="1000ms"/>
 
       <label name="RETURN_LBL"/>
+      <wait min="500ms" max="1000ms"/>
       <return>
         <retval name="COLOR_STRING" value="$ColorString"/>
       </return>

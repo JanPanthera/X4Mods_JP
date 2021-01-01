@@ -87,11 +87,12 @@
     <actions>
 
       <label name="INIT_LBL"/>
-      <wait min="1s" max="3s"/>
+      <wait min="500ms" max="1000ms"/>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
       <label name="RESUME_LBL"/>
+      <wait min="500ms" max="1000ms"/>
 
       <!-- just for the ui -->
       <set_command command="command.wait"/>
@@ -104,7 +105,7 @@
         <set_value name="$CurrentSector" exact="$WHO_TO_FOLLOW.sector"/>
         <set_value name="$LOCATION_OBJECT_USED_IN_UI" exact="[$WHO_TO_FOLLOW, position.[0m, 0m, 0m]]"/>
         <do_if value="$Ship.sector != $CurrentSector">
-          <wait min="1s" max="3s"/>
+          <wait min="500ms" max="1000ms"/>
           <resume label="MOVE_TO_SECTOR_LBL"/>
         </do_if>
         <set_command command="command.follow" param="$WHO_TO_FOLLOW"/>
@@ -117,7 +118,7 @@
         <do_if value="$Ship.sector != $WHO_TO_FOLLOW.sector">
           <remove_value name="$_InitialTime"/>
           <remove_value name="$SafePosition"/>
-          <wait min="1s" max="3s"/>
+          <wait min="500ms" max="1000ms"/>
           <resume label="RESUME_LBL"/>
         </do_if>
         <do_if value="$Ship.distanceto.{$WHO_TO_FOLLOW} gt (($WHO_TO_FOLLOW.size / 2) + ($Ship.size / 2) + 100m)">
@@ -130,12 +131,11 @@
           <wait exact="2s"/>
         </do_else>
         <do_if value="((player.age - $_InitialTime)s lt $IDLE_TIME)">
-          <wait min="1s" max="3s"/>
+          <wait min="500ms" max="1000ms"/>
           <resume label="MOVE_FOLLOW_LBL"/>
         </do_if>
         <set_object_name object="$Ship" name="$ShipsCurrentName"/>
         <remove_value name="$_InitialTime"/>
-        <wait min="1s" max="3s"/>
         <resume label="FINISH_LBL"/>
       </do_if>
 
@@ -151,7 +151,7 @@
         <set_value name="$CurrentSector" exact="$WHERE_TO_DOCK.sector"/>
         <set_value name="$LOCATION_OBJECT_USED_IN_UI" exact="[$WHERE_TO_DOCK, $WHERE_TO_DOCK.position]"/>
         <do_if value="$Ship.sector != $CurrentSector">
-          <wait min="1s" max="3s"/>
+          <wait min="500ms" max="1000ms"/>
           <resume label="MOVE_TO_SECTOR_LBL"/>
         </do_if>
         <set_command command="command.dockat" param="$WHERE_TO_DOCK"/>
@@ -163,7 +163,6 @@
         </create_order>
         <set_object_name object="$Ship" name="$ShipsCurrentName"/>
         <remove_value name="$_FoundDockingBay"/>
-        <wait min="1s" max="3s"/>
         <resume label="FINISH_LBL"/>
       </do_if>
 
@@ -173,7 +172,7 @@
         <set_value name="$CurrentSector" exact="$IN_WHICH_SECTOR.{1}"/>
         <set_value name="$LOCATION_OBJECT_USED_IN_UI" exact="[$IN_WHICH_SECTOR.{1}, $IN_WHICH_SECTOR.{2}]"/>
         <do_if value="$Ship.sector != $CurrentSector">
-          <wait min="1s" max="3s"/>
+          <wait min="500ms" max="1000ms"/>
           <resume label="MOVE_TO_SECTOR_LBL"/>
         </do_if>
         <set_command command="command.wait"/>
@@ -186,7 +185,6 @@
           <param name="MaxDistance" value="10km"/>
         </run_script>
         <set_object_name object="$Ship" name="$ShipsCurrentName"/>
-        <wait min="1s" max="3s"/>
         <resume label="FINISH_LBL"/>
       </do_if>
 
@@ -196,7 +194,7 @@
         <set_value name="$CurrentSector" exact="$WHERE_TO_MOVE.{1}"/>
         <set_value name="$LOCATION_OBJECT_USED_IN_UI" exact="[$WHERE_TO_MOVE.{1}, $WHERE_TO_MOVE.{2}]"/>
         <do_if value="$Ship.sector != $CurrentSector">
-          <wait min="1s" max="3s"/>
+          <wait min="500ms" max="1000ms"/>
           <resume label="MOVE_TO_SECTOR_LBL"/>
         </do_if>
         <set_command command="command.move" param="$WHERE_TO_MOVE.{1}"/>
@@ -208,7 +206,6 @@
         <set_object_name object="$Ship" name="$ShipsCurrentName + '\033#FFCEFBA1# ~ Idle - waiting some time\033X'"/>
         <wait exact="$IDLE_TIME"/>
         <set_object_name object="$Ship" name="$ShipsCurrentName"/>
-        <wait min="1s" max="3s"/>
         <resume label="FINISH_LBL"/>
       </do_if>
 
@@ -223,19 +220,19 @@
         <param name="recallsubordinates" value="true"/>
       </run_script>
       <set_object_name object="$Ship" name="$ShipsCurrentName"/>
-      <wait min="1s" max="3s"/>
       <resume label="RESUME_LBL"/>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
       <label name="FINISH_LBL"/>
+      <wait min="500ms" max="1000ms"/>
       <do_if value="$DEBUG gt 0">
         <debug_to_file chance="$DEBUG" directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Finished ~~'"/>
         <debug_to_file chance="$DEBUG" directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
       </do_if>
-      <wait min="1s" max="3s"/>
 
       <label name="CLEANUP_LBL"/>
+      <wait min="500ms" max="1000ms"/>
       <set_object_name object="$Ship" name="$ShipsCurrentName"/>
       <do_if value="$DEBUG gt 0">
         <remove_value name="$DebugFileName"/>
@@ -246,7 +243,7 @@
       <remove_value name="$Ship"/>
 
       <label name="END_LBL"/>
-      <wait min="1s" max="3s"/>
+      <wait min="500ms" max="1000ms"/>
 
     </actions>
   </attention>

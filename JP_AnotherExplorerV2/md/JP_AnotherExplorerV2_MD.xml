@@ -3,7 +3,7 @@
 <mdscript name="JP_AnotherExplorerV2_MD" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="md.xsd">
   <cues>
 
-    <cue name="JP_AnotherExplorerV2Debug_MD" instantiate="true" checkinterval="1s" checktime="player.age">
+    <cue name="JP_AnotherExplorerV2Debug_MD" instantiate="true" checkinterval="2s" checktime="player.age">
       <actions>
 
         <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -34,7 +34,7 @@
           <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
           <do_if value="global.$AnotherExplorerV2Ships?">
             <do_for_each name="$_FoundShip" in="@global.$AnotherExplorerV2Ships">
-              <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~ Ship: %1 [%2] ~~ [%3].'.[@$_FoundShip.knownname, @$_FoundShip.idcode, @$_FoundShip.owner.knownname]"/>
+              <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~ Ship: %1 [%2] ~~ [%3].'.[@$_FoundShip.{1}.knownname, @$_FoundShip.{1}.idcode, @$_FoundShip.{1}.owner.knownname]"/>
             </do_for_each>
           </do_if>
           <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
@@ -75,7 +75,7 @@
       </actions>
     </cue>
 
-    <cue name="JP_AnotherExplorerV2ManageFleet_MD" instantiate="true" checkinterval="2s" checktime="player.age + 1s">
+    <cue name="JP_AnotherExplorerV2ManageFleet_MD" instantiate="true" checkinterval="1s" checktime="player.age + 1s">
       <actions>
 
         <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -95,115 +95,105 @@
           <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
         </do_if>
 
-        <create_list name="$_FoundShips"/>
-        <find_ship name="$_FoundShips" space="player.galaxy" owner="faction.player" multiple="true">
-          <match checkoperational="true"/>
-          <match class="[class.ship_s, class.ship_m, class.ship_l, class.ship_xl]"/>
-        </find_ship>
-
-        <do_if value="$_FoundShips.count gt 0">
-          <do_for_each name="$_FoundShip" in="$_FoundShips" reverse="true">
-            <substitute_text source="@$_FoundShip.fleet.name" text="$_FleetName">
-              <replace string="'AnotherExplorerV2Routine'" with="''"/>
-            </substitute_text>
-            <do_if value="$_FoundShip.subordinates.count le 0 or @$_FoundShip.fleet.name == $_FleetName or ($_FoundShip.defaultorder.id != 'JP_AnotherExplorerV2S' and $_FoundShip.defaultorder.id != 'JP_AnotherExplorerV2G')">
-              <remove_from_list name="$_FoundShips" list="[$_FoundShip]"/>
+        <do_if value="global.$AnotherExplorerV2Ships? and global.$AnotherExplorerV2Ships.count gt 0">
+          <do_for_each name="$_AnotherExplorerV2Ship" in="global.$AnotherExplorerV2Ships">
+            <do_if value="$_AnotherExplorerV2Ship.{1}.defaultorder.id == 'JP_AnotherExplorerV2G' and $_AnotherExplorerV2Ship.{1}.subordinates.count gt 0">
+              <substitute_text source="$_AnotherExplorerV2Ship.{1}.fleet.name" text="$_FleetName">
+                <replace string="'AnotherExplorerV2Routine'" with="''"/>
+              </substitute_text>
+              <do_if value="$_AnotherExplorerV2Ship.{1}.fleet.name != $_FleetName">
+                <do_for_each name="$_Subordinate" in="$_AnotherExplorerV2Ship.{1}.subordinates">
+                  <do_if value="$_Subordinate.isunit">
+                    <continue/>
+                  </do_if>
+                  <do_if value="$_Subordinate.defaultorder.id != $_AnotherExplorerV2Ship.{1}.defaultorder.id or $_Subordinate.assignment != assignment.assist">
+                    <set_object_commander object="$_Subordinate" commander="$_AnotherExplorerV2Ship.{1}" assignment="assignment.assist"/>
+                    <create_order object="$_Subordinate" id="$_AnotherExplorerV2Ship.{1}.defaultorder.id" default="true">
+                      <param name="UNKNOWN_SECTORS" value="$_AnotherExplorerV2Ship.{1}.defaultorder.$UNKNOWN_SECTORS"/>
+                      <param name="JUMP_GATES" value="$_AnotherExplorerV2Ship.{1}.defaultorder.$JUMP_GATES"/>
+                      <param name="STATIONS" value="$_AnotherExplorerV2Ship.{1}.defaultorder.$STATIONS"/>
+                      <param name="ENEMY_STATIONS" value="$_AnotherExplorerV2Ship.{1}.defaultorder.$ENEMY_STATIONS"/>
+                      <param name="FRIENDLY_STATIONS" value="$_AnotherExplorerV2Ship.{1}.defaultorder.$FRIENDLY_STATIONS"/>
+                      <param name="IDLE" value="$_AnotherExplorerV2Ship.{1}.defaultorder.$IDLE"/>
+                      <param name="IDLE_TIME" value="$_AnotherExplorerV2Ship.{1}.defaultorder.$IDLE_TIME"/>
+                      <param name="IDLE_FOLLOW" value="$_AnotherExplorerV2Ship.{1}.defaultorder.$IDLE_FOLLOW"/>
+                      <param name="WHO_TO_FOLLOW" value="$_AnotherExplorerV2Ship.{1}.defaultorder.$WHO_TO_FOLLOW"/>
+                      <param name="IDLE_DOCKING" value="$_AnotherExplorerV2Ship.{1}.defaultorder.$IDLE_DOCKING"/>
+                      <param name="WHERE_TO_DOCK" value="$_AnotherExplorerV2Ship.{1}.defaultorder.$WHERE_TO_DOCK"/>
+                      <param name="IDLE_RANDOM_MOVEMENT" value="$_AnotherExplorerV2Ship.{1}.defaultorder.$IDLE_RANDOM_MOVEMENT"/>
+                      <param name="IN_WHICH_SECTOR" value="$_AnotherExplorerV2Ship.{1}.defaultorder.$IN_WHICH_SECTOR"/>
+                      <param name="IDLE_MOVE_TO" value="$_AnotherExplorerV2Ship.{1}.defaultorder.$IDLE_MOVE_TO"/>
+                      <param name="WHERE_TO_MOVE" value="$_AnotherExplorerV2Ship.{1}.defaultorder.$WHERE_TO_MOVE"/>
+                      <param name="ADD_ORDER_TAG" value="$_AnotherExplorerV2Ship.{1}.defaultorder.$ADD_ORDER_TAG"/>
+                      <param name="ORDER_TAG_POSITION" value="$_AnotherExplorerV2Ship.{1}.defaultorder.$ORDER_TAG_POSITION"/>
+                      <param name="DEBUG" value="$_AnotherExplorerV2Ship.{1}.defaultorder.$DEBUG"/>
+                    </create_order>
+                  </do_if>
+                  <do_else>
+                    <do_if value="$_Subordinate.defaultorder.$UNKNOWN_SECTORS != $_AnotherExplorerV2Ship.{1}.defaultorder.$UNKNOWN_SECTORS">
+                      <edit_order_param order="$_Subordinate.defaultorder" param="'UNKNOWN_SECTORS'" value="$_AnotherExplorerV2Ship.{1}.defaultorder.$UNKNOWN_SECTORS"/>
+                    </do_if>
+                    <do_if value="$_Subordinate.defaultorder.$JUMP_GATES != $_AnotherExplorerV2Ship.{1}.defaultorder.$JUMP_GATES">
+                      <edit_order_param order="$_Subordinate.defaultorder" param="'JUMP_GATES'" value="$_AnotherExplorerV2Ship.{1}.defaultorder.$JUMP_GATES"/>
+                    </do_if>
+                    <do_if value="$_Subordinate.defaultorder.$STATIONS != $_AnotherExplorerV2Ship.{1}.defaultorder.$STATIONS">
+                      <edit_order_param order="$_Subordinate.defaultorder" param="'STATIONS'" value="$_AnotherExplorerV2Ship.{1}.defaultorder.$STATIONS"/>
+                    </do_if>
+                    <do_if value="$_Subordinate.defaultorder.$ENEMY_STATIONS != $_AnotherExplorerV2Ship.{1}.defaultorder.$ENEMY_STATIONS">
+                      <edit_order_param order="$_Subordinate.defaultorder" param="'ENEMY_STATIONS'" value="$_AnotherExplorerV2Ship.{1}.defaultorder.$ENEMY_STATIONS"/>
+                    </do_if>
+                    <do_if value="$_Subordinate.defaultorder.$FRIENDLY_STATIONS != $_AnotherExplorerV2Ship.{1}.defaultorder.$FRIENDLY_STATIONS">
+                      <edit_order_param order="$_Subordinate.defaultorder" param="'FRIENDLY_STATIONS'" value="$_AnotherExplorerV2Ship.{1}.defaultorder.$FRIENDLY_STATIONS"/>
+                    </do_if>
+                    <do_if value="$_Subordinate.defaultorder.$IDLE != $_AnotherExplorerV2Ship.{1}.defaultorder.$IDLE">
+                      <edit_order_param order="$_Subordinate.defaultorder" param="'IDLE'" value="$_AnotherExplorerV2Ship.{1}.defaultorder.$IDLE"/>
+                    </do_if>
+                    <do_if value="$_Subordinate.defaultorder.$IDLE_TIME != $_AnotherExplorerV2Ship.{1}.defaultorder.$IDLE_TIME">
+                      <edit_order_param order="$_Subordinate.defaultorder" param="'IDLE_TIME'" value="$_AnotherExplorerV2Ship.{1}.defaultorder.$IDLE_TIME"/>
+                    </do_if>
+                    <do_if value="$_Subordinate.defaultorder.$IDLE_FOLLOW != $_AnotherExplorerV2Ship.{1}.defaultorder.$IDLE_FOLLOW">
+                      <edit_order_param order="$_Subordinate.defaultorder" param="'IDLE_FOLLOW'" value="$_AnotherExplorerV2Ship.{1}.defaultorder.$IDLE_FOLLOW"/>
+                    </do_if>
+                    <do_if value="$_Subordinate.defaultorder.$WHO_TO_FOLLOW != $_AnotherExplorerV2Ship.{1}.defaultorder.$WHO_TO_FOLLOW">
+                      <edit_order_param order="$_Subordinate.defaultorder" param="'WHO_TO_FOLLOW'" value="$_AnotherExplorerV2Ship.{1}.defaultorder.$WHO_TO_FOLLOW"/>
+                    </do_if>
+                    <do_if value="$_Subordinate.defaultorder.$IDLE_DOCKING != $_AnotherExplorerV2Ship.{1}.defaultorder.$IDLE_DOCKING">
+                      <edit_order_param order="$_Subordinate.defaultorder" param="'IDLE_DOCKING'" value="$_AnotherExplorerV2Ship.{1}.defaultorder.$IDLE_DOCKING"/>
+                    </do_if>
+                    <do_if value="$_Subordinate.defaultorder.$WHERE_TO_DOCK != $_AnotherExplorerV2Ship.{1}.defaultorder.$WHERE_TO_DOCK">
+                      <edit_order_param order="$_Subordinate.defaultorder" param="'WHERE_TO_DOCK'" value="$_AnotherExplorerV2Ship.{1}.defaultorder.$WHERE_TO_DOCK"/>
+                    </do_if>
+                    <do_if value="$_Subordinate.defaultorder.$IDLE_RANDOM_MOVEMENT != $_AnotherExplorerV2Ship.{1}.defaultorder.$IDLE_RANDOM_MOVEMENT">
+                      <edit_order_param order="$_Subordinate.defaultorder" param="'IDLE_RANDOM_MOVEMENT'" value="$_AnotherExplorerV2Ship.{1}.defaultorder.$IDLE_RANDOM_MOVEMENT"/>
+                    </do_if>
+                    <do_if value="$_Subordinate.defaultorder.$IN_WHICH_SECTOR != $_AnotherExplorerV2Ship.{1}.defaultorder.$IN_WHICH_SECTOR">
+                      <edit_order_param order="$_Subordinate.defaultorder" param="'IN_WHICH_SECTOR'" value="$_AnotherExplorerV2Ship.{1}.defaultorder.$IN_WHICH_SECTOR"/>
+                    </do_if>
+                    <do_if value="$_Subordinate.defaultorder.$IDLE_MOVE_TO != $_AnotherExplorerV2Ship.{1}.defaultorder.$IDLE_MOVE_TO">
+                      <edit_order_param order="$_Subordinate.defaultorder" param="'IDLE_MOVE_TO'" value="$_AnotherExplorerV2Ship.{1}.defaultorder.$IDLE_MOVE_TO"/>
+                    </do_if>
+                    <do_if value="$_Subordinate.defaultorder.$WHERE_TO_MOVE != $_AnotherExplorerV2Ship.{1}.defaultorder.$WHERE_TO_MOVE">
+                      <edit_order_param order="$_Subordinate.defaultorder" param="'WHERE_TO_MOVE'" value="$_AnotherExplorerV2Ship.{1}.defaultorder.$WHERE_TO_MOVE"/>
+                    </do_if>
+                    <do_if value="$_Subordinate.defaultorder.$ADD_ORDER_TAG != $_AnotherExplorerV2Ship.{1}.defaultorder.$ADD_ORDER_TAG">
+                      <edit_order_param order="$_Subordinate.defaultorder" param="'ADD_ORDER_TAG'" value="$_AnotherExplorerV2Ship.{1}.defaultorder.$ADD_ORDER_TAG"/>
+                    </do_if>
+                    <do_if value="$_Subordinate.defaultorder.$ORDER_TAG_POSITION != $_AnotherExplorerV2Ship.{1}.defaultorder.$ORDER_TAG_POSITION">
+                      <edit_order_param order="$_Subordinate.defaultorder" param="'ORDER_TAG_POSITION'" value="$_AnotherExplorerV2Ship.{1}.defaultorder.$ORDER_TAG_POSITION"/>
+                    </do_if>
+                    <do_if value="$_Subordinate.defaultorder.$DEBUG != $_AnotherExplorerV2Ship.{1}.defaultorder.$DEBUG">
+                      <edit_order_param order="$_Subordinate.defaultorder" param="'DEBUG'" value="$_AnotherExplorerV2Ship.{1}.defaultorder.$DEBUG"/>
+                    </do_if>
+                  </do_else>
+                </do_for_each>
+                <set_value name="$_FleetName" exact="'\033#FF03A1FC#' + 'AnotherExplorerV2Routine'"/>
+                <do_if value="$_AnotherExplorerV2Ship.{1}.fleet.name != $_FleetName">
+                  <set_object_fleet_name object="$_AnotherExplorerV2Ship.{1}" name="$_FleetName"/>
+                </do_if>
+              </do_if>
             </do_if>
           </do_for_each>
-          <remove_value name="$_FleetName"/>
         </do_if>
-
-        <do_for_each name="$_FoundShip" in="$_FoundShips">
-          <do_for_each name="$_Subordinate" in="$_FoundShip.subordinates">
-            <do_if value="$_Subordinate.isunit">
-              <continue/>
-            </do_if>
-            <do_if value="$_Subordinate.defaultorder.id != $_FoundShip.defaultorder.id or $_Subordinate.assignment != assignment.assist">
-              <set_object_commander object="$_Subordinate" commander="$_FoundShip" assignment="assignment.assist"/>
-              <create_order object="$_Subordinate" id="$_FoundShip.defaultorder.id" default="true">
-                <param name="UNKNOWN_SECTORS" value="$_FoundShip.defaultorder.$UNKNOWN_SECTORS"/>
-                <param name="JUMP_GATES" value="$_FoundShip.defaultorder.$JUMP_GATES"/>
-                <param name="STATIONS" value="$_FoundShip.defaultorder.$STATIONS"/>
-                <param name="ENEMY_STATIONS" value="$_FoundShip.defaultorder.$ENEMY_STATIONS"/>
-                <param name="FRIENDLY_STATIONS" value="$_FoundShip.defaultorder.$FRIENDLY_STATIONS"/>
-                <param name="IDLE" value="$_FoundShip.defaultorder.$IDLE"/>
-                <param name="IDLE_TIME" value="$_FoundShip.defaultorder.$IDLE_TIME"/>
-                <param name="IDLE_FOLLOW" value="$_FoundShip.defaultorder.$IDLE_FOLLOW"/>
-                <param name="WHO_TO_FOLLOW" value="$_FoundShip.defaultorder.$WHO_TO_FOLLOW"/>
-                <param name="IDLE_DOCKING" value="$_FoundShip.defaultorder.$IDLE_DOCKING"/>
-                <param name="WHERE_TO_DOCK" value="$_FoundShip.defaultorder.$WHERE_TO_DOCK"/>
-                <param name="IDLE_RANDOM_MOVEMENT" value="$_FoundShip.defaultorder.$IDLE_RANDOM_MOVEMENT"/>
-                <param name="IN_WHICH_SECTOR" value="$_FoundShip.defaultorder.$IN_WHICH_SECTOR"/>
-                <param name="IDLE_MOVE_TO" value="$_FoundShip.defaultorder.$IDLE_MOVE_TO"/>
-                <param name="WHERE_TO_MOVE" value="$_FoundShip.defaultorder.$WHERE_TO_MOVE"/>
-                <param name="ADD_ORDER_TAG" value="$_FoundShip.defaultorder.$ADD_ORDER_TAG"/>
-                <param name="ORDER_TAG_POSITION" value="$_FoundShip.defaultorder.$ORDER_TAG_POSITION"/>
-                <param name="DEBUG" value="$_FoundShip.defaultorder.$DEBUG"/>
-              </create_order>
-            </do_if>
-            <do_else>
-              <do_if value="$_Subordinate.defaultorder.$UNKNOWN_SECTORS != $_FoundShip.defaultorder.$UNKNOWN_SECTORS">
-                <edit_order_param order="$_Subordinate.defaultorder" param="'UNKNOWN_SECTORS'" value="$_FoundShip.defaultorder.$UNKNOWN_SECTORS"/>
-              </do_if>
-              <do_if value="$_Subordinate.defaultorder.$JUMP_GATES != $_FoundShip.defaultorder.$JUMP_GATES">
-                <edit_order_param order="$_Subordinate.defaultorder" param="'JUMP_GATES'" value="$_FoundShip.defaultorder.$JUMP_GATES"/>
-              </do_if>
-              <do_if value="$_Subordinate.defaultorder.$STATIONS != $_FoundShip.defaultorder.$STATIONS">
-                <edit_order_param order="$_Subordinate.defaultorder" param="'STATIONS'" value="$_FoundShip.defaultorder.$STATIONS"/>
-              </do_if>
-              <do_if value="$_Subordinate.defaultorder.$ENEMY_STATIONS != $_FoundShip.defaultorder.$ENEMY_STATIONS">
-                <edit_order_param order="$_Subordinate.defaultorder" param="'ENEMY_STATIONS'" value="$_FoundShip.defaultorder.$ENEMY_STATIONS"/>
-              </do_if>
-              <do_if value="$_Subordinate.defaultorder.$FRIENDLY_STATIONS != $_FoundShip.defaultorder.$FRIENDLY_STATIONS">
-                <edit_order_param order="$_Subordinate.defaultorder" param="'FRIENDLY_STATIONS'" value="$_FoundShip.defaultorder.$FRIENDLY_STATIONS"/>
-              </do_if>
-              <do_if value="$_Subordinate.defaultorder.$IDLE != $_FoundShip.defaultorder.$IDLE">
-                <edit_order_param order="$_Subordinate.defaultorder" param="'IDLE'" value="$_FoundShip.defaultorder.$IDLE"/>
-              </do_if>
-              <do_if value="$_Subordinate.defaultorder.$IDLE_TIME != $_FoundShip.defaultorder.$IDLE_TIME">
-                <edit_order_param order="$_Subordinate.defaultorder" param="'IDLE_TIME'" value="$_FoundShip.defaultorder.$IDLE_TIME"/>
-              </do_if>
-              <do_if value="$_Subordinate.defaultorder.$IDLE_FOLLOW != $_FoundShip.defaultorder.$IDLE_FOLLOW">
-                <edit_order_param order="$_Subordinate.defaultorder" param="'IDLE_FOLLOW'" value="$_FoundShip.defaultorder.$IDLE_FOLLOW"/>
-              </do_if>
-              <do_if value="$_Subordinate.defaultorder.$WHO_TO_FOLLOW != $_FoundShip.defaultorder.$WHO_TO_FOLLOW">
-                <edit_order_param order="$_Subordinate.defaultorder" param="'WHO_TO_FOLLOW'" value="$_FoundShip.defaultorder.$WHO_TO_FOLLOW"/>
-              </do_if>
-              <do_if value="$_Subordinate.defaultorder.$IDLE_DOCKING != $_FoundShip.defaultorder.$IDLE_DOCKING">
-                <edit_order_param order="$_Subordinate.defaultorder" param="'IDLE_DOCKING'" value="$_FoundShip.defaultorder.$IDLE_DOCKING"/>
-              </do_if>
-              <do_if value="$_Subordinate.defaultorder.$WHERE_TO_DOCK != $_FoundShip.defaultorder.$WHERE_TO_DOCK">
-                <edit_order_param order="$_Subordinate.defaultorder" param="'WHERE_TO_DOCK'" value="$_FoundShip.defaultorder.$WHERE_TO_DOCK"/>
-              </do_if>
-              <do_if value="$_Subordinate.defaultorder.$IDLE_RANDOM_MOVEMENT != $_FoundShip.defaultorder.$IDLE_RANDOM_MOVEMENT">
-                <edit_order_param order="$_Subordinate.defaultorder" param="'IDLE_RANDOM_MOVEMENT'" value="$_FoundShip.defaultorder.$IDLE_RANDOM_MOVEMENT"/>
-              </do_if>
-              <do_if value="$_Subordinate.defaultorder.$IN_WHICH_SECTOR != $_FoundShip.defaultorder.$IN_WHICH_SECTOR">
-                <edit_order_param order="$_Subordinate.defaultorder" param="'IN_WHICH_SECTOR'" value="$_FoundShip.defaultorder.$IN_WHICH_SECTOR"/>
-              </do_if>
-              <do_if value="$_Subordinate.defaultorder.$IDLE_MOVE_TO != $_FoundShip.defaultorder.$IDLE_MOVE_TO">
-                <edit_order_param order="$_Subordinate.defaultorder" param="'IDLE_MOVE_TO'" value="$_FoundShip.defaultorder.$IDLE_MOVE_TO"/>
-              </do_if>
-              <do_if value="$_Subordinate.defaultorder.$WHERE_TO_MOVE != $_FoundShip.defaultorder.$WHERE_TO_MOVE">
-                <edit_order_param order="$_Subordinate.defaultorder" param="'WHERE_TO_MOVE'" value="$_FoundShip.defaultorder.$WHERE_TO_MOVE"/>
-              </do_if>
-              <do_if value="$_Subordinate.defaultorder.$ADD_ORDER_TAG != $_FoundShip.defaultorder.$ADD_ORDER_TAG">
-                <edit_order_param order="$_Subordinate.defaultorder" param="'ADD_ORDER_TAG'" value="$_FoundShip.defaultorder.$ADD_ORDER_TAG"/>
-              </do_if>
-              <do_if value="$_Subordinate.defaultorder.$ORDER_TAG_POSITION != $_FoundShip.defaultorder.$ORDER_TAG_POSITION">
-                <edit_order_param order="$_Subordinate.defaultorder" param="'ORDER_TAG_POSITION'" value="$_FoundShip.defaultorder.$ORDER_TAG_POSITION"/>
-              </do_if>
-              <do_if value="$_Subordinate.defaultorder.$DEBUG != $_FoundShip.defaultorder.$DEBUG">
-                <edit_order_param order="$_Subordinate.defaultorder" param="'DEBUG'" value="$_FoundShip.defaultorder.$DEBUG"/>
-              </do_if>
-            </do_else>
-          </do_for_each>
-
-          <set_value name="$_FleetName" exact="'\033#FF03A1FC#' + 'AnotherExplorerV2Routine'"/>
-          <do_if value="$_FoundShip.fleet.name != $_FleetName">
-            <set_object_fleet_name object="$_FoundShip" name="$_FleetName"/>
-          </do_if>
-        </do_for_each>
 
         <do_if value="$DEBUG gt 0">
           <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
@@ -227,7 +217,7 @@
       </actions>
     </cue>
 
-    <cue name="JP_AnotherExplorerV2Cleanup_MD" instantiate="true" checkinterval="1s" checktime="player.age + 1s">
+    <cue name="JP_AnotherExplorerV2Cleanup_MD" instantiate="true" checkinterval="1ms" checktime="player.age + 1s">
       <conditions>
       </conditions>
       <actions>
@@ -243,30 +233,44 @@
         </do_if>
         <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-        <create_list name="$_FoundShips"/>
-        <find_ship name="$_FoundShips" space="player.galaxy" owner="faction.player" multiple="true">
-          <match checkoperational="true"/>
-          <match class="[class.ship_s, class.ship_m, class.ship_l, class.ship_xl]"/>
-        </find_ship>
+        <do_if value="global.$AnotherExplorerV2G_Settings?">
+          <do_if value="global.$AnotherExplorerV2G_Settings.count != 18">
+            <remove_value name="global.$AnotherExplorerV2G_Settings"/>
+          </do_if>
+        </do_if>
 
-        <do_if value="$_FoundShips.count gt 0">
-          <do_for_each name="$_FoundShip" in="$_FoundShips">
-            <substitute_text source="$_FoundShip.knownname" text="$_ResultName">
-              <replace string="('\033#FFA95908#' + '#AEV2-S ' + '\033X')" with="''"/>
-              <replace string="('\033#FFA95908#' + '#AEV2-G ' + '\033X')" with="''"/>
-              <replace string="('\033#FFA95908#' + ' #AEV2-S' + '\033X')" with="''"/>
-              <replace string="('\033#FFA95908#' + ' #AEV2-G' + '\033X')" with="''"/>
-            </substitute_text>
-            <do_if value="$_FoundShip.knownname != $_ResultName">
-              <!-- Get rid of the Order tag -->
-              <do_if value="@$_FoundShip.defaultorder.id != 'JP_AnotherExplorerV2S' and @$_FoundShip.defaultorder.id != 'JP_AnotherExplorerV2G'">
-                <set_object_name object="$_FoundShip" name="$_ResultName"/>
+        <do_if value="global.$AnotherExplorerV2S_Settings?">
+          <do_if value="global.$AnotherExplorerV2S_Settings.count != 17">
+            <remove_value name="global.$AnotherExplorerV2S_Settings"/>
+          </do_if>
+        </do_if>
+
+        <do_if value="global.$AnotherExplorerV2Ships? and global.$AnotherExplorerV2Ships.count gt 0">
+          <do_for_each name="$_AnotherExplorerV2Ship" in="global.$AnotherExplorerV2Ships">
+            <do_if value="$_AnotherExplorerV2Ship.{1}.defaultorder.id != 'JP_AnotherExplorerV2S' and $_AnotherExplorerV2Ship.{1}.defaultorder.id != 'JP_AnotherExplorerV2G'">
+
+              <!-- Get rid of the order tag -->
+              <substitute_text source="$_AnotherExplorerV2Ship.{1}.knownname" text="$_ResultName">
+                <replace string="('\033#FFA95908#' + '#AEV2-S ' + '\033X')" with="''"/>
+                <replace string="('\033#FFA95908#' + '#AEV2-G ' + '\033X')" with="''"/>
+                <replace string="('\033#FFA95908#' + ' #AEV2-S' + '\033X')" with="''"/>
+                <replace string="('\033#FFA95908#' + ' #AEV2-G' + '\033X')" with="''"/>
+              </substitute_text>
+              <do_if value="$_AnotherExplorerV2Ship.{1}.knownname != $_ResultName">
+                <set_object_name object="$_AnotherExplorerV2Ship.{1}" name="$_ResultName"/>
               </do_if>
+
+              <!-- Clean sectors -->
+              <do_if value="global.$AnotherExplorerV2SectorBlackList?">
+                <remove_from_list name="global.$AnotherExplorerV2SectorBlackList" exact="$_AnotherExplorerV2Ship.{2}"/>
+              </do_if>
+
+              <!-- remove from global anotherexplorerv2 ships list -->
+              <remove_from_list name="global.$AnotherExplorerV2Ships" exact="$_AnotherExplorerV2Ship"/>
+
             </do_if>
           </do_for_each>
         </do_if>
-
-        <remove_value name="$_FoundShips"/>
 
         <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
         <do_if value="$DEBUG gt 0">

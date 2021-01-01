@@ -18,6 +18,7 @@ $DebugFolderName
 
 <!-- Return parameter ~~ null if nothing found
 $_UnknownObjects
+$_UnknownObjectsSector
 -->
 
 <aiscript name="JP_Lib_GetUnknownObjectsInSector_AEV2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd">
@@ -68,7 +69,7 @@ $_UnknownObjects
 
         <do_if value="$__Sectors.count gt 0">
           <do_if value="$__Sectors.count gt 1">
-            <sort_list list="$__Sectors" sortbyvalue="$Ship.distanceto.{loop.element}"/>
+            <sort_list list="$__Sectors" sortbyvalue="$Ship.gatedistance.{loop.element}"/>
           </do_if>
 
           <do_if value="$DEBUG gt 0">
@@ -128,6 +129,7 @@ $_UnknownObjects
 
               <!-- Return value ~ $_UnknownObjects !! -->
               <set_value name="$_UnknownObjects" exact="$__FoundObjects"/>
+              <set_value name="$_UnknownObjectsSector" exact="$__Sector__"/>
               <break/>
             </do_if>
 
@@ -138,6 +140,7 @@ $_UnknownObjects
 
         <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
+       
         <do_if value="$DEBUG gt 0">
           <debug_to_file directory="$DebugFolderName" name="$__DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $__DebugScriptName + '.xml ~ Finished ~~'"/>
           <debug_to_file directory="$DebugFolderName" name="$__DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>

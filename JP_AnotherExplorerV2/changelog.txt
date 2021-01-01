@@ -1,10 +1,5 @@
-~ repo update - 2020-12-31 -
+~ repo update ~ 2021-01-01 ~
 
-~ Fixed: flying to nill? please....... ;-)
-~ Changed: fleet creation.. create a fleet.. assignment is not relevant.. 
-rename the fleet to "AnotherExplorerV2Routine".. give the leader the AnotherExplorerV2 routine.. that's it
-~ Changed: removed options for Enemy Sectors, Friendly Sectors and Neutral Sectors..
-you can use x4's blacklists.. doing the same job.. and are vanilla 
-~ Updated: Reworked Order Tag.. how it will added and removed again..
-~ Updated: IdleReturnHome.. should work better.. internal..
-~ Updated: ..language files restructuring.. added some translations.. (google translate)
+~ Fixed: ui got stuck..
+~ Fixed: sectors sorted by distanceto ship.. now correctly gatedistance
+~ Fixed: problems with global blacklist and ships list..

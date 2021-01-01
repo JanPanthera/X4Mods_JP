@@ -47,12 +47,13 @@
     <actions>
 
       <label name="INIT_LBL"/>
-      <wait min="1ms"/>
+      <wait min="500ms" max="1000ms"/>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
       <!-- Are we in the right sector? -->
       <label name="MOVE_TO_SECTOR_LBL"/>
+      <wait min="500ms" max="1000ms"/>
       <do_if value="$Ship.sector != $OBJECT.sector">
         <set_command command="command.move" param="$OBJECT.sector"/>
         <run_script name="'move.generic'">
@@ -78,37 +79,39 @@
       <!-- Exploring the object -->
       <set_command command="command.move" param="$OBJECT"/>
       <label name="MOVING_LBL"/>
+      <wait min="500ms" max="1000ms"/>
       <get_safe_pos result="$_TempPosition" zone="$OBJECT.sector" object="$OBJECT" directionobject="$Ship" radius="($Ship.size + 2km)" ignored="$Ship"/>
       <move_to object="$Ship" destination="$OBJECT.sector" finishonapproach="false" forceposition="true" travel="true">
         <position value="$_TempPosition"/>
         <interrupt_after_time time="1s"/>
       </move_to>
-      <wait exact="1ms"/>
+      <wait min="500ms" max="1000ms"/>
       <do_if value="not $OBJECT.isknown">
         <resume label="MOVING_LBL"/>
       </do_if>
       <remove_value name="$_TempPosition"/>
       <stop_moving object="$Ship" immediate="true"/>
       <set_command command="command.scan"/>
-      <wait min="1ms"/>
+      <wait min="500ms" max="1000ms"/>
 
       <apply_experience entity="$Ship.pilot" experience="'JP_SHIP_OBJECT_DISCOVERED'" factor="$ExpMultiplier"/>
       <apply_experience object="$Ship" experience="'JP_SHIP_OBJECT_DISCOVERED'" role="entityrole.service" factor="$ExpMultiplier"/>
       <remove_value name="$LOCATION_OBJECT_USED_IN_UI"/>
 
 
-      <wait min="1ms"/>
+      <wait min="500ms" max="1000ms"/>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
       <label name="FINISH_LBL"/>
+      <wait min="500ms" max="1000ms"/>
       <do_if value="$DEBUG gt 0">
         <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Finished ~~'"/>
         <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
       </do_if>
-      <wait min="1ms"/>
 
       <label name="CLEANUP_LBL"/>
+      <wait min="500ms" max="1000ms"/>
       <do_if value="$DEBUG gt 0">
         <remove_value name="$DebugFileName"/>
         <remove_value name="$DebugScriptName"/>
@@ -118,7 +121,7 @@
       <remove_value name="$Ship"/>
 
       <label name="END_LBL"/>
-      <wait min="1ms"/>
+      <wait min="500ms" max="1000ms"/>
 
     </actions>
   </attention>
