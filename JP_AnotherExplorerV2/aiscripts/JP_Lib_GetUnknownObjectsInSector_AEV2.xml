@@ -133,14 +133,14 @@ $_UnknownObjectsSector
               <break/>
             </do_if>
 
-            <remove_value name="$__FoundObjects"/>
           </do_for_each>
+          <remove_value name="$__FoundObjects"/>
         </do_if>
         <remove_value name="$__Sectors"/>
 
         <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-       
+
         <do_if value="$DEBUG gt 0">
           <debug_to_file directory="$DebugFolderName" name="$__DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $__DebugScriptName + '.xml ~ Finished ~~'"/>
           <debug_to_file directory="$DebugFolderName" name="$__DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>

@@ -132,7 +132,6 @@
   <ItemGroup>
     <Xml Include="aiscripts\JP_AnotherExplorerV2G.xml" />
     <Xml Include="aiscripts\JP_AnotherExplorerV2S.xml" />
-    <Xml Include="aiscripts\JP_CreateColorString_AEV2.xml" />
     <Xml Include="aiscripts\JP_ExploreObject_AEV2.xml" />
     <Xml Include="aiscripts\JP_Lib_GetUnknownObjectsInSector_AEV2.xml" />
     <Xml Include="aiscripts\JP_IdleReturnHome_AEV2.xml" />

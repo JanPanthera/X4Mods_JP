@@ -1,5 +1,5 @@
 ~ repo update ~ 2021-01-02 ~
-~ 12:21 PM ~
+~ 04:55 PM ~
 
-~ Added: cancel_all_orders in md file.. runs when AnotherExplorerV2 order terminates
-~ Fixed: order_jp_exploreobject_aev2 big question mark
+~ Removed: unused LOCATION_OBJECT_USED_IN_UI in AnotherExplorerV2S.xml
+~ Removed: unused CreateColorString_TSE
