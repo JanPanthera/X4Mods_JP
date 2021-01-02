@@ -75,7 +75,7 @@
       </actions>
     </cue>
 
-    <cue name="JP_AnotherExplorerV2ManageFleet_MD" instantiate="true" checkinterval="1s" checktime="player.age + 1s">
+    <cue name="JP_AnotherExplorerV2ManageFleet_MD" instantiate="true" checkinterval="1ms" checktime="player.age + 1s">
       <actions>
 
         <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -264,10 +264,12 @@
               <do_if value="global.$AnotherExplorerV2SectorBlackList?">
                 <remove_from_list name="global.$AnotherExplorerV2SectorBlackList" exact="$_AnotherExplorerV2Ship.{2}"/>
               </do_if>
+              
+              <cancel_all_orders object="$_AnotherExplorerV2Ship.{1}"/>
 
               <!-- remove from global anotherexplorerv2 ships list -->
               <remove_from_list name="global.$AnotherExplorerV2Ships" exact="$_AnotherExplorerV2Ship"/>
-
+              
             </do_if>
           </do_for_each>
         </do_if>
