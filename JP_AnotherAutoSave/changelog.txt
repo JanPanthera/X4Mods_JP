@@ -1,4 +1,1 @@
-~ Added: save interval 1 hour, use ingame autosave setting 80-160
-~ Changed: save intervall 30 minutes to ingame autosave setting 40 - 80
-~ Changed: save intervall 15 minutes to ingame autosave setting 20 - 40
-~ Updated: SETA/SINZA will be turned off when the player activates it again while the counter is active
+~ Added: some small fixes.. like forgotton set_value for DEBUG and a ? for varable safety check

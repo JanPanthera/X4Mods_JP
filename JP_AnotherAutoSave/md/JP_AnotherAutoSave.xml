@@ -9,6 +9,7 @@
       </conditions>
       <actions>
         <set_value name="global.$AutoSaveTriggered_AAS" exact="true"/>
+        <remove_value name="global.$SetaWasActive_AAS"/>
       </actions>
     </cue>
 
@@ -18,6 +19,7 @@
       </conditions>
       <actions>
         <set_value name="global.$AutoSaveTriggered_AAS" exact="true"/>
+        <remove_value name="global.$SetaWasActive_AAS"/>
       </actions>
     </cue>
 
@@ -27,6 +29,7 @@
       </conditions>
       <actions>
         <set_value name="global.$AutoSaveTriggered_AAS" exact="true"/>
+        <remove_value name="global.$SetaWasActive_AAS"/>
       </actions>
     </cue>
 
@@ -38,9 +41,11 @@
         </check_all>
       </conditions>
       <actions>
+
         <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-        <do_if value="$DEBUG">
-          <set_value name="$DebugScriptName" exact="'JP_AnotherAutoSave'"/>
+        <set_value name="$DEBUG" exact="0"/>
+        <do_if value="$DEBUG gt 0">
+          <set_value name="$DebugScriptName" exact="'JP_ANOTHER_AUTO_SAVE_TRIGGERED'"/>
           <set_value name="$DebugFolderName" exact="'JP_AnotherAutoSave.logs'"/>
           <set_value name="$DebugFileName" exact="$DebugScriptName + '.xml.log'"/>
           <debug_to_file append="false" directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
@@ -54,7 +59,7 @@
 
         <do_if value="player.timewarp.active and ($_Counter == 10 or $_Counter lt 9)">
           <toggle_timewarp/>
-          <do_if value="not global.$SetaWasActive_AAS">
+          <do_if value="not global.$SetaWasActive_AAS?">
             <set_value name="global.$SetaWasActive_AAS" exact="true"/>
           </do_if>
         </do_if>
@@ -74,25 +79,26 @@
         </do_if>
 
         <do_if value="$_Counter == -4">
-          <set_value name="global.$AutoSaveTriggered_AAS" exact="false"/>
+          <trigger_autosave/>
           <do_if value="@global.$SetaWasActive_AAS">
             <toggle_timewarp/>
-            <set_value name="global.$SetaWasActive_AAS" exact="false"/>
+            <remove_value name="global.$SetaWasActive_AAS"/>
           </do_if>
-          <trigger_autosave/>
           <remove_value name="$_Counter"/>
+          <set_value name="global.$AutoSaveTriggered_AAS" exact="false"/>
         </do_if>
 
         <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-        <do_if value="$DEBUG">
+        <do_if value="$DEBUG gt 0">
           <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Finished ~~'"/>
           <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
           <remove_value name="$DebugFileName"/>
           <remove_value name="$DebugFolderName"/>
           <remove_value name="$DebugScriptName"/>
-          <remove_value name="$DEBUG"/>
         </do_if>
+        <remove_value name="$DEBUG"/>
         <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
       </actions>
     </cue>
 
