@@ -41,12 +41,15 @@
     <Xml Include="t\0001-L088.xml" />
     <Xml Include="libraries\icons.xml" />
     <Xml Include="libraries\experiences.xml" />
-    <Xml Include="aiscripts\JP_ExploreTradeSubscription.xml" />
     <Xml Include="aiscripts\JP_TradeSubscriptionExplorerS.xml" />
     <Xml Include="aiscripts\JP_TradeSubscriptionExplorerG.xml" />
-    <Xml Include="aiscripts\JP_GetNearestExpiredTradeSubscription.xml" />
-    <Xml Include="md\JP_UpdateTradeSubscriptionExplorerFleet.xml" />
-    <Xml Include="aiscripts\JP_CreateColorString_TSE.xml" />
     <Xml Include="aiscripts\JP_IdleReturnHome_TSE.xml" />
+    <Xml Include="aiscripts\JP_ExploreTradeSubscription_TSE.xml" />
+    <Xml Include="aiscripts\JP_Lib_GetNearestExpiredTradeSubscription_TSE.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="md\JP_TradeSubscriptionExplorer_MD.xml">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

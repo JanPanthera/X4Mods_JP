@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Getting all unknown objects inside a sector -->
+<!-- Script uses these Parameters !!
+~~~~~~~~~~~~~
+$SECTOR ~~ if null the script searches the galaxy else this SECTOR for unknown objects
+$DEBUG
+~~~~~~~~~~~~~
+$Ship
+$DebugFolderName
+~~~~~~~~~~~~~
+-->
+
+<!-- Return parameter ~~ null if nothing found
+$_FoundStations
+$_FoundStationsSector
+-->
+
+<aiscript name="JP_Lib_GetNearestStationWithExpiredTradeSubscription_TSE" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd">
+  <interrupts>
+    <library>
+      <actions name="JP_Lib_GetNearestStationWithExpiredTradeSubscription_TSE">
+
+        <do_if value="$DEBUG gt 0">
+          <set_value name="$__DebugScriptName" exact="'JP_Lib_GetNearestStationWithExpiredTradeSubscription_TSE'"/>
+          <set_value name="$__DebugFileName" exact="$Ship.idcode + '.' + $__DebugScriptName + '.xml.log'"/>
+          <debug_to_file directory="$DebugFolderName" name="$__DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'" append="false"/>
+          <debug_to_file directory="$DebugFolderName" name="$__DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $__DebugScriptName + '.xml ~ Started ~~' + '\n'"/>
+        </do_if>
+
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+        <set_command command="command.scan"/>
+        <set_command_action commandaction="commandaction.calculating"/>
+
+        <include_interrupt_actions ref="GetBlacklistgroup"/>
+
+        <create_list name="$__Sectors"/>
+        <do_if value="@$SECTOR == null">
+          <find_sector name="$__Sectors" space="player.galaxy" multiple="true">
+            <match knownto="$Ship.owner"/>
+            <match_gate_distance object="$Ship" min="0"/>
+            <match_use_blacklist object="$Ship" type="blacklisttype.sectortravel" group="$blacklistgroup"/>
+            <match_use_blacklist object="$Ship" type="blacklisttype.sectoractivity" group="$blacklistgroup"/>
+          </find_sector>
+          <do_if value="global.$AnotherExplorerV2SectorBlackList?">
+            <remove_from_list name="$__Sectors" list="global.$TradeSubscriptionExplorerSectorBlackList"/>
+          </do_if>
+        </do_if>
+        <do_else>
+          <do_if value="@$SECTOR.isclass.{class.sector}">
+            <append_to_list name="$__Sectors" exact="$SECTOR"/>
+          </do_if>
+        </do_else>
+
+        <do_if value="$__Sectors.count gt 0">
+          <do_if value="$__Sectors.count gt 1">
+            <sort_list list="$__Sectors" sortbyvalue="$Ship.gatedistance.{loop.element}"/>
+          </do_if>
+
+          <do_if value="$DEBUG gt 0">
+            <debug_to_file directory="$DebugFolderName" name="$__DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+            <debug_to_file directory="$DebugFolderName" name="$__DebugFileName" text="'$__Sectors.count: ' + $__Sectors.count"/>
+            <debug_to_file directory="$DebugFolderName" name="$__DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+            <do_for_each name="$__Sector__" in="$__Sectors">
+              <debug_to_file directory="$DebugFolderName" name="$__DebugFileName" text="'$__Sector__: ' + $__Sector__.knownname + ' ~ ' + $Ship.gatedistance.{$__Sector__}"/>
+            </do_for_each>
+            <debug_to_file directory="$DebugFolderName" name="$__DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+          </do_if>
+
+          <do_for_each name="$__Sector__" in="$__Sectors">
+            <create_list name="$__FoundStations"/>
+
+            <!-- Find stations with expired trade subscription -->
+            <create_list name="$__FoundStations"/>
+            <find_station name="$__FoundStations" space="$__Sector__" multiple="true">
+              <match knownto="$Ship.owner"/>
+              <match mayattack="$Ship" negate="true"/>
+              <match_relation_to faction="$Ship.owner" comparison="ge" relation="neutral"/>
+              <match tradesknownto="$Ship.owner" negate="true"/>
+            </find_station>
+
+            <!-- sort and get nearest -->
+            <do_if value="$__FoundStations.count gt 0">
+              <do_if value="$__FoundStations.count gt 1">
+                <sort_list list="$__FoundStations" sortbyvalue="$Ship.distanceto.{loop.element}" sortdescending="true"/>
+              </do_if>
+
+              <do_if value="$DEBUG gt 0">
+                <debug_to_file directory="$DebugFolderName" name="$__DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+                <debug_to_file directory="$DebugFolderName" name="$__DebugFileName" text="'$__Sector__.knownname: ' + $__Sector__.knownname"/>
+                <debug_to_file directory="$DebugFolderName" name="$__DebugFileName" text="'$__FoundStations.count: ' + $__FoundStations.count"/>
+                <debug_to_file directory="$DebugFolderName" name="$__DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+                <do_for_each name="$__FoundStation__" in="$__FoundStations">
+                  <debug_to_file directory="$DebugFolderName" name="$__DebugFileName" text="'$__FoundStation__: ' + $__FoundStation__.knownname + ' ~ ' + $Ship.distanceto.{$__FoundStation__}"/>
+                </do_for_each>
+                <debug_to_file directory="$DebugFolderName" name="$__DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+              </do_if>
+
+              <!-- Return value ~ $_UnknownObjects !! -->
+              <set_value name="$_FoundStations" exact="$__FoundStations"/>
+              <set_value name="$_FoundStationsSector" exact="$__Sector__"/>
+              <break/>
+            </do_if>
+
+          </do_for_each>
+          <remove_value name="$__FoundStations"/>
+        </do_if>
+        <remove_value name="$__Sectors"/>
+
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+        <do_if value="$DEBUG gt 0">
+          <debug_to_file directory="$DebugFolderName" name="$__DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $__DebugScriptName + '.xml ~ Finished ~~'"/>
+          <debug_to_file directory="$DebugFolderName" name="$__DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+        </do_if>
+
+        <do_if value="$DEBUG gt 0">
+          <remove_value name="$__DebugFileName"/>
+          <remove_value name="$__DebugScriptName"/>
+        </do_if>
+
+      </actions>
+    </library>
+  </interrupts>
+</aiscript>

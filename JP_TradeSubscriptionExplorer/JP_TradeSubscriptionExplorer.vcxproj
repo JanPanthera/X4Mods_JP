@@ -145,16 +145,14 @@
     <Text Include="changelog.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Xml Include="aiscripts\JP_CreateColorString_TSE.xml" />
-    <Xml Include="aiscripts\JP_ExploreTradeSubscription.xml" />
-    <Xml Include="aiscripts\JP_GetNearestExpiredTradeSubscription.xml" />
+    <Xml Include="aiscripts\JP_ExploreTradeSubscription_TSE.xml" />
+    <Xml Include="aiscripts\JP_Lib_GetNearestExpiredTradeSubscription_TSE.xml" />
     <Xml Include="aiscripts\JP_IdleReturnHome_TSE.xml" />
     <Xml Include="aiscripts\JP_TradeSubscriptionExplorerG.xml" />
     <Xml Include="aiscripts\JP_TradeSubscriptionExplorerS.xml" />
     <Xml Include="content.xml" />
     <Xml Include="libraries\experiences.xml" />
     <Xml Include="libraries\icons.xml" />
-    <Xml Include="md\JP_UpdateTradeSubscriptionExplorerFleet.xml" />
     <Xml Include="t\0001-L007.xml" />
     <Xml Include="t\0001-L033.xml" />
     <Xml Include="t\0001-L034.xml" />
@@ -167,6 +165,9 @@
     <Xml Include="t\0001-L086.xml" />
     <Xml Include="t\0001-L088.xml" />
     <Xml Include="t\0001.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="md\JP_TradeSubscriptionExplorer_MD.xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

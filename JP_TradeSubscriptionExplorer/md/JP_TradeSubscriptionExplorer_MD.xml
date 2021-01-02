@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<mdscript name="JP_TradeSubscriptionExplorer_MD" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="md.xsd">
+	<cues>
+
+		<cue name="JP_TradeSubscriptionExplorerDebug_MD" instantiate="true" checkinterval="2s" checktime="player.age">
+			<actions>
+
+				<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+				<set_value name="$DEBUG" exact="0"/>
+				<do_if value="$DEBUG gt 0">
+					<set_value name="$DebugScriptName" exact="'TradeSubscriptionExplorerDebug_MD'"/>
+					<set_value name="$DebugFolderName" exact="'TradeSubscriptionExplorer.logs'"/>
+					<set_value name="$DebugFileName" exact="$DebugScriptName + '.xml.log'"/>
+					<debug_to_file append="false" directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+					<debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Started ~~' + '\n'"/>
+				</do_if>
+				<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+				<do_if value="$DEBUG gt 0">
+
+					<debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+					<debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'global.$TradeSubscriptionExplorerSectorBlackList'"/>
+					<debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+					<do_if value="global.$TradeSubscriptionExplorerSectorBlackList?">
+						<do_for_each name="$_Sector" in="@global.$TradeSubscriptionExplorerSectorBlackList">
+							<debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~ Sector: %1 ~~ [%2].'.[@$_Sector.knownname, @$_Sector.owner.knownname]"/>
+						</do_for_each>
+					</do_if>
+					<debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+
+					<debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+					<debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'global.$TradeSubscriptionExplorerShips'"/>
+					<debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+					<do_if value="global.$TradeSubscriptionExplorerShips?">
+						<do_for_each name="$_FoundShip" in="@global.$TradeSubscriptionExplorerShips">
+							<debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~ Ship: %1 [%2] ~~ [%3].'.[@$_FoundShip.{1}.knownname, @$_FoundShip.{1}.idcode, @$_FoundShip.{1}.owner.knownname]"/>
+						</do_for_each>
+					</do_if>
+					<debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+
+					<debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+					<debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'global.$TradeSubscriptionExplorerS_Settings'"/>
+					<debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+					<do_if value="global.$TradeSubscriptionExplorerS_Settings?">
+						<do_for_each name="$_Entry" in="global.$TradeSubscriptionExplorerS_Settings">
+							<debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="' ~ ' + $_Entry"/>
+						</do_for_each>
+					</do_if>
+					<debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+
+					<debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+					<debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'global.$TradeSubscriptionExplorerG_Settings'"/>
+					<debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+					<do_if value="global.$TradeSubscriptionExplorerG_Settings?">
+						<do_for_each name="$_Entry" in="global.$TradeSubscriptionExplorerG_Settings">
+							<debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="' ~ ' + $_Entry"/>
+						</do_for_each>
+					</do_if>
+					<debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+
+				</do_if>
+
+				<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+				<do_if value="$DEBUG gt 0">
+					<debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Finished ~~'"/>
+					<debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+					<remove_value name="$DebugFileName"/>
+					<remove_value name="$DebugFolderName"/>
+					<remove_value name="$DebugScriptName"/>
+				</do_if>
+				<remove_value name="$DEBUG"/>
+				<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+			</actions>
+		</cue>
+
+		<cue name="JP_TradeSubscriptionExplorerManageFleet_MD" instantiate="true" checkinterval="1ms" checktime="player.age + 1s">
+			<actions>
+
+				<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+				<set_value name="$DEBUG" exact="0"/>
+				<do_if value="$DEBUG gt 0">
+					<set_value name="$DebugScriptName" exact="'JP_TradeSubscriptionExplorerManageFleet_MD'"/>
+					<set_value name="$DebugFolderName" exact="'JP_TradeSubscriptionExplorer.logs'"/>
+					<set_value name="$DebugFileName" exact="$DebugScriptName + '.xml.log'"/>
+					<debug_to_file append="false" directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+					<debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Started ~~' + '\n'"/>
+				</do_if>
+				<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+				<do_if value="$DEBUG gt 0">
+					<debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+					<debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'TimeMeasurement ~ Start: ' + player.age"/>
+					<debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+				</do_if>
+
+				<do_if value="global.$TradeSubscriptionExplorerShips? and global.$TradeSubscriptionExplorerShips.count gt 0">
+					<do_for_each name="$_TradeSubscriptionExplorerShip" in="global.$TradeSubscriptionExplorerShips">
+						<do_if value="$_TradeSubscriptionExplorerShip.{1}.defaultorder.id == 'JP_TradeSubscriptionExplorerG' and $_TradeSubscriptionExplorerShip.{1}.subordinates.count gt 0">
+							<substitute_text source="$_TradeSubscriptionExplorerShip.{1}.fleet.name" text="$_FleetName">
+								<replace string="'TradeSubscriptionExplorerRoutine'" with="''"/>
+							</substitute_text>
+							<do_if value="$_TradeSubscriptionExplorerShip.{1}.fleet.name != $_FleetName">
+								<do_for_each name="$_Subordinate" in="$_TradeSubscriptionExplorerShip.{1}.subordinates">
+									<do_if value="$_Subordinate.isunit">
+										<continue/>
+									</do_if>
+									<do_if value="$_Subordinate.defaultorder.id != $_TradeSubscriptionExplorerShip.{1}.defaultorder.id or $_Subordinate.assignment != assignment.assist">
+										<set_object_commander object="$_Subordinate" commander="$_TradeSubscriptionExplorerShip.{1}" assignment="assignment.assist"/>
+										<create_order object="$_Subordinate" id="$_TradeSubscriptionExplorerShip.{1}.defaultorder.id" default="true">
+											<param name="IDLE" value="$_TradeSubscriptionExplorerShip.{1}.defaultorder.$IDLE"/>
+											<param name="IDLE_TIME" value="$_TradeSubscriptionExplorerShip.{1}.defaultorder.$IDLE_TIME"/>
+											<param name="IDLE_FOLLOW" value="$_TradeSubscriptionExplorerShip.{1}.defaultorder.$IDLE_FOLLOW"/>
+											<param name="WHO_TO_FOLLOW" value="$_TradeSubscriptionExplorerShip.{1}.defaultorder.$WHO_TO_FOLLOW"/>
+											<param name="IDLE_DOCKING" value="$_TradeSubscriptionExplorerShip.{1}.defaultorder.$IDLE_DOCKING"/>
+											<param name="WHERE_TO_DOCK" value="$_TradeSubscriptionExplorerShip.{1}.defaultorder.$WHERE_TO_DOCK"/>
+											<param name="IDLE_RANDOM_MOVEMENT" value="$_TradeSubscriptionExplorerShip.{1}.defaultorder.$IDLE_RANDOM_MOVEMENT"/>
+											<param name="IN_WHICH_SECTOR" value="$_TradeSubscriptionExplorerShip.{1}.defaultorder.$IN_WHICH_SECTOR"/>
+											<param name="IDLE_MOVE_TO" value="$_TradeSubscriptionExplorerShip.{1}.defaultorder.$IDLE_MOVE_TO"/>
+											<param name="WHERE_TO_MOVE" value="$_TradeSubscriptionExplorerShip.{1}.defaultorder.$WHERE_TO_MOVE"/>
+											<param name="ADD_ORDER_TAG" value="$_TradeSubscriptionExplorerShip.{1}.defaultorder.$ADD_ORDER_TAG"/>
+											<param name="ORDER_TAG_POSITION" value="$_TradeSubscriptionExplorerShip.{1}.defaultorder.$ORDER_TAG_POSITION"/>
+											<param name="DEBUG" value="$_TradeSubscriptionExplorerShip.{1}.defaultorder.$DEBUG"/>
+										</create_order>
+									</do_if>
+									<do_else>
+										<do_if value="$_Subordinate.defaultorder.$IDLE != $_TradeSubscriptionExplorerShip.{1}.defaultorder.$IDLE">
+											<edit_order_param order="$_Subordinate.defaultorder" param="'IDLE'" value="$_TradeSubscriptionExplorerShip.{1}.defaultorder.$IDLE"/>
+										</do_if>
+										<do_if value="$_Subordinate.defaultorder.$IDLE_TIME != $_TradeSubscriptionExplorerShip.{1}.defaultorder.$IDLE_TIME">
+											<edit_order_param order="$_Subordinate.defaultorder" param="'IDLE_TIME'" value="$_TradeSubscriptionExplorerShip.{1}.defaultorder.$IDLE_TIME"/>
+										</do_if>
+										<do_if value="$_Subordinate.defaultorder.$IDLE_FOLLOW != $_TradeSubscriptionExplorerShip.{1}.defaultorder.$IDLE_FOLLOW">
+											<edit_order_param order="$_Subordinate.defaultorder" param="'IDLE_FOLLOW'" value="$_TradeSubscriptionExplorerShip.{1}.defaultorder.$IDLE_FOLLOW"/>
+										</do_if>
+										<do_if value="$_Subordinate.defaultorder.$WHO_TO_FOLLOW != $_TradeSubscriptionExplorerShip.{1}.defaultorder.$WHO_TO_FOLLOW">
+											<edit_order_param order="$_Subordinate.defaultorder" param="'WHO_TO_FOLLOW'" value="$_TradeSubscriptionExplorerShip.{1}.defaultorder.$WHO_TO_FOLLOW"/>
+										</do_if>
+										<do_if value="$_Subordinate.defaultorder.$IDLE_DOCKING != $_TradeSubscriptionExplorerShip.{1}.defaultorder.$IDLE_DOCKING">
+											<edit_order_param order="$_Subordinate.defaultorder" param="'IDLE_DOCKING'" value="$_TradeSubscriptionExplorerShip.{1}.defaultorder.$IDLE_DOCKING"/>
+										</do_if>
+										<do_if value="$_Subordinate.defaultorder.$WHERE_TO_DOCK != $_TradeSubscriptionExplorerShip.{1}.defaultorder.$WHERE_TO_DOCK">
+											<edit_order_param order="$_Subordinate.defaultorder" param="'WHERE_TO_DOCK'" value="$_TradeSubscriptionExplorerShip.{1}.defaultorder.$WHERE_TO_DOCK"/>
+										</do_if>
+										<do_if value="$_Subordinate.defaultorder.$IDLE_RANDOM_MOVEMENT != $_TradeSubscriptionExplorerShip.{1}.defaultorder.$IDLE_RANDOM_MOVEMENT">
+											<edit_order_param order="$_Subordinate.defaultorder" param="'IDLE_RANDOM_MOVEMENT'" value="$_TradeSubscriptionExplorerShip.{1}.defaultorder.$IDLE_RANDOM_MOVEMENT"/>
+										</do_if>
+										<do_if value="$_Subordinate.defaultorder.$IN_WHICH_SECTOR != $_TradeSubscriptionExplorerShip.{1}.defaultorder.$IN_WHICH_SECTOR">
+											<edit_order_param order="$_Subordinate.defaultorder" param="'IN_WHICH_SECTOR'" value="$_TradeSubscriptionExplorerShip.{1}.defaultorder.$IN_WHICH_SECTOR"/>
+										</do_if>
+										<do_if value="$_Subordinate.defaultorder.$IDLE_MOVE_TO != $_TradeSubscriptionExplorerShip.{1}.defaultorder.$IDLE_MOVE_TO">
+											<edit_order_param order="$_Subordinate.defaultorder" param="'IDLE_MOVE_TO'" value="$_TradeSubscriptionExplorerShip.{1}.defaultorder.$IDLE_MOVE_TO"/>
+										</do_if>
+										<do_if value="$_Subordinate.defaultorder.$WHERE_TO_MOVE != $_TradeSubscriptionExplorerShip.{1}.defaultorder.$WHERE_TO_MOVE">
+											<edit_order_param order="$_Subordinate.defaultorder" param="'WHERE_TO_MOVE'" value="$_TradeSubscriptionExplorerShip.{1}.defaultorder.$WHERE_TO_MOVE"/>
+										</do_if>
+										<do_if value="$_Subordinate.defaultorder.$ADD_ORDER_TAG != $_TradeSubscriptionExplorerShip.{1}.defaultorder.$ADD_ORDER_TAG">
+											<edit_order_param order="$_Subordinate.defaultorder" param="'ADD_ORDER_TAG'" value="$_TradeSubscriptionExplorerShip.{1}.defaultorder.$ADD_ORDER_TAG"/>
+										</do_if>
+										<do_if value="$_Subordinate.defaultorder.$ORDER_TAG_POSITION != $_TradeSubscriptionExplorerShip.{1}.defaultorder.$ORDER_TAG_POSITION">
+											<edit_order_param order="$_Subordinate.defaultorder" param="'ORDER_TAG_POSITION'" value="$_TradeSubscriptionExplorerShip.{1}.defaultorder.$ORDER_TAG_POSITION"/>
+										</do_if>
+										<do_if value="$_Subordinate.defaultorder.$DEBUG != $_TradeSubscriptionExplorerShip.{1}.defaultorder.$DEBUG">
+											<edit_order_param order="$_Subordinate.defaultorder" param="'DEBUG'" value="$_TradeSubscriptionExplorerShip.{1}.defaultorder.$DEBUG"/>
+										</do_if>
+									</do_else>
+								</do_for_each>
+								<set_value name="$_FleetName" exact="'\033#FF03A1FC#' + 'TradeSubscriptionExplorerRoutine'"/>
+								<do_if value="$_TradeSubscriptionExplorerShip.{1}.fleet.name != $_FleetName">
+									<set_object_fleet_name object="$_TradeSubscriptionExplorerShip.{1}" name="$_FleetName"/>
+								</do_if>
+							</do_if>
+						</do_if>
+					</do_for_each>
+				</do_if>
+
+				<do_if value="$DEBUG gt 0">
+					<debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+					<debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'TimeMeasurement ~ End: ' + player.age"/>
+					<debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+				</do_if>
+
+				<remove_value name="$_FoundShips"/>
+
+				<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+				<do_if value="$DEBUG gt 0">
+					<debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Finished ~~'"/>
+					<debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+					<remove_value name="$DebugFileName"/>
+					<remove_value name="$DebugFolderName"/>
+					<remove_value name="$DebugScriptName"/>
+				</do_if>
+				<remove_value name="$DEBUG"/>
+				<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+			</actions>
+		</cue>
+
+		<cue name="JP_TradeSubscriptionExplorerCleanup_MD" instantiate="true" checkinterval="1ms" checktime="player.age + 1s">
+			<conditions>
+			</conditions>
+			<actions>
+
+				<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+				<set_value name="$DEBUG" exact="0"/>
+				<do_if value="$DEBUG gt 0">
+					<set_value name="$DebugScriptName" exact="'JP_TradeSubscriptionExplorerCleanup_MD'"/>
+					<set_value name="$DebugFolderName" exact="'JP_TradeSubscriptionExplorer.logs'"/>
+					<set_value name="$DebugFileName" exact="$DebugScriptName + '.xml.log'"/>
+					<debug_to_file append="false" directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+					<debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Started ~~' + '\n'"/>
+				</do_if>
+				<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+				<do_if value="global.$TradeSubscriptionExplorerG_Settings?">
+					<do_if value="global.$TradeSubscriptionExplorerG_Settings.count != 13">
+						<remove_value name="global.$TradeSubscriptionExplorerG_Settings"/>
+					</do_if>
+				</do_if>
+
+				<do_if value="global.$TradeSubscriptionExplorerS_Settings?">
+					<do_if value="global.$TradeSubscriptionExplorerS_Settings.count != 13">
+						<remove_value name="global.$TradeSubscriptionExplorerS_Settings"/>
+					</do_if>
+				</do_if>
+
+				<do_if value="global.$TradeSubscriptionExplorerShips? and global.$TradeSubscriptionExplorerShips.count gt 0">
+					<do_for_each name="$_TradeSubscriptionExplorerShip" in="global.$TradeSubscriptionExplorerShips">
+						<do_if value="$_TradeSubscriptionExplorerShip.{1}.defaultorder.id != 'JP_TradeSubscriptionExplorerS' and $_TradeSubscriptionExplorerShip.{1}.defaultorder.id != 'JP_TradeSubscriptionExplorerG'">
+
+							<!-- Get rid of the order tag -->
+							<substitute_text source="$_TradeSubscriptionExplorerShip.{1}.knownname" text="$_ResultName">
+								<replace string="('\033#FFA95908#' + '#TSE-S ' + '\033X')" with="''"/>
+								<replace string="('\033#FFA95908#' + '#TSE-G ' + '\033X')" with="''"/>
+								<replace string="('\033#FFA95908#' + ' #TSE-S' + '\033X')" with="''"/>
+								<replace string="('\033#FFA95908#' + ' #TSE-G' + '\033X')" with="''"/>
+							</substitute_text>
+							<do_if value="$_TradeSubscriptionExplorerShip.{1}.knownname != $_ResultName">
+								<set_object_name object="$_TradeSubscriptionExplorerShip.{1}" name="$_ResultName"/>
+							</do_if>
+
+							<!-- Clean sectors -->
+							<do_if value="global.$TradeSubscriptionExplorerSectorBlackList?">
+								<remove_from_list name="global.$TradeSubscriptionExplorerSectorBlackList" exact="$_TradeSubscriptionExplorerShip.{2}"/>
+							</do_if>
+
+							<cancel_all_orders object="$_TradeSubscriptionExplorerShip.{1}"/>
+
+							<!-- remove from global anotherexplorerv2 ships list -->
+							<remove_from_list name="global.$TradeSubscriptionExplorerShips" exact="$_TradeSubscriptionExplorerShip"/>
+
+						</do_if>
+					</do_for_each>
+				</do_if>
+
+				<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+				<do_if value="$DEBUG gt 0">
+					<debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Finished ~~'"/>
+					<debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+					<remove_value name="$DebugFileName"/>
+					<remove_value name="$DebugFolderName"/>
+					<remove_value name="$DebugScriptName"/>
+				</do_if>
+				<remove_value name="$DEBUG"/>
+				<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+			</actions>
+		</cue>
+
+	</cues>
+</mdscript>
