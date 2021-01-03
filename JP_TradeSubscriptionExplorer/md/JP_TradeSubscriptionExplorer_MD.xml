@@ -90,96 +90,84 @@
         </do_if>
         <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-        <do_if value="$DEBUG gt 0">
-          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'TimeMeasurement ~ Start: ' + player.age"/>
-          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
-        </do_if>
-
-        <do_if value="global.$TradeSubscriptionExplorerShips? and global.$TradeSubscriptionExplorerShips.count gt 0">
-          <do_for_each name="$_TradeSubscriptionExplorerShip" in="global.$TradeSubscriptionExplorerShips">
-            <do_if value="@$_TradeSubscriptionExplorerShip.{1}.defaultorder.id == 'JP_TradeSubscriptionExplorerG' and $_TradeSubscriptionExplorerShip.{1}.subordinates.count gt 0">
-              <substitute_text source="$_TradeSubscriptionExplorerShip.{1}.fleet.name" text="$_FleetName">
+        <do_if value="global.$TradeSubscriptionExplorerShips_Table? and @global.$TradeSubscriptionExplorerShips_Table != null and @global.$TradeSubscriptionExplorerShips_Table.keys.list.count gt 0">
+          <do_for_each name="$_TradeSubscriptionExplorerShip" in="global.$TradeSubscriptionExplorerShips_Table">
+            <do_if value="@$_TradeSubscriptionExplorerShip.defaultorder.id == 'JP_TradeSubscriptionExplorerG' and $_TradeSubscriptionExplorerShip.subordinates.count gt 0">
+              <substitute_text source="$_TradeSubscriptionExplorerShip.fleet.name" text="$_FleetName">
                 <replace string="'TradeSubscriptionExplorerRoutine'" with="''"/>
               </substitute_text>
-              <do_if value="$_TradeSubscriptionExplorerShip.{1}.fleet.name != $_FleetName">
-                <do_for_each name="$_Subordinate" in="$_TradeSubscriptionExplorerShip.{1}.subordinates">
+              <do_if value="$_TradeSubscriptionExplorerShip.fleet.name != $_FleetName">
+                <do_for_each name="$_Subordinate" in="$_TradeSubscriptionExplorerShip.subordinates">
                   <do_if value="$_Subordinate.isunit">
                     <continue/>
                   </do_if>
-                  <do_if value="$_Subordinate.defaultorder.id != $_TradeSubscriptionExplorerShip.{1}.defaultorder.id or $_Subordinate.assignment != assignment.assist">
-                    <set_object_commander object="$_Subordinate" commander="$_TradeSubscriptionExplorerShip.{1}" assignment="assignment.assist"/>
-                    <create_order object="$_Subordinate" id="$_TradeSubscriptionExplorerShip.{1}.defaultorder.id" default="true">
-                      <param name="IDLE" value="$_TradeSubscriptionExplorerShip.{1}.defaultorder.$IDLE"/>
-                      <param name="IDLE_TIME" value="$_TradeSubscriptionExplorerShip.{1}.defaultorder.$IDLE_TIME"/>
-                      <param name="IDLE_FOLLOW" value="$_TradeSubscriptionExplorerShip.{1}.defaultorder.$IDLE_FOLLOW"/>
-                      <param name="WHO_TO_FOLLOW" value="$_TradeSubscriptionExplorerShip.{1}.defaultorder.$WHO_TO_FOLLOW"/>
-                      <param name="IDLE_DOCKING" value="$_TradeSubscriptionExplorerShip.{1}.defaultorder.$IDLE_DOCKING"/>
-                      <param name="WHERE_TO_DOCK" value="$_TradeSubscriptionExplorerShip.{1}.defaultorder.$WHERE_TO_DOCK"/>
-                      <param name="IDLE_RANDOM_MOVEMENT" value="$_TradeSubscriptionExplorerShip.{1}.defaultorder.$IDLE_RANDOM_MOVEMENT"/>
-                      <param name="IN_WHICH_SECTOR" value="$_TradeSubscriptionExplorerShip.{1}.defaultorder.$IN_WHICH_SECTOR"/>
-                      <param name="IDLE_MOVE_TO" value="$_TradeSubscriptionExplorerShip.{1}.defaultorder.$IDLE_MOVE_TO"/>
-                      <param name="WHERE_TO_MOVE" value="$_TradeSubscriptionExplorerShip.{1}.defaultorder.$WHERE_TO_MOVE"/>
-                      <param name="ADD_ORDER_TAG" value="$_TradeSubscriptionExplorerShip.{1}.defaultorder.$ADD_ORDER_TAG"/>
-                      <param name="ORDER_TAG_POSITION" value="$_TradeSubscriptionExplorerShip.{1}.defaultorder.$ORDER_TAG_POSITION"/>
-                      <param name="DEBUG" value="$_TradeSubscriptionExplorerShip.{1}.defaultorder.$DEBUG"/>
+                  <do_if value="$_Subordinate.defaultorder.id != $_TradeSubscriptionExplorerShip.defaultorder.id or $_Subordinate.assignment != assignment.assist">
+                    <set_object_commander object="$_Subordinate" commander="$_TradeSubscriptionExplorerShip" assignment="assignment.assist"/>
+                    <create_order object="$_Subordinate" id="$_TradeSubscriptionExplorerShip.defaultorder.id" default="true">
+                      <param name="IDLE" value="$_TradeSubscriptionExplorerShip.defaultorder.$IDLE"/>
+                      <param name="IDLE_TIME" value="$_TradeSubscriptionExplorerShip.defaultorder.$IDLE_TIME"/>
+                      <param name="IDLE_FOLLOW" value="$_TradeSubscriptionExplorerShip.defaultorder.$IDLE_FOLLOW"/>
+                      <param name="WHO_TO_FOLLOW" value="$_TradeSubscriptionExplorerShip.defaultorder.$WHO_TO_FOLLOW"/>
+                      <param name="IDLE_DOCKING" value="$_TradeSubscriptionExplorerShip.defaultorder.$IDLE_DOCKING"/>
+                      <param name="WHERE_TO_DOCK" value="$_TradeSubscriptionExplorerShip.defaultorder.$WHERE_TO_DOCK"/>
+                      <param name="IDLE_RANDOM_MOVEMENT" value="$_TradeSubscriptionExplorerShip.defaultorder.$IDLE_RANDOM_MOVEMENT"/>
+                      <param name="IN_WHICH_SECTOR" value="$_TradeSubscriptionExplorerShip.defaultorder.$IN_WHICH_SECTOR"/>
+                      <param name="IDLE_MOVE_TO" value="$_TradeSubscriptionExplorerShip.defaultorder.$IDLE_MOVE_TO"/>
+                      <param name="WHERE_TO_MOVE" value="$_TradeSubscriptionExplorerShip.defaultorder.$WHERE_TO_MOVE"/>
+                      <param name="ADD_ORDER_TAG" value="$_TradeSubscriptionExplorerShip.defaultorder.$ADD_ORDER_TAG"/>
+                      <param name="ORDER_TAG_POSITION" value="$_TradeSubscriptionExplorerShip.defaultorder.$ORDER_TAG_POSITION"/>
+                      <param name="DEBUG" value="$_TradeSubscriptionExplorerShip.defaultorder.$DEBUG"/>
                     </create_order>
                   </do_if>
                   <do_else>
-                    <do_if value="$_Subordinate.defaultorder.$IDLE != $_TradeSubscriptionExplorerShip.{1}.defaultorder.$IDLE">
-                      <edit_order_param order="$_Subordinate.defaultorder" param="'IDLE'" value="$_TradeSubscriptionExplorerShip.{1}.defaultorder.$IDLE"/>
+                    <do_if value="$_Subordinate.defaultorder.$IDLE != $_TradeSubscriptionExplorerShip.defaultorder.$IDLE">
+                      <edit_order_param order="$_Subordinate.defaultorder" param="'IDLE'" value="$_TradeSubscriptionExplorerShip.defaultorder.$IDLE"/>
                     </do_if>
-                    <do_if value="$_Subordinate.defaultorder.$IDLE_TIME != $_TradeSubscriptionExplorerShip.{1}.defaultorder.$IDLE_TIME">
-                      <edit_order_param order="$_Subordinate.defaultorder" param="'IDLE_TIME'" value="$_TradeSubscriptionExplorerShip.{1}.defaultorder.$IDLE_TIME"/>
+                    <do_if value="$_Subordinate.defaultorder.$IDLE_TIME != $_TradeSubscriptionExplorerShip.defaultorder.$IDLE_TIME">
+                      <edit_order_param order="$_Subordinate.defaultorder" param="'IDLE_TIME'" value="$_TradeSubscriptionExplorerShip.defaultorder.$IDLE_TIME"/>
                     </do_if>
-                    <do_if value="$_Subordinate.defaultorder.$IDLE_FOLLOW != $_TradeSubscriptionExplorerShip.{1}.defaultorder.$IDLE_FOLLOW">
-                      <edit_order_param order="$_Subordinate.defaultorder" param="'IDLE_FOLLOW'" value="$_TradeSubscriptionExplorerShip.{1}.defaultorder.$IDLE_FOLLOW"/>
+                    <do_if value="$_Subordinate.defaultorder.$IDLE_FOLLOW != $_TradeSubscriptionExplorerShip.defaultorder.$IDLE_FOLLOW">
+                      <edit_order_param order="$_Subordinate.defaultorder" param="'IDLE_FOLLOW'" value="$_TradeSubscriptionExplorerShip.defaultorder.$IDLE_FOLLOW"/>
                     </do_if>
-                    <do_if value="$_Subordinate.defaultorder.$WHO_TO_FOLLOW != $_TradeSubscriptionExplorerShip.{1}.defaultorder.$WHO_TO_FOLLOW">
-                      <edit_order_param order="$_Subordinate.defaultorder" param="'WHO_TO_FOLLOW'" value="$_TradeSubscriptionExplorerShip.{1}.defaultorder.$WHO_TO_FOLLOW"/>
+                    <do_if value="$_Subordinate.defaultorder.$WHO_TO_FOLLOW != $_TradeSubscriptionExplorerShip.defaultorder.$WHO_TO_FOLLOW">
+                      <edit_order_param order="$_Subordinate.defaultorder" param="'WHO_TO_FOLLOW'" value="$_TradeSubscriptionExplorerShip.defaultorder.$WHO_TO_FOLLOW"/>
                     </do_if>
-                    <do_if value="$_Subordinate.defaultorder.$IDLE_DOCKING != $_TradeSubscriptionExplorerShip.{1}.defaultorder.$IDLE_DOCKING">
-                      <edit_order_param order="$_Subordinate.defaultorder" param="'IDLE_DOCKING'" value="$_TradeSubscriptionExplorerShip.{1}.defaultorder.$IDLE_DOCKING"/>
+                    <do_if value="$_Subordinate.defaultorder.$IDLE_DOCKING != $_TradeSubscriptionExplorerShip.defaultorder.$IDLE_DOCKING">
+                      <edit_order_param order="$_Subordinate.defaultorder" param="'IDLE_DOCKING'" value="$_TradeSubscriptionExplorerShip.defaultorder.$IDLE_DOCKING"/>
                     </do_if>
-                    <do_if value="$_Subordinate.defaultorder.$WHERE_TO_DOCK != $_TradeSubscriptionExplorerShip.{1}.defaultorder.$WHERE_TO_DOCK">
-                      <edit_order_param order="$_Subordinate.defaultorder" param="'WHERE_TO_DOCK'" value="$_TradeSubscriptionExplorerShip.{1}.defaultorder.$WHERE_TO_DOCK"/>
+                    <do_if value="$_Subordinate.defaultorder.$WHERE_TO_DOCK != $_TradeSubscriptionExplorerShip.defaultorder.$WHERE_TO_DOCK">
+                      <edit_order_param order="$_Subordinate.defaultorder" param="'WHERE_TO_DOCK'" value="$_TradeSubscriptionExplorerShip.defaultorder.$WHERE_TO_DOCK"/>
                     </do_if>
-                    <do_if value="$_Subordinate.defaultorder.$IDLE_RANDOM_MOVEMENT != $_TradeSubscriptionExplorerShip.{1}.defaultorder.$IDLE_RANDOM_MOVEMENT">
-                      <edit_order_param order="$_Subordinate.defaultorder" param="'IDLE_RANDOM_MOVEMENT'" value="$_TradeSubscriptionExplorerShip.{1}.defaultorder.$IDLE_RANDOM_MOVEMENT"/>
+                    <do_if value="$_Subordinate.defaultorder.$IDLE_RANDOM_MOVEMENT != $_TradeSubscriptionExplorerShip.defaultorder.$IDLE_RANDOM_MOVEMENT">
+                      <edit_order_param order="$_Subordinate.defaultorder" param="'IDLE_RANDOM_MOVEMENT'" value="$_TradeSubscriptionExplorerShip.defaultorder.$IDLE_RANDOM_MOVEMENT"/>
                     </do_if>
-                    <do_if value="$_Subordinate.defaultorder.$IN_WHICH_SECTOR != $_TradeSubscriptionExplorerShip.{1}.defaultorder.$IN_WHICH_SECTOR">
-                      <edit_order_param order="$_Subordinate.defaultorder" param="'IN_WHICH_SECTOR'" value="$_TradeSubscriptionExplorerShip.{1}.defaultorder.$IN_WHICH_SECTOR"/>
+                    <do_if value="$_Subordinate.defaultorder.$IN_WHICH_SECTOR != $_TradeSubscriptionExplorerShip.defaultorder.$IN_WHICH_SECTOR">
+                      <edit_order_param order="$_Subordinate.defaultorder" param="'IN_WHICH_SECTOR'" value="$_TradeSubscriptionExplorerShip.defaultorder.$IN_WHICH_SECTOR"/>
                     </do_if>
-                    <do_if value="$_Subordinate.defaultorder.$IDLE_MOVE_TO != $_TradeSubscriptionExplorerShip.{1}.defaultorder.$IDLE_MOVE_TO">
-                      <edit_order_param order="$_Subordinate.defaultorder" param="'IDLE_MOVE_TO'" value="$_TradeSubscriptionExplorerShip.{1}.defaultorder.$IDLE_MOVE_TO"/>
+                    <do_if value="$_Subordinate.defaultorder.$IDLE_MOVE_TO != $_TradeSubscriptionExplorerShip.defaultorder.$IDLE_MOVE_TO">
+                      <edit_order_param order="$_Subordinate.defaultorder" param="'IDLE_MOVE_TO'" value="$_TradeSubscriptionExplorerShip.defaultorder.$IDLE_MOVE_TO"/>
                     </do_if>
-                    <do_if value="$_Subordinate.defaultorder.$WHERE_TO_MOVE != $_TradeSubscriptionExplorerShip.{1}.defaultorder.$WHERE_TO_MOVE">
-                      <edit_order_param order="$_Subordinate.defaultorder" param="'WHERE_TO_MOVE'" value="$_TradeSubscriptionExplorerShip.{1}.defaultorder.$WHERE_TO_MOVE"/>
+                    <do_if value="$_Subordinate.defaultorder.$WHERE_TO_MOVE != $_TradeSubscriptionExplorerShip.defaultorder.$WHERE_TO_MOVE">
+                      <edit_order_param order="$_Subordinate.defaultorder" param="'WHERE_TO_MOVE'" value="$_TradeSubscriptionExplorerShip.defaultorder.$WHERE_TO_MOVE"/>
                     </do_if>
-                    <do_if value="$_Subordinate.defaultorder.$ADD_ORDER_TAG != $_TradeSubscriptionExplorerShip.{1}.defaultorder.$ADD_ORDER_TAG">
-                      <edit_order_param order="$_Subordinate.defaultorder" param="'ADD_ORDER_TAG'" value="$_TradeSubscriptionExplorerShip.{1}.defaultorder.$ADD_ORDER_TAG"/>
+                    <do_if value="$_Subordinate.defaultorder.$ADD_ORDER_TAG != $_TradeSubscriptionExplorerShip.defaultorder.$ADD_ORDER_TAG">
+                      <edit_order_param order="$_Subordinate.defaultorder" param="'ADD_ORDER_TAG'" value="$_TradeSubscriptionExplorerShip.defaultorder.$ADD_ORDER_TAG"/>
                     </do_if>
-                    <do_if value="$_Subordinate.defaultorder.$ORDER_TAG_POSITION != $_TradeSubscriptionExplorerShip.{1}.defaultorder.$ORDER_TAG_POSITION">
-                      <edit_order_param order="$_Subordinate.defaultorder" param="'ORDER_TAG_POSITION'" value="$_TradeSubscriptionExplorerShip.{1}.defaultorder.$ORDER_TAG_POSITION"/>
+                    <do_if value="$_Subordinate.defaultorder.$ORDER_TAG_POSITION != $_TradeSubscriptionExplorerShip.defaultorder.$ORDER_TAG_POSITION">
+                      <edit_order_param order="$_Subordinate.defaultorder" param="'ORDER_TAG_POSITION'" value="$_TradeSubscriptionExplorerShip.defaultorder.$ORDER_TAG_POSITION"/>
                     </do_if>
-                    <do_if value="$_Subordinate.defaultorder.$DEBUG != $_TradeSubscriptionExplorerShip.{1}.defaultorder.$DEBUG">
-                      <edit_order_param order="$_Subordinate.defaultorder" param="'DEBUG'" value="$_TradeSubscriptionExplorerShip.{1}.defaultorder.$DEBUG"/>
+                    <do_if value="$_Subordinate.defaultorder.$DEBUG != $_TradeSubscriptionExplorerShip.defaultorder.$DEBUG">
+                      <edit_order_param order="$_Subordinate.defaultorder" param="'DEBUG'" value="$_TradeSubscriptionExplorerShip.defaultorder.$DEBUG"/>
                     </do_if>
                   </do_else>
                 </do_for_each>
                 <set_value name="$_FleetName" exact="'\033#FF03A1FC#' + 'TradeSubscriptionExplorerRoutine'"/>
-                <do_if value="$_TradeSubscriptionExplorerShip.{1}.fleet.name != $_FleetName">
-                  <set_object_fleet_name object="$_TradeSubscriptionExplorerShip.{1}" name="$_FleetName"/>
+                <do_if value="$_TradeSubscriptionExplorerShip.fleet.name != $_FleetName">
+                  <set_object_fleet_name object="$_TradeSubscriptionExplorerShip" name="$_FleetName"/>
                 </do_if>
               </do_if>
             </do_if>
           </do_for_each>
-        </do_if>
-
-        <do_if value="$DEBUG gt 0">
-          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'TimeMeasurement ~ End: ' + player.age"/>
-          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
         </do_if>
 
         <remove_value name="$_FoundShips"/>

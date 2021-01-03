@@ -43,7 +43,7 @@ $_FoundStationsSector
             <match_use_blacklist object="$Ship" type="blacklisttype.sectortravel" group="$blacklistgroup"/>
             <match_use_blacklist object="$Ship" type="blacklisttype.sectoractivity" group="$blacklistgroup"/>
           </find_sector>
-          <do_if value="global.$AnotherExplorerV2SectorBlackList?">
+          <do_if value="global.$TradeSubscriptionExplorerSectorBlack_List? and @global.$TradeSubscriptionExplorerSectorBlack_List != null">
             <remove_from_list name="$__Sectors" list="global.$TradeSubscriptionExplorerSectorBlack_List"/>
           </do_if>
         </do_if>

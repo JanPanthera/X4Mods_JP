@@ -200,6 +200,7 @@
 
       <!-- Return value ~~ $_FoundStations ~ $_FoundStationsSector -->
       <do_if value="global.$TradeSubscriptionExplorerShips_Table.{$Ship} == null">
+        <wait min="250ms" max="1250ms"/>
         <include_interrupt_actions ref="JP_Lib_GetNearestExpiredTradeSubscription_TSE"/>
         <!-- Nothing found go idle -->
         <do_if value="@$_FoundStations == null">

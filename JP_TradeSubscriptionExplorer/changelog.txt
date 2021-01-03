@@ -3,7 +3,7 @@
 
 ~ General refactoring and updating to new learned techniques
 ~ Changed: fleet creation.. create a fleet.. assignment is not relevant..
-rename the fleet to "AnotherExplorerV2Routine".. give the leader the AnotherExplorerV2G routine.. that's it
+rename the fleet to "TradeSubscriptionExplorerRoutine".. give the leader the TradeSubscriptionExplorerG routine.. that's it
 ~ Changed: removed options for Enemy Sectors, Friendly Sectors and Neutral Sectors..
 you can use x4's blacklists.. doing the same job.. and are vanilla
 ~ Updated: Reworked.. Order Tag.. how it will added and removed again..
