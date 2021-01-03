@@ -91,7 +91,7 @@
         <interrupt_after_time time="1s"/>
       </move_to>
       <wait min="500ms" max="1000ms"/>
-      <do_if value="not $OBJECT.isknown">
+      <do_if value="not $STATION.hastradesubscription">
         <resume label="MOVING_LBL"/>
       </do_if>
       <remove_value name="$_TempPosition"/>

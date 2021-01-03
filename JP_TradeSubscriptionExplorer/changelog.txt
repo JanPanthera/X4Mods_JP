@@ -1,10 +1,11 @@
-~ repo update ~ 2021-01-02 ~
+~ repo update ~ 2021-01-03 ~
 ~ 04:50 PM ~
 
-~ General refactoring and updating to new learning techniques
+~ General refactoring and updating to new learned techniques
 ~ Changed: fleet creation.. create a fleet.. assignment is not relevant..
-rename the fleet to "AnotherExplorerV2Routine".. give the leader the AnotherExplorerV2 routine.. that's it
+rename the fleet to "AnotherExplorerV2Routine".. give the leader the AnotherExplorerV2G routine.. that's it
 ~ Changed: removed options for Enemy Sectors, Friendly Sectors and Neutral Sectors..
 you can use x4's blacklists.. doing the same job.. and are vanilla
-~ Updated: Reworked Order Tag.. how it will added and removed again..
-~ Updated: IdleReturnHome.. should work better.. internal..
+~ Updated: Reworked.. Order Tag.. how it will added and removed again..
+~ Updated: Reworked.. IdleReturnHome.. should work better.. internal..
+~ Updated: ..language files restructuring.. added some translations.. (google translate)

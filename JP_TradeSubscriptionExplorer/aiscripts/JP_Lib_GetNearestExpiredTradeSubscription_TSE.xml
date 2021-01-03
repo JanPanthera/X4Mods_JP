@@ -16,13 +16,13 @@ $_FoundStations
 $_FoundStationsSector
 -->
 
-<aiscript name="JP_Lib_GetNearestStationWithExpiredTradeSubscription_TSE" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd">
+<aiscript name="JP_Lib_GetNearestExpiredTradeSubscription_TSE" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd">
   <interrupts>
     <library>
-      <actions name="JP_Lib_GetNearestStationWithExpiredTradeSubscription_TSE">
+      <actions name="JP_Lib_GetNearestExpiredTradeSubscription_TSE">
 
         <do_if value="$DEBUG gt 0">
-          <set_value name="$__DebugScriptName" exact="'JP_Lib_GetNearestStationWithExpiredTradeSubscription_TSE'"/>
+          <set_value name="$__DebugScriptName" exact="'JP_Lib_GetNearestExpiredTradeSubscription_TSE'"/>
           <set_value name="$__DebugFileName" exact="$Ship.idcode + '.' + $__DebugScriptName + '.xml.log'"/>
           <debug_to_file directory="$DebugFolderName" name="$__DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'" append="false"/>
           <debug_to_file directory="$DebugFolderName" name="$__DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $__DebugScriptName + '.xml ~ Started ~~' + '\n'"/>
@@ -44,7 +44,7 @@ $_FoundStationsSector
             <match_use_blacklist object="$Ship" type="blacklisttype.sectoractivity" group="$blacklistgroup"/>
           </find_sector>
           <do_if value="global.$AnotherExplorerV2SectorBlackList?">
-            <remove_from_list name="$__Sectors" list="global.$TradeSubscriptionExplorerSectorBlackList"/>
+            <remove_from_list name="$__Sectors" list="global.$TradeSubscriptionExplorerSectorBlack_List"/>
           </do_if>
         </do_if>
         <do_else>

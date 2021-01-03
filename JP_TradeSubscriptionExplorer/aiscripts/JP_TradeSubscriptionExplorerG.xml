@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<aiscript name="JP_TradeSubscriptionExplorerG" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd">
+<aiscript name="JP_TradeSubscriptionExplorerG" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd" version="1">
 
   <order id="JP_TradeSubscriptionExplorerG" name="_{8888888, 1997}TradeSubscriptionExplorer - {8888888, 1999}{8888888, 1998}{20001, 901}{8888888, 1999}" category="navigation" infinite="true">
     <params>
@@ -9,27 +9,27 @@
         <input_param name="class" value="[]"/>
       </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="IDLE" text="{8888888, 480}" comment="Idle actions?" type="bool" default="if global.$AnotherExplorerV2G_Settings? then global.$AnotherExplorerV2G_Settings.{1} else true"/>
-      <param name="IDLE_TIME" text="{8888888, 481}" comment="Idle Time" type="time" default="if global.$AnotherExplorerV2G_Settings? then global.$AnotherExplorerV2G_Settings.{2} else 600s">
+      <param name="IDLE" text="{8888888, 480}" comment="Idle actions?" type="bool" default="if global.$TradeSubscriptionExplorerG_Settings? then global.$TradeSubscriptionExplorerG_Settings.{1} else true"/>
+      <param name="IDLE_TIME" text="{8888888, 481}" comment="Idle Time" type="time" default="if global.$TradeSubscriptionExplorerG_Settings? then global.$TradeSubscriptionExplorerG_Settings.{2} else 600s">
         <input_param name="min" value="60s"/>
         <input_param name="max" value="3600s"/>
         <input_param name="step" value="10s"/>
       </param>
-      <param name="IDLE_FOLLOW" text="{8888888, 482}" comment="Idle: Follow?" type="bool" default="if global.$AnotherExplorerV2G_Settings? then global.$AnotherExplorerV2G_Settings.{3} else false"/>
-      <param name="WHO_TO_FOLLOW" text="- {8888888, 483}" comment="Who to follow?" type="object" default="if global.$AnotherExplorerV2G_Settings? then global.$AnotherExplorerV2G_Settings.{4} else null">
+      <param name="IDLE_FOLLOW" text="{8888888, 482}" comment="Idle: Follow?" type="bool" default="if global.$TradeSubscriptionExplorerG_Settings? then global.$TradeSubscriptionExplorerG_Settings.{3} else false"/>
+      <param name="WHO_TO_FOLLOW" text="- {8888888, 483}" comment="Who to follow?" type="object" default="if global.$TradeSubscriptionExplorerG_Settings? then global.$TradeSubscriptionExplorerG_Settings.{4} else null">
         <input_param name="class" value="[class.ship]"/>
         <input_param name="owner" value="this.ship.owner"/>
       </param>
-      <param name="IDLE_DOCKING" text="{8888888, 484}" comment="Idle: Docking?" type="bool" default="if global.$AnotherExplorerV2G_Settings? then global.$AnotherExplorerV2G_Settings.{5} else false"/>
-      <param name="WHERE_TO_DOCK" text="- {8888888, 485}" comment="Where to dock?" type="object" default="if global.$AnotherExplorerV2G_Settings? then global.$AnotherExplorerV2G_Settings.{6} else null">
+      <param name="IDLE_DOCKING" text="{8888888, 484}" comment="Idle: Docking?" type="bool" default="if global.$TradeSubscriptionExplorerG_Settings? then global.$TradeSubscriptionExplorerG_Settings.{5} else false"/>
+      <param name="WHERE_TO_DOCK" text="- {8888888, 485}" comment="Where to dock?" type="object" default="if global.$TradeSubscriptionExplorerG_Settings? then global.$TradeSubscriptionExplorerG_Settings.{6} else null">
         <input_param name="class" value="if this.ship.isclass.[class.ship_s, class.ship_xs] then [class.station, class.ship_m, class.ship_l, class.ship_xl] else [class.station, class.ship_l, class.ship_xl]"/>
       </param>
-      <param name="IDLE_RANDOM_MOVEMENT" text="{8888888, 486}" comment="Idle: Movement?" type="bool" default="if global.$AnotherExplorerV2G_Settings? then global.$AnotherExplorerV2G_Settings.{7} else false"/>
-      <param name="IN_WHICH_SECTOR" text="- {8888888, 487}" comment="In which sector?" type="position" default="if global.$AnotherExplorerV2G_Settings? then global.$AnotherExplorerV2G_Settings.{8} else [this.ship.sector, this.ship.position]">
+      <param name="IDLE_RANDOM_MOVEMENT" text="{8888888, 486}" comment="Idle: Movement?" type="bool" default="if global.$TradeSubscriptionExplorerG_Settings? then global.$TradeSubscriptionExplorerG_Settings.{7} else false"/>
+      <param name="IN_WHICH_SECTOR" text="- {8888888, 487}" comment="In which sector?" type="position" default="if global.$TradeSubscriptionExplorerG_Settings? then global.$TradeSubscriptionExplorerG_Settings.{8} else [this.ship.sector, this.ship.position]">
         <input_param name="class" value="class.sector"/>
       </param>
-      <param name="IDLE_MOVE_TO" text="{8888888, 488}" comment="Idle: Move to?" type="bool" default="if global.$AnotherExplorerV2G_Settings? then global.$AnotherExplorerV2G_Settings.{9} else false"/>
-      <param name="WHERE_TO_MOVE" text="- {8888888, 489}" comment="Where to move?" type="position" default="if global.$AnotherExplorerV2G_Settings? then global.$AnotherExplorerV2G_Settings.{10} else [this.ship.sector, this.ship.position]">
+      <param name="IDLE_MOVE_TO" text="{8888888, 488}" comment="Idle: Move to?" type="bool" default="if global.$TradeSubscriptionExplorerG_Settings? then global.$TradeSubscriptionExplorerG_Settings.{9} else false"/>
+      <param name="WHERE_TO_MOVE" text="- {8888888, 489}" comment="Where to move?" type="position" default="if global.$TradeSubscriptionExplorerG_Settings? then global.$TradeSubscriptionExplorerG_Settings.{10} else [this.ship.sector, this.ship.position]">
         <input_param name="class" value="class.sector"/>
       </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -37,8 +37,8 @@
         <input_param name="class" value="[]"/>
       </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="ADD_ORDER_TAG" text="{8888888, 491}" comment="Add order tag?" type="bool" default="if global.$AnotherExplorerV2G_Settings? then global.$AnotherExplorerV2G_Settings.{11} else true"/>
-      <param name="ORDER_TAG_POSITION" text="{8888888, 492}" comment="Order tag position" type="number" default="if global.$AnotherExplorerV2G_Settings? then global.$AnotherExplorerV2G_Settings.{12} else 1">
+      <param name="ADD_ORDER_TAG" text="{8888888, 491}" comment="Add order tag?" type="bool" default="if global.$TradeSubscriptionExplorerG_Settings? then global.$TradeSubscriptionExplorerG_Settings.{11} else true"/>
+      <param name="ORDER_TAG_POSITION" text="{8888888, 492}" comment="Order tag position" type="number" default="if global.$TradeSubscriptionExplorerG_Settings? then global.$TradeSubscriptionExplorerG_Settings.{12} else 1">
         <input_param name="min" value="0"/>
         <input_param name="max" value="1"/>
         <input_param name="step" value="1"/>
@@ -50,7 +50,7 @@
         <input_param name="class" value="[]"/>
       </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="DEBUG" text="Debug" type="number" default="if global.$AnotherExplorerV2G_Settings? then global.$AnotherExplorerV2G_Settings.{13} else 0" advanced="true">
+      <param name="DEBUG" text="Debug" type="number" default="if global.$TradeSubscriptionExplorerG_Settings? then global.$TradeSubscriptionExplorerG_Settings.{13} else 0" advanced="true">
         <input_param name="step" value="100"/>
         <input_param name="min" value="0"/>
         <input_param name="max" value="100"/>
@@ -101,16 +101,6 @@
         <set_object_name object="$Ship" name="(if $ORDER_TAG_POSITION == 0 then ('\033#FFA95908#' + $_OrderTag + '\033X') else '') + $Ship.knownname + (if $ORDER_TAG_POSITION == 1 then ('\033#FFA95908#' + $_OrderTag + '\033X') else '')"/>
       </do_if>
       <remove_value name="$_OrderTag"/>
-    </do_if>
-    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-    <do_if value="true">
-      <do_if value="not global.$TradeSubscriptionExplorerSectorBlackList?">
-        <create_list name="global.$TradeSubscriptionExplorerSectorBlackList"/>
-      </do_if>
-      <do_if value="not global.$TradeSubscriptionExplorerShips?">
-        <create_list name="global.$TradeSubscriptionExplorerShips"/>
-      </do_if>
-      <append_to_list name="global.$TradeSubscriptionExplorerShips" exact="[$Ship, null]"/>
     </do_if>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <do_if value="$SAVE_ORDER_SETTINGS">
@@ -165,6 +155,9 @@
       <remove_value name="global.$FriendlySectorsTSE"/>
       <remove_value name="global.$NeutralSectorsTSE"/>
       <remove_value name="global.$EnemySectorsTSE"/>
+      <remove_value name="this.$CurrentSectorTSE"/>
+      <remove_value name="global.$CurrentSectorTSE"/>
+      <remove_value name="this.$CurrentSector"/>
     </do_if>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
   </init>
@@ -179,6 +172,18 @@
       <label name="INIT_LBL"/>
       <wait min="500ms" max="1000ms"/>
 
+      <do_if value="not global.$TradeSubscriptionExplorerSectorBlack_List?">
+        <create_list name="global.$TradeSubscriptionExplorerSectorBlack_List"/>
+      </do_if>
+
+      <do_if value="not global.$TradeSubscriptionExplorerShips_Table?">
+        <set_value name="global.$TradeSubscriptionExplorerShips_Table" exact="table[]"/>
+      </do_if>
+
+      <do_if value="not global.$TradeSubscriptionExplorerShips_Table.{$Ship}?">
+        <set_value name="global.$TradeSubscriptionExplorerShips_Table.{$Ship}" exact="null"/>
+      </do_if>
+
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
       <label name="RESUME_LBL"/>
@@ -189,7 +194,7 @@
       <set_command_action commandaction="commandaction.calculating"/>
 
       <!-- Return value ~~ $_FoundStations ~ $_FoundStationsSector -->
-      <do_if value="@this.$CurrentSector == null">
+      <do_if value="global.$TradeSubscriptionExplorerShips_Table.{$Ship} == null">
         <include_interrupt_actions ref="JP_Lib_GetNearestExpiredTradeSubscription_TSE"/>
         <!-- Nothing found go idle -->
         <do_if value="@$_FoundStations == null">
@@ -216,12 +221,7 @@
         </do_if>
         <set_value name="this.$CurrentSector" exact="$_FoundStationsSector"/>
         <set_value name="this.$FoundStations" exact="$_FoundStations"/>
-        <append_to_list name="global.$TradeSubscriptionExplorerSectorBlackList" exact="$_FoundStationsSector"/>
-        <do_for_each name="$_TradeSubscriptionExplorerShip" in="global.$TradeSubscriptionExplorerShips">
-          <do_if value="$_TradeSubscriptionExplorerShip.{1} == $Ship">
-            <set_value name="$_TradeSubscriptionExplorerShip.{2}" exact="$_FoundStationsSector"/>
-          </do_if>
-        </do_for_each>
+        <set_value name="global.$TradeSubscriptionExplorerShips_Table.{$Ship}" exact="$_FoundStationsSector"/>
         <remove_value name="$_FoundStations"/>
         <remove_value name="$_FoundStationsSector"/>
       </do_if>
@@ -231,12 +231,13 @@
       <set_command_action commandaction="commandaction.calculating"/>
       <sort_list list="this.$FoundStations" sortbyvalue="$Ship.distanceto.{loop.element}" sortdescending="true"/>
       <do_while value="this.$FoundStations.count gt 0">
-        <do_if value="this.$FoundStations.last.isknown">
+        <do_if value="this.$FoundStations.last.hastradesubscription">
           <remove_from_list name="this.$FoundStations" exact="this.$FoundStations.last"/>
+          <wait min="500ms" max="1000ms"/>
           <continue/>
         </do_if>
         <create_order id="'JP_ExploreTradeSubscription_TSE'" object="$Ship">
-          <param name="OBJECT" value="this.$FoundStations.last"/>
+          <param name="STATION" value="this.$FoundStations.last"/>
           <param name="DEBUG_FOLDER_NAME" value="@$DebugFolderName"/>
           <param name="DEBUG" value="$DEBUG"/>
         </create_order>
@@ -244,11 +245,8 @@
       </do_while>
 
       <!-- cleanup and resume from top -->
-      <do_if value="global.$TradeSubscriptionExplorerSectorBlackList?">
-        <remove_from_list name="global.$TradeSubscriptionExplorerSectorBlackList" exact="this.$CurrentSector"/>
-      </do_if>
+      <set_value name="global.$TradeSubscriptionExplorerShips_Table.{$Ship}" exact="null"/>
       <remove_value name="this.$FoundStations"/>
-      <remove_value name="this.$CurrentSector"/>
       <resume label="RESUME_LBL"/>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -277,13 +275,7 @@
   </attention>
 
   <on_abort>
-    <do_if value="$Ship.orders.count le 0">
-      <do_if value="global.$TradeSubscriptionExplorerSectorBlackList?">
-        <remove_from_list name="global.$TradeSubscriptionExplorerSectorBlackList" exact="this.$CurrentSector"/>
-      </do_if>
-    </do_if>
-    <remove_value name="this.$UnknownObjects"/>
-    <remove_value name="this.$CurrentSector"/>
+    <remove_value name="this.$FoundStations"/>
     <remove_value name="$DebugFileName"/>
     <remove_value name="$DebugScriptName"/>
     <remove_value name="$DebugFolderName"/>

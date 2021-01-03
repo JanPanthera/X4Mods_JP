@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<aiscript name="JP_TradeSubscriptionExplorerS" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd">
+<aiscript name="JP_TradeSubscriptionExplorerS" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd" version="1">
 
   <order id="JP_TradeSubscriptionExplorerS" name="_{8888888, 1997}TradeSubscriptionExplorer - {8888888, 1999}{8888888, 1998}{20001, 201}{8888888, 1999}" category="navigation" infinite="true">
     <params>
@@ -111,16 +111,6 @@
       <remove_value name="$_OrderTag"/>
     </do_if>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-    <do_if value="true">
-      <do_if value="not global.$TradeSubscriptionExplorerSectorBlackList?">
-        <create_list name="global.$TradeSubscriptionExplorerSectorBlackList"/>
-      </do_if>
-      <do_if value="not global.$TradeSubscriptionExplorerShips?">
-        <create_list name="global.$TradeSubscriptionExplorerShips"/>
-      </do_if>
-      <append_to_list name="global.$TradeSubscriptionExplorerShips" exact="[$Ship, null]"/>
-    </do_if>
-    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <do_if value="$SAVE_ORDER_SETTINGS">
       <create_list name="$_SettingsList"/>
       <append_list_elements name="$_SettingsList" other="[
@@ -170,7 +160,9 @@
       <remove_value name="global.$AutoFleetNameBlueTSE"/>
       <remove_value name="global.$AutoFleetTSE"/>
       <remove_value name="global.$AddOrderTagTSE"/>
-      <remove_value name="global.this.$CurrentSectorTSE"/>
+      <remove_value name="this.$CurrentSectorTSE"/>
+      <remove_value name="global.$CurrentSectorTSE"/>
+      <remove_value name="this.$CurrentSector"/>
     </do_if>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
   </init>
@@ -185,6 +177,18 @@
       <label name="INIT_LBL"/>
       <wait min="500ms" max="1000ms"/>
 
+      <do_if value="not global.$TradeSubscriptionExplorerSectorBlack_List?">
+        <create_list name="global.$TradeSubscriptionExplorerSectorBlack_List"/>
+      </do_if>
+
+      <do_if value="not global.$TradeSubscriptionExplorerShips_Table?">
+        <set_value name="global.$TradeSubscriptionExplorerShips_Table" exact="table[]"/>
+      </do_if>
+
+      <do_if value="not global.$TradeSubscriptionExplorerShips_Table.{$Ship}?">
+        <set_value name="global.$TradeSubscriptionExplorerShips_Table.{$Ship}" exact="null"/>
+      </do_if>
+
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
       <label name="RESUME_LBL"/>
@@ -195,7 +199,7 @@
       <set_command_action commandaction="commandaction.calculating"/>
 
       <!-- Return value ~~ $_FoundStations ~ $_FoundStationsSector -->
-      <do_if value="@this.$CurrentSector == null">
+      <do_if value="global.$TradeSubscriptionExplorerShips_Table.{$Ship} == null">
         <include_interrupt_actions ref="JP_Lib_GetNearestExpiredTradeSubscription_TSE"/>
         <!-- Nothing found go idle -->
         <do_if value="@$_FoundStations == null">
@@ -222,12 +226,7 @@
         </do_if>
         <set_value name="this.$CurrentSector" exact="$SECTOR"/>
         <set_value name="this.$FoundStations" exact="$_FoundStations"/>
-        <append_to_list name="global.$AnotherExplorerV2SectorBlackList" exact="$SECTOR"/>
-        <do_for_each name="$_TradeSubscriptionExplorerShip" in="global.$TradeSubscriptionExplorerShips">
-          <do_if value="$_TradeSubscriptionExplorerShip.{1} == $Ship">
-            <set_value name="$_TradeSubscriptionExplorerShip.{2}" exact="$SECTOR"/>
-          </do_if>
-        </do_for_each>
+        <set_value name="global.$TradeSubscriptionExplorerShips_Table.{$Ship}" exact="$SECTOR"/>
         <remove_value name="$_FoundStations"/>
         <remove_value name="$_FoundStationsSector"/>
       </do_if>
@@ -237,12 +236,13 @@
       <set_command_action commandaction="commandaction.calculating"/>
       <sort_list list="this.$FoundStations" sortbyvalue="$Ship.distanceto.{loop.element}" sortdescending="true"/>
       <do_while value="this.$FoundStations.count gt 0">
-        <do_if value="this.$FoundStations.last.isknown">
+        <do_if value="this.$FoundStations.last.hastradesubscription">
           <remove_from_list name="this.$FoundStations" exact="this.$FoundStations.last"/>
+          <wait min="500ms" max="1000ms"/>
           <continue/>
         </do_if>
         <create_order id="'JP_ExploreTradeSubscription_TSE'" object="$Ship">
-          <param name="OBJECT" value="this.$FoundStations.last"/>
+          <param name="STATION" value="this.$FoundStations.last"/>
           <param name="DEBUG_FOLDER_NAME" value="@$DebugFolderName"/>
           <param name="DEBUG" value="$DEBUG"/>
         </create_order>
@@ -250,11 +250,8 @@
       </do_while>
 
       <!-- cleanup and resume from top -->
-      <do_if value="global.$TradeSubscriptionExplorerSectorBlackList?">
-        <remove_from_list name="global.$TradeSubscriptionExplorerSectorBlackList" exact="this.$CurrentSector"/>
-      </do_if>
+      <set_value name="global.$TradeSubscriptionExplorerShips_Table.{$Ship}" exact="null"/>
       <remove_value name="this.$FoundStations"/>
-      <remove_value name="this.$CurrentSector"/>
       <resume label="RESUME_LBL"/>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -283,13 +280,7 @@
   </attention>
 
   <on_abort>
-    <do_if value="$Ship.orders.count le 0">
-      <do_if value="global.$TradeSubscriptionExplorerSectorBlackList?">
-        <remove_from_list name="global.$TradeSubscriptionExplorerSectorBlackList" exact="this.$CurrentSector"/>
-      </do_if>
-    </do_if>
-    <remove_value name="this.$UnknownObjects"/>
-    <remove_value name="this.$CurrentSector"/>
+    <remove_value name="this.$FoundStations"/>
     <remove_value name="$DebugFileName"/>
     <remove_value name="$DebugScriptName"/>
     <remove_value name="$DebugFolderName"/>
