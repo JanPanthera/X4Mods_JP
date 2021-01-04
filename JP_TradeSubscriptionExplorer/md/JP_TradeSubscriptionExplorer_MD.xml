@@ -322,7 +322,7 @@
         </find_ship>
         <do_if value="$_FoundPlayerShips.count gt 0">
           <do_for_each name="$_FoundPlayerShip" in="$_FoundPlayerShips">
-            <do_if value="$_FoundPlayerShip.defaultorder.id != 'JP_TradeSubscriptionExplorerS' and $_FoundPlayerShip.defaultorder.id != 'JP_TradeSubscriptionExplorerG'">
+            <do_if value="@$_FoundPlayerShip.defaultorder.id != 'JP_TradeSubscriptionExplorerS' and @$_FoundPlayerShip.defaultorder.id != 'JP_TradeSubscriptionExplorerG'">
               <!-- Get rid of the order tag -->
               <substitute_text source="$_FoundPlayerShip.knownname" text="$_ResultName">
                 <replace string="('\033#FFA95908#' + '#TSE-S ' + '\033X')" with="''"/>
