@@ -92,17 +92,6 @@
       <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Started ~~' + '\n'"/>
     </do_if>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-    <do_if value="$ADD_ORDER_TAG">
-      <set_value name="$_OrderTag" exact="if $ORDER_TAG_POSITION == 0 then '#TSE-G ' else ' #TSE-G'"/>
-      <substitute_text source="$Ship.knownname" text="$_ResultName">
-        <replace string="('\033#FFA95908#' + $_OrderTag + '\033X')" with="''"/>
-      </substitute_text>
-      <do_if value="$Ship.knownname == $_ResultName">
-        <set_object_name object="$Ship" name="(if $ORDER_TAG_POSITION == 0 then ('\033#FFA95908#' + $_OrderTag + '\033X') else '') + $Ship.knownname + (if $ORDER_TAG_POSITION == 1 then ('\033#FFA95908#' + $_OrderTag + '\033X') else '')"/>
-      </do_if>
-      <remove_value name="$_OrderTag"/>
-    </do_if>
-    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <do_if value="$SAVE_ORDER_SETTINGS">
       <create_list name="$_SettingsList"/>
       <append_list_elements name="$_SettingsList" other="[
@@ -158,6 +147,7 @@
       <remove_value name="this.$CurrentSectorTSE"/>
       <remove_value name="global.$CurrentSectorTSE"/>
       <remove_value name="this.$CurrentSector"/>
+      <remove_value name="this.$FoundStations"/>
     </do_if>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
   </init>
@@ -184,6 +174,17 @@
         <set_value name="global.$TradeSubscriptionExplorerShips_Table.{$Ship}" exact="null"/>
       </do_if>
 
+      <do_if value="$ADD_ORDER_TAG">
+        <set_value name="$_OrderTag" exact="if $ORDER_TAG_POSITION == 0 then '#TSE-G ' else ' #TSE-G'"/>
+        <substitute_text source="$Ship.knownname" text="$_ResultName">
+          <replace string="('\033#FFA95908#' + $_OrderTag + '\033X')" with="''"/>
+        </substitute_text>
+        <do_if value="$Ship.knownname == $_ResultName">
+          <set_object_name object="$Ship" name="(if $ORDER_TAG_POSITION == 0 then ('\033#FFA95908#' + $_OrderTag + '\033X') else '') + $Ship.knownname + (if $ORDER_TAG_POSITION == 1 then ('\033#FFA95908#' + $_OrderTag + '\033X') else '')"/>
+        </do_if>
+        <remove_value name="$_OrderTag"/>
+      </do_if>
+
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
       <label name="RESUME_LBL"/>
@@ -193,15 +194,18 @@
       <set_command command="command.scan"/>
       <set_command_action commandaction="commandaction.calculating"/>
 
-      <!-- Return value ~~ $_FoundStations ~ $_FoundStationsSector -->
-      <do_if value="global.$TradeSubscriptionExplorerShips_Table.{$Ship} == null">
+      <!-- Return value ~~ $_FoundStation ~ $_FoundStationsSector -->
+      <set_value name="$SECTOR" exact="global.$TradeSubscriptionExplorerShips_Table.{$Ship}"/>
+      <wait min="250ms" max="1250ms"/>
+      <include_interrupt_actions ref="JP_Lib_GetNearestExpiredTradeSubscription_TSE"/>
+
+      <!-- Nothing to do.. idle a bit and try again -->
+      <do_if value="@$_FoundStation == null">
+        <set_value name="global.$TradeSubscriptionExplorerShips_Table.{$Ship}" exact="null"/>
+        <set_value name="$SECTOR" exact="global.$TradeSubscriptionExplorerShips_Table.{$Ship}"/>
         <wait min="250ms" max="1250ms"/>
         <include_interrupt_actions ref="JP_Lib_GetNearestExpiredTradeSubscription_TSE"/>
-        <!-- Nothing found go idle -->
-        <do_if value="@$_FoundStations == null">
-          <remove_value name="$_FoundStations"/>
-          <remove_value name="$_FoundStationsSector"/>
-          <!-- Nothing to do.. idle a bit and try again -->
+        <do_if value="@$_FoundStation == null">
           <do_if value="$IDLE">
             <create_order id="'JP_IdleReturnHome_TSE'" object="$Ship">
               <param name="IDLE_TIME" value="$IDLE_TIME"/>
@@ -220,34 +224,26 @@
           </do_if>
           <resume label="RESUME_LBL"/>
         </do_if>
-        <set_value name="this.$CurrentSector" exact="$_FoundStationsSector"/>
-        <set_value name="this.$FoundStations" exact="$_FoundStations"/>
+      </do_if>
+      <do_if value="@$_FoundStation != null">
         <set_value name="global.$TradeSubscriptionExplorerShips_Table.{$Ship}" exact="$_FoundStationsSector"/>
-        <remove_value name="$_FoundStations"/>
-        <remove_value name="$_FoundStationsSector"/>
       </do_if>
 
-      <!-- Exploring the objects.. flying to them and making them visible -->
+      <!-- Exploring the object.. flying to the object and making it visible -->
       <set_command command="command.explore"/>
       <set_command_action commandaction="commandaction.calculating"/>
-      <sort_list list="this.$FoundStations" sortbyvalue="$Ship.distanceto.{loop.element}" sortdescending="true"/>
-      <do_while value="this.$FoundStations.count gt 0">
-        <do_if value="this.$FoundStations.last.hastradesubscription">
-          <remove_from_list name="this.$FoundStations" exact="this.$FoundStations.last"/>
-          <wait min="500ms" max="1000ms"/>
-          <continue/>
-        </do_if>
+      <do_if value="not $_FoundStation.hastradesubscription">
         <create_order id="'JP_ExploreTradeSubscription_TSE'" object="$Ship">
-          <param name="STATION" value="this.$FoundStations.last"/>
+          <param name="STATION" value="$_FoundStation"/>
           <param name="DEBUG_FOLDER_NAME" value="@$DebugFolderName"/>
           <param name="DEBUG" value="$DEBUG"/>
         </create_order>
         <wait min="500ms" max="1000ms"/>
-      </do_while>
+      </do_if>
 
       <!-- cleanup and resume from top -->
-      <set_value name="global.$TradeSubscriptionExplorerShips_Table.{$Ship}" exact="null"/>
-      <remove_value name="this.$FoundStations"/>
+      <remove_value name="$_FoundStationsSector"/>
+      <remove_value name="$_FoundStation"/>
       <resume label="RESUME_LBL"/>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -276,7 +272,8 @@
   </attention>
 
   <on_abort>
-    <remove_value name="this.$FoundStations"/>
+    <remove_value name="$_FoundStationsSector"/>
+    <remove_value name="$_FoundStation"/>
     <remove_value name="$DebugFileName"/>
     <remove_value name="$DebugScriptName"/>
     <remove_value name="$DebugFolderName"/>

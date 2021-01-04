@@ -38,7 +38,7 @@
               <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~ Sector: %1 ~~ [%2].'.[@$_Sector.knownname, @$_Sector.owner.knownname]"/>
             </do_for_each>
           </do_if>
-          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>          
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
 
           <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
           <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'@global.$TradeSubscriptionExplorerS_Settings.count: ' + @global.$TradeSubscriptionExplorerS_Settings.count"/>
@@ -209,9 +209,9 @@
         <!-- Adding sectors to the global blacklist -->
         <do_if value="@global.$TradeSubscriptionExplorerShips_Table != null and @global.$TradeSubscriptionExplorerShips_Table.keys.list.count gt 0">
           <do_if value="$DEBUG gt 0">
-          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'TEST'"/>
-          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+            <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+            <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'TEST'"/>
+            <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
           </do_if>
           <do_for_each valuename="$_Sector" in="global.$TradeSubscriptionExplorerShips_Table">
             <do_if value="not global.$TradeSubscriptionExplorerSectorBlack_List.indexof.{$_Sector}">
@@ -288,11 +288,9 @@
             <remove_value name="global.$TradeSubscriptionExplorerShips_Table"/>
           </do_if>
         </do_if>
-        
+
         <do_if value="global.$TradeSubscriptionExplorerShips_Table? and @global.$TradeSubscriptionExplorerShips_Table.keys.list.count gt 0">
-
           <do_for_each name="$_Ship" valuename="$_Sector" in="global.$TradeSubscriptionExplorerShips_Table">
-
             <do_if value="@$_Ship.defaultorder.id != 'JP_TradeSubscriptionExplorerS' and @$_Ship.defaultorder.id != 'JP_TradeSubscriptionExplorerG'">
 
               <!-- Get rid of the order tag -->
@@ -313,9 +311,32 @@
               <cancel_all_orders object="$_Ship"/>
 
             </do_if>
-
           </do_for_each>
         </do_if>
+
+        <create_list name="$_FoundPlayerShips"/>
+        <find_ship name="$_FoundPlayerShips" space="player.galaxy" multiple="true">
+          <match owner="faction.player"/>
+          <match checkoperational="true"/>
+          <match trueowner="faction.player"/>
+        </find_ship>
+        <do_if value="$_FoundPlayerShips.count gt 0">
+          <do_for_each name="$_FoundPlayerShip" in="$_FoundPlayerShips">
+            <do_if value="$_FoundPlayerShip.defaultorder.id != 'JP_TradeSubscriptionExplorerS' and $_FoundPlayerShip.defaultorder.id != 'JP_TradeSubscriptionExplorerG'">
+              <!-- Get rid of the order tag -->
+              <substitute_text source="$_FoundPlayerShip.knownname" text="$_ResultName">
+                <replace string="('\033#FFA95908#' + '#TSE-S ' + '\033X')" with="''"/>
+                <replace string="('\033#FFA95908#' + '#TSE-G ' + '\033X')" with="''"/>
+                <replace string="('\033#FFA95908#' + ' #TSE-S' + '\033X')" with="''"/>
+                <replace string="('\033#FFA95908#' + ' #TSE-G' + '\033X')" with="''"/>
+              </substitute_text>
+              <do_if value="$_FoundPlayerShip.knownname != $_ResultName">
+                <set_object_name object="$_FoundPlayerShip" name="$_ResultName"/>
+              </do_if>
+            </do_if>
+          </do_for_each>
+        </do_if>
+        <remove_value name="$_FoundPlayerShips"/>
 
         <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
         <do_if value="$DEBUG gt 0">

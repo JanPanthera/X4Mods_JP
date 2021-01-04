@@ -12,7 +12,7 @@ $DebugFolderName
 -->
 
 <!-- Return parameter ~~ null if nothing found
-$_FoundStations
+$_FoundStation
 $_FoundStationsSector
 -->
 
@@ -33,6 +33,9 @@ $_FoundStationsSector
         <set_command command="command.scan"/>
         <set_command_action commandaction="commandaction.calculating"/>
 
+        <set_value name="$_FoundStation" exact="null"/>
+        <set_value name="$_FoundStationsSector" exact="null"/>
+
         <include_interrupt_actions ref="GetBlacklistgroup"/>
 
         <create_list name="$__Sectors"/>
@@ -41,7 +44,6 @@ $_FoundStationsSector
             <match knownto="$Ship.owner"/>
             <match_gate_distance object="$Ship" min="0"/>
             <match_use_blacklist object="$Ship" type="blacklisttype.sectortravel" group="$blacklistgroup"/>
-            <match_use_blacklist object="$Ship" type="blacklisttype.sectoractivity" group="$blacklistgroup"/>
           </find_sector>
           <do_if value="global.$TradeSubscriptionExplorerSectorBlack_List? and @global.$TradeSubscriptionExplorerSectorBlack_List != null">
             <remove_from_list name="$__Sectors" list="global.$TradeSubscriptionExplorerSectorBlack_List"/>
@@ -78,12 +80,13 @@ $_FoundStationsSector
               <match mayattack="$Ship" negate="true"/>
               <match_relation_to faction="$Ship.owner" comparison="ge" relation="neutral"/>
               <match tradesknownto="$Ship.owner" negate="true"/>
+              <match_use_blacklist object="$Ship" type="blacklisttype.sectoractivity" group="$blacklistgroup"/>
             </find_station>
 
             <!-- sort and get nearest -->
             <do_if value="$__FoundStations.count gt 0">
               <do_if value="$__FoundStations.count gt 1">
-                <sort_list list="$__FoundStations" sortbyvalue="$Ship.distanceto.{loop.element}" sortdescending="true"/>
+                <sort_list list="$__FoundStations" sortbyvalue="$Ship.distanceto.{loop.element}"/>
               </do_if>
 
               <do_if value="$DEBUG gt 0">
@@ -98,7 +101,7 @@ $_FoundStationsSector
               </do_if>
 
               <!-- Return value ~ $_UnknownObjects !! -->
-              <set_value name="$_FoundStations" exact="$__FoundStations"/>
+              <set_value name="$_FoundStation" exact="$__FoundStations.{1}"/>
               <set_value name="$_FoundStationsSector" exact="$__Sector__"/>
               <break/>
             </do_if>

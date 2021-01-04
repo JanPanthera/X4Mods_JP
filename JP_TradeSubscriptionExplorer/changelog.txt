@@ -1,11 +1,14 @@
-~ repo update ~ 2021-01-03 ~
-~ 04:50 PM ~
+~ Release V1.10 ~
+~ repo update - 2021-01-04 ~
+~ 11:57 AM ~
 
-~ General refactoring and updating to new learned techniques
+~ Added: sector activity blacklist to blacklist stations from specific factions..
+~ Changed: sector travel blacklist to blacklist sectors from specific factions..
 ~ Changed: fleet creation.. create a fleet.. assignment is not relevant..
-rename the fleet to "TradeSubscriptionExplorerRoutine".. give the leader the TradeSubscriptionExplorerG routine.. that's it
-~ Changed: removed options for Enemy Sectors, Friendly Sectors and Neutral Sectors..
-you can use x4's blacklists.. doing the same job.. and are vanilla
+rename the fleet to "TradeSubscriptionExplorerRoutine".. give the leader the TradeSubscriptionExplorerG routine..
 ~ Updated: Reworked.. Order Tag.. how it will added and removed again..
 ~ Updated: Reworked.. IdleReturnHome.. should work better.. internal..
 ~ Updated: ..language files restructuring.. added some translations.. (google translate)
+~ Removed: removed options for enemy sectors, friendly sectors and neutral Sectors..
+~ General refactoring and updating to new learned techniques.. 
+~ If you find any bugs.. please don't just tell.. it's not working.. tell me what's not working.. so i can fix it for you..
