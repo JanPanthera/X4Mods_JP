@@ -153,6 +153,7 @@
     <Xml Include="t\0001.xml" />
   </ItemGroup>
   <ItemGroup>
+    <Xsd Include="aiscripts\aiscripts.xsd" />
     <Xsd Include="JP_StationAutoCreditTransfer\md\md.xsd" />
     <Xsd Include="md\md.xsd" />
   </ItemGroup>

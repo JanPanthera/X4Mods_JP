@@ -1,2 +1,5 @@
-~ Fixed: set_object_max_budget got the amount in Credits not cents
-~ Fixed: ??? ignored the "disable transfer" mods ???
+~ repo update - 2021-01-05 ~
+~ 01:53 PM ~
+
+~ Changed: check interval to 300s
+~ Gigantic refactoring and updating to new learned techniques..
