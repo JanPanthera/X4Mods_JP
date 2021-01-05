@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<aiscript name="JP_StationAutoCreditTransfer" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd" version="1">
+
+  <order id="JP_StationAutoCreditTransfer" name="_{8888888, 1997}StationAutoCreditTransfer{8888888, 1999}" category="navigation" infinite="true">
+    <params>
+      <param name="SACT_PLAYER_BUDGET_CAP" text="$SACT_PlayerBudgetCap" type="money" default="(1000000)Cr">
+        <input_param name="min" value="(10000)Cr"/>
+        <input_param name="max" value="(1000000000)Cr"/>
+      </param>
+      <param name="SACT_ADDITIONAL_STATION_BUDGET" text="$SACT_AdditionalStationBudget" type="money" default="(1000000)Cr">
+        <input_param name="min" value="(10000)Cr"/>
+        <input_param name="max" value="(1000000000)Cr"/>
+      </param>
+      <param name="SACT_STATION_TO_BUILDSTORAGE" text="$SACT_StationToBuildstorage" type="bool" default="true"/>
+      <param name="SACT_STATION_TO_PLAYER" text="$SACT_StationToPlayer" type="bool" default="true"/>
+      <param name="SACT_BUILDSTORAGE_TO_STATION" text="$SACT_BuildstorageToStation" type="bool" default="true"/>
+      <param name="SACT_BUILDSTORAGE_TO_PLAYER" text="$SACT_BuildstorageToPlayer" type="bool" default="true"/>
+      <param name="SACT_PLAYER_TO_STATION" text="$SACT_PlayerToStation" type="bool" default="true"/>
+      <param name="SACT_PLAYER_TO_BUILDSTORAGE" text="$SACT_PlayerToBuildstorage" type="bool" default="true"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="PLACE_HOLDER_998" text="----------------------------------" type="object" default="null">
+        <input_param name="class" value="[]"/>
+      </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="DEBUG" text="Debug" type="number" default="0" advanced="true">
+        <input_param name="step" value="100"/>
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="100"/>
+      </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="PLACE_HOLDER_999" text="----------------------------------" type="object" default="null" advanced="true">
+        <input_param name="class" value="[]"/>
+      </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    </params>
+    <skill min="0"/>
+    <requires>
+      <match shiptype="shiptype.lasertower" negate="true"/>
+    </requires>
+  </order>
+
+  <interrupts>
+    <handler ref="SectorChangeHandler"/>
+    <handler ref="TargetInvalidHandler"/>
+    <handler ref="AttackHandler"/>
+    <handler ref="MissileLockHandler"/>
+    <handler ref="ScannedHandler"/>
+    <handler ref="InspectedHandler"/>
+    <handler ref="FoundAbandonedHandler"/>
+    <handler ref="FoundLockboxHandler"/>
+    <handler ref="ResupplyHandler"/>
+    <handler ref="JobRemoveRequestHandler"/>
+  </interrupts>
+
+  <init>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <set_value name="$Ship" exact="this.ship"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <do_if value="$DEBUG">
+      <set_value name="$DebugFolderName" exact="'JP_StationAutoCreditTransfer.logs'"/>
+      <set_value name="$DebugScriptName" exact="'JP_StationAutoCreditTransfer'"/>
+      <set_value name="$DebugFileName" exact="$Ship.idcode + '.' + $DebugScriptName + '.xml.log'"/>
+      <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'" append="false"/>
+      <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Started ~~' + '\n'"/>
+    </do_if>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  </init>
+
+  <attention min="unknown">
+    <actions>
+
+      <label name="INIT_LBL"/>
+      <wait min="500ms" max="1000ms"/>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <label name="RESUME_LBL"/>
+      <wait min="500ms" max="1000ms"/>
+
+      <set_value name="global.$SACT_PlayerBudgetCap" exact="$SACT_PLAYER_BUDGET_CAP"/>
+      <set_value name="global.$SACT_AdditionalStationBudget" exact="$SACT_ADDITIONAL_STATION_BUDGET"/>
+      <set_value name="global.$SACT_StationToBuildstorage" exact="$SACT_STATION_TO_BUILDSTORAGE"/>
+      <set_value name="global.$SACT_StationToPlayer" exact="$SACT_STATION_TO_PLAYER"/>
+      <set_value name="global.$SACT_BuildstorageToStation" exact="$SACT_BUILDSTORAGE_TO_STATION"/>
+      <set_value name="global.$SACT_BuildstorageToPlayer" exact="$SACT_BUILDSTORAGE_TO_PLAYER"/>
+      <set_value name="global.$SACT_PlayerToStation" exact="$SACT_PLAYER_TO_STATION"/>
+      <set_value name="global.$SACT_PlayerToBuildstorage" exact="$SACT_PLAYER_TO_BUILDSTORAGE"/>
+
+      <resume label="FINISH_LBL"/>
+      <resume label="RESUME_LBL"/>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <label name="FINISH_LBL"/>
+      <wait min="500ms" max="1000ms"/>
+      <do_if value="$DEBUG gt 0">
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Finished ~~'"/>
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+      </do_if>
+
+      <label name="CLEANUP_LBL"/>
+      <wait min="500ms" max="1000ms"/>
+      <remove_value name="$DebugFileName"/>
+      <remove_value name="$DebugScriptName"/>
+      <remove_value name="$DebugFolderName"/>
+      <remove_value name="$Ship"/>
+
+      <label name="END_LBL"/>
+      <wait min="500ms" max="1000ms"/>
+      <set_order_syncpoint_reached order="this.ship.defaultorder"/>
+      <cancel_order order="this.ship.defaultorder"/>
+
+    </actions>
+  </attention>
+
+  <on_abort>
+    <remove_value name="$DebugFileName"/>
+    <remove_value name="$DebugScriptName"/>
+    <remove_value name="$DebugFolderName"/>
+    <remove_value name="$Ship"/>
+  </on_abort>
+
+</aiscript>

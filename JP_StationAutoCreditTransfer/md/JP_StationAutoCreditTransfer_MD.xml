@@ -10,7 +10,7 @@
       <actions>
 
         <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-        <set_value name="$DEBUG" exact="100"/>
+        <set_value name="$DEBUG" exact="0"/>
         <do_if value="$DEBUG gt 0">
           <set_value name="$DebugScriptName" exact="'JP_SACT_CheckStation_MD'"/>
           <set_value name="$DebugFolderName" exact="'JP_StationAutoCreditTransfer_MD.logs'"/>

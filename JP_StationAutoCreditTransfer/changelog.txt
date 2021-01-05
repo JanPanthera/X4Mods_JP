@@ -1,6 +1,9 @@
 ~ repo update - 2021-01-05 ~
-~ 01:55 PM ~
+~ 02:41 PM ~
 
+~ Added: global variables for setting the player money cap and additional station budget..
+~ Added: global variables for activating/disabling transfers like station to buildstorage..
+~ Added: AI default behaviour script to change these global variables
 ~ Added: add "NoAutoTransfer" to the name of your station to let the script ignore that station..
 ~ Changed: check interval to 300s
 ~ Gigantic refactoring and updating to new learned techniques..

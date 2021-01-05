@@ -4,5 +4,7 @@
   <page id="8888888" voice="no">
     <!-- JP_StationAutoCreditTransfer -->
     <t id="1800">Money transferred to</t>
+    <t id="1797">\033#B600CCCC#</t>
+    <t id="1799">\033X</t>
   </page>
 </language>

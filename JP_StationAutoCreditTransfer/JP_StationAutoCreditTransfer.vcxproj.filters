@@ -29,7 +29,6 @@
     <Xml Include="JP_StationAutoCreditTransfer\t\0001-L086.xml" />
     <Xml Include="JP_StationAutoCreditTransfer\t\0001-L088.xml" />
     <Xml Include="content.xml" />
-    <Xml Include="md\JP_StationAutoCreditTransfer.xml" />
     <Xml Include="t\0001-L007.xml" />
     <Xml Include="t\0001-L033.xml" />
     <Xml Include="t\0001-L034.xml" />
@@ -42,6 +41,8 @@
     <Xml Include="t\0001-L086.xml" />
     <Xml Include="t\0001-L088.xml" />
     <Xml Include="t\0001.xml" />
+    <Xml Include="md\JP_StationAutoCreditTransfer_MD.xml" />
+    <Xml Include="aiscripts\JP_StationAutoCreditTransfer.xml" />
   </ItemGroup>
   <ItemGroup>
     <Xsd Include="JP_StationAutoCreditTransfer\md\md.xsd">
