@@ -1,5 +1,6 @@
 ~ repo update - 2021-01-05 ~
-~ 01:53 PM ~
+~ 01:55 PM ~
 
+~ Added: add "NoAutoTransfer" to the name of your station to let the script ignore that station..
 ~ Changed: check interval to 300s
 ~ Gigantic refactoring and updating to new learned techniques..
