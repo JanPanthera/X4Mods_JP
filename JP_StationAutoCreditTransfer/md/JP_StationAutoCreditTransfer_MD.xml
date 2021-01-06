@@ -3,7 +3,7 @@
 <mdscript name="JP_StationAutoCreditTransfer_MD" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="md.xsd">
   <cues>
 
-    <cue name="JP_SACT_CheckStation_MD" instantiate="true" checkinterval="300s">
+    <cue name="JP_SACT_CheckStation_MD" instantiate="true" checkinterval="600s">
       <!--<conditions>
         <event_player_activated_external_view/>
       </conditions>-->
@@ -24,7 +24,7 @@
         <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
         <!-- global.$SACT_PlayerBudgetCap ~ Default 1.000.000 Cr ~ Only money above amount global.$SACT_PlayerBudgetCap will be transferred automatically from Player to ... -->
         <set_value chance="if (not global.$SACT_PlayerBudgetCap?) then 100 else 0" name="global.$SACT_PlayerBudgetCap" exact="(1000000)Cr"/>
-        <!-- $AdditionalStationMoneyCap ~ Default 1.000.000Cr ~ Money which will be added to the Stations needed budget -->
+        <!-- global.$SACT_AdditionalStationBudget ~ Default 1.000.000Cr ~ Money which will be added to the Stations needed budget -->
         <set_value chance="if (not global.$SACT_AdditionalStationBudget?) then 100 else 0" name="global.$SACT_AdditionalStationBudget" exact="(1000000)Cr"/>
         <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
         <set_value chance="if (not global.$SACT_StationToBuildstorage?) then 100 else 0" name="global.$SACT_StationToBuildstorage" exact="true"/>

@@ -4,20 +4,20 @@
 
   <order id="JP_StationAutoCreditTransfer" name="_{8888888, 1997}StationAutoCreditTransfer{8888888, 1999}" category="navigation" infinite="true">
     <params>
-      <param name="SACT_PLAYER_BUDGET_CAP" text="$SACT_PlayerBudgetCap" type="money" default="(1000000)Cr">
+      <param name="SACT_PLAYER_BUDGET_CAP" text="$SACT_PlayerBudgetCap" type="money" default="if global.$SACT_PlayerBudgetCap? then global.$SACT_PlayerBudgetCap else (1000000)Cr">
         <input_param name="min" value="(10000)Cr"/>
         <input_param name="max" value="(1000000000)Cr"/>
       </param>
-      <param name="SACT_ADDITIONAL_STATION_BUDGET" text="$SACT_AdditionalStationBudget" type="money" default="(1000000)Cr">
+      <param name="SACT_ADDITIONAL_STATION_BUDGET" text="$SACT_AdditionalStationBudget" type="money" default="if global.$SACT_AdditionalStationBudget? then global.$SACT_AdditionalStationBudget else (1000000)Cr">
         <input_param name="min" value="(10000)Cr"/>
         <input_param name="max" value="(1000000000)Cr"/>
       </param>
-      <param name="SACT_STATION_TO_BUILDSTORAGE" text="$SACT_StationToBuildstorage" type="bool" default="true"/>
-      <param name="SACT_STATION_TO_PLAYER" text="$SACT_StationToPlayer" type="bool" default="true"/>
-      <param name="SACT_BUILDSTORAGE_TO_STATION" text="$SACT_BuildstorageToStation" type="bool" default="true"/>
-      <param name="SACT_BUILDSTORAGE_TO_PLAYER" text="$SACT_BuildstorageToPlayer" type="bool" default="true"/>
-      <param name="SACT_PLAYER_TO_STATION" text="$SACT_PlayerToStation" type="bool" default="true"/>
-      <param name="SACT_PLAYER_TO_BUILDSTORAGE" text="$SACT_PlayerToBuildstorage" type="bool" default="true"/>
+      <param name="SACT_STATION_TO_BUILDSTORAGE" text="$SACT_StationToBuildstorage" type="bool" default="if global.$SACT_StationToBuildstorage? then global.$SACT_StationToBuildstorage else true"/>
+      <param name="SACT_STATION_TO_PLAYER" text="$SACT_StationToPlayer" type="bool" default="if global.$SACT_StationToPlayer? then global.$SACT_StationToPlayer else true"/>
+      <param name="SACT_BUILDSTORAGE_TO_STATION" text="$SACT_BuildstorageToStation" type="bool" default="if global.$SACT_BuildstorageToStation? then global.$SACT_BuildstorageToStation else true"/>
+      <param name="SACT_BUILDSTORAGE_TO_PLAYER" text="$SACT_BuildstorageToPlayer" type="bool" default="if global.$SACT_BuildstorageToPlayer? then global.$SACT_BuildstorageToPlayer else true"/>
+      <param name="SACT_PLAYER_TO_STATION" text="$SACT_PlayerToStation" type="bool" default="if global.$SACT_PlayerToStation? then global.$SACT_PlayerToStation else true"/>
+      <param name="SACT_PLAYER_TO_BUILDSTORAGE" text="$SACT_PlayerToBuildstorage" type="bool" default="if global.$SACT_PlayerToBuildstorage? then global.$SACT_PlayerToBuildstorage else true"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="PLACE_HOLDER_998" text="----------------------------------" type="object" default="null">
         <input_param name="class" value="[]"/>
