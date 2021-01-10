@@ -30,12 +30,13 @@
     <Xml Include="libraries\icons.xml" />
     <Xml Include="libraries\experiences.xml" />
     <Xml Include="t\0001.xml" />
-    <Xml Include="aiscripts\JP_GetNearestObjectToMark.xml" />
     <Xml Include="aiscripts\JP_IdleReturnHome_SD.xml" />
     <Xml Include="aiscripts\JP_PlaceSatelliteToObject_SD.xml" />
     <Xml Include="aiscripts\JP_ResupplySatellites_SD.xml" />
     <Xml Include="aiscripts\JP_SatelliteDropperS.xml" />
     <Xml Include="aiscripts\JP_SatelliteDropperG.xml" />
+    <Xml Include="md\JP_SatelliteDropper_MD.xml" />
+    <Xml Include="aiscripts\JP_Lib_GetNearestObjectToMark_SD.xml" />
   </ItemGroup>
   <ItemGroup>
     <Xsd Include="md\md.xsd">

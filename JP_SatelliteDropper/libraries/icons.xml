@@ -3,5 +3,6 @@
 <icons>
   <icon name="order_jp_satellitedropperg" texture="assets\fx\gui\textures\order\order_explore.tga" height="32" width="32"></icon>
   <icon name="order_jp_satellitedroppers" texture="assets\fx\gui\textures\order\order_explore.tga" height="32" width="32"></icon>
+  <icon name="order_jp_placesatellitetoobject_sd" texture="assets\fx\gui\textures\order\order_deployobjectatposition.tga" height="32" width="32"></icon>
   <icon name="order_jp_idlereturnhome_sd" texture="assets\fx\gui\textures\order\order_wait.tga" height="32" width="32"></icon>
 </icons>

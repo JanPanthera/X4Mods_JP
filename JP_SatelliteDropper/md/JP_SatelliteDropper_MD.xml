@@ -1,0 +1,428 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<mdscript name="JP_SatelliteDropper_MD" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="md.xsd">
+  <cues>
+
+    <cue name="JP_SD_Debug_MD" instantiate="true" checkinterval="2s">
+      <actions>
+
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <set_value name="$DEBUG" exact="1"/>
+        <do_if value="$DEBUG gt 0">
+          <set_value name="$DebugScriptName" exact="'JP_SD_Debug_MD'"/>
+          <set_value name="$DebugFolderName" exact="'JP_SatelliteDropper.logs'"/>
+          <set_value name="$DebugFileName" exact="$DebugScriptName + '.xml.log'"/>
+          <debug_to_file append="false" directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Started ~~' + '\n'"/>
+        </do_if>
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+        <do_if value="$DEBUG gt 0">
+
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'@global.$SatelliteDropperShips_Table.keys.list.count: ' + @global.$SatelliteDropperShips_Table.keys.list.count"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <do_if value="@global.$SatelliteDropperShips_Table != null">
+            <do_for_each name="$_Ship" valuename="$_Sector" in="@global.$SatelliteDropperShips_Table">
+              <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~ $_Ship.knownname: ' + @$_Ship.knownname"/>
+              <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~ $_Sector.knownname: ' + @$_Sector.knownname"/>
+            </do_for_each>
+          </do_if>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'@global.$SatelliteDropperSectorBlack_List.count : ' + @global.$SatelliteDropperSectorBlack_List.count"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <do_if value="global.$SatelliteDropperSectorBlack_List?">
+            <do_for_each name="$_Sector" in="@global.$SatelliteDropperSectorBlack_List">
+              <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~ Sector: %1 ~~ [%2].'.[@$_Sector.knownname, @$_Sector.owner.knownname]"/>
+            </do_for_each>
+          </do_if>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'@global.$SatelliteDropperS_Settings.count: ' + @global.$SatelliteDropperS_Settings.count"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <do_if value="global.$SatelliteDropperS_Settings?">
+            <do_for_each name="$_Entry" in="global.$SatelliteDropperS_Settings">
+              <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="' ~ ' + $_Entry"/>
+            </do_for_each>
+          </do_if>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'@global.$SatelliteDropperG_Settings.count: ' + @global.$SatelliteDropperG_Settings.count"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <do_if value="global.$SatelliteDropperG_Settings?">
+            <do_for_each name="$_Entry" in="global.$SatelliteDropperG_Settings">
+              <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="' ~ ' + $_Entry"/>
+            </do_for_each>
+          </do_if>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+
+        </do_if>
+
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <do_if value="$DEBUG gt 0">
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Finished ~~'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+          <remove_value name="$DebugFileName"/>
+          <remove_value name="$DebugFolderName"/>
+          <remove_value name="$DebugScriptName"/>
+        </do_if>
+        <remove_value name="$DEBUG"/>
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      </actions>
+    </cue>
+
+    <cue name="JP_SD_ManageFleet_MD" instantiate="true" checkinterval="1ms">
+      <actions>
+
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <set_value name="$DEBUG" exact="0"/>
+        <do_if value="$DEBUG gt 0">
+          <set_value name="$DebugScriptName" exact="'JP_SD_ManageFleet_MD'"/>
+          <set_value name="$DebugFolderName" exact="'JP_SatelliteDropper.logs'"/>
+          <set_value name="$DebugFileName" exact="$DebugScriptName + '.xml.log'"/>
+          <debug_to_file append="false" directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Started ~~' + '\n'"/>
+        </do_if>
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+        <do_if value="global.$SatelliteDropperShips_Table? and @global.$SatelliteDropperShips_Table != null and @global.$SatelliteDropperShips_Table.keys.list.count gt 0">
+          <do_for_each name="$_SatelliteDropperShip" in="global.$SatelliteDropperShips_Table">
+            <do_if value="@$_SatelliteDropperShip.defaultorder.id == 'JP_SatelliteDropperG' and $_SatelliteDropperShip.subordinates.count gt 0">
+              <substitute_text source="$_SatelliteDropperShip.fleet.name" text="$_FleetName">
+                <replace string="'SatelliteDropperRoutine'" with="''"/>
+              </substitute_text>
+              <do_if value="$_SatelliteDropperShip.fleet.name != $_FleetName">
+                <do_for_each name="$_Subordinate" in="$_SatelliteDropperShip.subordinates">
+                  <do_if value="$_Subordinate.isunit">
+                    <continue/>
+                  </do_if>
+                  <do_if value="$_Subordinate.defaultorder.id != $_SatelliteDropperShip.defaultorder.id or $_Subordinate.assignment != assignment.assist">
+                    <set_object_commander object="$_Subordinate" commander="$_SatelliteDropperShip" assignment="assignment.assist"/>
+                    <create_order object="$_Subordinate" id="$_SatelliteDropperShip.defaultorder.id" default="true">
+                      <param name="RESTOCK_SATELLITES_MK1" value="$_SatelliteDropperShip.defaultorder.$RESTOCK_SATELLITES_MK1"/>
+                      <param name="RESTOCK_SATELLITES_MK2" value="$_SatelliteDropperShip.defaultorder.$RESTOCK_SATELLITES_MK2"/>
+                      <param name="RESTOCK_AMOUNT" value="$_SatelliteDropperShip.defaultorder.$RESTOCK_AMOUNT"/>
+                      <param name="JUMP_GATES" value="$_SatelliteDropperShip.defaultorder.$JUMP_GATES"/>
+                      <param name="ACTIVE_JUMP_GATES" value="$_SatelliteDropperShip.defaultorder.$ACTIVE_JUMP_GATES"/>
+                      <param name="INACTIVE_JUMP_GATES" value="$_SatelliteDropperShip.defaultorder.$INACTIVE_JUMP_GATES"/>
+                      <param name="ACCELERATORS" value="$_SatelliteDropperShip.defaultorder.$ACCELERATORS"/>
+                      <param name="ACTIVE_ACCELERATORS" value="$_SatelliteDropperShip.defaultorder.$ACTIVE_ACCELERATORS"/>
+                      <param name="INACTIVE_ACCELERATORS" value="$_SatelliteDropperShip.defaultorder.$INACTIVE_ACCELERATORS"/>
+                      <param name="STATIONS" value="$_SatelliteDropperShip.defaultorder.$STATIONS"/>
+                      <param name="WHARFS" value="$_SatelliteDropperShip.defaultorder.$WHARFS"/>
+                      <param name="SHIPYARDS" value="$_SatelliteDropperShip.defaultorder.$SHIPYARDS"/>
+                      <param name="EQUIPMENTDOCKS" value="$_SatelliteDropperShip.defaultorder.$EQUIPMENTDOCKS"/>
+                      <param name="TRADING_STATIONS" value="$_SatelliteDropperShip.defaultorder.$TRADING_STATIONS"/>
+                      <param name="DEFENCE_STATIONS" value="$_SatelliteDropperShip.defaultorder.$DEFENCE_STATIONS"/>
+                      <param name="PIRATE_BASES" value="$_SatelliteDropperShip.defaultorder.$PIRATE_BASES"/>
+                      <param name="FACTION_HEADQUARTERS" value="$_SatelliteDropperShip.defaultorder.$FACTION_HEADQUARTERS"/>
+                      <param name="NON_SPECIAL_STATIONS" value="$_SatelliteDropperShip.defaultorder.$NON_SPECIAL_STATIONS"/>
+                      <param name="IDLE" value="$_SatelliteDropperShip.defaultorder.$IDLE"/>
+                      <param name="IDLE_TIME" value="$_SatelliteDropperShip.defaultorder.$IDLE_TIME"/>
+                      <param name="IDLE_FOLLOW" value="$_SatelliteDropperShip.defaultorder.$IDLE_FOLLOW"/>
+                      <param name="WHO_TO_FOLLOW" value="$_SatelliteDropperShip.defaultorder.$WHO_TO_FOLLOW"/>
+                      <param name="IDLE_DOCKING" value="$_SatelliteDropperShip.defaultorder.$IDLE_DOCKING"/>
+                      <param name="WHERE_TO_DOCK" value="$_SatelliteDropperShip.defaultorder.$WHERE_TO_DOCK"/>
+                      <param name="IDLE_RANDOM_MOVEMENT" value="$_SatelliteDropperShip.defaultorder.$IDLE_RANDOM_MOVEMENT"/>
+                      <param name="IN_WHICH_SECTOR" value="$_SatelliteDropperShip.defaultorder.$IN_WHICH_SECTOR"/>
+                      <param name="IDLE_MOVE_TO" value="$_SatelliteDropperShip.defaultorder.$IDLE_MOVE_TO"/>
+                      <param name="WHERE_TO_MOVE" value="$_SatelliteDropperShip.defaultorder.$WHERE_TO_MOVE"/>
+                      <param name="ADD_ORDER_TAG" value="$_SatelliteDropperShip.defaultorder.$ADD_ORDER_TAG"/>
+                      <param name="ORDER_TAG_POSITION" value="$_SatelliteDropperShip.defaultorder.$ORDER_TAG_POSITION"/>
+                      <param name="DEBUG" value="$_SatelliteDropperShip.defaultorder.$DEBUG"/>
+                    </create_order>
+                  </do_if>
+                  <do_else>
+                    <do_if value="$_Subordinate.defaultorder.$RESTOCK_SATELLITES_MK1 != $_SatelliteDropperShip.defaultorder.$RESTOCK_SATELLITES_MK1">
+                      <edit_order_param order="$_Subordinate.defaultorder" param="'RESTOCK_SATELLITES_MK1'" value="$_SatelliteDropperShip.defaultorder.$RESTOCK_SATELLITES_MK1"/>
+                    </do_if>
+                    <do_if value="$_Subordinate.defaultorder.$RESTOCK_SATELLITES_MK2 != $_SatelliteDropperShip.defaultorder.$RESTOCK_SATELLITES_MK2">
+                      <edit_order_param order="$_Subordinate.defaultorder" param="'RESTOCK_SATELLITES_MK2'" value="$_SatelliteDropperShip.defaultorder.$RESTOCK_SATELLITES_MK2"/>
+                    </do_if>
+                    <do_if value="$_Subordinate.defaultorder.$RESTOCK_AMOUNT != $_SatelliteDropperShip.defaultorder.$RESTOCK_AMOUNT">
+                      <edit_order_param order="$_Subordinate.defaultorder" param="'RESTOCK_AMOUNT'" value="$_SatelliteDropperShip.defaultorder.$RESTOCK_AMOUNT"/>
+                    </do_if>
+                    <do_if value="$_Subordinate.defaultorder.$JUMP_GATES != $_SatelliteDropperShip.defaultorder.$JUMP_GATES">
+                      <edit_order_param order="$_Subordinate.defaultorder" param="'JUMP_GATES'" value="$_SatelliteDropperShip.defaultorder.$JUMP_GATES"/>
+                    </do_if>
+                    <do_if value="$_Subordinate.defaultorder.$ACTIVE_JUMP_GATES != $_SatelliteDropperShip.defaultorder.$ACTIVE_JUMP_GATES">
+                      <edit_order_param order="$_Subordinate.defaultorder" param="'ACTIVE_JUMP_GATES'" value="$_SatelliteDropperShip.defaultorder.$ACTIVE_JUMP_GATES"/>
+                    </do_if>
+                    <do_if value="$_Subordinate.defaultorder.$INACTIVE_JUMP_GATES != $_SatelliteDropperShip.defaultorder.$INACTIVE_JUMP_GATES">
+                      <edit_order_param order="$_Subordinate.defaultorder" param="'INACTIVE_JUMP_GATES'" value="$_SatelliteDropperShip.defaultorder.$INACTIVE_JUMP_GATES"/>
+                    </do_if>
+                    <do_if value="$_Subordinate.defaultorder.$ACCELERATORS != $_SatelliteDropperShip.defaultorder.$ACCELERATORS">
+                      <edit_order_param order="$_Subordinate.defaultorder" param="'ACCELERATORS'" value="$_SatelliteDropperShip.defaultorder.$ACCELERATORS"/>
+                    </do_if>
+                    <do_if value="$_Subordinate.defaultorder.$ACTIVE_ACCELERATORS != $_SatelliteDropperShip.defaultorder.$ACTIVE_ACCELERATORS">
+                      <edit_order_param order="$_Subordinate.defaultorder" param="'ACTIVE_ACCELERATORS'" value="$_SatelliteDropperShip.defaultorder.$ACTIVE_ACCELERATORS"/>
+                    </do_if>
+                    <do_if value="$_Subordinate.defaultorder.$INACTIVE_ACCELERATORS != $_SatelliteDropperShip.defaultorder.$INACTIVE_ACCELERATORS">
+                      <edit_order_param order="$_Subordinate.defaultorder" param="'INACTIVE_ACCELERATORS'" value="$_SatelliteDropperShip.defaultorder.$INACTIVE_ACCELERATORS"/>
+                    </do_if>
+                    <do_if value="$_Subordinate.defaultorder.$STATIONS != $_SatelliteDropperShip.defaultorder.$STATIONS">
+                      <edit_order_param order="$_Subordinate.defaultorder" param="'STATIONS'" value="$_SatelliteDropperShip.defaultorder.$STATIONS"/>
+                    </do_if>
+                    <do_if value="$_Subordinate.defaultorder.$WHARFS != $_SatelliteDropperShip.defaultorder.$WHARFS">
+                      <edit_order_param order="$_Subordinate.defaultorder" param="'WHARFS'" value="$_SatelliteDropperShip.defaultorder.$WHARFS"/>
+                    </do_if>
+                    <do_if value="$_Subordinate.defaultorder.$SHIPYARDS != $_SatelliteDropperShip.defaultorder.$SHIPYARDS">
+                      <edit_order_param order="$_Subordinate.defaultorder" param="'SHIPYARDS'" value="$_SatelliteDropperShip.defaultorder.$SHIPYARDS"/>
+                    </do_if>
+                    <do_if value="$_Subordinate.defaultorder.$EQUIPMENTDOCKS != $_SatelliteDropperShip.defaultorder.$EQUIPMENTDOCKS">
+                      <edit_order_param order="$_Subordinate.defaultorder" param="'EQUIPMENTDOCKS'" value="$_SatelliteDropperShip.defaultorder.$EQUIPMENTDOCKS"/>
+                    </do_if>
+                    <do_if value="$_Subordinate.defaultorder.$TRADING_STATIONS != $_SatelliteDropperShip.defaultorder.$TRADING_STATIONS">
+                      <edit_order_param order="$_Subordinate.defaultorder" param="'TRADING_STATIONS'" value="$_SatelliteDropperShip.defaultorder.$TRADING_STATIONS"/>
+                    </do_if>
+                    <do_if value="$_Subordinate.defaultorder.$DEFENCE_STATIONS != $_SatelliteDropperShip.defaultorder.$DEFENCE_STATIONS">
+                      <edit_order_param order="$_Subordinate.defaultorder" param="'DEFENCE_STATIONS'" value="$_SatelliteDropperShip.defaultorder.$DEFENCE_STATIONS"/>
+                    </do_if>
+                    <do_if value="$_Subordinate.defaultorder.$PIRATE_BASES != $_SatelliteDropperShip.defaultorder.$PIRATE_BASES">
+                      <edit_order_param order="$_Subordinate.defaultorder" param="'PIRATE_BASES'" value="$_SatelliteDropperShip.defaultorder.$PIRATE_BASES"/>
+                    </do_if>
+                    <do_if value="$_Subordinate.defaultorder.$FACTION_HEADQUARTERS != $_SatelliteDropperShip.defaultorder.$FACTION_HEADQUARTERS">
+                      <edit_order_param order="$_Subordinate.defaultorder" param="'FACTION_HEADQUARTERS'" value="$_SatelliteDropperShip.defaultorder.$FACTION_HEADQUARTERS"/>
+                    </do_if>
+                    <do_if value="$_Subordinate.defaultorder.$NON_SPECIAL_STATIONS != $_SatelliteDropperShip.defaultorder.$NON_SPECIAL_STATIONS">
+                      <edit_order_param order="$_Subordinate.defaultorder" param="'NON_SPECIAL_STATIONS'" value="$_SatelliteDropperShip.defaultorder.$NON_SPECIAL_STATIONS"/>
+                    </do_if>
+                    <do_if value="$_Subordinate.defaultorder.$IDLE != $_SatelliteDropperShip.defaultorder.$IDLE">
+                      <edit_order_param order="$_Subordinate.defaultorder" param="'IDLE'" value="$_SatelliteDropperShip.defaultorder.$IDLE"/>
+                    </do_if>
+                    <do_if value="$_Subordinate.defaultorder.$IDLE_TIME != $_SatelliteDropperShip.defaultorder.$IDLE_TIME">
+                      <edit_order_param order="$_Subordinate.defaultorder" param="'IDLE_TIME'" value="$_SatelliteDropperShip.defaultorder.$IDLE_TIME"/>
+                    </do_if>
+                    <do_if value="$_Subordinate.defaultorder.$IDLE_FOLLOW != $_SatelliteDropperShip.defaultorder.$IDLE_FOLLOW">
+                      <edit_order_param order="$_Subordinate.defaultorder" param="'IDLE_FOLLOW'" value="$_SatelliteDropperShip.defaultorder.$IDLE_FOLLOW"/>
+                    </do_if>
+                    <do_if value="$_Subordinate.defaultorder.$WHO_TO_FOLLOW != $_SatelliteDropperShip.defaultorder.$WHO_TO_FOLLOW">
+                      <edit_order_param order="$_Subordinate.defaultorder" param="'WHO_TO_FOLLOW'" value="$_SatelliteDropperShip.defaultorder.$WHO_TO_FOLLOW"/>
+                    </do_if>
+                    <do_if value="$_Subordinate.defaultorder.$IDLE_DOCKING != $_SatelliteDropperShip.defaultorder.$IDLE_DOCKING">
+                      <edit_order_param order="$_Subordinate.defaultorder" param="'IDLE_DOCKING'" value="$_SatelliteDropperShip.defaultorder.$IDLE_DOCKING"/>
+                    </do_if>
+                    <do_if value="$_Subordinate.defaultorder.$WHERE_TO_DOCK != $_SatelliteDropperShip.defaultorder.$WHERE_TO_DOCK">
+                      <edit_order_param order="$_Subordinate.defaultorder" param="'WHERE_TO_DOCK'" value="$_SatelliteDropperShip.defaultorder.$WHERE_TO_DOCK"/>
+                    </do_if>
+                    <do_if value="$_Subordinate.defaultorder.$IDLE_RANDOM_MOVEMENT != $_SatelliteDropperShip.defaultorder.$IDLE_RANDOM_MOVEMENT">
+                      <edit_order_param order="$_Subordinate.defaultorder" param="'IDLE_RANDOM_MOVEMENT'" value="$_SatelliteDropperShip.defaultorder.$IDLE_RANDOM_MOVEMENT"/>
+                    </do_if>
+                    <do_if value="$_Subordinate.defaultorder.$IN_WHICH_SECTOR != $_SatelliteDropperShip.defaultorder.$IN_WHICH_SECTOR">
+                      <edit_order_param order="$_Subordinate.defaultorder" param="'IN_WHICH_SECTOR'" value="$_SatelliteDropperShip.defaultorder.$IN_WHICH_SECTOR"/>
+                    </do_if>
+                    <do_if value="$_Subordinate.defaultorder.$IDLE_MOVE_TO != $_SatelliteDropperShip.defaultorder.$IDLE_MOVE_TO">
+                      <edit_order_param order="$_Subordinate.defaultorder" param="'IDLE_MOVE_TO'" value="$_SatelliteDropperShip.defaultorder.$IDLE_MOVE_TO"/>
+                    </do_if>
+                    <do_if value="$_Subordinate.defaultorder.$WHERE_TO_MOVE != $_SatelliteDropperShip.defaultorder.$WHERE_TO_MOVE">
+                      <edit_order_param order="$_Subordinate.defaultorder" param="'WHERE_TO_MOVE'" value="$_SatelliteDropperShip.defaultorder.$WHERE_TO_MOVE"/>
+                    </do_if>
+                    <do_if value="$_Subordinate.defaultorder.$ADD_ORDER_TAG != $_SatelliteDropperShip.defaultorder.$ADD_ORDER_TAG">
+                      <edit_order_param order="$_Subordinate.defaultorder" param="'ADD_ORDER_TAG'" value="$_SatelliteDropperShip.defaultorder.$ADD_ORDER_TAG"/>
+                    </do_if>
+                    <do_if value="$_Subordinate.defaultorder.$ORDER_TAG_POSITION != $_SatelliteDropperShip.defaultorder.$ORDER_TAG_POSITION">
+                      <edit_order_param order="$_Subordinate.defaultorder" param="'ORDER_TAG_POSITION'" value="$_SatelliteDropperShip.defaultorder.$ORDER_TAG_POSITION"/>
+                    </do_if>
+                    <do_if value="$_Subordinate.defaultorder.$DEBUG != $_SatelliteDropperShip.defaultorder.$DEBUG">
+                      <edit_order_param order="$_Subordinate.defaultorder" param="'DEBUG'" value="$_SatelliteDropperShip.defaultorder.$DEBUG"/>
+                    </do_if>
+                  </do_else>
+                </do_for_each>
+                <set_value name="$_FleetName" exact="'\033#FF03A1FC#' + 'SatelliteDropperRoutine'"/>
+                <do_if value="$_SatelliteDropperShip.fleet.name != $_FleetName">
+                  <set_object_fleet_name object="$_SatelliteDropperShip" name="$_FleetName"/>
+                </do_if>
+              </do_if>
+            </do_if>
+          </do_for_each>
+        </do_if>
+
+        <remove_value name="$_FoundShips"/>
+
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <do_if value="$DEBUG gt 0">
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Finished ~~'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+          <remove_value name="$DebugFileName"/>
+          <remove_value name="$DebugFolderName"/>
+          <remove_value name="$DebugScriptName"/>
+        </do_if>
+        <remove_value name="$DEBUG"/>
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      </actions>
+    </cue>
+
+    <cue name="JP_SD_SectorBlackList_Update_MD" instantiate="true" checkinterval="1ms">
+      <conditions>
+        <check_all>
+          <check_value value="@global.$SatelliteDropperShips_Table != null"/>
+          <check_value value="@global.$SatelliteDropperSectorBlack_List != null"/>
+        </check_all>
+      </conditions>
+      <actions>
+
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <set_value name="$DEBUG" exact="0"/>
+        <do_if value="$DEBUG gt 0">
+          <set_value name="$DebugScriptName" exact="'JP_SD_SectorBlackList_Update_MD'"/>
+          <set_value name="$DebugFolderName" exact="'JP_SatelliteDropper.logs'"/>
+          <set_value name="$DebugFileName" exact="$DebugScriptName + '.xml.log'"/>
+          <debug_to_file append="false" directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Started ~~' + '\n'"/>
+        </do_if>
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+        <!-- Adding sectors to the global blacklist -->
+        <do_if value="@global.$SatelliteDropperShips_Table != null and @global.$SatelliteDropperShips_Table.keys.list.count gt 0">
+          <do_if value="$DEBUG gt 0">
+            <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+            <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'TEST'"/>
+            <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+          </do_if>
+          <do_for_each valuename="$_Sector" in="global.$SatelliteDropperShips_Table">
+            <do_if value="@$_Sector != null and not global.$SatelliteDropperSectorBlack_List.indexof.{$_Sector}">
+              <append_to_list name="global.$SatelliteDropperSectorBlack_List" exact="$_Sector"/>
+            </do_if>
+          </do_for_each>
+        </do_if>
+
+        <!-- Removing sectors from the global blacklist -->
+        <do_if value="@global.$SatelliteDropperShips_Table != null and @global.$SatelliteDropperShips_Table.keys.list.count gt 0">
+          <do_for_each name="$_BlackListedSector" in="global.$SatelliteDropperSectorBlack_List" reverse="true">
+            <set_value name="$_WasInList" exact="false"/>
+            <do_for_each valuename="$_Sector" in="global.$SatelliteDropperShips_Table">
+              <do_if value="$_BlackListedSector == $_Sector">
+                <set_value name="$_WasInList" exact="true"/>
+                <break/>
+              </do_if>
+            </do_for_each>
+            <do_if value="not $_WasInList">
+              <remove_from_list name="global.$SatelliteDropperSectorBlack_List" exact="$_BlackListedSector"/>
+            </do_if>
+            <remove_value name="$_WasInList"/>
+          </do_for_each>
+        </do_if>
+
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <do_if value="$DEBUG gt 0">
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Finished ~~'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+          <remove_value name="$DebugFileName"/>
+          <remove_value name="$DebugFolderName"/>
+          <remove_value name="$DebugScriptName"/>
+        </do_if>
+        <remove_value name="$DEBUG"/>
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      </actions>
+    </cue>
+
+    <cue name="JP_SD_Cleanup_MD" instantiate="true" checkinterval="1ms">
+      <conditions>
+      </conditions>
+      <actions>
+
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <set_value name="$DEBUG" exact="0"/>
+        <do_if value="$DEBUG gt 0">
+          <set_value name="$DebugScriptName" exact="'JP_SD_Cleanup_MD'"/>
+          <set_value name="$DebugFolderName" exact="'JP_SatelliteDropper.logs'"/>
+          <set_value name="$DebugFileName" exact="$DebugScriptName + '.xml.log'"/>
+          <debug_to_file append="false" directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Started ~~' + '\n'"/>
+        </do_if>
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+        <remove_value name="global.$SatelliteDropperShips"/>
+        <remove_value name="global.$SatelliteDropperSectorBlackList"/>
+
+        <do_if value="global.$SatelliteDropperG_Settings? and @global.$SatelliteDropperG_Settings != null">
+          <do_if value="global.$SatelliteDropperG_Settings.count != 31">
+            <remove_value name="global.$SatelliteDropperG_Settings"/>
+          </do_if>
+        </do_if>
+
+        <do_if value="global.$SatelliteDropperS_Settings? and @global.$SatelliteDropperS_Settings != null">
+          <do_if value="global.$SatelliteDropperS_Settings.count != 31">
+            <remove_value name="global.$SatelliteDropperS_Settings"/>
+          </do_if>
+        </do_if>
+
+        <do_if value="@global.$SatelliteDropperShips_Table != null">
+          <do_if value="global.$SatelliteDropperShips_Table.keys.list.count le 0">
+            <remove_value name="global.$SatelliteDropperSectorBlack_List"/>
+            <remove_value name="global.$SatelliteDropperShips_Table"/>
+          </do_if>
+        </do_if>
+
+        <do_if value="global.$SatelliteDropperShips_Table? and @global.$SatelliteDropperShips_Table.keys.list.count gt 0">
+          <do_for_each name="$_Ship" valuename="$_Sector" in="global.$SatelliteDropperShips_Table">
+            <do_if value="@$_Ship.defaultorder.id != 'JP_SatelliteDropperS' and @$_Ship.defaultorder.id != 'JP_SatelliteDropperG'">
+
+              <!-- Get rid of the order tag -->
+              <substitute_text source="$_Ship.knownname" text="$_ResultName">
+                <replace string="('\033#FFA95908#' + '#SD-S ' + '\033X')" with="''"/>
+                <replace string="('\033#FFA95908#' + '#SD-G ' + '\033X')" with="''"/>
+                <replace string="('\033#FFA95908#' + ' #SD-S' + '\033X')" with="''"/>
+                <replace string="('\033#FFA95908#' + ' #SD-G' + '\033X')" with="''"/>
+              </substitute_text>
+              <do_if value="$_Ship.knownname != $_ResultName">
+                <set_object_name object="$_Ship" name="$_ResultName"/>
+              </do_if>
+
+              <!-- remove from global $SatelliteDropperShips_Table -->
+              <remove_value name="global.$SatelliteDropperShips_Table.{$_Ship}"/>
+
+              <!-- clearing the orders list -->
+              <cancel_all_orders object="$_Ship"/>
+
+            </do_if>
+          </do_for_each>
+        </do_if>
+
+        <create_list name="$_FoundPlayerShips"/>
+        <find_ship name="$_FoundPlayerShips" space="player.galaxy" multiple="true">
+          <match owner="faction.player"/>
+          <match checkoperational="true"/>
+          <match trueowner="faction.player"/>
+        </find_ship>
+        <do_if value="$_FoundPlayerShips.count gt 0">
+          <do_for_each name="$_FoundPlayerShip" in="$_FoundPlayerShips">
+            <do_if value="@$_FoundPlayerShip.defaultorder.id != 'JP_SatelliteDropperS' and @$_FoundPlayerShip.defaultorder.id != 'JP_SatelliteDropperG'">
+              <!-- Get rid of the order tag -->
+              <substitute_text source="$_FoundPlayerShip.knownname" text="$_ResultName">
+                <replace string="('\033#FFA95908#' + '#SD-S ' + '\033X')" with="''"/>
+                <replace string="('\033#FFA95908#' + '#SD-G ' + '\033X')" with="''"/>
+                <replace string="('\033#FFA95908#' + ' #SD-S' + '\033X')" with="''"/>
+                <replace string="('\033#FFA95908#' + ' #SD-G' + '\033X')" with="''"/>
+              </substitute_text>
+              <do_if value="$_FoundPlayerShip.knownname != $_ResultName">
+                <set_object_name object="$_FoundPlayerShip" name="$_ResultName"/>
+              </do_if>
+            </do_if>
+          </do_for_each>
+        </do_if>
+        <remove_value name="$_FoundPlayerShips"/>
+
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <do_if value="$DEBUG gt 0">
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Finished ~~'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+          <remove_value name="$DebugFileName"/>
+          <remove_value name="$DebugFolderName"/>
+          <remove_value name="$DebugScriptName"/>
+        </do_if>
+        <remove_value name="$DEBUG"/>
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      </actions>
+    </cue>
+
+  </cues>
+</mdscript>

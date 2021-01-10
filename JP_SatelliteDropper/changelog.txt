@@ -1,7 +1,15 @@
-~ TODO: satellite to object distance player configurable
-~ Added: Icon with blue path shown on map targeting the actual station
-~ Added: Icon with blue path shown on map targeting the actual idle object (following, docking) or Sector (moving randomly, moving to)
-~ Updated: Refactored
-~ Updated: Translation Files
-~ Updated: the order tag will first removed from the ships name now before it will added..
-~ Fixed: fix for the issue where the order tag will added every time the player changes an parameter from the order
+~ Release V1.20 ~
+~ repo update - 2021-01-10 ~
+~ 02:27 PM ~
+
+~ Added: sector activity blacklist to blacklist stations from specific factions..
+~ Added: sector travel blacklist to blacklist sectors from specific factions..
+~ Added: fleet creation.. create a fleet.. assignment is not relevant..
+~ Rename the fleet to "SatelliteDropperRoutine".. give the leader the _SatelliteDropperG default behaviour..
+~ Updated: Reworked.. Order Tag.. how it will added and removed again..
+~ Updated: Reworked.. IdleReturnHome.. should work better.. internal..
+~ Updated: ..language files restructuring.. added some translations.. (google translate)
+~ General refactoring and updating to new learned techniques..
+~ If you find any bugs.. please don't just tell.. it's not working.. tell me what's not working.. so i can fix it for you..
+
+~ Actual only Galaxy version is functioning...

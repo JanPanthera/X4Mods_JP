@@ -2,85 +2,106 @@
 
 <aiscript name="JP_SatelliteDropperG" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd">
 
-  <order id="JP_SatelliteDropperG" name="{8888888, 1497}SatelliteDropper - {8888888, 1499}{8888888, 1498}{20001, 901}{8888888, 1499}" category="navigation" infinite="true">
+  <order id="JP_SatelliteDropperG" name="_{8888888, 1497}SatelliteDropper - {8888888, 1499}{8888888, 1498}{20001, 901}{8888888, 1499}" category="navigation" infinite="true">
     <params>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="MK2" text="{8888888, 1400}" comment="Advanced satellites?" type="bool" default="if global.$Mk2InsteadSD? then global.$Mk2InsteadSD else false"/>
-      <param name="RESTOCK_SATELLITES" text="{8888888, 1401}" comment="Restock satellites?" type="bool" default="if global.$RestockSatellitesSD? then global.$RestockSatellitesSD else true"/>
-      <param name="RESTOCK_AMOUNT" text="- {8888888, 1402}" comment="Restock amount?" type="number" default="if global.$RestockAmountSD? then global.$RestockAmountSD else 10">
-        <input_param name="min" value="1"/>
-        <input_param name="max" value="this.ship.ammostorage.deployable.capacity"/>
-        <input_param name="step" value="1"/>
-        <input_param name="startvalue" value="1"/>
+      <param name="PLACE_HOLDER_000" text="----------------------------------" type="object" default="null">
+        <input_param name="class" value="[]"/>
       </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="OWN_SECTORS" text="{8888888, 1410}" comment="Own Sectors?" type="bool" default="if global.$OwnSectorsSD? then global.$OwnSectorsSD else true"/>
-      <param name="ENEMY_SECTORS" text="{8888888, 1411}" comment="Enemy Sectors?" type="bool" default="if global.$EnemySectorsSD? then global.$EnemySectorsSD else false"/>
-      <param name="NEUTRAL_SECTORS" text="{8888888, 1412}" comment="Neutral Sectors?" type="bool" default="if global.$NeutralSectorsSD? then global.$NeutralSectorsSD else true"/>
-      <param name="FRIENDLY_SECTORS" text="{8888888, 1413}" comment="Friendly Sectors?" type="bool" default="if global.$FriendlySectorsSD? then global.$FriendlySectorsSD else true"/>
+      <param name="RESTOCK_SATELLITES_MK1" text="{8888888, 1400}" comment="Restock mk1 satellites?" type="bool" default="if global.$SatelliteDropperG_Settings? then global.$SatelliteDropperG_Settings.{1} else true"/>
+      <param name="RESTOCK_SATELLITES_MK2" text="{8888888, 1401}" comment="Restock mk2 satellites?" type="bool" default="if global.$SatelliteDropperG_Settings? then global.$SatelliteDropperG_Settings.{2} else false"/>
+      <param name="RESTOCK_AMOUNT" text="{8888888, 1402}" comment="Restock amount?" type="number" default="if global.$SatelliteDropperG_Settings? then global.$SatelliteDropperG_Settings.{3} else 0">
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="(if this.ship.ammostorage.deployable.capacity gt 0 then this.ship.ammostorage.deployable.capacity else 0)"/>
+        <input_param name="step" value="1"/>
+      </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="GATES" text="{8888888, 1420}" comment="Gates?" type="bool" default="if global.$GatesSD? then global.$GatesSD else true"/>
-      <param name="ACTIVE_GATES" text="- {8888888, 1421}" comment="Active Gates?" type="bool" default="if global.$ActiveGates? then global.$ActiveGates else true"/>
-      <param name="INACTIVE_GATES" text="- {8888888, 1422}" comment="Inactive Gates?" type="bool" default="if global.$InactiveGatesSD? then global.$InactiveGatesSD else true"/>
-      <param name="ACCELERATORS" text="{8888888, 1423}" comment="Accelerators?" type="bool" default="if global.$AcceleratorsSD? then global.$AcceleratorsSD else true"/>
-      <param name="ACTIVE_ACCELERATORS" text="- {8888888, 1424}" comment="Active Accelerators?" type="bool" default="if global.$ActiveAcceleratorsSD? then global.$ActiveAcceleratorsSD else true"/>
-      <param name="INACTIVE_ACCELERATORS" text="- {8888888, 1425}" comment="Inactive Accelerators?" type="bool" default="if global.$InactiveAcceleratorsSD? then global.$InactiveAcceleratorsSD else true"/>
+      <param name="PLACE_HOLDER_001" text="----------------------------------" type="object" default="null">
+        <input_param name="class" value="[]"/>
+      </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="STATIONS" text="{8888888, 1430}" comment="Stations?" type="bool" default="if global.$StationsSD? then global.$StationsSD else true"/>
-      <param name="WHARFS" text="- {8888888, 1432}" comment="Wharfs?" type="bool" default="if global.$WharfsSD? then global.$WharfsSD else true"/>
-      <param name="SHIPYARDS" text="- {8888888, 1433}" comment="Shipyards?" type="bool" default="if global.$ShipyardsSD? then global.$ShipyardsSD else true"/>
-      <param name="EQUIPMENTDOCKS" text="- {8888888, 1434}" comment="Equipmentdocks?" type="bool" default="if global.$EquipmentdocksSD? then global.$EquipmentdocksSD else true"/>
-      <param name="TRADE_STATIONS" text="- {8888888, 1435}" comment="Trade Stations?" type="bool" default="if global.$TradeStationsSD? then global.$TradeStationsSD else true"/>
-      <param name="DEFENCE_STATIONS" text="- {8888888, 1436}" comment="Defence Stations?" type="bool" default="if global.$DefenceStationsSD? then global.$DefenceStationsSD else true"/>
-      <param name="PIRATE_BASE" text="- {8888888, 1437}" comment="Pirate Bases?" type="bool" default="if global.$PirateBasesSD? then global.$PirateBasesSD else true"/>
-      <param name="FACTION_HEADQUARTERS" text="- {8888888, 1438}" comment="Faction Headquarters?" type="bool" default="if global.$FactionHeadquartersSD? then global.$FactionHeadquartersSD else true"/>
-      <param name="NON_SPECIAL_STATIONS" text="- {8888888, 1439}" comment="Non Special Stations?" type="bool" default="if global.$NonSpecialStationsSD? then global.$NonSpecialStationsSD else false"/>
+      <param name="JUMP_GATES" text="{8888888, 1420}" comment="Jump Gates?" type="bool" default="if global.$SatelliteDropperG_Settings? then global.$SatelliteDropperG_Settings.{4} else true"/>
+      <param name="ACTIVE_JUMP_GATES" text="- {8888888, 1421}" comment="Active Jump Gates?" type="bool" default="if global.$SatelliteDropperG_Settings? then global.$SatelliteDropperG_Settings.{5} else true"/>
+      <param name="INACTIVE_JUMP_GATES" text="- {8888888, 1422}" comment="Inactive Jump Gates?" type="bool" default="if global.$SatelliteDropperG_Settings? then global.$SatelliteDropperG_Settings.{6} else true"/>
+      <param name="ACCELERATORS" text="{8888888, 1423}" comment="Accelerators?" type="bool" default="if global.$SatelliteDropperG_Settings? then global.$SatelliteDropperG_Settings.{7} else true"/>
+      <param name="ACTIVE_ACCELERATORS" text="- {8888888, 1424}" comment="Active Accelerators?" type="bool" default="if global.$SatelliteDropperG_Settings? then global.$SatelliteDropperG_Settings.{8} else true"/>
+      <param name="INACTIVE_ACCELERATORS" text="- {8888888, 1425}" comment="Inactive Accelerators?" type="bool" default="if global.$SatelliteDropperG_Settings? then global.$SatelliteDropperG_Settings.{9} else true"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="OWN_STATIONS" text="- {8888888, 1450}" comment="Own Stations?" type="bool" default="if global.$OwnStations? then global.$OwnStations else false"/>
-      <param name="ENEMY_STATIONS" text="- {8888888, 1451}" comment="Enemy Stations?" type="bool" default="if global.$EnemyStationsSD? then global.$EnemyStationsSD else false"/>
-      <param name="FRIENDLY_STATIONS" text="- {8888888, 1452}" comment="Friendly Stations?" type="bool" default="if global.$FriendlyStations? then global.$FriendlyStations else true"/>
+      <param name="PLACE_HOLDER_002" text="----------------------------------" type="object" default="null">
+        <input_param name="class" value="[]"/>
+      </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="IDLE_TIME" text="{8888888, 1480}" comment="Idle Time" type="time" default="if global.$IdleTimeSD? then global.$IdleTimeSD else 600s">
+      <param name="STATIONS" text="{8888888, 1430}" comment="Stations?" type="bool" default="if global.$SatelliteDropperG_Settings? then global.$SatelliteDropperG_Settings.{10} else true"/>
+      <param name="WHARFS" text="- {8888888, 1431}" comment="Wharfs?" type="bool" default="if global.$SatelliteDropperG_Settings? then global.$SatelliteDropperG_Settings.{11} else true"/>
+      <param name="SHIPYARDS" text="- {8888888, 1432}" comment="Shipyards?" type="bool" default="if global.$SatelliteDropperG_Settings? then global.$SatelliteDropperG_Settings.{12} else true"/>
+      <param name="EQUIPMENTDOCKS" text="- {8888888, 1433}" comment="Equipmentdocks?" type="bool" default="if global.$SatelliteDropperG_Settings? then global.$SatelliteDropperG_Settings.{13} else true"/>
+      <param name="TRADING_STATIONS" text="- {8888888, 1434}" comment="Trading Stations?" type="bool" default="if global.$SatelliteDropperG_Settings? then global.$SatelliteDropperG_Settings.{14} else true"/>
+      <param name="DEFENCE_STATIONS" text="- {8888888, 1435}" comment="Defence Stations?" type="bool" default="if global.$SatelliteDropperG_Settings? then global.$SatelliteDropperG_Settings.{15} else true"/>
+      <param name="PIRATE_BASES" text="- {8888888, 1436}" comment="Pirate Bases?" type="bool" default="if global.$SatelliteDropperG_Settings? then global.$SatelliteDropperG_Settings.{16} else true"/>
+      <param name="FACTION_HEADQUARTERS" text="- {8888888, 1437}" comment="Faction Headquarters?" type="bool" default="if global.$SatelliteDropperG_Settings? then global.$SatelliteDropperG_Settings.{17} else true"/>
+      <param name="NON_SPECIAL_STATIONS" text="- {8888888, 1438}" comment="Non Special Stations?" type="bool" default="if global.$SatelliteDropperG_Settings? then global.$SatelliteDropperG_Settings.{18} else false"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="PLACE_HOLDER_996" text="----------------------------------" type="object" default="null">
+        <input_param name="class" value="[]"/>
+      </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="IDLE" text="{8888888, 1480}" comment="Idle actions?" type="bool" default="if global.$SatelliteDropperG_Settings? then global.$SatelliteDropperG_Settings.{19} else true"/>
+      <param name="IDLE_TIME" text="{8888888, 1481}" comment="Idle Time" type="time" default="if global.$SatelliteDropperG_Settings? then global.$SatelliteDropperG_Settings.{20} else 600s">
         <input_param name="min" value="60s"/>
         <input_param name="max" value="3600s"/>
         <input_param name="step" value="10s"/>
       </param>
-      <param name="IDLE_FOLLOW" text="{8888888, 1481}" comment="Idle: Follow?" type="bool" default="if global.$IdleFollowSD? then global.$IdleFollowSD else false"/>
-      <param name="WHO_TO_FOLLOW" text="- {8888888, 1482}" comment="Who to follow?" type="object" default="if global.$WhoToFollowSD? then global.$WhoToFollowSD else null">
+      <param name="IDLE_FOLLOW" text="{8888888, 1482}" comment="Idle: Follow?" type="bool" default="if global.$SatelliteDropperG_Settings? then global.$SatelliteDropperG_Settings.{21} else false"/>
+      <param name="WHO_TO_FOLLOW" text="- {8888888, 1483}" comment="Who to follow?" type="object" default="if global.$SatelliteDropperG_Settings? then global.$SatelliteDropperG_Settings.{22} else null">
         <input_param name="class" value="[class.ship]"/>
         <input_param name="owner" value="this.ship.owner"/>
       </param>
-      <param name="IDLE_DOCKING" text="{8888888, 1483}" comment="Idle: Docking?" type="bool" default="if global.$IdleDockingSD? then global.$IdleDockingSD else false"/>
-      <param name="WHERE_TO_DOCK" text="- {8888888, 1484}" comment="Where to dock?" type="object" default="if global.$WhereToDockSD? then global.$WhereToDockSD else null">
+      <param name="IDLE_DOCKING" text="{8888888, 1484}" comment="Idle: Docking?" type="bool" default="if global.$SatelliteDropperG_Settings? then global.$SatelliteDropperG_Settings.{23} else false"/>
+      <param name="WHERE_TO_DOCK" text="- {8888888, 1485}" comment="Where to dock?" type="object" default="if global.$SatelliteDropperG_Settings? then global.$SatelliteDropperG_Settings.{24} else null">
         <input_param name="class" value="if this.ship.isclass.[class.ship_s, class.ship_xs] then [class.station, class.ship_m, class.ship_l, class.ship_xl] else [class.station, class.ship_l, class.ship_xl]"/>
       </param>
-      <param name="IDLE_RANDOM_MOVEMENT" text="{8888888, 1485}" comment="Idle: Movement?" type="bool" default="if global.$IdleRandomMovementSD? then global.$IdleRandomMovementSD else false"/>
-      <param name="IN_WHICH_SECTOR" text="- {8888888, 1486}" comment="In which sector?" type="position" default="if global.$InWhichSectorSD? then global.$InWhichSectorSD else [this.ship.sector, this.ship.position]">
+      <param name="IDLE_RANDOM_MOVEMENT" text="{8888888, 1486}" comment="Idle: Movement?" type="bool" default="if global.$SatelliteDropperG_Settings? then global.$SatelliteDropperG_Settings.{25} else false"/>
+      <param name="IN_WHICH_SECTOR" text="- {8888888, 1487}" comment="In which sector?" type="position" default="if global.$SatelliteDropperG_Settings? then global.$SatelliteDropperG_Settings.{26} else [this.ship.sector, this.ship.position]">
         <input_param name="class" value="class.sector"/>
       </param>
-      <param name="IDLE_MOVE_TO" text="{8888888, 1487}" comment="Idle: Move to?" type="bool" default="if global.$IdleMoveToSD? then global.$IdleMoveToSD else false"/>
-      <param name="WHERE_TO_MOVE" text="- {8888888, 1488}" comment="Where to move?" type="position" default="if global.$WhereToMoveSD? then global.$WhereToMoveSD else [this.ship.sector, this.ship.position]">
+      <param name="IDLE_MOVE_TO" text="{8888888, 1488}" comment="Idle: Move to?" type="bool" default="if global.$SatelliteDropperG_Settings? then global.$SatelliteDropperG_Settings.{27} else false"/>
+      <param name="WHERE_TO_MOVE" text="- {8888888, 1489}" comment="Where to move?" type="position" default="if global.$SatelliteDropperG_Settings? then global.$SatelliteDropperG_Settings.{28} else [this.ship.sector, this.ship.position]">
         <input_param name="class" value="class.sector"/>
       </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="ADD_ORDER_TAG" text="{8888888, 1494}" comment="Add order tag?" type="bool" default="if global.$AddOrderTagSD? then global.$AddOrderTagSD else true"/>
+      <param name="PLACE_HOLDER_997" text="----------------------------------" type="object" default="null">
+        <input_param name="class" value="[]"/>
+      </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="SAVE_SETTINGS" text="{8888888, 1495}" comment="SaveSettings" type="bool" default="false"/>
-      <param name="DELETE_SETTINGS" text="{8888888, 1496}" comment="DeleteSettings" type="bool" default="false"/>
+      <param name="ADD_ORDER_TAG" text="{8888888, 1491}" comment="Add order tag?" type="bool" default="if global.$SatelliteDropperG_Settings? then global.$SatelliteDropperG_Settings.{29} else true"/>
+      <param name="ORDER_TAG_POSITION" text="{8888888, 1492}" comment="Order tag position" type="number" default="if global.$SatelliteDropperG_Settings? then global.$SatelliteDropperG_Settings.{30} else 1">
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="1"/>
+        <input_param name="step" value="1"/>
+      </param>
+      <param name="SAVE_ORDER_SETTINGS" text="{8888888, 1493}" comment="Save Order Settings?" type="bool" default="false"/>
+      <param name="RESET_ORDER_SETTINGS" text="{8888888, 1494}" comment="Reset Order Settings?" type="bool" default="false"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <!-- DEBUG -->
-      <param name="DEBUG" text="DebugText" type="number" default="if global.$DebugSD? then global.$DebugSD else 0" advanced="1">
+      <param name="PLACE_HOLDER_998" text="----------------------------------" type="object" default="null">
+        <input_param name="class" value="[]"/>
+      </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="DEBUG" text="Debug" type="number" default="if global.$SatelliteDropperG_Settings? then global.$SatelliteDropperG_Settings.{31} else 0" advanced="true">
+        <input_param name="step" value="100"/>
         <input_param name="min" value="0"/>
         <input_param name="max" value="100"/>
-        <input_param name="step" value="100"/>
+      </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="PLACE_HOLDER_999" text="----------------------------------" type="object" default="null" advanced="true">
+        <input_param name="class" value="[]"/>
       </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     </params>
-    <skill min="30"/>
+    <skill min="35"/>
     <requires>
       <match shiptype="shiptype.lasertower" negate="true"/>
     </requires>
-    <location object="$_NearestObjectToMark" condition="@$_NearestObjectToMark"/>
   </order>
 
   <interrupts>
@@ -97,140 +118,54 @@
   </interrupts>
 
   <init>
-    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <set_value name="$Ship" exact="this.ship"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <do_if value="$DEBUG">
       <set_value name="$DebugFolderName" exact="'JP_SatelliteDropper.logs'"/>
-      <set_value name="$DebugFileName" exact="this.ship.idcode + '.JP_SatelliteDropperG.xml.log'"/>
+      <set_value name="$DebugScriptName" exact="'JP_SatelliteDropperG'"/>
+      <set_value name="$DebugFileName" exact="$Ship.idcode + '.' + $DebugScriptName + '.xml.log'"/>
+      <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'" append="false"/>
+      <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Started ~~' + '\n'"/>
     </do_if>
-    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-    <set_value name="$Ship" exact="this.ship"/>
-    <set_value name="$ExpMultiplier" exact="0.89"/>
-    <!-- TODO: Try to get modded satellites here if MK1 and MK2 are not checked as option.. or give an boolean that enables
-               that the script looks for satellites already in cargo bay and uses this for placing and resupplying -->
-    <set_value name="$Satellite" exact="if $MK2 then ware.satellite_mk2 else ware.satellite_mk1"/>
-    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-    <do_if value="$ADD_ORDER_TAG">
-      <set_value name="$_ShipName" exact="$Ship.knownname"/>
-      <set_object_name object="this.ship" name="$_ShipName"/>
-      <substitute_text source="$_ShipName" text="$_ShipName">
-        <replace string="'\033#FFA95908# #SD-G\033X'" with="''"/>
-      </substitute_text>
-      <set_object_name object="this.ship" name="$_ShipName"/>
-      <remove_value name="$_ShipName"/>
-      <set_object_name object="this.ship" name="this.ship.knownname + '\033#FFA95908# #SD-G\033X'"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <do_if value="$SAVE_ORDER_SETTINGS">
+      <create_list name="$_SettingsList"/>
+      <append_list_elements name="$_SettingsList" other="[
+                            $RESTOCK_SATELLITES_MK1, $RESTOCK_SATELLITES_MK2, $RESTOCK_AMOUNT,
+                            $JUMP_GATES, $ACTIVE_JUMP_GATES, $INACTIVE_JUMP_GATES,
+                            $ACCELERATORS, $ACTIVE_ACCELERATORS, $INACTIVE_ACCELERATORS,
+                            $STATIONS, $WHARFS, $SHIPYARDS, $EQUIPMENTDOCKS, $TRADING_STATIONS,
+                            $DEFENCE_STATIONS, $PIRATE_BASES, $FACTION_HEADQUARTERS, $NON_SPECIAL_STATIONS,
+                            $IDLE, $IDLE_TIME, $IDLE_FOLLOW, $WHO_TO_FOLLOW, $IDLE_DOCKING, $WHERE_TO_DOCK,
+                            $IDLE_RANDOM_MOVEMENT, $IN_WHICH_SECTOR, $IDLE_MOVE_TO, $WHERE_TO_MOVE,
+                            $ADD_ORDER_TAG, $ORDER_TAG_POSITION, $DEBUG]"/>
+      <do_if value="not global.$SatelliteDropperG_Settings?">
+        <create_list name="global.$SatelliteDropperG_Settings"/>
+        <append_list_elements name="global.$SatelliteDropperG_Settings" other="$_SettingsList"/>
+      </do_if>
+      <do_else>
+        <do_for_each name="$_Setting" in="global.$SatelliteDropperG_Settings" counter="$_it">
+          <do_if value="$_Setting != $_SettingsList.{$_it}">
+            <set_value name="global.$SatelliteDropperG_Settings.{$_it}" exact="$_SettingsList.{$_it}"/>
+          </do_if>
+        </do_for_each>
+      </do_else>
+      <remove_value name="$_SettingsList"/>
+      <show_help duration="5s" allowclose="true" log="true" custom="'JP_SatelliteDropperG' + ' ~\n' + $Ship.knownname + ' [' + $Ship.idcode + ']\n\n' + '{8888888, 1495}'"/>
+      <set_value name="$Quit" exact="true"/>
     </do_if>
-    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-    <do_if value="$SAVE_SETTINGS">
-      <do_if value="not global.$Mk2InsteadSD? or @global.$Mk2InsteadSD != $MK2">
-        <set_value name="global.$Mk2InsteadSD" exact="$MK2"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <do_if value="$RESET_ORDER_SETTINGS">
+      <do_if value="global.$SatelliteDropperG_Settings?">
+        <remove_value name="global.$SatelliteDropperG_Settings"/>
       </do_if>
-      <do_if value="not global.$RestockSatellitesSD? or @global.$RestockSatellitesSD != $RESTOCK_SATELLITES">
-        <set_value name="global.$RestockSatellitesSD" exact="$RESTOCK_SATELLITES"/>
-      </do_if>
-      <do_if value="not global.$RestockAmountSD? or @global.$RestockAmountSD != $RESTOCK_AMOUNT">
-        <set_value name="global.$RestockAmountSD" exact="$RESTOCK_AMOUNT"/>
-      </do_if>
-      <do_if value="not global.$EnemySectorsSD? or @global.$EnemySectorsSD != $ENEMY_SECTORS">
-        <set_value name="global.$EnemySectorsSD" exact="$ENEMY_SECTORS"/>
-      </do_if>
-      <do_if value="not global.$NeutralSectorsSD? or @global.$NeutralSectorsSD != $NEUTRAL_SECTORS">
-        <set_value name="global.$NeutralSectorsSD" exact="$NEUTRAL_SECTORS"/>
-      </do_if>
-      <do_if value="not global.$FriendlySectorsSD? or @global.$FriendlySectorsSD != $FRIENDLY_SECTORS">
-        <set_value name="global.$FriendlySectorsSD" exact="$FRIENDLY_SECTORS"/>
-      </do_if>
-      <do_if value="not global.$OwnSectorsSD? or @global.$OwnSectorsSD != $OWN_SECTORS">
-        <set_value name="global.$OwnSectorsSD" exact="$OWN_SECTORS"/>
-      </do_if>
-      <do_if value="not global.$GatesSD? or @global.$GatesSD != $GATES">
-        <set_value name="global.$GatesSD" exact="$GATES"/>
-      </do_if>
-      <do_if value="not global.$ActiveGates? or @global.$ActiveGates != $ACTIVE_GATES">
-        <set_value name="global.$ActiveGates" exact="$ACTIVE_GATES"/>
-      </do_if>
-      <do_if value="not global.$InactiveGatesSD? or @global.$InactiveGatesSD != $INACTIVE_GATES">
-        <set_value name="global.$InactiveGatesSD" exact="$INACTIVE_GATES"/>
-      </do_if>
-      <do_if value="not global.$AcceleratorsSD? or @global.$AcceleratorsSD != $ACCELERATORS">
-        <set_value name="global.$AcceleratorsSD" exact="$ACCELERATORS"/>
-      </do_if>
-      <do_if value="not global.$ActiveAcceleratorsSD? or @global.$ActiveAcceleratorsSD != $ACTIVE_ACCELERATORS">
-        <set_value name="global.$ActiveAcceleratorsSD" exact="$ACTIVE_ACCELERATORS"/>
-      </do_if>
-      <do_if value="not global.$InactiveAcceleratorsSD? or @global.$InactiveAcceleratorsSD != $INACTIVE_ACCELERATORS">
-        <set_value name="global.$InactiveAcceleratorsSD" exact="$INACTIVE_ACCELERATORS"/>
-      </do_if>
-      <do_if value="not global.$StationsSD? or @global.$StationsSD != $STATIONS">
-        <set_value name="global.$StationsSD" exact="$STATIONS"/>
-      </do_if>
-      <do_if value="not global.$WharfsSD? or @global.$WharfsSD != $WHARFS">
-        <set_value name="global.$WharfsSD" exact="$WHARFS"/>
-      </do_if>
-      <do_if value="not global.$ShipyardsSD? or @global.$ShipyardsSD != $SHIPYARDS">
-        <set_value name="global.$ShipyardsSD" exact="$SHIPYARDS"/>
-      </do_if>
-      <do_if value="not global.$EquipmentdocksSD? or @global.$EquipmentdocksSD != $EQUIPMENTDOCKS">
-        <set_value name="global.$EquipmentdocksSD" exact="$EQUIPMENTDOCKS"/>
-      </do_if>
-      <do_if value="not global.$TradeStationsSD? or @global.$TradeStationsSD != $TRADE_STATIONS">
-        <set_value name="global.$TradeStationsSD" exact="$TRADE_STATIONS"/>
-      </do_if>
-      <do_if value="not global.$DefenceStationsSD? or @global.$DefenceStationsSD != $DEFENCE_STATIONS">
-        <set_value name="global.$DefenceStationsSD" exact="$DEFENCE_STATIONS"/>
-      </do_if>
-      <do_if value="not global.$PirateBasesSD? or @global.$PirateBasesSD != $PIRATE_BASE">
-        <set_value name="global.$PirateBasesSD" exact="$PIRATE_BASE"/>
-      </do_if>
-      <do_if value="not global.$FactionHeadquartersSD? or @global.$FactionHeadquartersSD != $FACTION_HEADQUARTERS">
-        <set_value name="global.$FactionHeadquartersSD" exact="$FACTION_HEADQUARTERS"/>
-      </do_if>
-      <do_if value="not global.$NonSpecialStationsSD? or @global.$NonSpecialStationsSD != $NON_SPECIAL_STATIONS">
-        <set_value name="global.$NonSpecialStationsSD" exact="$NON_SPECIAL_STATIONS"/>
-      </do_if>
-      <do_if value="not global.$OwnStationsSD? or @global.$OwnStationsSD != $OWN_STATIONS">
-        <set_value name="global.$OwnStationsSD" exact="$OWN_STATIONS"/>
-      </do_if>
-      <do_if value="not global.$EnemyStationsSD? or @global.$EnemyStationsSD != $ENEMY_STATIONS">
-        <set_value name="global.$EnemyStationsSD" exact="$ENEMY_STATIONS"/>
-      </do_if>
-      <do_if value="not global.$FriendlyStationsSD? or @global.$FriendlyStationsSD != $FRIENDLY_STATIONS">
-        <set_value name="global.$FriendlyStationsSD" exact="$FRIENDLY_STATIONS"/>
-      </do_if>
-      <do_if value="not global.$IdleTimeSD? or @global.$IdleTimeSD != $IDLE_TIME">
-        <set_value name="global.$IdleTimeSD" exact="$IDLE_TIME"/>
-      </do_if>
-      <do_if value="not global.$IdleFollowSD? or @global.$IdleFollowSD != $IDLE_FOLLOW">
-        <set_value name="global.$IdleFollowSD" exact="$IDLE_FOLLOW"/>
-      </do_if>
-      <do_if value="not global.$WhoToFollowSD? or @global.$WhoToFollowSD != $WHO_TO_FOLLOW">
-        <set_value name="global.$WhoToFollowSD" exact="$WHO_TO_FOLLOW"/>
-      </do_if>
-      <do_if value="not global.$IdleDockingSD? or @global.$IdleDockingSD != $IDLE_DOCKING">
-        <set_value name="global.$IdleDockingSD" exact="$IDLE_DOCKING"/>
-      </do_if>
-      <do_if value="not global.$WhereToDockSD? or @global.$WhereToDockSD != $WHERE_TO_DOCK">
-        <set_value name="global.$WhereToDockSD" exact="$WHERE_TO_DOCK"/>
-      </do_if>
-      <do_if value="not global.$IdleRandomMovementSD? or @global.$IdleRandomMovementSD != $IDLE_RANDOM_MOVEMENT">
-        <set_value name="global.$IdleRandomMovementSD" exact="$IDLE_RANDOM_MOVEMENT"/>
-      </do_if>
-      <do_if value="not global.$InWhichSectorSD? or @global.$InWhichSectorSD != $IN_WHICH_SECTOR">
-        <set_value name="global.$InWhichSectorSD" exact="$IN_WHICH_SECTOR"/>
-      </do_if>
-      <do_if value="not global.$IdleMoveToSD? or @global.$IdleMoveToSD != $IDLE_MOVE_TO">
-        <set_value name="global.$IdleMoveToSD" exact="$IDLE_MOVE_TO"/>
-      </do_if>
-      <do_if value="not global.$WhereToMoveSD? or @global.$WhereToMoveSD != $WHERE_TO_MOVE">
-        <set_value name="global.$WhereToMoveSD" exact="$WHERE_TO_MOVE"/>
-      </do_if>
-      <do_if value="not global.$AddOrderTagSD? or @global.$AddOrderTagSD != $ADD_ORDER_TAG">
-        <set_value name="global.$AddOrderTagSD" exact="$ADD_ORDER_TAG"/>
-      </do_if>
-      <do_if value="not global.$DebugSD? or @global.$DebugSD != $DEBUG">
-        <set_value name="global.$DebugSD" exact="$DEBUG"/>
-      </do_if>
+      <show_help duration="5s" allowclose="true" log="true" custom="'JP_SatelliteDropperG' + ' ~\n' + $Ship.knownname + ' [' + $Ship.idcode + ']\n\n' + '{8888888, 1496}'"/>
+      <set_value name="$Quit" exact="true"/>
     </do_if>
-    <do_if value="$DELETE_SETTINGS">
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <!-- Give time for deleteing this unused junk of memory -->
+    <do_if value="true">
       <remove_value name="global.$DebugSD"/>
       <remove_value name="global.$AddOrderTagSD"/>
       <remove_value name="global.$WhereToMoveSD"/>
@@ -267,184 +202,164 @@
       <remove_value name="global.$RestockAmountSD"/>
       <remove_value name="global.$RestockSatellitesSD"/>
       <remove_value name="global.$Mk2InsteadSD"/>
-      <!-- cancel order because the settings are invalid now -->
-      <cancel_order order="this.ship.order"/>
     </do_if>
-    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
   </init>
 
   <attention min="unknown">
     <actions>
 
-      <wait exact="1s"/>
-      <label name="START_LBL"/>
-      <cancel_all_orders object="this.ship"/>
+      <do_if value="$Quit?">
+        <resume label="FINISH_LBL"/>
+      </do_if>
 
-      <do_if value="$DEBUG">
-        <debug_to_file append="false" directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_SatelliteDropperG.xml ~ Started ~~' + '\n'"/>
+      <label name="INIT_LBL"/>
+      <wait min="500ms" max="1000ms"/>
+
+      <do_if value="not global.$SatelliteDropperSectorBlack_List?">
+        <create_list name="global.$SatelliteDropperSectorBlack_List"/>
+      </do_if>
+
+      <do_if value="not global.$SatelliteDropperShips_Table?">
+        <set_value name="global.$SatelliteDropperShips_Table" exact="table[]"/>
+      </do_if>
+
+      <do_if value="not global.$SatelliteDropperShips_Table.{$Ship}?">
+        <set_value name="global.$SatelliteDropperShips_Table.{$Ship}" exact="null"/>
+      </do_if>
+
+      <do_if value="$ADD_ORDER_TAG">
+        <set_value name="$_OrderTag" exact="if $ORDER_TAG_POSITION == 0 then '#SD-G ' else ' #SD-G'"/>
+        <substitute_text source="$Ship.knownname" text="$_ResultName">
+          <replace string="('\033#FFA95908#' + $_OrderTag + '\033X')" with="''"/>
+        </substitute_text>
+        <do_if value="$Ship.knownname == $_ResultName">
+          <set_object_name object="$Ship" name="(if $ORDER_TAG_POSITION == 0 then ('\033#FFA95908#' + $_OrderTag + '\033X') else '') + $Ship.knownname + (if $ORDER_TAG_POSITION == 1 then ('\033#FFA95908#' + $_OrderTag + '\033X') else '')"/>
+        </do_if>
+        <remove_value name="$_OrderTag"/>
       </do_if>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
       <label name="RESUME_LBL"/>
+      <wait min="500ms" max="1000ms"/>
 
+      <!-- just for the ui -->
       <set_command command="command.scan"/>
       <set_command_action commandaction="commandaction.calculating"/>
 
-      <label name="RESTOCK_SATELLITES_LBL"/>
-      <do_if value="$Ship.ammostorage.{$Satellite.objectmacro}.count le 0 and $RESTOCK_SATELLITES">
-        <run_script name="'JP_ResupplySatellites_SD'">
-          <param name="SATELLITE_WARE" value="$Satellite"/>
-          <param name="RESTOCK_AMOUNT" value="$RESTOCK_AMOUNT"/>
-          <save_retval name="RESULT" variable="$_Result"/>
-        </run_script>
-        <do_if value="$_Result == 'NotEnoughMoneyForResuppling'">
-          <set_value name="$IdleTime" exact="20s"/>
-          <wait exact="5s"/>
-          <resume label="RESUME_LBL"/>
-        </do_if>
-        <do_if value="$_Result == 'NoStationsFoundWhereWeCanResupply'">
-          <set_value name="$IdleTime" exact="20s"/>
-          <wait exact="5s"/>
-          <resume label="RESUME_LBL"/>
+      <!-- restocking satellites? -->
+      <do_if value="$RESTOCK_SATELLITES_MK1 or $RESTOCK_SATELLITES_MK2">
+        <do_if value="$Ship.ammostorage.{deployablecategory.satellite}.count le 0">
+          <run_script name="'JP_ResupplySatellites_SD'">
+            <param name="SATELLITE_WARE" value="(if $RESTOCK_SATELLITES_MK1 then ware.satellite_mk1 else ware.satellite_mk2)"/>
+            <param name="RESTOCK_AMOUNT" value="$RESTOCK_AMOUNT"/>
+            <save_retval name="RESULT" variable="$_Result"/>
+          </run_script>
+          <do_if value="$_Result == 'NotEnoughMoneyForResuppling'">
+            <set_value name="$IdleTime" exact="20s"/>
+            <wait exact="5s"/>
+            <resume label="RESUME_LBL"/>
+          </do_if>
+          <do_if value="$_Result == 'NoStationsFoundWhereWeCanResupply'">
+            <set_value name="$IdleTime" exact="20s"/>
+            <wait exact="5s"/>
+            <resume label="RESUME_LBL"/>
+          </do_if>
         </do_if>
       </do_if>
-      <do_if value="$Ship.ammostorage.{$Satellite.objectmacro}.count le 0 and not $RESTOCK_SATELLITES">
+
+      <do_if value="$Ship.ammostorage.{deployablecategory.satellite}.count le 0 and not $RESTOCK_SATELLITES_MK1 and not $RESTOCK_SATELLITES_MK2">
         <show_help custom="'JP_SatelliteDropper:\n' +
-                           'Ship ' + $Ship.knownname + ' has no satellites and automatic restocking turned off.. canceling the order.'" log="true" color="[160, 0, 0, 256]"/>
-        <wait exact="5s"/>
-        <resume label="RESUME_LBL"/>
+                           'Ship ' + $Ship.knownname + ' has no satellites and automatic restocking turned off.. canceling the order.'"
+                   allowclose="true" duration="6s" log="true"/>
+        <wait exact="2s"/>
+        <resume label="FINISH_LBL"/>
       </do_if>
 
-      <run_script name="'JP_GetNearestObjectToMark'">
-        <param name="SATELLITE_MACRO" value="$Satellite.objectmacro"/>
-        <param name="OWN_SECTORS" value="$OWN_SECTORS"/>
-        <param name="ENEMY_SECTORS" value="$ENEMY_SECTORS"/>
-        <param name="NEUTRAL_SECTORS" value="$NEUTRAL_SECTORS"/>
-        <param name="FRIENDLY_SECTORS" value="$FRIENDLY_SECTORS"/>
-        <param name="GATES" value="$GATES"/>
-        <param name="ACTIVE_GATES" value="$ACTIVE_GATES"/>
-        <param name="INACTIVE_GATES" value="$INACTIVE_GATES"/>
-        <param name="ACCELERATORS" value="$ACCELERATORS"/>
-        <param name="ACTIVE_ACCELERATORS" value="$ACTIVE_ACCELERATORS"/>
-        <param name="INACTIVE_ACCELERATORS" value="$INACTIVE_ACCELERATORS"/>
-        <param name="STATIONS" value="$STATIONS"/>
-        <param name="WHARFS" value="$WHARFS"/>
-        <param name="SHIPYARDS" value="$SHIPYARDS"/>
-        <param name="PIRATE_BASE" value="$PIRATE_BASE"/>
-        <param name="EQUIPMENTDOCKS" value="$EQUIPMENTDOCKS"/>
-        <param name="TRADE_STATIONS" value="$TRADE_STATIONS"/>
-        <param name="DEFENCE_STATIONS" value="$DEFENCE_STATIONS"/>
-        <param name="FACTION_HEADQUARTERS" value="$FACTION_HEADQUARTERS"/>
-        <param name="NON_SPECIAL_STATIONS" value="$NON_SPECIAL_STATIONS"/>
-        <param name="OWN_STATIONS" value="$OWN_STATIONS"/>
-        <param name="ENEMY_STATIONS" value="$ENEMY_STATIONS"/>
-        <param name="FRIENDLY_STATIONS" value="$FRIENDLY_STATIONS"/>
-        <!--<param name="SECTOR" value="$SECTOR"/>-->
-        <param name="DEBUG" value="$DEBUG"/>
-        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-        <save_retval name="NEAREST_OBJECT_TO_MARK" variable="$_NearestObjectToMark"/>
-      </run_script>
+      <!-- Return value ~~ $_FoundObject ~ $_FoundObjectsSector -->
+      <set_value name="$SECTOR" exact="global.$SatelliteDropperShips_Table.{$Ship}"/>
+      <wait min="250ms" max="1250ms"/>
+      <include_interrupt_actions ref="JP_Lib_GetNearestObjectToMark_SD"/>
 
-      <do_if value="$_NearestObjectToMark == 'NoObjectWithoutSatellitesFound'">
-        <resume label="IDLE_RETURN_HOME_LBL"/>
-      </do_if>
-
-      <label name="MOVE_TO_SECTOR_LBL"/>
-      <do_if value="$Ship.sector != $_NearestObjectToMark.sector">
-        <set_command command="command.move" param="$_NearestObjectToMark.sector"/>
-        <run_script name="'move.generic'">
-          <param name="destination" value="$_NearestObjectToMark.sector"/>
-          <param name="endintargetzone" value="true"/>
-          <param name="recallsubordinates" value="true"/>
-        </run_script>
-        <do_if value="this.zone.isclass.highway">
-          <get_safe_pos result="$_SafePos" zone="$Ship.zone" object="$Ship" direction="quadrant.front" radius="$Ship.size" angle="45deg"/>
-          <move_to object="$Ship" destination="$Ship.zone" uselocalhighways="false" finishonapproach="true" abortpath="true">
-            <position value="$_SafePos"/>
-          </move_to>
-          <remove_value name="$_SafePos"/>
-        </do_if>
-        <wait exact="1s"/>
-        <do_if value="$Ship.sector != $_NearestObjectToMark.sector">
-          <resume label="MOVE_TO_SECTOR_LBL"/>
+      <!-- Nothing to do.. idle a bit and try again -->
+      <do_if value="@$_FoundObject == null">
+        <set_value name="global.$SatelliteDropperShips_Table.{$Ship}" exact="null"/>
+        <set_value name="$SECTOR" exact="global.$SatelliteDropperShips_Table.{$Ship}"/>
+        <wait min="250ms" max="1250ms"/>
+        <include_interrupt_actions ref="JP_Lib_GetNearestObjectToMark_SD"/>
+        <do_if value="@$_FoundObject == null">
+          <do_if value="$IDLE">
+            <create_order id="'JP_IdleReturnHome_SD'" object="$Ship">
+              <param name="IDLE_TIME" value="$IDLE_TIME"/>
+              <param name="IDLE_FOLLOW" value="$IDLE_FOLLOW"/>
+              <param name="WHO_TO_FOLLOW" value="$WHO_TO_FOLLOW"/>
+              <param name="IDLE_DOCKING" value="$IDLE_DOCKING"/>
+              <param name="WHERE_TO_DOCK" value="$WHERE_TO_DOCK"/>
+              <param name="IDLE_RANDOM_MOVEMENT" value="$IDLE_RANDOM_MOVEMENT"/>
+              <param name="IN_WHICH_SECTOR" value="$IN_WHICH_SECTOR"/>
+              <param name="IDLE_MOVE_TO" value="$IDLE_MOVE_TO"/>
+              <param name="WHERE_TO_MOVE" value="$WHERE_TO_MOVE"/>
+              <param name="DEBUG_FOLDER_NAME" value="@$DebugFolderName"/>
+              <param name="DEBUG" value="$DEBUG"/>
+            </create_order>
+            <wait min="500ms" max="1000ms"/>
+          </do_if>
+          <resume label="RESUME_LBL"/>
         </do_if>
       </do_if>
+      <do_if value="@$_FoundObject != null">
+        <set_value name="global.$SatelliteDropperShips_Table.{$Ship}" exact="$_FoundObjectsSector"/>
+      </do_if>
 
-      <label name="PLACE_SATELLITE_LBL"/>
-      <run_script name="'JP_PlaceSatelliteToObject_SD'">
-        <param name="MK2" value="$MK2"/>
-        <param name="OBJECT" value="$_NearestObjectToMark"/>
-        <param name="DEBUG" value="$DEBUG"/>
-      </run_script>
-      <apply_experience entity="$Ship.pilot" experience="'JP_SHIP_SATELLITE_PLACE'" factor="$ExpMultiplier"/>
-      <apply_experience object="$Ship" experience="'JP_SHIP_SATELLITE_PLACE'" role="entityrole.service" factor="$ExpMultiplier"/>
-
-      <remove_value name="$_NearestObjectToMark"/>
-
-      <wait exact="1s"/>
-      <resume label="RESUME_LBL"/>
-
-      <label name="IDLE_RETURN_HOME_LBL"/>
-      <create_order id="'JP_IdleReturnHome_SD'" object="$Ship">
-        <param name="IDLE_TIME" value="$IDLE_TIME"/>
-        <param name="IDLE_FOLLOW" value="$IDLE_FOLLOW"/>
-        <param name="WHO_TO_FOLLOW" value="$WHO_TO_FOLLOW"/>
-        <param name="IDLE_DOCKING" value="$IDLE_DOCKING"/>
-        <param name="WHERE_TO_DOCK" value="$WHERE_TO_DOCK"/>
-        <param name="IDLE_RANDOM_MOVEMENT" value="$IDLE_RANDOM_MOVEMENT"/>
-        <param name="IN_WHICH_SECTOR" value="$IN_WHICH_SECTOR"/>
-        <param name="IDLE_MOVE_TO" value="$IDLE_MOVE_TO"/>
-        <param name="WHERE_TO_MOVE" value="$WHERE_TO_MOVE"/>
+      <!-- Exploring the object.. flying to the object and making it visible -->
+      <set_command command="command.explore"/>
+      <set_command_action commandaction="commandaction.calculating"/>
+      <create_order id="'JP_PlaceSatelliteToObject_SD'" object="$Ship">
+        <param name="OBJECT" value="$_FoundObject"/>
+        <param name="DEBUG_FOLDER_NAME" value="@$DebugFolderName"/>
         <param name="DEBUG" value="$DEBUG"/>
       </create_order>
-      <wait exact="1s"/>
-      <resume label="RESUME_LBL"/>
+      <wait min="500ms" max="1000ms"/>
 
-      <label name="FINISH_LBL"/>
+      <!-- cleanup and resume from top -->
+      <remove_value name="$_FoundObjectsSector"/>
+      <remove_value name="$_FoundObject"/>
+      <resume label="RESUME_LBL"/>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-      <do_if value="$DEBUG">
-        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_SatelliteDropperG.xml ~ Finished ~~'"/>
+      <label name="FINISH_LBL"/>
+      <wait min="500ms" max="1000ms"/>
+      <do_if value="$DEBUG gt 0">
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Finished ~~'"/>
         <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
       </do_if>
 
       <label name="CLEANUP_LBL"/>
-      <do_if value="$ADD_ORDER_TAG">
-        <set_value name="$_ShipName" exact="$Ship.knownname"/>
-        <substitute_text source="$_ShipName" text="$_ShipName">
-          <replace string="'\033#FFA95908# #SD-G\033X'" with="''"/>
-        </substitute_text>
-        <set_object_name object="this.ship" name="$_ShipName"/>
-        <remove_value name="$_ShipName"/>
-      </do_if>
-      <remove_value name="$Satellite"/>
-      <remove_value name="$ExpMultiplier"/>
+      <wait min="500ms" max="1000ms"/>
+      <remove_value name="$DebugFileName"/>
+      <remove_value name="$DebugScriptName"/>
+      <remove_value name="$DebugFolderName"/>
+      <remove_value name="$Quit"/>
       <remove_value name="$Ship"/>
-      <do_if value="$DEBUG">
-        <remove_value name="$DebugFileName"/>
-        <remove_value name="$DebugFolderName"/>
-      </do_if>
 
       <label name="END_LBL"/>
-      <wait exact="1s"/>
-      <set_order_syncpoint_reached order="this.ship.order"/>
-      <cancel_order order="this.ship.order" />
+      <wait min="500ms" max="1000ms"/>
+      <set_order_syncpoint_reached order="this.ship.defaultorder"/>
+      <cancel_order order="this.ship.defaultorder"/>
 
     </actions>
   </attention>
 
   <on_abort>
-    <do_if value="$ADD_ORDER_TAG">
-      <set_value name="$_ShipName" exact="$Ship.knownname"/>
-      <substitute_text source="$_ShipName" text="$_ShipName">
-        <replace string="'\033#FFA95908# #SD-G\033X'" with="''"/>
-      </substitute_text>
-      <set_object_name object="this.ship" name="$_ShipName"/>
-      <remove_value name="$_ShipName"/>
-    </do_if>
+    <remove_value name="$_FoundStationsSector"/>
+    <remove_value name="$_FoundStation"/>
+    <remove_value name="$DebugFileName"/>
+    <remove_value name="$DebugScriptName"/>
+    <remove_value name="$DebugFolderName"/>
+    <remove_value name="$Quit"/>
+    <remove_value name="$Ship"/>
   </on_abort>
 
 </aiscript>
