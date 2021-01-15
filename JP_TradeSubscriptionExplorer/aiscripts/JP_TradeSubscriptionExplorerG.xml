@@ -9,27 +9,27 @@
         <input_param name="class" value="[]"/>
       </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="IDLE" text="{8888888, 1480}" comment="Idle actions?" type="bool" default="if global.$TradeSubscriptionExplorerG_Settings? then global.$TradeSubscriptionExplorerG_Settings.{1} else true"/>
-      <param name="IDLE_TIME" text="{8888888, 1481}" comment="Idle Time" type="time" default="if global.$TradeSubscriptionExplorerG_Settings? then global.$TradeSubscriptionExplorerG_Settings.{2} else 600s">
+      <param name="IDLE" text="{8888888, 1980}" comment="Idle actions?" type="bool" default="if global.$TradeSubscriptionExplorerG_Settings? then global.$TradeSubscriptionExplorerG_Settings.{1} else true"/>
+      <param name="IDLE_TIME" text="{8888888, 1981}" comment="Idle Time" type="time" default="if global.$TradeSubscriptionExplorerG_Settings? then global.$TradeSubscriptionExplorerG_Settings.{2} else 600s">
         <input_param name="min" value="60s"/>
         <input_param name="max" value="3600s"/>
         <input_param name="step" value="10s"/>
       </param>
-      <param name="IDLE_FOLLOW" text="{8888888, 1482}" comment="Idle: Follow?" type="bool" default="if global.$TradeSubscriptionExplorerG_Settings? then global.$TradeSubscriptionExplorerG_Settings.{3} else false"/>
-      <param name="WHO_TO_FOLLOW" text="- {8888888, 1483}" comment="Who to follow?" type="object" default="if global.$TradeSubscriptionExplorerG_Settings? then global.$TradeSubscriptionExplorerG_Settings.{4} else null">
+      <param name="IDLE_FOLLOW" text="{8888888, 1982}" comment="Idle: Follow?" type="bool" default="if global.$TradeSubscriptionExplorerG_Settings? then global.$TradeSubscriptionExplorerG_Settings.{3} else false"/>
+      <param name="WHO_TO_FOLLOW" text="- {8888888, 1983}" comment="Who to follow?" type="object" default="if global.$TradeSubscriptionExplorerG_Settings? then global.$TradeSubscriptionExplorerG_Settings.{4} else null">
         <input_param name="class" value="[class.ship]"/>
         <input_param name="owner" value="this.ship.owner"/>
       </param>
-      <param name="IDLE_DOCKING" text="{8888888, 1484}" comment="Idle: Docking?" type="bool" default="if global.$TradeSubscriptionExplorerG_Settings? then global.$TradeSubscriptionExplorerG_Settings.{5} else false"/>
-      <param name="WHERE_TO_DOCK" text="- {8888888, 1485}" comment="Where to dock?" type="object" default="if global.$TradeSubscriptionExplorerG_Settings? then global.$TradeSubscriptionExplorerG_Settings.{6} else null">
+      <param name="IDLE_DOCKING" text="{8888888, 1984}" comment="Idle: Docking?" type="bool" default="if global.$TradeSubscriptionExplorerG_Settings? then global.$TradeSubscriptionExplorerG_Settings.{5} else false"/>
+      <param name="WHERE_TO_DOCK" text="- {8888888, 1985}" comment="Where to dock?" type="object" default="if global.$TradeSubscriptionExplorerG_Settings? then global.$TradeSubscriptionExplorerG_Settings.{6} else null">
         <input_param name="class" value="if this.ship.isclass.[class.ship_s, class.ship_xs] then [class.station, class.ship_m, class.ship_l, class.ship_xl] else [class.station, class.ship_l, class.ship_xl]"/>
       </param>
-      <param name="IDLE_RANDOM_MOVEMENT" text="{8888888, 1486}" comment="Idle: Movement?" type="bool" default="if global.$TradeSubscriptionExplorerG_Settings? then global.$TradeSubscriptionExplorerG_Settings.{7} else false"/>
-      <param name="IN_WHICH_SECTOR" text="- {8888888, 1487}" comment="In which sector?" type="position" default="if global.$TradeSubscriptionExplorerG_Settings? then global.$TradeSubscriptionExplorerG_Settings.{8} else [this.ship.sector, this.ship.position]">
+      <param name="IDLE_RANDOM_MOVEMENT" text="{8888888, 1986}" comment="Idle: Movement?" type="bool" default="if global.$TradeSubscriptionExplorerG_Settings? then global.$TradeSubscriptionExplorerG_Settings.{7} else false"/>
+      <param name="IN_WHICH_SECTOR" text="- {8888888, 1987}" comment="In which sector?" type="position" default="if global.$TradeSubscriptionExplorerG_Settings? then global.$TradeSubscriptionExplorerG_Settings.{8} else [this.ship.sector, this.ship.position]">
         <input_param name="class" value="class.sector"/>
       </param>
-      <param name="IDLE_MOVE_TO" text="{8888888, 1488}" comment="Idle: Move to?" type="bool" default="if global.$TradeSubscriptionExplorerG_Settings? then global.$TradeSubscriptionExplorerG_Settings.{9} else false"/>
-      <param name="WHERE_TO_MOVE" text="- {8888888, 1489}" comment="Where to move?" type="position" default="if global.$TradeSubscriptionExplorerG_Settings? then global.$TradeSubscriptionExplorerG_Settings.{10} else [this.ship.sector, this.ship.position]">
+      <param name="IDLE_MOVE_TO" text="{8888888, 1988}" comment="Idle: Move to?" type="bool" default="if global.$TradeSubscriptionExplorerG_Settings? then global.$TradeSubscriptionExplorerG_Settings.{9} else false"/>
+      <param name="WHERE_TO_MOVE" text="- {8888888, 1989}" comment="Where to move?" type="position" default="if global.$TradeSubscriptionExplorerG_Settings? then global.$TradeSubscriptionExplorerG_Settings.{10} else [this.ship.sector, this.ship.position]">
         <input_param name="class" value="class.sector"/>
       </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -37,14 +37,14 @@
         <input_param name="class" value="[]"/>
       </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="ADD_ORDER_TAG" text="{8888888, 1491}" comment="Add order tag?" type="bool" default="if global.$TradeSubscriptionExplorerG_Settings? then global.$TradeSubscriptionExplorerG_Settings.{11} else true"/>
-      <param name="ORDER_TAG_POSITION" text="{8888888, 1492}" comment="Order tag position" type="number" default="if global.$TradeSubscriptionExplorerG_Settings? then global.$TradeSubscriptionExplorerG_Settings.{12} else 1">
+      <param name="ADD_ORDER_TAG" text="{8888888, 1991}" comment="Add order tag?" type="bool" default="if global.$TradeSubscriptionExplorerG_Settings? then global.$TradeSubscriptionExplorerG_Settings.{11} else true"/>
+      <param name="ORDER_TAG_POSITION" text="{8888888, 1992}" comment="Order tag position" type="number" default="if global.$TradeSubscriptionExplorerG_Settings? then global.$TradeSubscriptionExplorerG_Settings.{12} else 1">
         <input_param name="min" value="0"/>
         <input_param name="max" value="1"/>
         <input_param name="step" value="1"/>
       </param>
-      <param name="SAVE_ORDER_SETTINGS" text="{8888888, 1493}" comment="Save Order Settings?" type="bool" default="false"/>
-      <param name="RESET_ORDER_SETTINGS" text="{8888888, 1494}" comment="Reset Order Settings?" type="bool" default="false"/>
+      <param name="SAVE_ORDER_SETTINGS" text="{8888888, 1993}" comment="Save Order Settings?" type="bool" default="false"/>
+      <param name="RESET_ORDER_SETTINGS" text="{8888888, 1994}" comment="Reset Order Settings?" type="bool" default="false"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="PLACE_HOLDER_998" text="----------------------------------" type="object" default="null">
         <input_param name="class" value="[]"/>
