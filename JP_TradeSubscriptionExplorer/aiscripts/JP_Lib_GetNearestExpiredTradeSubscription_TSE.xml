@@ -30,6 +30,7 @@ $_FoundStationsSector
 
         <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
+        <!-- just for the ui -->
         <set_command command="command.scan"/>
         <set_command_action commandaction="commandaction.calculating"/>
 

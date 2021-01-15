@@ -214,7 +214,7 @@
             <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
           </do_if>
           <do_for_each valuename="$_Sector" in="global.$TradeSubscriptionExplorerShips_Table">
-            <do_if value="not global.$TradeSubscriptionExplorerSectorBlack_List.indexof.{$_Sector}">
+            <do_if value="@$_Sector != null and not global.$TradeSubscriptionExplorerSectorBlack_List.indexof.{$_Sector}">
               <append_to_list name="global.$TradeSubscriptionExplorerSectorBlack_List" exact="$_Sector"/>
             </do_if>
           </do_for_each>

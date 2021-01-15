@@ -46,13 +46,8 @@
   <attention min="unknown">
     <actions>
 
-      <wait exact="1ms"/>
-      <label name="INIT"/>
-
-      <do_if value="$DEBUG">
-        <debug_to_file append="false" directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ JP_ExploreTradeSubscription.xml ~ Started ~~' + '\n'"/>
-      </do_if>
+      <label name="INIT_LBL"/>
+      <wait min="500ms" max="1000ms"/>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
@@ -120,7 +115,6 @@
       <do_if value="$DEBUG gt 0">
         <remove_value name="$DebugFileName"/>
         <remove_value name="$DebugScriptName"/>
-        <remove_value name="$CurrentSector"/>
       </do_if>
       <remove_value name="$ExpMultiplier"/>
       <remove_value name="$Ship"/>
@@ -135,7 +129,6 @@
     <do_if value="$DEBUG gt 0">
       <remove_value name="$DebugFileName"/>
       <remove_value name="$DebugScriptName"/>
-      <remove_value name="$CurrentSector"/>
     </do_if>
     <remove_value name="$ExpMultiplier"/>
     <remove_value name="$Ship"/>
