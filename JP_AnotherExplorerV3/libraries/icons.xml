@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<icons>
+  <icon name="order_jp_anotherexplorerv3s" texture="assets\fx\gui\textures\order\order_explore.tga" height="32" width="32"></icon>
+  <icon name="order_jp_anotherexplorerv3g" texture="assets\fx\gui\textures\order\order_explore.tga" height="32" width="32"></icon>
+  <icon name="order_jp_exploreobject_aev3" texture="assets\fx\gui\textures\order\order_explore.tga" height="32" width="32"></icon>
+  <icon name="order_jp_idlereturnhome_aev3" texture="assets\fx\gui\textures\order\order_wait.tga" height="32" width="32"></icon>
+</icons>

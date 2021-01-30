@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Spanish ~~ Español -->
+<language>
+  <page id="8888888" voice="no">
+    <!--  JP_AnotherExplorerV3 -->
+    <t id="400">Sectores desconocidos?</t>
+    <t id="410">Saltar puertas?</t>
+    <t id="411">Las estaciones?</t>
+    <t id="470">\033#FFCEFBA1# ~ Inactivo - siguiendo..\033X</t>
+    <t id="471">\033#FFCEFBA1# ~ Inactivo - acoplamiento en %1\033X</t>
+    <t id="472">\033#FFCEFBA1# ~ Inactivo - moviéndose aleatoriamente..\033X</t>
+    <t id="473">\033#FFCEFBA1# ~ Inactivo - moviéndose a la posición de espera..\033X</t>
+    <t id="474">\033#FFCEFBA1# ~ Inactivo - moviéndose al sector inactivo..\033X</t>
+    <t id="480">¿Acciones inactivas?</t>
+    <t id="481">Tiempo de inactividad</t>
+    <t id="482">Inactivo: ¿Seguir?</t>
+    <t id="483">¿A quién seguir?</t>
+    <t id="484">Inactivo: ¿Atraque?</t>
+    <t id="485">¿Dónde atracar?</t>
+    <t id="486">Inactivo: ¿movimiento aleatorio?</t>
+    <t id="487">En que sector</t>
+    <t id="488">Inactivo: ¿Mover a?</t>
+    <t id="489">Hacia donde moverse</t>
+    <t id="491">Agregar etiqueta de pedido?</t>
+    <t id="492">Posición de la etiqueta de pedido</t>
+    <t id="493">Guardar la configuración de la orden?</t>
+    <t id="494">¿Restablecer la configuración del pedido?</t>
+    <t id="495">Configuración de orden guardada.</t>
+    <t id="496">Ajustes de orden restablecidos.</t>
+    <t id="497">\033#B600CCCC#</t>
+    <t id="498">\033#FF00CC66#</t>
+    <t id="499">\033X</t>
+  </page>
+</language>

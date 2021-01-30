@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Default ~~ English -->
+<language>
+  <page id="8888888" voice="no">
+    <!--  JP_AnotherExplorerV3 -->
+    <t id="400">Unknown Sectors?</t>
+    <t id="410">Jump Gates?</t>
+    <t id="411">Stations?</t>
+    <t id="470">\033#FFCEFBA1# ~ Idle - following..\033X</t>
+    <t id="471">\033#FFCEFBA1# ~ Idle - docking at %1\033X</t>
+    <t id="472">\033#FFCEFBA1# ~ Idle - moving randomly..\033X</t>
+    <t id="473">\033#FFCEFBA1# ~ Idle - moving to waiting position..\033X</t>
+    <t id="474">\033#FFCEFBA1# ~ Idle - moving to Idle Sector..\033X</t>
+    <t id="480">Idle actions?</t>
+    <t id="481">Idle Time</t>
+    <t id="482">Idle: Follow?</t>
+    <t id="483">Who to follow?</t>
+    <t id="484">Idle: Docking?</t>
+    <t id="485">Where to dock?</t>
+    <t id="486">Idle: Random movement?</t>
+    <t id="487">In which sector?</t>
+    <t id="488">Idle: Move to?</t>
+    <t id="489">Where to move?</t>
+    <t id="491">Add Order tag?</t>
+    <t id="492">Order tag position</t>
+    <t id="493">Save Order Settings?</t>
+    <t id="494">Reset Order Settings?</t>
+    <t id="495">Order settings saved.</t>
+    <t id="496">Order settings resetted.</t>
+    <t id="497">\033#B600CCCC#</t>
+    <t id="498">\033#FF00CC66#</t>
+    <t id="499">\033X</t>
+  </page>
+</language>

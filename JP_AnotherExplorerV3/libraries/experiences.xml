@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<experiences>
+  <experience id="JP_SHIP_OBJECT_DISCOVERED">
+    <skill ref="piloting">
+      <individual base="1.0" falloff="0.88" limit="25"/>
+    </skill>
+    <skill ref="engineering">
+      <individual base="1.0" falloff="0.84" limit="25"/>
+      <group base="1.0" falloff="0.88" limit="25"/>
+    </skill>
+    <skill ref="morale">
+      <individual base="1.0" falloff="0.92" limit="25"/>
+      <group base="1.0" falloff="0.88" limit="25"/>
+    </skill>
+  </experience>
+</experiences>

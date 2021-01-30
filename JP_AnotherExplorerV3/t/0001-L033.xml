@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- French ~~ Français -->
+<language>
+  <page id="8888888" voice="no">
+    <!--  JP_AnotherExplorerV3 -->
+    <t id="400">Inconnu Secteurs?</t>
+    <t id="410">Sauter Les Portes?</t>
+    <t id="411">Les Stations?</t>
+    <t id="470">\033#FFCEFBA1# ~ Neutre - suivante..\033X</t>
+    <t id="471">\033#FFCEFBA1# ~ Neutre - amarrage à %1\033X</t>
+    <t id="472">\033#FFCEFBA1# ~ Neutre - se déplaçant au hasard..\033X</t>
+    <t id="473">\033#FFCEFBA1# ~ Neutre - passer en position d'attente..\033X</t>
+    <t id="474">\033#FFCEFBA1# ~ Neutre - passage au secteur inactif..\033X</t>
+    <t id="480">Actions inactives?</t>
+    <t id="481">Le Temps D'Inactivité</t>
+    <t id="482">Inactif: suivre?</t>
+    <t id="483">Qui suivre?</t>
+    <t id="484">Inactif: amarrage?</t>
+    <t id="485">Où accoster?</t>
+    <t id="486">Inactif: mouvement aléatoire?</t>
+    <t id="487">Dans quel secteur?</t>
+    <t id="488">Inactif: passer à?</t>
+    <t id="489">Où déménager?</t>
+    <t id="491">Ajouter une étiquette de commande?</t>
+    <t id="492">Position de l'étiquette de commande</t>
+    <t id="493">Enregistrer Les Paramètres De Commande?</t>
+    <t id="494">Réinitialiser Les Paramètres De Commande?</t>
+    <t id="495">Paramètres de commande enregistrés.</t>
+    <t id="496">Paramètres de commande réinitialisés.</t>
+    <t id="497">\033#B600CCCC#</t>
+    <t id="498">\033#FF00CC66#</t>
+    <t id="499">\033X</t>
+  </page>
+</language>

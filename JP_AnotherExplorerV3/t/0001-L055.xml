@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Portuguese (Brazil) ~~ Português (Brasil) -->
+<language>
+  <page id="8888888" voice="no">
+    <!--  JP_AnotherExplorerV3 -->
+    <t id="400">Sectores Desconhecidos?</t>
+    <t id="410">Portões De Salto?</t>
+    <t id="411">Estações?</t>
+    <t id="470">\033#FFCEFBA1# ~ Neutro - Segue..\033X</t>
+    <t id="471">\033#FFCEFBA1# ~ Neutro - atracando em %1\033X</t>
+    <t id="472">\033#FFCEFBA1# ~ Neutro - movendo-se aleatoriamente..\033X</t>
+    <t id="473">\033#FFCEFBA1# ~ Neutro - movendo para a posição de espera..\033X</t>
+    <t id="474">\033#FFCEFBA1# ~ Neutro - movendo para o setor ocioso..\033X</t>
+    <t id="480">Ações ociosas?</t>
+    <t id="481">Tempo ocioso</t>
+    <t id="482">Inativo: seguir?</t>
+    <t id="483">Quem seguir?</t>
+    <t id="484">Inativo: atracação?</t>
+    <t id="485">Onde atracar?</t>
+    <t id="486">Inativo: movimento aleatório?</t>
+    <t id="487">Em qual setor?</t>
+    <t id="488">Inativo: mover para?</t>
+    <t id="489">Para onde ir?</t>
+    <t id="491">Adicionar etiqueta de pedido?</t>
+    <t id="492">Posição da tag do pedido</t>
+    <t id="493">Salvar configurações do pedido?</t>
+    <t id="494">Redefinir as configurações do pedido?</t>
+    <t id="495">Configurações do pedido salvas.</t>
+    <t id="496">Configurações do pedido redefinidas.</t>
+    <t id="497">\033#B600CCCC#</t>
+    <t id="498">\033#FF00CC66#</t>
+    <t id="499">\033X</t>
+  </page>
+</language>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Italian ~~ Italiano -->
+<language>
+  <page id="8888888" voice="no">
+    <!--  JP_AnotherExplorerV3 -->
+    <t id="400">Settori Sconosciuti?</t>
+    <t id="410">Saltare I Cancelli?</t>
+    <t id="411">Stazioni?</t>
+    <t id="470">\033#FFCEFBA1# ~ Neutro - a seguire..\033X</t>
+    <t id="471">\033#FFCEFBA1# ~ Neutro - attracco a %1\033X</t>
+    <t id="472">\033#FFCEFBA1# ~ Neutro - muovendosi in modo casuale..\033X</t>
+    <t id="473">\033#FFCEFBA1# ~ Neutro - passare alla posizione di attesa..\033X</t>
+    <t id="474">\033#FFCEFBA1# ~ Neutro - passaggio al settore inattivo..\033X</t>
+    <t id="480">Azioni inattive?</t>
+    <t id="481">Tempo Di Inattività</t>
+    <t id="482">Inattivo: seguire?</t>
+    <t id="483">Chi seguire?</t>
+    <t id="484">Inattivo: Attracco?</t>
+    <t id="485">Dove attraccare?</t>
+    <t id="486">Inattivo: movimento casuale?</t>
+    <t id="487">In quale settore?</t>
+    <t id="488">Inattivo: passa a?</t>
+    <t id="489">Dove spostarsi?</t>
+    <t id="491">Aggiungi tag ordine?</t>
+    <t id="492">Posizione dell'etichetta di ordine</t>
+    <t id="493">Salvare Le Impostazioni Dell'Ordine?</t>
+    <t id="494">Ripristina Le Impostazioni Dell'Ordine?</t>
+    <t id="495">Impostazioni dell'ordine salvate.</t>
+    <t id="496">Impostazioni ordine reimpostate.</t>
+    <t id="497">\033#B600CCCC#</t>
+    <t id="498">\033#FF00CC66#</t>
+    <t id="499">\033X</t>
+  </page>
+</language>

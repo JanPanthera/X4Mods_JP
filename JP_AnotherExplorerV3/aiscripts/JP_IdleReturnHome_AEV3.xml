@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<aiscript name="JP_IdleReturnHome_AEV3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd">
+
+  <order id="JP_IdleReturnHome_AEV3" name="_IdleReturnHome_AEV3" category="internal" infinite="false">
+    <params>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="IDLE_TIME" type="internal" default="600s"/>
+      <param name="IDLE_FOLLOW" type="internal" default="false"/>
+      <param name="WHO_TO_FOLLOW" type="internal" default="null"/>
+      <param name="IDLE_DOCKING" type="internal" default="false"/>
+      <param name="WHERE_TO_DOCK" type="internal" default="null"/>
+      <param name="IDLE_RANDOM_MOVEMENT" type="internal" default="false"/>
+      <param name="IN_WHICH_SECTOR" type="internal" default="[this.ship.sector, this.ship.position]"/>
+      <param name="IDLE_MOVE_TO" type="internal" default="false"/>
+      <param name="WHERE_TO_MOVE" type="internal" default="[this.ship.sector, this.ship.position]"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="DEBUG_FOLDER_NAME" type="internal" default="''"/>
+      <param name="DEBUG" type="internal" default="0"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    </params>
+    <location object="$LOCATION_OBJECT_USED_IN_UI.{1}" condition="@$LOCATION_OBJECT_USED_IN_UI != null"/>
+  </order>
+
+  <interrupts>
+    <handler ref="SectorChangeHandler"/>
+    <handler ref="TargetInvalidHandler"/>
+    <handler ref="AttackHandler"/>
+    <handler ref="MissileLockHandler"/>
+    <handler ref="ScannedHandler"/>
+    <handler ref="InspectedHandler"/>
+    <handler ref="FoundAbandonedHandler"/>
+    <handler ref="FoundLockboxHandler"/>
+    <handler ref="ResupplyHandler"/>
+    <handler ref="JobRemoveRequestHandler"/>
+  </interrupts>
+
+  <init>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <set_value name="$Ship" exact="this.ship"/>
+    <set_value name="$ShipsCurrentName" exact="$Ship.knownname"/>
+    <set_value name="$LOCATION_OBJECT_USED_IN_UI" exact="null"/>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <do_if value="$DEBUG gt 0">
+      <set_value name="$DebugFolderName" exact="$DEBUG_FOLDER_NAME"/>
+      <set_value name="$DebugScriptName" exact="'JP_IdleReturnHome_AEV3'"/>
+      <set_value name="$DebugFileName" exact="$Ship.idcode + '.' + $DebugScriptName + '.xml.log'"/>
+      <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'" append="false"/>
+      <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Started ~~' + '\n'"/>
+    </do_if>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <do_if value="$IDLE_FOLLOW">
+      <do_if value="@$WHO_TO_FOLLOW == null">
+        <set_value name="$IDLE_FOLLOW" exact="false"/>
+      </do_if>
+    </do_if>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <do_if value="$IDLE_DOCKING">
+      <do_if value="@$WHERE_TO_DOCK != null">
+        <find_dockingbay name="$_FoundDockingBay" object="$WHERE_TO_DOCK">
+          <match_dock size="$Ship.docksize" free="true"/>
+        </find_dockingbay>
+      </do_if>
+      <do_if value="@$_FoundDockingBay == null">
+        <set_value name="$IDLE_DOCKING" exact="false"/>
+      </do_if>
+    </do_if>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <do_if value="$IDLE_MOVE_TO">
+      <do_if value="@$IN_WHICH_SECTOR == null">
+        <set_value name="$IDLE_MOVE_TO" exact="false"/>
+      </do_if>
+    </do_if>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <do_if value="$IDLE_RANDOM_MOVEMENT or (not $IDLE_FOLLOW and not $IDLE_DOCKING and not $IDLE_MOVE_TO)">
+      <do_if value="$IDLE_RANDOM_MOVEMENT == false">
+        <set_value name="$IDLE_RANDOM_MOVEMENT" exact="true"/>
+      </do_if>
+      <do_if value="@$IN_WHICH_SECTOR == null or not @$IN_WHICH_SECTOR.{1}.isclass.{class.sector}">
+        <set_value name="$IN_WHICH_SECTOR" exact="[$Ship.sector, $Ship.position]"/>
+      </do_if>
+    </do_if>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  </init>
+
+  <attention min="unknown">
+    <actions>
+
+      <label name="INIT_LBL"/>
+      <wait min="500ms" max="1000ms"/>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <label name="RESUME_LBL"/>
+      <wait min="500ms" max="1000ms"/>
+
+      <!-- just for the ui -->
+      <set_command command="command.wait"/>
+      <set_command_action commandaction="commandaction.standingby"/>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <label name="MOVE_FOLLOW_LBL"/>
+      <do_if value="$IDLE_FOLLOW">
+        <set_value name="$CurrentSector" exact="$WHO_TO_FOLLOW.sector"/>
+        <set_value name="$LOCATION_OBJECT_USED_IN_UI" exact="[$WHO_TO_FOLLOW, position.[0m, 0m, 0m]]"/>
+        <do_if value="$Ship.sector != $CurrentSector">
+          <wait min="500ms" max="1000ms"/>
+          <resume label="MOVE_TO_SECTOR_LBL"/>
+        </do_if>
+        <set_command command="command.follow" param="$WHO_TO_FOLLOW"/>
+        <set_object_name object="$Ship" name="$ShipsCurrentName + '{8888888, 470}'" comment="$ShipsCurrentName + '\033#FFCEFBA1# ~ Idle - following..\033X'"/>
+        <set_value name="$_InitialTime" exact="player.age"/>
+        <get_safe_pos result="$SafePosition" zone="$CurrentSector" object="$WHO_TO_FOLLOW" directionobject="$Ship" radius="($WHO_TO_FOLLOW.size + $Ship.size) / 2"/>
+        <do_if value="$Ship.distanceto.{$WHO_TO_FOLLOW} gt ((($WHO_TO_FOLLOW.size / 2) + ($Ship.size / 2) + 100m) + 4km)">
+          <get_safe_pos result="$SafePosition" zone="$CurrentSector" object="$WHO_TO_FOLLOW" directionobject="$Ship" radius="($WHO_TO_FOLLOW.size + $Ship.size) / 2"/>
+        </do_if>
+        <do_if value="$Ship.sector != $WHO_TO_FOLLOW.sector">
+          <remove_value name="$_InitialTime"/>
+          <remove_value name="$SafePosition"/>
+          <wait min="500ms" max="1000ms"/>
+          <resume label="RESUME_LBL"/>
+        </do_if>
+        <do_if value="$Ship.distanceto.{$WHO_TO_FOLLOW} gt (($WHO_TO_FOLLOW.size / 2) + ($Ship.size / 2) + 100m)">
+          <move_to object="$Ship" destination="$CurrentSector" forceposition="true" travel="true">
+            <position value="$SafePosition"/>
+            <interrupt_after_time time="2s"/>
+          </move_to>
+        </do_if>
+        <do_else>
+          <wait exact="2s"/>
+        </do_else>
+        <do_if value="((player.age - $_InitialTime)s lt $IDLE_TIME)">
+          <wait min="500ms" max="1000ms"/>
+          <resume label="MOVE_FOLLOW_LBL"/>
+        </do_if>
+        <set_object_name object="$Ship" name="$ShipsCurrentName"/>
+        <remove_value name="$_InitialTime"/>
+        <resume label="FINISH_LBL"/>
+      </do_if>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <do_if value="$IDLE_DOCKING">
+        <find_dockingbay name="$_FoundDockingBay" object="$WHERE_TO_DOCK">
+          <match_dock size="$Ship.docksize" free="true"/>
+        </find_dockingbay>
+        <do_if value="@$_FoundDockingBay == null">
+          <resume label="FINISH_LBL"/>
+        </do_if>
+        <set_value name="$CurrentSector" exact="$WHERE_TO_DOCK.sector"/>
+        <set_value name="$LOCATION_OBJECT_USED_IN_UI" exact="[$WHERE_TO_DOCK, $WHERE_TO_DOCK.position]"/>
+        <do_if value="$Ship.sector != $CurrentSector">
+          <wait min="500ms" max="1000ms"/>
+          <resume label="MOVE_TO_SECTOR_LBL"/>
+        </do_if>
+        <set_command command="command.dockat" param="$WHERE_TO_DOCK"/>
+        <set_object_name object="$Ship" name="$ShipsCurrentName + '{8888888, 471}'" comment="$ShipsCurrentName + '\033#FFCEFBA1# ~ Idle - docking at %1\033X'.[$WHERE_TO_DOCK.knownname]"/>
+        <create_order object="$Ship" id="'DockAndWait'" immediate="true">
+          <param name="destination" value="$WHERE_TO_DOCK"/>
+          <param name="timeout" value="$IDLE_TIME"/>
+          <param name="dockfollowers" value="true"/>
+        </create_order>
+        <set_object_name object="$Ship" name="$ShipsCurrentName"/>
+        <remove_value name="$_FoundDockingBay"/>
+        <resume label="FINISH_LBL"/>
+      </do_if>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <do_if value="$IDLE_RANDOM_MOVEMENT">
+        <set_value name="$CurrentSector" exact="$IN_WHICH_SECTOR.{1}"/>
+        <set_value name="$LOCATION_OBJECT_USED_IN_UI" exact="[$IN_WHICH_SECTOR.{1}, $IN_WHICH_SECTOR.{2}]"/>
+        <do_if value="$Ship.sector != $CurrentSector">
+          <wait min="500ms" max="1000ms"/>
+          <resume label="MOVE_TO_SECTOR_LBL"/>
+        </do_if>
+        <set_command command="command.wait"/>
+        <set_command_action commandaction="commandaction.calculating"/>
+        <set_object_name object="$Ship" name="$ShipsCurrentName + '{8888888, 472}'" comment="$ShipsCurrentName + '\033#FFCEFBA1# ~ Idle - moving randomly..\033X'"/>
+        <run_script name="'move.random'">
+          <param name="TimeOut" value="$IDLE_TIME"/>
+          <param name="Anchor" value="$CurrentSector"/>
+          <param name="Offset" value="$IN_WHICH_SECTOR.{2}"/>
+          <param name="MaxDistance" value="10km"/>
+        </run_script>
+        <set_object_name object="$Ship" name="$ShipsCurrentName"/>
+        <resume label="FINISH_LBL"/>
+      </do_if>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <do_if value="$IDLE_MOVE_TO">
+        <set_value name="$CurrentSector" exact="$WHERE_TO_MOVE.{1}"/>
+        <set_value name="$LOCATION_OBJECT_USED_IN_UI" exact="[$WHERE_TO_MOVE.{1}, $WHERE_TO_MOVE.{2}]"/>
+        <do_if value="$Ship.sector != $CurrentSector">
+          <wait min="500ms" max="1000ms"/>
+          <resume label="MOVE_TO_SECTOR_LBL"/>
+        </do_if>
+        <set_command command="command.move" param="$WHERE_TO_MOVE.{1}"/>
+        <set_object_name object="$Ship" name="$ShipsCurrentName + '{8888888, 473}'" comment="$ShipsCurrentName + '\033#FFCEFBA1# ~ Idle - moving to waiting position..\033X'"/>
+        <move_to object="$Ship" destination="$WHERE_TO_MOVE.{1}" finishonapproach="false" forceposition="true" travel="true">
+          <position value="$WHERE_TO_MOVE.{2}"/>
+        </move_to>
+        <stop_moving object="$Ship"/>
+        <set_object_name object="$Ship" name="$ShipsCurrentName + '\033#FFCEFBA1# ~ Idle - waiting some time\033X'"/>
+        <wait exact="$IDLE_TIME"/>
+        <set_object_name object="$Ship" name="$ShipsCurrentName"/>
+        <resume label="FINISH_LBL"/>
+      </do_if>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <label name="MOVE_TO_SECTOR_LBL"/>
+      <set_command command="command.move" param="$CurrentSector"/>
+      <set_object_name object="$Ship" name="$ShipsCurrentName + '{8888888, 474}'" comment="$ShipsCurrentName + '\033#FFCEFBA1# ~ Idle - moving to Idle Sector..\033X'"/>
+      <run_script name="'move.generic'">
+        <param name="destination" value="$CurrentSector"/>
+        <param name="endintargetzone" value="true"/>
+        <param name="recallsubordinates" value="true"/>
+      </run_script>
+      <set_object_name object="$Ship" name="$ShipsCurrentName"/>
+      <resume label="RESUME_LBL"/>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <label name="FINISH_LBL"/>
+      <wait min="500ms" max="1000ms"/>
+      <do_if value="$DEBUG gt 0">
+        <debug_to_file chance="$DEBUG" directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Finished ~~'"/>
+        <debug_to_file chance="$DEBUG" directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+      </do_if>
+
+      <label name="CLEANUP_LBL"/>
+      <wait min="500ms" max="1000ms"/>
+      <set_object_name object="$Ship" name="$ShipsCurrentName"/>
+      <do_if value="$DEBUG gt 0">
+        <remove_value name="$DebugFileName"/>
+        <remove_value name="$DebugScriptName"/>
+        <remove_value name="$CurrentSector"/>
+      </do_if>
+      <remove_value name="$ShipsCurrentName"/>
+      <remove_value name="$Ship"/>
+
+      <label name="END_LBL"/>
+      <wait min="500ms" max="1000ms"/>
+
+    </actions>
+  </attention>
+
+  <on_abort>
+    <set_object_name object="$Ship" name="$ShipsCurrentName"/>
+    <do_if value="$DEBUG gt 0">
+      <remove_value name="$DebugFileName"/>
+      <remove_value name="$DebugScriptName"/>
+      <remove_value name="$CurrentSector"/>
+    </do_if>
+    <remove_value name="$ShipsCurrentName"/>
+    <remove_value name="$Ship"/>
+  </on_abort>
+
+</aiscript>

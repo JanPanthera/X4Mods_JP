@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<content id="JP_AnotherExplorerV3" name="JP_AnotherExplorerV3" description="Searches in the galaxy or an sector for jump gates or stations." author="JanPanthera" version="100" date="2021-01-30" save="0" enabled="1">
+  <text language="7"  name="JP_AnotherExplorerV3" description="Searches in the galaxy or an sector for jump gates or stations." author="JanPanthera"/>
+  <text language="33" name="JP_AnotherExplorerV3" description="Searches in the galaxy or an sector for jump gates or stations." author="JanPanthera"/>
+  <text language="34" name="JP_AnotherExplorerV3" description="Searches in the galaxy or an sector for jump gates or stations." author="JanPanthera"/>
+  <text language="39" name="JP_AnotherExplorerV3" description="Searches in the galaxy or an sector for jump gates or stations." author="JanPanthera"/>
+  <text language="44" name="JP_AnotherExplorerV3" description="Searches in the galaxy or an sector for jump gates or stations." author="JanPanthera"/>
+  <text language="49" name="JP_AnotherExplorerV3" description="Sucht in der Galaxie oder einem Sektor nach Sprungtoren oder Stationen." author="JanPanthera"/>
+  <text language="55" name="JP_AnotherExplorerV3" description="Searches in the galaxy or an sector for jump gates or stations." author="JanPanthera"/>
+  <text language="81" name="JP_AnotherExplorerV3" description="Searches in the galaxy or an sector for jump gates or stations." author="JanPanthera"/>
+  <text language="82" name="JP_AnotherExplorerV3" description="Searches in the galaxy or an sector for jump gates or stations." author="JanPanthera"/>
+  <text language="86" name="JP_AnotherExplorerV3" description="Searches in the galaxy or an sector for jump gates or stations." author="JanPanthera"/>
+  <text language="88" name="JP_AnotherExplorerV3" description="Searches in the galaxy or an sector for jump gates or stations." author="JanPanthera"/>
+</content>

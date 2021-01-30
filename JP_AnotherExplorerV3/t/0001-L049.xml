@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- German ~~ Deutsch -->
+<language>
+  <page id="8888888" voice="no">
+    <!--  JP_AnotherExplorerV3 -->
+    <t id="400">Unbekannte Sektoren?</t>
+    <t id="410">Sprungtore?</t>
+    <t id="411">Stationen?</t>
+    <t id="470">\033#FFCEFBA1# ~ Leerlauf - folgen..\033X</t>
+    <t id="471">\033#FFCEFBA1# ~ Leerlauf - andocken an %1\033X</t>
+    <t id="472">\033#FFCEFBA1# ~ Leerlauf - zufälliges bewegen..\033X</t>
+    <t id="473">\033#FFCEFBA1# ~ Leerlauf - in Warteposition bewegen..\033X</t>
+    <t id="474">\033#FFCEFBA1# ~ Leerlauf - in Leerlauf Sektor bewegen..\033X</t>
+    <t id="480">Leerlaufaktionen?</t>
+    <t id="481">Leerlaufzeit</t>
+    <t id="482">Leerlauf: Folgen?</t>
+    <t id="483">Wem Folgen?</t>
+    <t id="484">Leerlauf: Andocken?</t>
+    <t id="485">Wo andocken?</t>
+    <t id="486">Leerlauf: Zufällige Bewegung?</t>
+    <t id="487">In welchem Sektor?</t>
+    <t id="488">Leerlauf: Zu Position bewegen?</t>
+    <t id="489">Wohin?</t>
+    <t id="491">Befehlskürzel hinzufügen?</t>
+    <t id="492">Befehlskürzel position</t>
+    <t id="493">Auftragseinstellungen Speichern?</t>
+    <t id="494">Auftragseinstellungen Zurücksetzen?</t>
+    <t id="495">Auftragseinstellungen gespeichert.</t>
+    <t id="496">Auftragseinstellungen zurückgesetzt.</t>
+    <t id="497">\033#B600CCCC#</t>
+    <t id="498">\033#FF00CC66#</t>
+    <t id="499">\033X</t>
+  </page>
+</language>
