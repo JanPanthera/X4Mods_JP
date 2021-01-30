@@ -2,7 +2,7 @@
 
 <aiscript name="JP_AnotherExplorerV3G" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd" version="1">
 
-  <order id="JP_AnotherExplorerV3G" name="_{8888888, 497}AnotherExplorerV3 - {8888888, 499}{8888888, 498}{20001, 901}{8888888, 499}" category="coordination" infinite="true">
+  <order id="JP_AnotherExplorerV3G" name="_{8888888, 497}AnotherExplorerV3 - {8888888, 499}{8888888, 498}{20001, 901}{8888888, 499}" category="navigation" infinite="true">
     <params>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="PLACE_HOLDER_000" text="----------------------------------" type="object" default="null">
