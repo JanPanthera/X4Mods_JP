@@ -94,6 +94,10 @@
       <set_command command="command.scan"/>
       <wait min="500ms" max="1000ms"/>
 
+      <do_if value="@global.$AnotherExplorerV3Ships_Table.{$Ship} != null">
+        <set_value name="global.$AnotherExplorerV3Ships_Table.{$Ship}" exact="null"/>
+      </do_if>
+
       <apply_experience entity="$Ship.pilot" experience="'JP_SHIP_OBJECT_DISCOVERED'" factor="$ExpMultiplier"/>
       <apply_experience object="$Ship" experience="'JP_SHIP_OBJECT_DISCOVERED'" role="entityrole.service" factor="$ExpMultiplier"/>
       <remove_value name="$LOCATION_OBJECT_USED_IN_UI"/>
