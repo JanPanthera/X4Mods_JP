@@ -4,7 +4,7 @@
   <cues>
 
     <!-- DEBUG off before removing: checkinterval="1s" !!! -->
-    <cue name="JP_AEV3_Root_MD" instantiate="true">
+    <cue name="JP_AEV3_Root_MD" instantiate="true" checkinterval="1ms">
       <actions>
 
         <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
