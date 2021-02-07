@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Italian ~~ Italiano -->
+<language>
+  <page id="8888888" voice="no">
+    <!-- JP_TradeSubscriptionExplorerV2 -->
+    <t id="1970">\033#FFCEFBA1# ~ Neutro - a seguire..\033X</t>
+    <t id="1971">\033#FFCEFBA1# ~ Neutro - attracco a %1\033X</t>
+    <t id="1972">\033#FFCEFBA1# ~ Neutro - muovendosi in modo casuale..\033X</t>
+    <t id="1973">\033#FFCEFBA1# ~ Neutro - passare alla posizione di attesa..\033X</t>
+    <t id="1974">\033#FFCEFBA1# ~ Neutro - passaggio al settore inattivo..\033X</t>
+    <t id="1980">Azioni inattive?</t>
+    <t id="1981">Tempo Di Inattività</t>
+    <t id="1982">Inattivo: seguire?</t>
+    <t id="1983">Chi seguire?</t>
+    <t id="1984">Inattivo: Attracco?</t>
+    <t id="1985">Dove attraccare?</t>
+    <t id="1986">Inattivo: movimento casuale?</t>
+    <t id="1987">In quale settore?</t>
+    <t id="1988">Inattivo: passa a?</t>
+    <t id="1989">Dove spostarsi?</t>
+    <t id="1991">Aggiungi tag ordine?</t>
+    <t id="1992">Posizione dell'etichetta di ordine</t>
+    <t id="1993">Salvare Le Impostazioni Dell'Ordine?</t>
+    <t id="1994">Ripristina Le Impostazioni Dell'Ordine?</t>
+    <t id="1995">Impostazioni dell'ordine salvate.</t>
+    <t id="1996">Impostazioni ordine reimpostate.</t>
+    <t id="1997">\033#B600CCCC#</t>
+    <t id="1998">\033#FF00CC66#</t>
+    <t id="1999">\033X</t>
+  </page>
+</language>

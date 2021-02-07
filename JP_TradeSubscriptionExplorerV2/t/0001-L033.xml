@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- French ~~ Français -->
+<language>
+  <page id="8888888" voice="no">
+    <!-- JP_TradeSubscriptionExplorerV2 -->
+    <t id="1970">\033#FFCEFBA1# ~ Neutre - suivante..\033X</t>
+    <t id="1971">\033#FFCEFBA1# ~ Neutre - amarrage à %1\033X</t>
+    <t id="1972">\033#FFCEFBA1# ~ Neutre - se déplaçant au hasard..\033X</t>
+    <t id="1973">\033#FFCEFBA1# ~ Neutre - passer en position d'attente..\033X</t>
+    <t id="1974">\033#FFCEFBA1# ~ Neutre - passage au secteur inactif..\033X</t>
+    <t id="1980">Actions inactives?</t>
+    <t id="1981">Le Temps D'Inactivité</t>
+    <t id="1982">Inactif: suivre?</t>
+    <t id="1983">Qui suivre?</t>
+    <t id="1984">Inactif: amarrage?</t>
+    <t id="1985">Où accoster?</t>
+    <t id="1986">Inactif: mouvement aléatoire?</t>
+    <t id="1987">Dans quel secteur?</t>
+    <t id="1988">Inactif: passer à?</t>
+    <t id="1989">Où déménager?</t>
+    <t id="1991">Ajouter une étiquette de commande?</t>
+    <t id="1992">Position de l'étiquette de commande</t>
+    <t id="1993">Enregistrer Les Paramètres De Commande?</t>
+    <t id="1994">Réinitialiser Les Paramètres De Commande?</t>
+    <t id="1995">Paramètres de commande enregistrés.</t>
+    <t id="1996">Paramètres de commande réinitialisés.</t>
+    <t id="1997">\033#B600CCCC#</t>
+    <t id="1998">\033#FF00CC66#</t>
+    <t id="1999">\033X</t>
+  </page>
+</language>

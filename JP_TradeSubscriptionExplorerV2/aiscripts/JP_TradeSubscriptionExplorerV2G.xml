@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<aiscript name="JP_TradeSubscriptionExplorerV2G" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd" version="1">
+
+  <order id="JP_TradeSubscriptionExplorerV2G" name="_{8888888, 1997}TradeSubscriptionExplorerV2 - {8888888, 1999}{8888888, 1998}{20001, 901}{8888888, 1999}" category="navigation" infinite="true">
+    <params>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="PLACE_HOLDER_000" text="----------------------------------" type="object" default="null">
+        <input_param name="class" value="[]"/>
+      </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="IDLE" text="{8888888, 1980}" comment="Idle actions?" type="bool" default="if global.$TradeSubscriptionExplorerV2G_Settings? then global.$TradeSubscriptionExplorerV2G_Settings.{1} else true"/>
+      <param name="IDLE_TIME" text="{8888888, 1981}" comment="Idle Time" type="time" default="if global.$TradeSubscriptionExplorerV2G_Settings? then global.$TradeSubscriptionExplorerV2G_Settings.{2} else 600s">
+        <input_param name="min" value="60s"/>
+        <input_param name="max" value="3600s"/>
+        <input_param name="step" value="10s"/>
+      </param>
+      <param name="IDLE_FOLLOW" text="{8888888, 1982}" comment="Idle: Follow?" type="bool" default="if global.$TradeSubscriptionExplorerV2G_Settings? then global.$TradeSubscriptionExplorerV2G_Settings.{3} else false"/>
+      <param name="WHO_TO_FOLLOW" text="- {8888888, 1983}" comment="Who to follow?" type="object" default="if global.$TradeSubscriptionExplorerV2G_Settings? then global.$TradeSubscriptionExplorerV2G_Settings.{4} else null">
+        <input_param name="class" value="[class.ship]"/>
+        <input_param name="owner" value="this.ship.owner"/>
+      </param>
+      <param name="IDLE_DOCKING" text="{8888888, 1984}" comment="Idle: Docking?" type="bool" default="if global.$TradeSubscriptionExplorerV2G_Settings? then global.$TradeSubscriptionExplorerV2G_Settings.{5} else false"/>
+      <param name="WHERE_TO_DOCK" text="- {8888888, 1985}" comment="Where to dock?" type="object" default="if global.$TradeSubscriptionExplorerV2G_Settings? then global.$TradeSubscriptionExplorerV2G_Settings.{6} else null">
+        <input_param name="class" value="if this.ship.isclass.[class.ship_s, class.ship_xs] then [class.station, class.ship_m, class.ship_l, class.ship_xl] else [class.station, class.ship_l, class.ship_xl]"/>
+      </param>
+      <param name="IDLE_RANDOM_MOVEMENT" text="{8888888, 1986}" comment="Idle: Movement?" type="bool" default="if global.$TradeSubscriptionExplorerV2G_Settings? then global.$TradeSubscriptionExplorerV2G_Settings.{7} else false"/>
+      <param name="IN_WHICH_SECTOR" text="- {8888888, 1987}" comment="In which sector?" type="position" default="if global.$TradeSubscriptionExplorerV2G_Settings? then global.$TradeSubscriptionExplorerV2G_Settings.{8} else [this.ship.sector, this.ship.position]">
+        <input_param name="class" value="class.sector"/>
+      </param>
+      <param name="IDLE_MOVE_TO" text="{8888888, 1988}" comment="Idle: Move to?" type="bool" default="if global.$TradeSubscriptionExplorerV2G_Settings? then global.$TradeSubscriptionExplorerV2G_Settings.{9} else false"/>
+      <param name="WHERE_TO_MOVE" text="- {8888888, 1989}" comment="Where to move?" type="position" default="if global.$TradeSubscriptionExplorerV2G_Settings? then global.$TradeSubscriptionExplorerV2G_Settings.{10} else [this.ship.sector, this.ship.position]">
+        <input_param name="class" value="class.sector"/>
+      </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="PLACE_HOLDER_997" text="----------------------------------" type="object" default="null">
+        <input_param name="class" value="[]"/>
+      </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="ADD_ORDER_TAG" text="{8888888, 1991}" comment="Add order tag?" type="bool" default="if global.$TradeSubscriptionExplorerV2G_Settings? then global.$TradeSubscriptionExplorerV2G_Settings.{11} else true"/>
+      <param name="ORDER_TAG_POSITION" text="{8888888, 1992}" comment="Order tag position" type="number" default="if global.$TradeSubscriptionExplorerV2G_Settings? then global.$TradeSubscriptionExplorerV2G_Settings.{12} else 1">
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="1"/>
+        <input_param name="step" value="1"/>
+      </param>
+      <param name="SAVE_ORDER_SETTINGS" text="{8888888, 1993}" comment="Save Order Settings?" type="bool" default="false"/>
+      <param name="RESET_ORDER_SETTINGS" text="{8888888, 1994}" comment="Reset Order Settings?" type="bool" default="false"/>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="PLACE_HOLDER_998" text="----------------------------------" type="object" default="null">
+        <input_param name="class" value="[]"/>
+      </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="DEBUG" text="Debug" type="number" default="if global.$TradeSubscriptionExplorerV2G_Settings? then global.$TradeSubscriptionExplorerV2G_Settings.{13} else 0" advanced="true">
+        <input_param name="step" value="100"/>
+        <input_param name="min" value="0"/>
+        <input_param name="max" value="100"/>
+      </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <param name="PLACE_HOLDER_999" text="----------------------------------" type="object" default="null" advanced="true">
+        <input_param name="class" value="[]"/>
+      </param>
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    </params>
+    <skill min="35"/>
+    <requires>
+      <match shiptype="shiptype.lasertower" negate="true"/>
+    </requires>
+  </order>
+
+  <interrupts>
+    <handler ref="SectorChangeHandler"/>
+    <handler ref="TargetInvalidHandler"/>
+    <handler ref="AttackHandler"/>
+    <handler ref="MissileLockHandler"/>
+    <handler ref="ScannedHandler"/>
+    <handler ref="InspectedHandler"/>
+    <handler ref="FoundAbandonedHandler"/>
+    <handler ref="FoundLockboxHandler"/>
+    <handler ref="ResupplyHandler"/>
+    <handler ref="JobRemoveRequestHandler"/>
+  </interrupts>
+
+  <init>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <do_if value="$DEBUG">
+      <set_value name="$DebugFolderName" exact="'JP_TradeSubscriptionExplorerV2.logs'"/>
+      <set_value name="$DebugScriptName" exact="'JP_TradeSubscriptionExplorerV2G'"/>
+      <set_value name="$DebugFileName" exact="this.ship.idcode + '.' + $DebugScriptName + '.xml.log'"/>
+      <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'" append="false"/>
+      <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Started ~~' + '\n'"/>
+    </do_if>
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+  </init>
+
+  <attention min="unknown">
+    <actions>
+
+      <label name="INIT_LBL"/>
+      <wait min="500ms" max="1000ms"/>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <label name="RESUME_LBL"/>
+      <wait min="500ms" max="1000ms"/>
+
+      <resume label="RESUME_LBL"/>
+
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      <label name="FINISH_LBL"/>
+      <wait min="500ms" max="1000ms"/>
+      <do_if value="$DEBUG gt 0">
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Finished ~~'"/>
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+      </do_if>
+
+      <label name="CLEANUP_LBL"/>
+      <wait min="500ms" max="1000ms"/>
+      <remove_value name="$DebugFileName"/>
+      <remove_value name="$DebugScriptName"/>
+      <remove_value name="$DebugFolderName"/>
+
+      <label name="END_LBL"/>
+      <wait min="500ms" max="1000ms"/>
+      <set_order_syncpoint_reached order="this.ship.defaultorder"/>
+      <cancel_order order="this.ship.defaultorder"/>
+
+    </actions>
+  </attention>
+
+  <on_abort>
+    <remove_value name="$DebugFileName"/>
+    <remove_value name="$DebugScriptName"/>
+    <remove_value name="$DebugFolderName"/>
+  </on_abort>
+
+</aiscript>
