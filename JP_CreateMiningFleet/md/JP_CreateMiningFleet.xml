@@ -65,17 +65,17 @@
               <do_if value="$_Subordinate.defaultorder.$range != $_FoundShip.defaultorder.$range">
                 <edit_order_param order="$_Subordinate.defaultorder" param="'range'" value="$_FoundShip.defaultorder.$range"/>
               </do_if>
-              <do_if value="$_Subordinate.defaultorder.$minbuy != [$_FoundShip.defaultorder.$minbuy, ($_Subordinate.pilot.skill.piloting / 3)].min">
-                <edit_order_param order="$_Subordinate.defaultorder" param="'minbuy'" value="[$_FoundShip.defaultorder.$minbuy, ($_Subordinate.pilot.skill.piloting / 3)].min"/>
+              <do_if value="$_Subordinate.defaultorder.$minbuy != $_FoundShip.defaultorder.$minbuy">
+                <edit_order_param order="$_Subordinate.defaultorder" param="'minbuy'" value="$_FoundShip.defaultorder.$minbuy"/>
               </do_if>
-              <do_if value="$_Subordinate.defaultorder.$maxbuy != [$_FoundShip.defaultorder.$maxbuy, ($_Subordinate.pilot.skill.piloting / 3)].min">
-                <edit_order_param order="$_Subordinate.defaultorder" param="'maxbuy'" value="[$_FoundShip.defaultorder.$maxbuy, ($_Subordinate.pilot.skill.piloting / 3)].min"/>
+              <do_if value="$_Subordinate.defaultorder.$maxbuy != [$_FoundShip.defaultorder.$maxbuy, $_Subordinate.pilot.skill.piloting].min">
+                <edit_order_param order="$_Subordinate.defaultorder" param="'maxbuy'" value="[$_FoundShip.defaultorder.$maxbuy, $_Subordinate.pilot.skill.piloting].min"/>
               </do_if>
-              <do_if value="$_Subordinate.defaultorder.$minsell != [$_FoundShip.defaultorder.$minsell, ($_Subordinate.pilot.skill.piloting / 3)].min">
-                <edit_order_param order="$_Subordinate.defaultorder" param="'minsell'" value="[$_FoundShip.defaultorder.$minsell, ($_Subordinate.pilot.skill.piloting / 3)].min"/>
+              <do_if value="$_Subordinate.defaultorder.$minsell != $_FoundShip.defaultorder.$minsell">
+                <edit_order_param order="$_Subordinate.defaultorder" param="'minsell'" value="$_FoundShip.defaultorder.$minsell"/>
               </do_if>
-              <do_if value="$_Subordinate.defaultorder.$maxsell != [$_FoundShip.defaultorder.$maxsell, ($_Subordinate.pilot.skill.piloting / 3)].min">
-                <edit_order_param order="$_Subordinate.defaultorder" param="'maxsell'" value="[$_FoundShip.defaultorder.$maxsell, ($_Subordinate.pilot.skill.piloting / 3)].min"/>
+              <do_if value="$_Subordinate.defaultorder.$maxsell != [$_FoundShip.defaultorder.$maxsell, $_Subordinate.pilot.skill.piloting].min">
+                <edit_order_param order="$_Subordinate.defaultorder" param="'maxsell'" value="[$_FoundShip.defaultorder.$maxsell, $_Subordinate.pilot.skill.piloting].min"/>
               </do_if>
             </do_else>
           </do_for_each>

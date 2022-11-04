@@ -86,7 +86,7 @@
       </actions>
     </cue>
 
-    <cue name="WasAnythingDestroyed" instantiate="true">
+    <cue name="WasAnythingDestroyed" instantiate="false">
       <conditions>
         <check_all>
           <event_player_owned_destroyed/>

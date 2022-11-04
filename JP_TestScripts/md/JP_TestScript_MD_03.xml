@@ -3,7 +3,7 @@
 <mdscript name="JP_TestScript_MD_03" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="md.xsd">
   <cues>
 
-    <cue name="JP_TestScript_MD_03_INIT" instantiate="true">
+    <cue name="JP_TestScript_MD_03_INIT" instantiate="false">
       <conditions>
         <check_any>
           <event_game_started/>
@@ -15,13 +15,13 @@
       </actions>
     </cue>
 
-    <cue name="JP_TestScript_MD_03_LOOP" instantiate="true" checkinterval="1s">
+    <cue name="JP_TestScript_MD_03_LOOP" instantiate="false" checkinterval="1s">
       <conditions>
       </conditions>
       <actions>
 
         <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-        <set_value name="$DEBUG" exact="100"/>
+        <set_value name="$DEBUG" exact="0"/>
         <do_if value="$DEBUG gt 0">
           <set_value name="$DebugFolderName" exact="'JP_TestScripts.logs'"/>
           <set_value name="$DebugScriptName" exact="'JP_TestScript_MD_03_LOOP'"/>

@@ -3,14 +3,14 @@
 <mdscript name="JP_CollectPlaceables_MD" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="md.xsd">
   <cues>
 
-    <cue name="JP_CollectPlaceablesDebug_MD" instantiate="true" checkinterval="1s" checktime="player.age">
+    <cue name="JP_CollectPlaceablesDebug_MD" instantiate="false" checkinterval="1s" checktime="player.age">
       <conditions>
         <check_value value="false"/>
       </conditions>
       <actions>
 
         <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-        <set_value name="$DEBUG" exact="100"/>
+        <set_value name="$DEBUG" exact="0"/>
         <do_if value="$DEBUG gt 0">
           <set_value name="$DebugScriptName" exact="'JP_CollectPlaceablesDebug_MD'"/>
           <set_value name="$DebugFolderName" exact="'JP_CollectPlaceables.logs'"/>
@@ -58,7 +58,7 @@
       </actions>
     </cue>
 
-    <cue name="JP_CollectPlaceablesCleanup_MD" instantiate="true" checkinterval="1s" checktime="player.age + 1s">
+    <cue name="JP_CollectPlaceablesCleanup_MD" instantiate="false" checkinterval="1s" checktime="player.age + 1s">
       <conditions>
       </conditions>
       <actions>

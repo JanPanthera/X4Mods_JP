@@ -497,7 +497,7 @@
 
       <wait exact="1ms"/>
       <label name="INIT"/>
-      <cancel_all_orders object="$Commander"/>
+
 
       <do_if value="$DEBUG">
         <debug_to_file append="false" directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>

@@ -86,7 +86,7 @@
           <sort_list list="$_ResupplyShips" sortbyvalue="$Ship.gatedistance.{loop.element}"/>
           <create_list name="$_ShipsToRemove"/>
           <do_for_each name="$_ResupplyShip" in="$_ResupplyShips">
-            <do_if value="not $_ResupplyShip.cansupplyclass.{$Ship.class}">
+            <do_if value="not $_ResupplyShip.cansupplyclass.{$Ship.class} or $Ship == $_ResupplyShip">
               <append_to_list name="$_ShipsToRemove" exact="$_ResupplyShip"/>
             </do_if>
           </do_for_each>

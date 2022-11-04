@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<content id="JP_AbandonedShipExplorer" name="JP_AbandonedShipExplorer" description="Finds all abandoned ships in the galaxy and marks them with a navigation beacon." author="JanPanthera" version="114" date="2020-11-17" save="0" enabled="1">
-  <text language="7"  name="JP_AbandonedShipExplorer" description="Мод дает возможность осуществлять поиск брошенных кораблей в галактике и отмечать их навигационным маяком." author="JanPanthera"/>
-  <text language="33" name="JP_AbandonedShipExplorer" description="Finds all abandoned ships in the galaxy and marks them with a navigation beacon." author="JanPanthera"/>
-  <text language="34" name="JP_AbandonedShipExplorer" description="Finds all abandoned ships in the galaxy and marks them with a navigation beacon." author="JanPanthera"/>
-  <text language="39" name="JP_AbandonedShipExplorer" description="Finds all abandoned ships in the galaxy and marks them with a navigation beacon." author="JanPanthera"/>
-  <text language="44" name="JP_AbandonedShipExplorer" description="Finds all abandoned ships in the galaxy and marks them with a navigation beacon." author="JanPanthera"/>
-  <text language="49" name="JP_AbandonedShipExplorer" description="Findet alle verlassenen Schiffe in der ganzen Galaxie und makiert sie mit einem Navigationssignal." author="JanPanthera"/>
-  <text language="55" name="JP_AbandonedShipExplorer" description="Finds all abandoned ships in the galaxy and marks them with a navigation beacon." author="JanPanthera"/>
-  <text language="81" name="JP_AbandonedShipExplorer" description="Finds all abandoned ships in the galaxy and marks them with a navigation beacon." author="JanPanthera"/>
-  <text language="82" name="JP_AbandonedShipExplorer" description="Finds all abandoned ships in the galaxy and marks them with a navigation beacon." author="JanPanthera"/>
-  <text language="86" name="JP_AbandonedShipExplorer" description="Finds all abandoned ships in the galaxy and marks them with a navigation beacon." author="JanPanthera"/>
-  <text language="88" name="JP_AbandonedShipExplorer" description="Finds all abandoned ships in the galaxy and marks them with a navigation beacon." author="JanPanthera"/>
+<content id="JP_AbandonedShipExplorer" name="JP_AbandonedShipExplorer" description="Finds all abandoned ships in the galaxy and marks them optionally with a navigation beacon." author="JanPanthera" version="115" date="2021-07-13" save="0" enabled="1">
+  <text language="7"  name="JP_AbandonedShipExplorer" description="Находит все брошенные корабли в галактике и при желании отмечает их навигационным маяком." author="JanPanthera" comment="Russian ~~ Pусский"/>
+  <text language="33" name="JP_AbandonedShipExplorer" description="Trouve tous les vaisseaux abandonnés dans la galaxie et les marque éventuellement avec une balise de navigation." author="JanPanthera" comment="French ~~ Français"/>
+  <text language="34" name="JP_AbandonedShipExplorer" description="Encuentra todas las naves abandonadas en la galaxia y las marca opcionalmente con una baliza de navegación." author="JanPanthera" comment="Spanish ~~ Español"/>
+  <text language="39" name="JP_AbandonedShipExplorer" description="Trova tutte le navi abbandonate nella galassia e le contrassegna facoltativamente con un segnale di navigazione." author="JanPanthera" comment="Italian ~~ Italiano"/>
+  <text language="44" name="JP_AbandonedShipExplorer" description="Finds all abandoned ships in the galaxy and marks them optionally with a navigation beacon." author="JanPanthera" comment="English ~~ English"/>
+  <text language="48" name="JP_AbandonedShipExplorer" description="Znajduje wszystkie porzucone statki w galaktyce i oznacza je opcjonalnie latarnią nawigacyjną." author="JanPanthera" comment="Polish ~~ Polskie"/>
+  <text language="49" name="JP_AbandonedShipExplorer" description="Findet alle verlassenen Schiffe in der Galaxie und markiert sie optional mit einem Navigationssignal." author="JanPanthera" comment="German ~~ Deutsch"/>
+  <text language="55" name="JP_AbandonedShipExplorer" description="Encontra todos os navios abandonados na galáxia e os marca opcionalmente com um farol de navegação." author="JanPanthera" comment="Portuguese (Brazilian) ~~ Português (Brasileiro)"/>
+  <text language="81" name="JP_AbandonedShipExplorer" description="銀河内のすべての放棄された船を検索し、オプションでナビゲーションビーコンでマークします。" author="JanPanthera" comment="Japanese ~~ 日本語"/>
+  <text language="82" name="JP_AbandonedShipExplorer" description="은하계에 있는 모든 버려진 배를 찾아 선택적으로 항법 표지로 표시합니다." author="JanPanthera" comment="Korean ~~ 한국어"/>
+  <text language="86" name="JP_AbandonedShipExplorer" description="找到银河系中所有废弃的船只，并可选地用导航信标标记它们。" author="JanPanthera" comment="Chinese (Simplified) ~~ 中国人 (简化)"/>
+  <text language="88" name="JP_AbandonedShipExplorer" description="找到銀河系中所有廢棄的船隻，並可選擇用導航信標標記它們。" author="JanPanthera" comment="Chinese (Traditional) ~~ 中國人 (傳統的)"/>
 </content>

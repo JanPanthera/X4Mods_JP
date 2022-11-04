@@ -3,8 +3,8 @@
 <mdscript name="JP_AnotherExplorerV3_MD" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="md.xsd">
   <cues>
 
-    <!-- DEBUG off before removing: checkinterval="1s" !!! -->
-    <cue name="JP_AEV3_Root_MD" instantiate="true" checkinterval="1ms">
+    <!-- DEBUG off before changing to: checkinterval="1ms" !!! -->
+    <cue name="JP_AEV3_Root_MD" instantiate="true" checkinterval="1s">
       <actions>
 
         <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -54,7 +54,7 @@
       <cues>
 
         <!-- JP_AEV3_Debug_MD -->
-        <cue name="JP_AEV3_Debug_MD">
+        <cue name="JP_AEV3_Debug_MD" instantiate="false">
           <actions>
 
             <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -102,20 +102,20 @@
               <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
 
               <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-              <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'@global.$AnotherExplorerS_Settings.count: ' + @global.$AnotherExplorerS_Settings.count"/>
+              <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'@global.$AnotherExplorerV3S_Settings.count: ' + @global.$AnotherExplorerV3S_Settings.count"/>
               <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-              <do_if value="global.$AnotherExplorerS_Settings?">
-                <do_for_each name="$_Entry" in="global.$AnotherExplorerS_Settings">
+              <do_if value="global.$AnotherExplorerV3S_Settings?">
+                <do_for_each name="$_Entry" in="global.$AnotherExplorerV3S_Settings">
                   <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="' ~ ' + $_Entry"/>
                 </do_for_each>
               </do_if>
               <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
 
               <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-              <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'@global.$AnotherExplorerG_Settings.count: ' + @global.$AnotherExplorerG_Settings.count"/>
+              <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'@global.$AnotherExplorerV3G_Settings.count: ' + @global.$AnotherExplorerV3G_Settings.count"/>
               <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-              <do_if value="global.$AnotherExplorerG_Settings?">
-                <do_for_each name="$_Entry" in="global.$AnotherExplorerG_Settings">
+              <do_if value="global.$AnotherExplorerV3G_Settings?">
+                <do_for_each name="$_Entry" in="global.$AnotherExplorerV3G_Settings">
                   <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="' ~ ' + $_Entry"/>
                 </do_for_each>
               </do_if>
@@ -436,7 +436,7 @@
                     </do_if>
                     <do_else>
                       <find_sector name="$_Sectors" space="player.galaxy" multiple="true">
-                        <match knownto="$Ship.owner"/>
+                        <match knownto="$_AnotherExplorerV3Ship.owner"/>
                         <match_gate_distance object="$_AnotherExplorerV3Ship" min="0"/>
                         <match_use_blacklist object="$_AnotherExplorerV3Ship" type="blacklisttype.sectortravel" group="$blacklistgroup"/>
                         <match_use_blacklist object="$_AnotherExplorerV3Ship" type="blacklisttype.sectoractivity" group="$blacklistgroup"/>
@@ -796,7 +796,7 @@
                         </do_if>
                       </do_else>
                     </do_for_each>
-                    <set_value name="$_FleetName" exact="'\033#FF03A1FC#' + 'AnotherExplorerV3_Fleet'"/>
+                    <set_value name="$_FleetName" exact="'\033#FF03A1FC#' + 'AnotherExplorerV3_Fleet' + '\033X'"/>
                     <do_if value="$_AnotherExplorerV3Ship.fleet.name != $_FleetName">
                       <set_object_fleet_name object="$_AnotherExplorerV3Ship" name="$_FleetName"/>
                     </do_if>

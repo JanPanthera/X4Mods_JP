@@ -143,7 +143,7 @@
                 <set_value name="$_AvailableMoney_Station" exact="($_AvailableMoney_Station - $_MoneyToTransfer)"/>
                 <set_value name="$_NeededMoney_Buildstorage" exact="($_NeededMoney_Buildstorage - $_MoneyToTransfer)"/>
                 <do_if value="$_MoneyToTransfer gt (100)Cr">
-                  <write_to_logbook category="tips" title="'\033#FF516E38#' + $_Station.knownname + '\033X\033#FF516E38# [' + faction.player + ']\033X'"
+                  <write_to_logbook category="tips" title="'\033#FF516E38#' + $_FoundPlayerStation.knownname + '\033X\033#FF516E38# [' + faction.player + ']\033X'"
                       text="'\033#A03A7F8F#' + {8888888, 1800} + ':\033X \033#A000CCCC#' + $_FoundPlayerStation.name + ' ' + $_FoundPlayerStation.buildstorage.knownname + '\033X'"
                       money="$_MoneyToTransfer"/>
                   <set_object_max_budget object="$_FoundPlayerStation.buildstorage" amount="$_MoneyToTransfer + $_FoundPlayerStation.buildstorage.money"/>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Portuguese (Brazil) ~~ Português (Brasil) -->
+<!-- Portuguese (Brazilian) ~~ Português (Brasileiro) -->
 <language>
   <page id="8888888" voice="no">
     <!-- JP_AbandonedShipExplorer -->
@@ -7,26 +7,26 @@
     <t id="101">Sectores Neutros?</t>
     <t id="102">Sectores Amigos?</t>
     <t id="110">Mensagem quando chegou?</t>
-    <t id="111">Esperar na nave?</t>
+    <t id="111">Esperar na nave abandonada?</t>
     <t id="112">Quanto tempo temos de esperar?</t>
     <t id="113">Colocar balizas de navegação?</t>
     <t id="114">Reabastecer balizas de navegação?</t>
     <t id="115">Quantidade para reabastecer</t>
     <t id="116">Navio Abandonado</t>
-    <t id="117">Cheguei ao navio abandonado.</t>
+    <t id="117">Cheguei à nave abandonada.</t>
     <t id="118">Espera:</t>
-    <t id="119">Não há armazenamento gratuito para reabastecer os faróis de navegação!</t>
+    <t id="119">Não há espaço de armazenamento gratuito para reabastecer os faróis de navegação!</t>
     <t id="120">Não há sinais de navegação a bordo e reabastecimento desligado, a ficar inactivo...</t>
     <t id="160">A configuração da ordem foi gravada.</t>
-    <t id="161">Reinício das operações de regularização</t>
-    <t id="180">Tempo ocioso</t>
-    <t id="181">Inativo: Seguir?</t>
+    <t id="161">Configuração da ordem reinicializada.</t>
+    <t id="180">Tempo De Inactividade</t>
+    <t id="181">Seguir?</t>
     <t id="182">Quem seguir?</t>
-    <t id="183">Inativo: Ancoragem?</t>
+    <t id="183">Acoplagem?</t>
     <t id="184">Onde atracar?</t>
-    <t id="185">Ocioso: movimento aleatório?</t>
-    <t id="186">Em qual setor?</t>
-    <t id="187">Inativo: Mover para?</t>
+    <t id="185">Movimento aleatório?</t>
+    <t id="186">Em que sector?</t>
+    <t id="187">Para onde?</t>
     <t id="188">Para onde ir?</t>
     <t id="194">Adicionar etiqueta de encomenda?</t>
     <t id="195">Gravar A Configuração Da Ordem?</t>

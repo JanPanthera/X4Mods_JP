@@ -3,7 +3,7 @@
 <mdscript name="JP_AnotherExplorerV2_MD" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="md.xsd">
   <cues>
 
-    <cue name="JP_AnotherExplorerV2Debug_MD" instantiate="true" checkinterval="2s" checktime="player.age">
+    <cue name="JP_AnotherExplorerV2Debug_MD" instantiate="false" checkinterval="2s" checktime="player.age">
       <actions>
 
         <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -75,7 +75,7 @@
       </actions>
     </cue>
 
-    <cue name="JP_AnotherExplorerV2ManageFleet_MD" instantiate="true" checkinterval="1ms" checktime="player.age + 1s">
+    <cue name="JP_AnotherExplorerV2ManageFleet_MD" instantiate="false" checkinterval="1ms" checktime="player.age + 1s">
       <actions>
 
         <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -217,7 +217,7 @@
       </actions>
     </cue>
 
-    <cue name="JP_AnotherExplorerV2Cleanup_MD" instantiate="true" checkinterval="1ms" checktime="player.age + 1s">
+    <cue name="JP_AnotherExplorerV2Cleanup_MD" instantiate="false" checkinterval="1ms" checktime="player.age + 1s">
       <conditions>
       </conditions>
       <actions>

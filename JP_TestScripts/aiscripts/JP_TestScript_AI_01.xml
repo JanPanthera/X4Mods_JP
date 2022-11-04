@@ -10,6 +10,7 @@
       </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="OBJECT" text="OBJECT" type="object" default="this.ship"/>
+      <param name="QUICK" text="Quick" type="bool" default="false" advanced="true"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="PLACE_HOLDER_998" text="----------------------------------" type="object" default="null">
         <input_param name="class" value="[]"/>
@@ -68,10 +69,25 @@
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
       <label name="RESUME_LBL"/>
-      <wait min="1s" max="2s"/>
+      <do_if value="$QUICK">
+        <wait min="1s" max="2s"/>
+      </do_if>
+      <do_else>
+        <wait min="4s" max="12s"/>
+      </do_else>
 
       <set_command command="command.wait"/>
       <set_command_action commandaction="commandaction.calculating"/>
+
+      <do_if value="$Ship.subordinates.count gt 0">
+        <do_for_each name="$_Subordinate" in="$Ship.subordinates">
+          <apply_experience entity="$_Subordinate.pilot" experience="'JP_SHIP_OBJECT_DISCOVERED'" factor="(if $QUICK then 1 else 0.10)"/>
+          <apply_experience object="$_Subordinate" experience="'JP_SHIP_OBJECT_DISCOVERED'" role="entityrole.service" factor="(if $QUICK then 1 else 0.12)"/>
+        </do_for_each>
+      </do_if>
+
+      <apply_experience entity="$Ship.pilot" experience="'JP_SHIP_OBJECT_DISCOVERED'" factor="(if $QUICK then 1 else 0.10)"/>
+      <apply_experience object="$Ship" experience="'JP_SHIP_OBJECT_DISCOVERED'" role="entityrole.service" factor="(if $QUICK then 1 else 0.12)"/>
 
       <resume label="RESUME_LBL"/>
 

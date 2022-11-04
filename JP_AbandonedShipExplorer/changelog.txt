@@ -1,3 +1,5 @@
-~ Added: The script shows now the current abandoned ship visual on the map
-~ Added: IdleReturnHome shows visual where to idle
-~ Changed: IdleReturnHome creates now a sub order.. with that you can easily cancel it manually
+~ Repo update - 2021-07-13
+~ 02:21 PM ~
+
+~ Added -- Polskie language.. updated all others (machine translation)
+        -- if you want a "better" translation.. feel free to send me your tweaks

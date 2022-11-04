@@ -4,7 +4,7 @@
   <cues>
 
     <!-- DEBUG off before changing to: checkinterval="1ms" !!! -->
-    <cue name="JP_TSEV2_Root_MD" instantiate="true" checkinterval="1ms">
+    <cue name="JP_TSEV2_Root_MD" instantiate="true" checkinterval="1s">
       <actions>
 
         <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -54,7 +54,7 @@
       <cues>
 
         <!-- JP_TSEV2_Debug_MD -->
-        <cue name="JP_TSEV2_Debug_MD">
+        <cue name="JP_TSEV2_Debug_MD" instantiate="false">
           <actions>
 
             <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -759,7 +759,7 @@
                         </do_if>
                       </do_else>
                     </do_for_each>
-                    <set_value name="$_FleetName" exact="'\033#FF03A1FC#' + 'TradeSubscriptionExplorerV2_Fleet'"/>
+                    <set_value name="$_FleetName" exact="'\033#FF03A1FC#' + 'TradeSubscriptionExplorerV2_Fleet' + '\033X'"/>
                     <do_if value="$_TradeSubscriptionExplorerV2Ship.fleet.name != $_FleetName">
                       <set_object_fleet_name object="$_TradeSubscriptionExplorerV2Ship" name="$_FleetName"/>
                     </do_if>

@@ -11,7 +11,8 @@
       <param name="DEBUG" type="internal" default="0"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     </params>
-    <location object="$LOCATION_OBJECT_USED_IN_UI" condition="@$LOCATION_OBJECT_USED_IN_UI != null"/>
+    <location object="@$LOCATION_OBJECT_USED_IN_UI" condition="@$LOCATION_OBJECT_USED_IN_UI.isclass.{class.component}"/>
+    <location object="@$OBJECT.sector" position="@$LOCATION_OBJECT_USED_IN_UI" condition="@$LOCATION_OBJECT_USED_IN_UI != null and @$LOCATION_OBJECT_USED_IN_UI != class.component"/>
   </order>
 
   <interrupts>
@@ -31,7 +32,7 @@
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <set_value name="$Ship" exact="this.ship"/>
     <set_value name="$ExpMultiplier" exact="0.89"/>
-    <set_value name="$LOCATION_OBJECT_USED_IN_UI" exact="$OBJECT"/>
+    <set_value name="$LOCATION_OBJECT_USED_IN_UI" exact="(if $ONE_PER_SECTOR then $OBJECT.sector.coreposition else $OBJECT)"/>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <do_if value="$DEBUG gt 0">
       <set_value name="$DebugFolderName" exact="$DEBUG_FOLDER_NAME"/>
@@ -48,6 +49,13 @@
 
       <label name="INIT_LBL"/>
       <wait min="500ms" max="1000ms"/>
+
+      <do_if value="$DEBUG gt 0">
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'@$LOCATION_OBJECT_USED_IN_UI: ' + @$LOCATION_OBJECT_USED_IN_UI"/>
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'@$LOCATION_OBJECT_USED_IN_UI.class: ' + @$LOCATION_OBJECT_USED_IN_UI.class"/>
+        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+      </do_if>
 
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
@@ -80,15 +88,31 @@
       <set_command command="command.move" param="$OBJECT"/>
       <label name="MOVING_LBL"/>
       <wait min="500ms" max="1000ms"/>
-      <get_safe_pos result="$_TempPosition" zone="$OBJECT.sector" object="$OBJECT" directionobject="$Ship" radius="($Ship.size + 1km)" ignored="$Ship"/>
-      <move_to object="$Ship" destination="$OBJECT.sector" finishonapproach="false" forceposition="true" travel="true">
-        <position value="$_TempPosition"/>
-        <interrupt>
-          <conditions>
-            <check_value value="$Ship.distanceto.{$OBJECT} le 4000m"/>
-          </conditions>
-        </interrupt>
-      </move_to>
+      <do_if value="$ONE_PER_SECTOR">
+        <move_to object="$Ship" destination="$OBJECT.sector.coreposition" finishonapproach="false" forceposition="true" travel="true">
+          <position value="$OBJECT.sector.coreposition"/>
+          <interrupt_after_time time="1s"/>
+        </move_to>
+        <do_if value="$DEBUG gt 0">
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'$Ship.position: ' + $Ship.position"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'$Ship.distanceto.{$OBJECT.sector.coreposition}: ' + $Ship.distanceto.{$OBJECT.sector.coreposition}"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+        </do_if>
+        <do_if value="$Ship.distanceto.{$OBJECT.sector.coreposition} ge 4000m">
+          <resume label="MOVING_LBL"/>
+        </do_if>
+      </do_if>
+      <do_else>
+        <get_safe_pos result="$_TempPosition" zone="$OBJECT.sector" object="$OBJECT" directionobject="$Ship" radius="($Ship.size + 1km)" ignored="$Ship"/>
+        <move_to object="$Ship" destination="$OBJECT.sector" finishonapproach="false" forceposition="true" travel="true">
+          <position value="$_TempPosition"/>
+          <interrupt_after_time time="1s"/>
+        </move_to>
+        <do_if value="$Ship.distanceto.{$OBJECT} ge 10000m">
+          <resume label="MOVING_LBL"/>
+        </do_if>
+      </do_else>
       <wait min="500ms" max="1000ms"/>
       <remove_value name="$_TempPosition"/>
       <stop_moving object="$Ship" immediate="true"/>

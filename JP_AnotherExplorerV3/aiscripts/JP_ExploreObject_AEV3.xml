@@ -30,7 +30,7 @@
   <init>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <set_value name="$Ship" exact="this.ship"/>
-    <set_value name="$ExpMultiplier" exact="(if $Ship.defaultorder.id == 'JP_AnotherExplorerV3G') then 0.88 else 0.91"/>
+    <set_value name="$ExpMultiplier" exact="(if $Ship.defaultorder.id == 'JP_AnotherExplorerV3G' then 0.88 else 0.91)"/>
     <set_value name="$LOCATION_OBJECT_USED_IN_UI" exact="$OBJECT"/>
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <do_if value="$DEBUG gt 0">
@@ -119,7 +119,6 @@
       <do_if value="$DEBUG gt 0">
         <remove_value name="$DebugFileName"/>
         <remove_value name="$DebugScriptName"/>
-        <remove_value name="$CurrentSector"/>
       </do_if>
       <remove_value name="$ExpMultiplier"/>
       <remove_value name="$Ship"/>
@@ -134,7 +133,6 @@
     <do_if value="$DEBUG gt 0">
       <remove_value name="$DebugFileName"/>
       <remove_value name="$DebugScriptName"/>
-      <remove_value name="$CurrentSector"/>
     </do_if>
     <remove_value name="$ExpMultiplier"/>
     <remove_value name="$Ship"/>

@@ -48,6 +48,7 @@
     <Xml Include="aiscripts\JP_ExploreAbandonedShip_ASE.xml" />
     <Xml Include="aiscripts\JP_RestockNavBeacons_ASE.xml" />
     <Xml Include="aiscripts\JP_IdleReturnHome_ASE.xml" />
+    <Xml Include="t\0001-L048.xml" />
   </ItemGroup>
   <ItemGroup>
     <Xsd Include="JP_AbandonedShipExplorer\aiscripts\aiscripts.xsd">

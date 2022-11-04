@@ -3,6 +3,8 @@
 <!-- Getting all objects we need to mark in sector xyz -->
 <!-- Script uses these Parameters !!
 ~~~~~~~~~~~~~
+$ONE_PER_SECTOR
+~~~~~~~~~~~~~
 $JUMP_GATES
 $ACTIVE_JUMP_GATES
 $INACTIVE_JUMP_GATES
@@ -76,11 +78,48 @@ $_FoundObjectsSector
           </do_if>
         </do_else>
 
-        <do_if value="$__Sectors.count gt 0">
-          <do_if value="$__Sectors.count gt 1">
-            <sort_list list="$__Sectors" sortbyvalue="$Ship.gatedistance.{loop.element}"/>
-          </do_if>
+        <do_if value="$__Sectors.count gt 0 and $ONE_PER_SECTOR">
+          <create_list name="$__AlreadyMarked"/>
+          <do_for_each name="$__Sector" in="$__Sectors">
+            <create_list name="$__FoundSatellites"/>
+            <find_object space="$__Sector" name="$__FoundSatellites" multiple="true">
+              <match owner="$Ship.owner"/>
+              <match deployablecategory="deployablecategory.satellite"/>
+            </find_object>
+            <do_if value="$__FoundSatellites.count gt 0">
+              <append_to_list name="$__AlreadyMarked" exact="$__Sector"/>
+            </do_if>
+            <remove_value name="$__FoundSatellites"/>
+          </do_for_each>
+          <remove_from_list name="$__Sectors" list="$__AlreadyMarked"/>
+          <remove_value name="$__AlreadyMarked"/>
+        </do_if>
 
+        <do_if value="$__Sectors.count gt 0">
+
+          <do_if value="$__Sectors.count gt 1">
+            <!-- Are there more than one sectors with a jump count of 0? mini sectors in one "noraml" sector
+               Sort all mini sectors to distance and normal sectors to gatedistance -->
+            <create_list name="$__InSector"/>
+            <do_for_each name="$__Sector__" in="$__Sectors">
+              <do_if value="$Ship.gatedistance.{$__Sector__} == 0">
+                <append_to_list name="$__InSector" exact="$__Sector__"/>
+              </do_if>
+            </do_for_each>
+            <do_if value="$__InSector.count gt 0">
+              <remove_from_list name="$__Sectors" list="$__InSector"/>
+              <sort_list list="$__Sectors" sortbyvalue="$Ship.gatedistance.{loop.element}"/>
+              <sort_list list="$__InSector" sortbyvalue="$Ship.distanceto.{loop.element}"/>
+              <append_list_elements name="$__InSector" other="$__Sectors"/>
+              <set_value name="$__Sectors" exact="$__InSector"/>
+            </do_if>
+            <do_else>
+              <!-- Only 1 sector with jump count 0 or only sectors with jumpcount gt 0 -->
+              <sort_list list="$__Sectors" sortbyvalue="$Ship.gatedistance.{loop.element}"/>
+            </do_else>
+            <remove_value name="$__InSector"/>
+          </do_if>
+          
           <do_if value="$DEBUG gt 0">
             <debug_to_file directory="$DebugFolderName" name="$__DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
             <debug_to_file directory="$DebugFolderName" name="$__DebugFileName" text="'$__Sectors.count: ' + $__Sectors.count"/>

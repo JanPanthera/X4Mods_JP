@@ -4,6 +4,9 @@
 
   <order id="JP_SatelliteDropperS" name="_{8888888, 1497}SatelliteDropper - {8888888, 1499}{8888888, 1498}{20001, 201}{8888888, 1499}" category="navigation" infinite="true">
     <params>
+      <param name="SECTOR" text="{20001, 201}" comment="Sector" type="object" default="this.ship.sector">
+        <input_param name="class" value="[class.sector]"/>
+      </param>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="PLACE_HOLDER_000" text="----------------------------------" type="object" default="null">
         <input_param name="class" value="[]"/>
@@ -16,6 +19,7 @@
         <input_param name="max" value="(if this.ship.ammostorage.deployable.capacity gt 0 then this.ship.ammostorage.deployable.capacity else 0)"/>
         <input_param name="step" value="1"/>
       </param>
+      <param name="ONE_PER_SECTOR" text="One per sector?" comment="One per sector?" type="bool" default="false"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="PLACE_HOLDER_001" text="----------------------------------" type="object" default="null">
         <input_param name="class" value="[]"/>

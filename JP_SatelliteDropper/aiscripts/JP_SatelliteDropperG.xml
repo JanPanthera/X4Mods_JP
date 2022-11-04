@@ -16,6 +16,7 @@
         <input_param name="max" value="(if this.ship.ammostorage.deployable.capacity gt 0 then this.ship.ammostorage.deployable.capacity else 0)"/>
         <input_param name="step" value="1"/>
       </param>
+      <param name="ONE_PER_SECTOR" text="One per sector?" comment="One per sector?" type="bool" default="false"/>
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <param name="PLACE_HOLDER_001" text="----------------------------------" type="object" default="null">
         <input_param name="class" value="[]"/>
@@ -317,6 +318,7 @@
       <set_command_action commandaction="commandaction.calculating"/>
       <create_order id="'JP_PlaceSatelliteToObject_SD'" object="$Ship">
         <param name="OBJECT" value="$_FoundObject"/>
+        <param name="ONE_PER_SECTOR" value="$ONE_PER_SECTOR"/>
         <param name="DEBUG_FOLDER_NAME" value="@$DebugFolderName"/>
         <param name="DEBUG" value="$DEBUG"/>
       </create_order>

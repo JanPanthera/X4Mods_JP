@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Polish ~~ Polskie -->
+<language>
+  <page id="8888888" voice="no">
+    <!-- JP_AbandonedShipExplorer -->
+    <t id="100">Sektory Wroga?</t>
+    <t id="101">Neutralne Sektory?</t>
+    <t id="102">Przyjazne Sektory?</t>
+    <t id="110">Wiadomość kiedy dotarła?</t>
+    <t id="111">Czekać na opuszczonym statku?</t>
+    <t id="112">Jak długo czekać?</t>
+    <t id="113">Umieścić Sygnalizatory nawigacyjne?</t>
+    <t id="114">Uzupełnić nawigację?</t>
+    <t id="115">Kwota do uzupełnienia zapasów</t>
+    <t id="116">Opuszczony Statek</t>
+    <t id="117">Przybyłem na opuszczony statek.</t>
+    <t id="118">Czas oczekiwania:</t>
+    <t id="119">Brak wolnego miejsca do uzupełniania baterii nawigacyjnych!</t>
+    <t id="120">Brak nadajników nawigacyjnych na pokładzie i uzupełnianie zapasów wyłączone, idąc bezczynnie...</t>
+    <t id="160">Ustawienia zamówienia zapisane.</t>
+    <t id="161">Ustawienia zamówienia zostały zresetowane.</t>
+    <t id="180">Czas Bezczynności</t>
+    <t id="181">Idle: Follow?</t>
+    <t id="182">Kogo śledzić?</t>
+    <t id="183">Dokowanie?</t>
+    <t id="184">Gdzie dokować?</t>
+    <t id="185">Losowy ruch?</t>
+    <t id="186">W którym sektorze?</t>
+    <t id="187">Idle: Move to?</t>
+    <t id="188">Gdzie się przenieść?</t>
+    <t id="194">Dodać tag zamówienia?</t>
+    <t id="195">Zapisać Ustawienia Zamówienia?</t>
+    <t id="196">Zresetować Ustawienia Zamówienia?</t>
+    <t id="197">\033#B600CCCC#</t>
+    <t id="198">\033#FF00CC66#</t>
+    <t id="199">\033X</t>
+  </page>
+</language>

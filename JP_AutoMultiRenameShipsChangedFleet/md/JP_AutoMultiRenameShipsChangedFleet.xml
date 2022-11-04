@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<mdscript name="JP_AutoMultiRenameShipsChangedFleet_MD" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="md.xsd">
+  <cues>
+
+    <!-- root.. with the group? -->
+    <cue name="JP_AMRSCF_ROOT" checkinterval="3s" instantiate="false">
+      <conditions>
+        <check_value value="true"/>
+      </conditions>
+      <actions>
+
+        <set_value name="$DEBUG" exact="0"/>
+
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <do_if value="$DEBUG gt 0">
+          <set_value name="$DebugScriptName" exact="'JP_AMRSCF_ROOT'"/>
+          <set_value name="$DebugFolderName" exact="'JP_MultiRename.logs'"/>
+          <set_value name="$DebugFileName" exact="$DebugScriptName + '.xml.log'"/>
+          <debug_to_file append="false" directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Started ~~' + '\n'"/>
+        </do_if>
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+        <do_if value="not $_PlayerShips?">
+          <create_group groupname="$_PlayerShips"/>
+        </do_if>
+
+        <do_if value="not $_PlayerShipsToRename?">
+          <create_group groupname="$_PlayerShipsToRename"/>
+        </do_if>
+
+        <create_list name="$_FoundPlayerShips"/>
+        <find_object name="$_FoundPlayerShips" space="player.galaxy" owner="faction.player" multiple="true">
+          <match class="class.ship"/>
+          <match unit="false"/>
+          <match checkoperational="false"/>
+        </find_object>
+        <!--<find_ship name="$_FoundPlayerShips" space="player.galaxy" owner="faction.player" trueowner="faction.player" multiple="true">
+        </find_ship>-->
+
+        <do_if value="$_FoundPlayerShips.count gt 0">
+          <do_for_each name="$_FoundPlayerShip" in="$_FoundPlayerShips">
+            <do_if value="not $_PlayerShips.indexof.{$_FoundPlayerShip}">
+              <add_to_group groupname="$_PlayerShips" object="$_FoundPlayerShip"/>
+            </do_if>
+          </do_for_each>
+        </do_if>
+
+        <do_if value="$_PlayerShips? and @$_PlayerShips.count gt 0">
+          <do_for_each name="$_PlayerShip" in="$_PlayerShips" reverse="true">
+            <do_if value="$_PlayerShip.iswreck or $_PlayerShip.owner != faction.player">
+              <remove_from_group group="$_PlayerShips" object="$_PlayerShip"/>
+            </do_if>
+          </do_for_each>
+        </do_if>
+
+        <do_if value="$DEBUG gt 0">
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'$_PlayerShips'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+          <do_for_each name="$_PlayerShip" in="$_PlayerShips">
+            <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'$_PlayerShip.knownname: ' + $_PlayerShip.knownname + '[' + $_PlayerShip.idcode + ']'"/>
+          </do_for_each>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+        </do_if>
+
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+        <do_if value="$DEBUG gt 0">
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Finished ~~'"/>
+          <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+          <remove_value name="$DebugFileName"/>
+          <remove_value name="$DebugFolderName"/>
+          <remove_value name="$DebugScriptName"/>
+        </do_if>
+        <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+      </actions>
+      <cues>
+
+        <cue name="JP_AMRSCF_RENAME" instantiate="false" checkinterval="2s">
+          <conditions>
+            <check_value value="@$_PlayerShipsToRename.count gt 0"/>
+          </conditions>
+          <actions>
+
+            <set_value name="$DEBUG" exact="0"/>
+
+            <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+            <do_if value="$DEBUG gt 0">
+              <set_value name="$DebugScriptName" exact="'JP_AMRSCF_RENAME'"/>
+              <set_value name="$DebugFolderName" exact="'JP_MultiRename.logs'"/>
+              <set_value name="$DebugFileName" exact="$DebugScriptName + '.xml.log'"/>
+              <debug_to_file append="true" directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+              <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Started ~~' + '\n'"/>
+            </do_if>
+            <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+            <do_for_each name="$_PlayerShipToRename" in="$_PlayerShipsToRename" reverse="true">
+              <create_order object="$_PlayerShipToRename" id="'JP_MultiRename'" immediate="true">
+              </create_order>
+              <remove_from_group group="$_PlayerShipsToRename" object="$_PlayerShipToRename"/>
+            </do_for_each>
+
+            <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+            <do_if value="$DEBUG gt 0">
+              <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Finished ~~'"/>
+              <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+              <remove_value name="$DebugFileName"/>
+              <remove_value name="$DebugFolderName"/>
+              <remove_value name="$DebugScriptName"/>
+            </do_if>
+            <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+            <remove_value name="$DEBUG"/>
+
+          </actions>
+        </cue>
+
+        <cue name="JP_AMRSCF_EVENT" instantiate="false">
+          <conditions>
+            <event_object_commander_set group="$_PlayerShips"/>
+          </conditions>
+          <actions>
+
+            <set_value name="$DEBUG" exact="0"/>
+
+            <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+            <do_if value="$DEBUG gt 0">
+              <set_value name="$DebugScriptName" exact="'JP_AMRSCF_EVENT'"/>
+              <set_value name="$DebugFolderName" exact="'JP_MultiRename.logs'"/>
+              <set_value name="$DebugFileName" exact="$DebugScriptName + '.xml.log'"/>
+              <debug_to_file append="true" directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+              <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Started ~~' + '\n'"/>
+            </do_if>
+            <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+
+            <remove_from_group group="$_PlayerShips" object="event.object"/>
+            <add_to_group groupname="$_PlayerShipsToRename" object="event.object"/>
+
+            <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+            <do_if value="$DEBUG gt 0">
+              <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Finished ~~'"/>
+              <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+              <remove_value name="$DebugFileName"/>
+              <remove_value name="$DebugFolderName"/>
+              <remove_value name="$DebugScriptName"/>
+            </do_if>
+            <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+            <remove_value name="$DEBUG"/>
+
+          </actions>
+        </cue>
+
+      </cues>
+
+    </cue>
+
+  </cues>
+</mdscript>

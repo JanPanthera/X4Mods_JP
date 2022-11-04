@@ -5,11 +5,11 @@
     <!-- JP_AbandonedShipExplorer -->
     <t id="100">Feindliche Sektoren?</t>
     <t id="101">Neutrale Sektoren?</t>
-    <t id="102">Befreundete Sektoren?</t>
+    <t id="102">Freundliche Sektoren?</t>
     <t id="110">Nachricht, wenn angekommen?</t>
-    <t id="111">Warte am Schiff?</t>
+    <t id="111">Warte bei dem verlassenen Schiff?</t>
     <t id="112">Wie lange warten?</t>
-    <t id="113">Navigationsbake aufstellen?</t>
+    <t id="113">Navigationsbaken aufstellen?</t>
     <t id="114">Navigationsbaken nachfüllen?</t>
     <t id="115">Nachfüllmenge</t>
     <t id="116">Verlassenes Schiff</t>
@@ -29,8 +29,8 @@
     <t id="187">Leerlauf: Zu Position bewegen?</t>
     <t id="188">Wohin?</t>
     <t id="194">Befehlskürzel hinzufügen?</t>
-    <t id="195">Auftragseinstellungen Speichern?</t>
-    <t id="196">Auftragseinstellungen Zurücksetzen?</t>
+    <t id="195">Auftragseinstellungen speichern?</t>
+    <t id="196">Auftragseinstellungen zurücksetzen?</t>
     <t id="197">\033#B600CCCC#</t>
     <t id="198">\033#FF00CC66#</t>
     <t id="199">\033X</t>

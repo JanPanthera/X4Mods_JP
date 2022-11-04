@@ -21,7 +21,6 @@
         </do_if>
         <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
         
-
         <create_order object="event.param" id="'JP_MultiRename'" default="true">
         </create_order>
 

@@ -3,7 +3,7 @@
 <mdscript name="JP_AnotherAutoSave_MD" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="md.xsd">
   <cues>
 
-    <cue name="JP_ANOTHER_AUTO_SAVE_900" instantiate="true" checktime="player.age + 900s" checkinterval="900s">
+    <cue name="JP_ANOTHER_AUTO_SAVE_900" instantiate="false" checktime="player.age + 900s" checkinterval="900s">
       <conditions>
         <check_value value="player.autosave.active and player.autosave.factor == 0.5"/>
       </conditions>
@@ -13,7 +13,7 @@
       </actions>
     </cue>
 
-    <cue name="JP_ANOTHER_AUTO_SAVE_1800" instantiate="true" checktime="player.age + 1800s" checkinterval="1800s">
+    <cue name="JP_ANOTHER_AUTO_SAVE_1800" instantiate="false" checktime="player.age + 1800s" checkinterval="1800s">
       <conditions>
         <check_value value="player.autosave.active and player.autosave.factor == 1"/>
       </conditions>
@@ -23,7 +23,7 @@
       </actions>
     </cue>
 
-    <cue name="JP_ANOTHER_AUTO_SAVE_3600" instantiate="true" checktime="player.age + 3600s" checkinterval="3600s">
+    <cue name="JP_ANOTHER_AUTO_SAVE_3600" instantiate="false" checktime="player.age + 3600s" checkinterval="3600s">
       <conditions>
         <check_value value="player.autosave.active and player.autosave.factor == 2"/>
       </conditions>
@@ -33,7 +33,7 @@
       </actions>
     </cue>
 
-    <cue name="JP_ANOTHER_AUTO_SAVE_TRIGGERED" instantiate="true" checkinterval="1s">
+    <cue name="JP_ANOTHER_AUTO_SAVE_TRIGGERED" instantiate="false" checkinterval="1s">
       <conditions>
         <check_all>
           <check_value value="player.autosave.active"/>
