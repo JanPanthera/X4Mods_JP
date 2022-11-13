@@ -2,479 +2,479 @@
 
 <aiscript name="JP_AddTag" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="aiscripts.xsd" version="1">
 
-  <order id="JP_AddTag" name="_{8888888, 297}AddTag{8888888, 299}" category="navigation" infinite="true">
-    <params>
-      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="PLACE_HOLDER_00" text="----------------------------------" type="object" default="null">
-        <input_param name="class" value="[]"/>
-      </param>
-      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="OBJECT" text="{8888888, 200}" comment="Own Ship/Station" type="object" default="this.ship">
-        <input_param name="owner" value="this.ship.owner"/>
-        <input_param name="class" value="[class.ship, class.station]"/>
-        <input_param name="excludeself" value="false"/>
-      </param>
-      <param name="TAG_OBJECT" text="{8888888, 201}" comment="Object with tag as name" type="object" default="if global.$AddTag_Settings? then global.$AddTag_Settings.{2} else this.ship"/>
-      <param name="TAG_POSITION" text="{8888888, 202}" comment="Tag position" type="number" default="if global.$AddTag_Settings? then global.$AddTag_Settings.{3} else 0">
-        <input_param name="min" value="0"/>
-        <input_param name="max" value="2"/>
-        <input_param name="step" value="1"/>
-      </param>
-      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="PLACE_HOLDER_01" text="----------------------------------" type="object" default="null">
-        <input_param name="class" value="[]"/>
-      </param>
-      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="ADD_TO_OBJECT" text="{8888888, 203}" comment="Add to Ship/Station?" type="bool" default="if global.$AddTag_Settings? then global.$AddTag_Settings.{4} else true"/>
-      <param name="ADD_TO_SUBORDINATES" text="{8888888, 204}" comment="Add to Subordinates?" type="bool" default="if global.$AddTag_Settings? then global.$AddTag_Settings.{5} else true"/>
-      <param name="ADD_TO_SUBORDINATED_FLEETS" text="{8888888, 205}" comment="Add to subordinated Fleets?" type="bool" default="if global.$AddTag_Settings? then global.$AddTag_Settings.{6} else true"/>
-      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="PLACE_HOLDER_02" text="----------------------------------" type="object" default="null">
-        <input_param name="class" value="[]"/>
-      </param>
-      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="COLORIZE_TAG" text="{8888888, 206}" comment="Colorize Tag?" type="bool" default="if global.$AddTag_Settings? then global.$AddTag_Settings.{7} else true"/>
-      <param name="TAG_ALPHA" text="- {8888888, 270}" comment="Transparency" type="number" default="if global.$AddTag_Settings? then global.$AddTag_Settings.{8} else 255">
-        <input_param name="step" value="1"/>
-        <input_param name="min" value="0"/>
-        <input_param name="max" value="255"/>
-      </param>
-      <param name="TAG_RED" text="- {8888888, 271}" comment="Red" type="number" default="if global.$AddTag_Settings? then global.$AddTag_Settings.{9} else 0">
-        <input_param name="step" value="1"/>
-        <input_param name="min" value="0"/>
-        <input_param name="max" value="255"/>
-      </param>
-      <param name="TAG_GREEN" text="- {8888888, 272}" comment="Green" type="number" default="if global.$AddTag_Settings? then global.$AddTag_Settings.{10} else 204">
-        <input_param name="step" value="1"/>
-        <input_param name="min" value="0"/>
-        <input_param name="max" value="255"/>
-      </param>
-      <param name="TAG_BLUE" text="- {8888888, 273}" comment="Blue" type="number" default="if global.$AddTag_Settings? then global.$AddTag_Settings.{11} else 102">
-        <input_param name="step" value="1"/>
-        <input_param name="min" value="0"/>
-        <input_param name="max" value="255"/>
-      </param>
-      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="PLACE_HOLDER_03" text="----------------------------------" type="object" default="null">
-        <input_param name="class" value="[]"/>
-      </param>
-      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="COLORIZE_NAME" text="{8888888, 207}" comment="Colorize name?" type="bool" default="if global.$AddTag_Settings? then global.$AddTag_Settings.{12} else true"/>
-      <param name="NAME_ALPHA" text="- {8888888, 270}" comment="Transparency" type="number" default="if global.$AddTag_Settings? then global.$AddTag_Settings.{13} else 182">
-        <input_param name="step" value="1"/>
-        <input_param name="min" value="0"/>
-        <input_param name="max" value="255"/>
-      </param>
-      <param name="NAME_RED" text="- {8888888, 271}" comment="Red" type="number" default="if global.$AddTag_Settings? then global.$AddTag_Settings.{14} else 0">
-        <input_param name="step" value="1"/>
-        <input_param name="min" value="0"/>
-        <input_param name="max" value="255"/>
-      </param>
-      <param name="NAME_GREEN" text="- {8888888, 272}" comment="Green" type="number" default="if global.$AddTag_Settings? then global.$AddTag_Settings.{15} else 204">
-        <input_param name="step" value="1"/>
-        <input_param name="min" value="0"/>
-        <input_param name="max" value="255"/>
-      </param>
-      <param name="NAME_BLUE" text="- {8888888, 273}" comment="Blue" type="number" default="if global.$AddTag_Settings? then global.$AddTag_Settings.{16} else 204">
-        <input_param name="step" value="1"/>
-        <input_param name="min" value="0"/>
-        <input_param name="max" value="255"/>
-      </param>
-      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="PLACE_HOLDER_04" text="----------------------------------" type="object" default="null">
-        <input_param name="class" value="[]"/>
-      </param>
-      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="SAVE_NAMES" text="{8888888, 230}" comment="Save Names?" type="bool" default="false"/>
-      <param name="LOAD_NAMES" text="{8888888, 231}" comment="Load Names?" type="bool" default="false"/>
-      <param name="RESET_NAMES" text="{8888888, 232}" comment="Reset Names?" type="bool" default="false"/>
-      <param name="DELETE_NAMES" text="{8888888, 233}" comment="Delete Names?" type="bool" default="false"/>
-      <param name="APPLY_TO_ALL" text="{8888888, 237}" comment="Apply to all?" type="bool" default="false"/>
-      <param name="APPLY_TO_OBJECT" text="{8888888, 234}" comment="Apply to Ship/Station?" type="bool" default="false"/>
-      <param name="APPLY_TO_SUBORDINATES" text="{8888888, 235}" comment="Apply to Subordinates?" type="bool" default="false"/>
-      <param name="APPLY_TO_SUBORDINATED_FLEETS" text="{8888888, 236}" comment="Apply to subordinated Fleets?" type="bool" default="false"/>
-      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="PLACE_HOLDER_05" text="----------------------------------" type="object" default="null">
-        <input_param name="class" value="[]"/>
-      </param>
-      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="SAVE_ORDER_SETTINGS" text="{8888888, 295}" comment="Save Order Settings?" type="bool" default="false"/>
-      <param name="RESET_ORDER_SETTINGS" text="{8888888, 296}" comment="Reset Order Settings?" type="bool" default="false"/>
-      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="PLACE_HOLDER_998" text="----------------------------------" type="object" default="null">
-        <input_param name="class" value="[]"/>
-      </param>
-      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="DEBUG" text="Debug" type="bool" default="if global.$AddTag_Settings? then global.$AddTag_Settings.{17} else false" advanced="true"/>
-      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <param name="PLACE_HOLDER_999" text="----------------------------------" type="object" default="null" advanced="true">
-        <input_param name="class" value="[]"/>
-      </param>
-      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-    </params>
-    <skill min="0"/>
-    <requires>
-      <match shiptype="shiptype.lasertower" negate="true"/>
-    </requires>
-  </order>
+	<order id="JP_AddTag" name="_{8888888, 297}AddTag{8888888, 299}" category="navigation" infinite="true">
+		<params>
+			<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+			<param name="PLACE_HOLDER_00" text="----------------------------------" type="object" default="null">
+				<input_param name="class" value="[]"/>
+			</param>
+			<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+			<param name="OBJECT" text="{8888888, 200}" comment="Own Ship/Station" type="object" default="this.ship">
+				<input_param name="owner" value="this.ship.owner"/>
+				<input_param name="class" value="[class.ship, class.station]"/>
+				<input_param name="excludeself" value="false"/>
+			</param>
+			<param name="TAG_OBJECT" text="{8888888, 201}" comment="Object with tag as name" type="object" default="if global.$AddTag_Settings? then global.$AddTag_Settings.{2} else this.ship"/>
+			<param name="TAG_POSITION" text="{8888888, 202}" comment="Tag position" type="number" default="if global.$AddTag_Settings? then global.$AddTag_Settings.{3} else 0">
+				<input_param name="min" value="0"/>
+				<input_param name="max" value="2"/>
+				<input_param name="step" value="1"/>
+			</param>
+			<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+			<param name="PLACE_HOLDER_01" text="----------------------------------" type="object" default="null">
+				<input_param name="class" value="[]"/>
+			</param>
+			<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+			<param name="ADD_TO_OBJECT" text="{8888888, 203}" comment="Add to Ship/Station?" type="bool" default="if global.$AddTag_Settings? then global.$AddTag_Settings.{4} else true"/>
+			<param name="ADD_TO_SUBORDINATES" text="{8888888, 204}" comment="Add to Subordinates?" type="bool" default="if global.$AddTag_Settings? then global.$AddTag_Settings.{5} else true"/>
+			<param name="ADD_TO_SUBORDINATED_FLEETS" text="{8888888, 205}" comment="Add to subordinated Fleets?" type="bool" default="if global.$AddTag_Settings? then global.$AddTag_Settings.{6} else true"/>
+			<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+			<param name="PLACE_HOLDER_02" text="----------------------------------" type="object" default="null">
+				<input_param name="class" value="[]"/>
+			</param>
+			<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+			<param name="COLORIZE_TAG" text="{8888888, 206}" comment="Colorize Tag?" type="bool" default="if global.$AddTag_Settings? then global.$AddTag_Settings.{7} else true"/>
+			<param name="TAG_ALPHA" text="- {8888888, 270}" comment="Transparency" type="number" default="if global.$AddTag_Settings? then global.$AddTag_Settings.{8} else 255">
+				<input_param name="step" value="1"/>
+				<input_param name="min" value="0"/>
+				<input_param name="max" value="255"/>
+			</param>
+			<param name="TAG_RED" text="- {8888888, 271}" comment="Red" type="number" default="if global.$AddTag_Settings? then global.$AddTag_Settings.{9} else 0">
+				<input_param name="step" value="1"/>
+				<input_param name="min" value="0"/>
+				<input_param name="max" value="255"/>
+			</param>
+			<param name="TAG_GREEN" text="- {8888888, 272}" comment="Green" type="number" default="if global.$AddTag_Settings? then global.$AddTag_Settings.{10} else 204">
+				<input_param name="step" value="1"/>
+				<input_param name="min" value="0"/>
+				<input_param name="max" value="255"/>
+			</param>
+			<param name="TAG_BLUE" text="- {8888888, 273}" comment="Blue" type="number" default="if global.$AddTag_Settings? then global.$AddTag_Settings.{11} else 102">
+				<input_param name="step" value="1"/>
+				<input_param name="min" value="0"/>
+				<input_param name="max" value="255"/>
+			</param>
+			<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+			<param name="PLACE_HOLDER_03" text="----------------------------------" type="object" default="null">
+				<input_param name="class" value="[]"/>
+			</param>
+			<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+			<param name="COLORIZE_NAME" text="{8888888, 207}" comment="Colorize name?" type="bool" default="if global.$AddTag_Settings? then global.$AddTag_Settings.{12} else true"/>
+			<param name="NAME_ALPHA" text="- {8888888, 270}" comment="Transparency" type="number" default="if global.$AddTag_Settings? then global.$AddTag_Settings.{13} else 182">
+				<input_param name="step" value="1"/>
+				<input_param name="min" value="0"/>
+				<input_param name="max" value="255"/>
+			</param>
+			<param name="NAME_RED" text="- {8888888, 271}" comment="Red" type="number" default="if global.$AddTag_Settings? then global.$AddTag_Settings.{14} else 0">
+				<input_param name="step" value="1"/>
+				<input_param name="min" value="0"/>
+				<input_param name="max" value="255"/>
+			</param>
+			<param name="NAME_GREEN" text="- {8888888, 272}" comment="Green" type="number" default="if global.$AddTag_Settings? then global.$AddTag_Settings.{15} else 204">
+				<input_param name="step" value="1"/>
+				<input_param name="min" value="0"/>
+				<input_param name="max" value="255"/>
+			</param>
+			<param name="NAME_BLUE" text="- {8888888, 273}" comment="Blue" type="number" default="if global.$AddTag_Settings? then global.$AddTag_Settings.{16} else 204">
+				<input_param name="step" value="1"/>
+				<input_param name="min" value="0"/>
+				<input_param name="max" value="255"/>
+			</param>
+			<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+			<param name="PLACE_HOLDER_04" text="----------------------------------" type="object" default="null">
+				<input_param name="class" value="[]"/>
+			</param>
+			<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+			<param name="SAVE_NAMES" text="{8888888, 230}" comment="Save Names?" type="bool" default="false"/>
+			<param name="LOAD_NAMES" text="{8888888, 231}" comment="Load Names?" type="bool" default="false"/>
+			<param name="RESET_NAMES" text="{8888888, 232}" comment="Reset Names?" type="bool" default="false"/>
+			<param name="DELETE_NAMES" text="{8888888, 233}" comment="Delete Names?" type="bool" default="false"/>
+			<param name="APPLY_TO_ALL" text="{8888888, 237}" comment="Apply to all?" type="bool" default="false"/>
+			<param name="APPLY_TO_OBJECT" text="{8888888, 234}" comment="Apply to Ship/Station?" type="bool" default="false"/>
+			<param name="APPLY_TO_SUBORDINATES" text="{8888888, 235}" comment="Apply to Subordinates?" type="bool" default="false"/>
+			<param name="APPLY_TO_SUBORDINATED_FLEETS" text="{8888888, 236}" comment="Apply to subordinated Fleets?" type="bool" default="false"/>
+			<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+			<param name="PLACE_HOLDER_05" text="----------------------------------" type="object" default="null">
+				<input_param name="class" value="[]"/>
+			</param>
+			<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+			<param name="SAVE_ORDER_SETTINGS" text="{8888888, 295}" comment="Save Order Settings?" type="bool" default="false"/>
+			<param name="RESET_ORDER_SETTINGS" text="{8888888, 296}" comment="Reset Order Settings?" type="bool" default="false"/>
+			<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+			<param name="PLACE_HOLDER_998" text="----------------------------------" type="object" default="null">
+				<input_param name="class" value="[]"/>
+			</param>
+			<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+			<param name="DEBUG" text="Debug" type="bool" default="if global.$AddTag_Settings? then global.$AddTag_Settings.{17} else false" advanced="true"/>
+			<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+			<param name="PLACE_HOLDER_999" text="----------------------------------" type="object" default="null" advanced="true">
+				<input_param name="class" value="[]"/>
+			</param>
+			<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+		</params>
+		<skill min="0"/>
+		<requires>
+			<match shiptype="shiptype.lasertower" negate="true"/>
+		</requires>
+	</order>
 
-  <interrupts>
-    <handler ref="SectorChangeHandler"/>
-    <handler ref="TargetInvalidHandler"/>
-    <handler ref="AttackHandler"/>
-    <handler ref="MissileLockHandler"/>
-    <handler ref="ScannedHandler"/>
-    <handler ref="InspectedHandler"/>
-    <handler ref="FoundAbandonedHandler"/>
-    <handler ref="FoundLockboxHandler"/>
-    <handler ref="ResupplyHandler"/>
-    <handler ref="JobRemoveRequestHandler"/>
-  </interrupts>
+	<interrupts>
+		<handler ref="SectorChangeHandler"/>
+		<handler ref="TargetInvalidHandler"/>
+		<handler ref="AttackHandler"/>
+		<handler ref="MissileLockHandler"/>
+		<handler ref="ScannedHandler"/>
+		<handler ref="InspectedHandler"/>
+		<handler ref="FoundAbandonedHandler"/>
+		<handler ref="FoundLockboxHandler"/>
+		<handler ref="ResupplyHandler"/>
+		<handler ref="JobRemoveRequestHandler"/>
+	</interrupts>
 
-  <init>
-    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-    <do_if value="$DEBUG">
-      <set_value name="$DebugScriptName" exact="'JP_AddTag'"/>
-      <set_value name="$DebugFolderName" exact="'JP_AddTag.logs'"/>
-      <set_value name="$DebugFileName" exact="this.ship.idcode + '.' + $DebugScriptName + '.xml.log'"/>
-      <debug_to_file append="false" directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-      <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Started ~~' + '\n'"/>
-    </do_if>
-    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-    <set_value name="$Commander" exact="this.assignedcontrolled"/>
-    <set_value name="$Tag" exact="''"/>
-    <set_value name="$NameColorString" exact="''"/>
-    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<init>
+		<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+		<do_if value="$DEBUG">
+			<set_value name="$DebugScriptName" exact="'JP_AddTag'"/>
+			<set_value name="$DebugFolderName" exact="'JP_AddTag.logs'"/>
+			<set_value name="$DebugFileName" exact="this.ship.idcode + '.' + $DebugScriptName + '.xml.log'"/>
+			<debug_to_file append="false" directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+			<debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Started ~~' + '\n'"/>
+		</do_if>
+		<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+		<set_value name="$Commander" exact="this.assignedcontrolled"/>
+		<set_value name="$Tag" exact="''"/>
+		<set_value name="$NameColorString" exact="''"/>
+		<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-    <!-- remove it in a later version.. give time for deleting this unused chunk of memory -->
-    <do_if value="true">
-      <remove_value name="global.$AddTagSavedNames"/>
-      <remove_value name="global.$DebugAT"/>
-      <remove_value name="global.$UseNameColoringBlueAT"/>
-      <remove_value name="global.$UseNameColoringGreenAT"/>
-      <remove_value name="global.$UseNameColoringRedAT"/>
-      <remove_value name="global.$UseNameColoringAlphaAT"/>
-      <remove_value name="global.$UseNameColoringAT"/>
-      <remove_value name="global.$UseTagColoringBlueAT"/>
-      <remove_value name="global.$UseTagColoringGreenAT"/>
-      <remove_value name="global.$UseTagColoringRedAT"/>
-      <remove_value name="global.$UseTagColoringAlphaAT"/>
-      <remove_value name="global.$UseTagColoringAT"/>
-      <remove_value name="global.$ObjectWithTagAsNameAT"/>
-      <remove_value name="global.$AddToSubordinatesFleetsNamesAT"/>
-      <remove_value name="global.$AddToSubordinatesNamesAT"/>
-      <remove_value name="global.$AddToCommandersNameAT"/>
-      <remove_value name="global.$AtTheEndOfTheNameAT"/>
-      <remove_value name="global.$AtTheBeginningOfTheNameAT"/>
-    </do_if>
+		<!-- remove it in a later version.. give time for deleting this unused chunk of memory -->
+		<do_if value="true">
+			<remove_value name="global.$AddTagSavedNames"/>
+			<remove_value name="global.$DebugAT"/>
+			<remove_value name="global.$UseNameColoringBlueAT"/>
+			<remove_value name="global.$UseNameColoringGreenAT"/>
+			<remove_value name="global.$UseNameColoringRedAT"/>
+			<remove_value name="global.$UseNameColoringAlphaAT"/>
+			<remove_value name="global.$UseNameColoringAT"/>
+			<remove_value name="global.$UseTagColoringBlueAT"/>
+			<remove_value name="global.$UseTagColoringGreenAT"/>
+			<remove_value name="global.$UseTagColoringRedAT"/>
+			<remove_value name="global.$UseTagColoringAlphaAT"/>
+			<remove_value name="global.$UseTagColoringAT"/>
+			<remove_value name="global.$ObjectWithTagAsNameAT"/>
+			<remove_value name="global.$AddToSubordinatesFleetsNamesAT"/>
+			<remove_value name="global.$AddToSubordinatesNamesAT"/>
+			<remove_value name="global.$AddToCommandersNameAT"/>
+			<remove_value name="global.$AtTheEndOfTheNameAT"/>
+			<remove_value name="global.$AtTheBeginningOfTheNameAT"/>
+		</do_if>
 
-    <!-- save settings? -->
-    <do_if value="$SAVE_ORDER_SETTINGS">
-      <create_list name="$_SettingsList"/>
-      <append_list_elements name="$_SettingsList" other="[$OBJECT, $TAG_OBJECT, $TAG_POSITION,
+		<!-- save settings? -->
+		<do_if value="$SAVE_ORDER_SETTINGS">
+			<create_list name="$_SettingsList"/>
+			<append_list_elements name="$_SettingsList" other="[$OBJECT, $TAG_OBJECT, $TAG_POSITION,
                             $ADD_TO_OBJECT, $ADD_TO_SUBORDINATES, $ADD_TO_SUBORDINATED_FLEETS,
                             $COLORIZE_TAG, $TAG_ALPHA, $TAG_RED, $TAG_GREEN, $TAG_BLUE, 
                             $COLORIZE_NAME, $NAME_ALPHA, $NAME_RED, $NAME_GREEN, $NAME_BLUE,
                             $DEBUG]"/>
-      <do_if value="not global.$AddTag_Settings?">
-        <create_list name="global.$AddTag_Settings"/>
-        <append_list_elements name="global.$AddTag_Settings" other="$_SettingsList"/>
-      </do_if>
-      <do_else>
-        <do_for_each name="$_Setting" in="global.$AddTag_Settings" counter="$_it">
-          <do_if value="$_Setting != $_SettingsList.{$_it}">
-            <set_value name="global.$AddTag_Settings.{$_it}" exact="$_SettingsList.{$_it}"/>
-          </do_if>
-        </do_for_each>
-      </do_else>
-      <remove_value name="$_SettingsList"/>
-      <show_help duration="5s" allowclose="true" log="true" custom="'JP_AddTag ~ ' + this.ship.knownname + ' [' + this.ship.idcode + ']\n\n' + '{8888888, 260}'"/>
-      <cancel_order order="this.ship.order"/>
-    </do_if>
+			<do_if value="not global.$AddTag_Settings?">
+				<create_list name="global.$AddTag_Settings"/>
+				<append_list_elements name="global.$AddTag_Settings" other="$_SettingsList"/>
+			</do_if>
+			<do_else>
+				<do_for_each name="$_Setting" in="global.$AddTag_Settings" counter="$_it">
+					<do_if value="$_Setting != $_SettingsList.{$_it}">
+						<set_value name="global.$AddTag_Settings.{$_it}" exact="$_SettingsList.{$_it}"/>
+					</do_if>
+				</do_for_each>
+			</do_else>
+			<remove_value name="$_SettingsList"/>
+			<show_help duration="5s" allowclose="true" log="true" custom="'JP_AddTag ~ ' + this.ship.knownname + ' [' + this.ship.idcode + ']\n\n' + '{8888888, 260}'"/>
+			<cancel_order order="this.ship.order"/>
+		</do_if>
 
-    <!-- reset settings? -->
-    <do_if value="$RESET_ORDER_SETTINGS">
-      <do_if value="global.$AddTag_Settings?">
-        <remove_value name="global.$AddTag_Settings"/>
-      </do_if>
-      <show_help duration="5s" allowclose="true" log="true" custom="'JP_AddTag ~ ' + this.ship.knownname + ' [' + this.ship.idcode + ']\n\n' + '{8888888, 261}'"/>
-      <cancel_order order="this.ship.order"/>
-    </do_if>
+		<!-- reset settings? -->
+		<do_if value="$RESET_ORDER_SETTINGS">
+			<do_if value="global.$AddTag_Settings?">
+				<remove_value name="global.$AddTag_Settings"/>
+			</do_if>
+			<show_help duration="5s" allowclose="true" log="true" custom="'JP_AddTag ~ ' + this.ship.knownname + ' [' + this.ship.idcode + ']\n\n' + '{8888888, 261}'"/>
+			<cancel_order order="this.ship.order"/>
+		</do_if>
 
-    <!-- save names? -->
-    <do_if value="$SAVE_NAMES">
-      <do_if value="not global.$ObjectsSavedNames_JP?">
-        <create_list name="global.$ObjectsSavedNames_JP"/>
-      </do_if>
-      <create_list name="$_ObjectsToSave"/>
-      <do_if value="$APPLY_TO_OBJECT or $APPLY_TO_ALL">
-        <append_to_list name="$_ObjectsToSave" exact="[$OBJECT, $OBJECT.knownname]"/>
-      </do_if>
-      <do_if value="$APPLY_TO_SUBORDINATES or $APPLY_TO_ALL">
-        <do_for_each name="$_Sub" in="$OBJECT.subordinates">
-          <do_if value="$_Sub.commander == $OBJECT and not $_Sub.isunit">
-            <append_to_list name="$_ObjectsToSave" exact="[$_Sub, $_Sub.knownname]"/>
-          </do_if>
-        </do_for_each>
-      </do_if>
-      <do_if value="$APPLY_TO_SUBORDINATED_FLEETS or $APPLY_TO_ALL">
-        <do_for_each name="$_Sub" in="$OBJECT.allsubordinates">
-          <do_if value="$_Sub.commander != $OBJECT and not $_Sub.isunit">
-            <append_to_list name="$_ObjectsToSave" exact="[$_Sub, $_Sub.knownname]"/>
-          </do_if>
-        </do_for_each>
-      </do_if>
-      <do_if value="$_ObjectsToSave.count gt 0">
-        <do_for_each name="$_SaveObject" in="$_ObjectsToSave">
-          <set_value name="$_WasInList" exact="false"/>
-          <do_if value="global.$ObjectsSavedNames_JP.count gt 0">
-            <do_for_each name="$_SavedObject" in="global.$ObjectsSavedNames_JP" counter="$_jt">
-              <do_if value="$_SavedObject.{1} == $_SaveObject.{1}">
-                <set_value name="$_WasInList" exact="true"/>
-                <do_if value="$_SavedObject.{2} != $_SaveObject.{2}">
-                  <set_value name="global.$ObjectsSavedNames_JP.{$_jt}.{2}" exact="$_SaveObject.{2}"/>
-                </do_if>
-                <break/>
-              </do_if>
-            </do_for_each>
-          </do_if>
-          <do_if value="not $_WasInList">
-            <append_to_list name="global.$ObjectsSavedNames_JP" exact="$_SaveObject"/>
-          </do_if>
-          <remove_value name="$_WasInList"/>
-        </do_for_each>
-        <remove_value name="$_ObjectsToSave"/>
-        <show_help duration="5s" allowclose="true" log="true" custom="('JP_AddTag ~ ' + this.ship.knownname + ' [' + this.ship.idcode + ']\n\n' + '{8888888, 262}')"/>
-        <cancel_order order="this.ship.order"/>
-      </do_if>
-    </do_if>
+		<!-- save names? -->
+		<do_if value="$SAVE_NAMES">
+			<do_if value="not global.$ObjectsSavedNames_JP?">
+				<create_list name="global.$ObjectsSavedNames_JP"/>
+			</do_if>
+			<create_list name="$_ObjectsToSave"/>
+			<do_if value="$APPLY_TO_OBJECT or $APPLY_TO_ALL">
+				<append_to_list name="$_ObjectsToSave" exact="[$OBJECT, $OBJECT.knownname]"/>
+			</do_if>
+			<do_if value="$APPLY_TO_SUBORDINATES or $APPLY_TO_ALL">
+				<do_for_each name="$_Sub" in="$OBJECT.subordinates">
+					<do_if value="$_Sub.commander == $OBJECT and not $_Sub.isunit">
+						<append_to_list name="$_ObjectsToSave" exact="[$_Sub, $_Sub.knownname]"/>
+					</do_if>
+				</do_for_each>
+			</do_if>
+			<do_if value="$APPLY_TO_SUBORDINATED_FLEETS or $APPLY_TO_ALL">
+				<do_for_each name="$_Sub" in="$OBJECT.allsubordinates">
+					<do_if value="$_Sub.commander != $OBJECT and not $_Sub.isunit">
+						<append_to_list name="$_ObjectsToSave" exact="[$_Sub, $_Sub.knownname]"/>
+					</do_if>
+				</do_for_each>
+			</do_if>
+			<do_if value="$_ObjectsToSave.count gt 0">
+				<do_for_each name="$_SaveObject" in="$_ObjectsToSave">
+					<set_value name="$_WasInList" exact="false"/>
+					<do_if value="global.$ObjectsSavedNames_JP.count gt 0">
+						<do_for_each name="$_SavedObject" in="global.$ObjectsSavedNames_JP" counter="$_jt">
+							<do_if value="$_SavedObject.{1} == $_SaveObject.{1}">
+								<set_value name="$_WasInList" exact="true"/>
+								<do_if value="$_SavedObject.{2} != $_SaveObject.{2}">
+									<set_value name="global.$ObjectsSavedNames_JP.{$_jt}.{2}" exact="$_SaveObject.{2}"/>
+								</do_if>
+								<break/>
+							</do_if>
+						</do_for_each>
+					</do_if>
+					<do_if value="not $_WasInList">
+						<append_to_list name="global.$ObjectsSavedNames_JP" exact="$_SaveObject"/>
+					</do_if>
+					<remove_value name="$_WasInList"/>
+				</do_for_each>
+				<remove_value name="$_ObjectsToSave"/>
+				<show_help duration="5s" allowclose="true" log="true" custom="('JP_AddTag ~ ' + this.ship.knownname + ' [' + this.ship.idcode + ']\n\n' + '{8888888, 262}')"/>
+				<cancel_order order="this.ship.order"/>
+			</do_if>
+		</do_if>
 
-    <!-- load names? -->
-    <do_if value="$LOAD_NAMES and global.$ObjectsSavedNames_JP? and global.$ObjectsSavedNames_JP.count gt 0">
-      <create_list name="$_ObjectsToLoadTheName"/>
-      <do_if value="$APPLY_TO_OBJECT or $APPLY_TO_ALL">
-        <append_to_list name="$_ObjectsToLoadTheName" exact="$OBJECT"/>
-      </do_if>
-      <do_if value="$APPLY_TO_SUBORDINATES or $APPLY_TO_ALL">
-        <do_for_each name="$_Sub" in="$OBJECT.subordinates">
-          <do_if value="$_Sub.commander == $OBJECT and not $_Sub.isunit">
-            <append_to_list name="$_ObjectsToLoadTheName" exact="$_Sub"/>
-          </do_if>
-        </do_for_each>
-      </do_if>
-      <do_if value="$APPLY_TO_SUBORDINATED_FLEETS or $APPLY_TO_ALL">
-        <do_for_each name="$_Sub" in="$OBJECT.allsubordinates">
-          <do_if value="$_Sub.commander != $OBJECT and not $_Sub.isunit">
-            <append_to_list name="$_ObjectsToLoadTheName" exact="$_Sub"/>
-          </do_if>
-        </do_for_each>
-      </do_if>
-      <do_for_each name="$_LoadObject" in="$_ObjectsToLoadTheName">
-        <do_for_each name="$_StoredObject" in="global.$ObjectsSavedNames_JP">
-          <do_if value="$_StoredObject.{1} == $_LoadObject">
-            <do_if value="$_LoadObject.knownname != $_StoredObject.{2}">
-              <set_object_name object="$_LoadObject" name="$_StoredObject.{2}"/>
-            </do_if>
-            <break/>
-          </do_if>
-        </do_for_each>
-      </do_for_each>
-      <remove_value name="$_ObjectsToLoadTheName"/>
-      <show_help duration="5s" allowclose="true" log="true" custom="'JP_AddTag ~ ' + this.ship.knownname + ' [' + this.ship.idcode + ']\n\n' + '{8888888, 263}'"/>
-      <cancel_order order="this.ship.order"/>
-    </do_if>
+		<!-- load names? -->
+		<do_if value="$LOAD_NAMES and global.$ObjectsSavedNames_JP? and global.$ObjectsSavedNames_JP.count gt 0">
+			<create_list name="$_ObjectsToLoadTheName"/>
+			<do_if value="$APPLY_TO_OBJECT or $APPLY_TO_ALL">
+				<append_to_list name="$_ObjectsToLoadTheName" exact="$OBJECT"/>
+			</do_if>
+			<do_if value="$APPLY_TO_SUBORDINATES or $APPLY_TO_ALL">
+				<do_for_each name="$_Sub" in="$OBJECT.subordinates">
+					<do_if value="$_Sub.commander == $OBJECT and not $_Sub.isunit">
+						<append_to_list name="$_ObjectsToLoadTheName" exact="$_Sub"/>
+					</do_if>
+				</do_for_each>
+			</do_if>
+			<do_if value="$APPLY_TO_SUBORDINATED_FLEETS or $APPLY_TO_ALL">
+				<do_for_each name="$_Sub" in="$OBJECT.allsubordinates">
+					<do_if value="$_Sub.commander != $OBJECT and not $_Sub.isunit">
+						<append_to_list name="$_ObjectsToLoadTheName" exact="$_Sub"/>
+					</do_if>
+				</do_for_each>
+			</do_if>
+			<do_for_each name="$_LoadObject" in="$_ObjectsToLoadTheName">
+				<do_for_each name="$_StoredObject" in="global.$ObjectsSavedNames_JP">
+					<do_if value="$_StoredObject.{1} == $_LoadObject">
+						<do_if value="$_LoadObject.knownname != $_StoredObject.{2}">
+							<set_object_name object="$_LoadObject" name="$_StoredObject.{2}"/>
+						</do_if>
+						<break/>
+					</do_if>
+				</do_for_each>
+			</do_for_each>
+			<remove_value name="$_ObjectsToLoadTheName"/>
+			<show_help duration="5s" allowclose="true" log="true" custom="'JP_AddTag ~ ' + this.ship.knownname + ' [' + this.ship.idcode + ']\n\n' + '{8888888, 263}'"/>
+			<cancel_order order="this.ship.order"/>
+		</do_if>
 
-    <!-- reset names? -->
-    <do_if value="$RESET_NAMES">
-      <do_if value="$APPLY_TO_OBJECT or $APPLY_TO_ALL">
-        <set_object_name object="$OBJECT" name="''"/>
-      </do_if>
-      <do_if value="$APPLY_TO_SUBORDINATES or $APPLY_TO_ALL">
-        <do_for_each name="$_Sub" in="$OBJECT.subordinates">
-          <do_if value="$_Sub.commander == $OBJECT and not $_Sub.isunit">
-            <set_object_name object="$_Sub" name="''"/>
-          </do_if>
-        </do_for_each>
-      </do_if>
-      <do_if value="$APPLY_TO_SUBORDINATED_FLEETS or $APPLY_TO_ALL">
-        <do_for_each name="$_Sub" in="$OBJECT.allsubordinates">
-          <do_if value="$_Sub.commander != $OBJECT and not $_Sub.isunit">
-            <set_object_name object="$_Sub" name="''"/>
-          </do_if>
-        </do_for_each>
-      </do_if>
-      <show_help duration="5s" allowclose="true" log="true" custom="'JP_AddTag ~ ' + this.ship.knownname + ' [' + this.ship.idcode + ']\n\n' + '{8888888, 264}'"/>
-      <cancel_order order="this.ship.order"/>
-    </do_if>
+		<!-- reset names? -->
+		<do_if value="$RESET_NAMES">
+			<do_if value="$APPLY_TO_OBJECT or $APPLY_TO_ALL">
+				<set_object_name object="$OBJECT" name="''"/>
+			</do_if>
+			<do_if value="$APPLY_TO_SUBORDINATES or $APPLY_TO_ALL">
+				<do_for_each name="$_Sub" in="$OBJECT.subordinates">
+					<do_if value="$_Sub.commander == $OBJECT and not $_Sub.isunit">
+						<set_object_name object="$_Sub" name="''"/>
+					</do_if>
+				</do_for_each>
+			</do_if>
+			<do_if value="$APPLY_TO_SUBORDINATED_FLEETS or $APPLY_TO_ALL">
+				<do_for_each name="$_Sub" in="$OBJECT.allsubordinates">
+					<do_if value="$_Sub.commander != $OBJECT and not $_Sub.isunit">
+						<set_object_name object="$_Sub" name="''"/>
+					</do_if>
+				</do_for_each>
+			</do_if>
+			<show_help duration="5s" allowclose="true" log="true" custom="'JP_AddTag ~ ' + this.ship.knownname + ' [' + this.ship.idcode + ']\n\n' + '{8888888, 264}'"/>
+			<cancel_order order="this.ship.order"/>
+		</do_if>
 
-    <!-- delete names? -->
-    <do_if value="$DELETE_NAMES and global.$ObjectsSavedNames_JP?">
-      <do_if value="global.$ObjectsSavedNames_JP.count gt 0">
-        <create_list name="$_ObjectsToDeleteSavedNames"/>
-        <do_if value="$APPLY_TO_OBJECT or $APPLY_TO_ALL">
-          <append_to_list name="$_ObjectsToDeleteSavedNames" exact="$OBJECT"/>
-        </do_if>
-        <do_if value="$APPLY_TO_SUBORDINATES or $APPLY_TO_ALL">
-          <do_for_each name="$_Sub" in="$OBJECT.subordinates">
-            <do_if value="$_Sub.commander == $OBJECT and not $_Sub.isunit">
-              <append_to_list name="$_ObjectsToDeleteSavedNames" exact="$_Sub"/>
-            </do_if>
-          </do_for_each>
-        </do_if>
-        <do_if value="$APPLY_TO_SUBORDINATED_FLEETS or $APPLY_TO_ALL">
-          <do_for_each name="$_Sub" in="$OBJECT.allsubordinates">
-            <do_if value="$_Sub.commander != $OBJECT and not $_Sub.isunit">
-              <append_to_list name="$_ObjectsToDeleteSavedNames" exact="$_Sub"/>
-            </do_if>
-          </do_for_each>
-        </do_if>
-        <do_for_each name="$_DeleteObject" in="$_ObjectsToDeleteSavedNames">
-          <do_for_each name="$_StoredObject" in="global.$ObjectsSavedNames_JP">
-            <do_if value="$_StoredObject.{1} == $_DeleteObject">
-              <remove_from_list name="global.$ObjectsSavedNames_JP" exact="$_StoredObject"/>
-              <break/>
-            </do_if>
-          </do_for_each>
-        </do_for_each>
-        <remove_value name="$_ObjectsToDeleteSavedNames"/>
-        <do_if value="global.$ObjectsSavedNames_JP.count le 0">
-          <remove_value name="global.$ObjectsSavedNames_JP"/>
-        </do_if>
-      </do_if>
-      <do_else>
-        <remove_value name="global.$ObjectsSavedNames_JP"/>
-      </do_else>
-      <show_help duration="5s" allowclose="true" log="true" custom="'JP_AddTag ~ ' + this.ship.knownname + ' [' + this.ship.idcode + ']\n\n' + '{8888888, 265}'"/>
-      <cancel_order order="this.ship.order"/>
-    </do_if>
+		<!-- delete names? -->
+		<do_if value="$DELETE_NAMES and global.$ObjectsSavedNames_JP?">
+			<do_if value="global.$ObjectsSavedNames_JP.count gt 0">
+				<create_list name="$_ObjectsToDeleteSavedNames"/>
+				<do_if value="$APPLY_TO_OBJECT or $APPLY_TO_ALL">
+					<append_to_list name="$_ObjectsToDeleteSavedNames" exact="$OBJECT"/>
+				</do_if>
+				<do_if value="$APPLY_TO_SUBORDINATES or $APPLY_TO_ALL">
+					<do_for_each name="$_Sub" in="$OBJECT.subordinates">
+						<do_if value="$_Sub.commander == $OBJECT and not $_Sub.isunit">
+							<append_to_list name="$_ObjectsToDeleteSavedNames" exact="$_Sub"/>
+						</do_if>
+					</do_for_each>
+				</do_if>
+				<do_if value="$APPLY_TO_SUBORDINATED_FLEETS or $APPLY_TO_ALL">
+					<do_for_each name="$_Sub" in="$OBJECT.allsubordinates">
+						<do_if value="$_Sub.commander != $OBJECT and not $_Sub.isunit">
+							<append_to_list name="$_ObjectsToDeleteSavedNames" exact="$_Sub"/>
+						</do_if>
+					</do_for_each>
+				</do_if>
+				<do_for_each name="$_DeleteObject" in="$_ObjectsToDeleteSavedNames">
+					<do_for_each name="$_StoredObject" in="global.$ObjectsSavedNames_JP">
+						<do_if value="$_StoredObject.{1} == $_DeleteObject">
+							<remove_from_list name="global.$ObjectsSavedNames_JP" exact="$_StoredObject"/>
+							<break/>
+						</do_if>
+					</do_for_each>
+				</do_for_each>
+				<remove_value name="$_ObjectsToDeleteSavedNames"/>
+				<do_if value="global.$ObjectsSavedNames_JP.count le 0">
+					<remove_value name="global.$ObjectsSavedNames_JP"/>
+				</do_if>
+			</do_if>
+			<do_else>
+				<remove_value name="global.$ObjectsSavedNames_JP"/>
+			</do_else>
+			<show_help duration="5s" allowclose="true" log="true" custom="'JP_AddTag ~ ' + this.ship.knownname + ' [' + this.ship.idcode + ']\n\n' + '{8888888, 265}'"/>
+			<cancel_order order="this.ship.order"/>
+		</do_if>
 
-    <!-- remove invalid objects from global.$ObjectsSavedNames_JP -->
-    <do_if value="global.$ObjectsSavedNames_JP? and @global.$ObjectsSavedNames_JP.count gt 0">
-      <create_list name="$_InvalidObjects"/>
-      <do_for_each name="$_Object" in="global.$ObjectsSavedNames_JP">
-        <do_if value="$_Object.{1}.iswreck or $_Object.{1}.trueowner != this.ship.owner">
-          <append_to_list name="$_InvalidObjects" exact="$_Object"/>
-        </do_if>
-      </do_for_each>
-      <do_for_each name="$_InvalidObject" in="$_InvalidObjects">
-        <do_for_each name="$_StoredObject" in="global.$ObjectsSavedNames_JP" counter="$_jt">
-          <do_if value="$_StoredObject == $_InvalidObject">
-            <remove_from_list name="global.$ObjectsSavedNames_JP" exact="$_StoredObject"/>
-            <break/>
-          </do_if>
-        </do_for_each>
-      </do_for_each>
-      <remove_value name="$_InvalidObjects"/>
-    </do_if>
+		<!-- remove invalid objects from global.$ObjectsSavedNames_JP -->
+		<do_if value="global.$ObjectsSavedNames_JP? and @global.$ObjectsSavedNames_JP.count gt 0">
+			<create_list name="$_InvalidObjects"/>
+			<do_for_each name="$_Object" in="global.$ObjectsSavedNames_JP">
+				<do_if value="$_Object.{1}.iswreck or $_Object.{1}.trueowner != this.ship.owner">
+					<append_to_list name="$_InvalidObjects" exact="$_Object"/>
+				</do_if>
+			</do_for_each>
+			<do_for_each name="$_InvalidObject" in="$_InvalidObjects">
+				<do_for_each name="$_StoredObject" in="global.$ObjectsSavedNames_JP" counter="$_jt">
+					<do_if value="$_StoredObject == $_InvalidObject">
+						<remove_from_list name="global.$ObjectsSavedNames_JP" exact="$_StoredObject"/>
+						<break/>
+					</do_if>
+				</do_for_each>
+			</do_for_each>
+			<remove_value name="$_InvalidObjects"/>
+		</do_if>
 
-    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-  </init>
+		<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	</init>
 
-  <attention min="unknown">
-    <actions>
+	<attention min="unknown">
+		<actions>
 
-      <label name="INIT_LBL"/>
-      <wait exact="1ms"/>
+			<label name="INIT_LBL"/>
+			<wait exact="1ms"/>
 
-      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      
-      <!-- Create tag? Colorize it? -->
-      <do_if value="$COLORIZE_TAG">
-        <run_script name="'JP_CreateColorString_AT'">
-          <param name="ALPHA" value="$TAG_ALPHA"/>
-          <param name="RED" value="$TAG_RED"/>
-          <param name="GREEN" value="$TAG_GREEN"/>
-          <param name="BLUE" value="$TAG_BLUE"/>
-          <param name="DEBUG" value="$DEBUG"/>
-          <save_retval name="COLOR_STRING" variable="$_TagColorString"/>
-        </run_script>
-        <set_value name="$Tag" exact="$_TagColorString + $TAG_OBJECT.knownname + '\033X'"/>
-        <remove_value name="$_TagColorString"/>
-      </do_if>
-      <do_else>
-        <set_value name="$Tag" exact="$TAG_OBJECT.knownname"/>
-      </do_else>
+			<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-      <!-- Colorize name? -->
-      <do_if value="$COLORIZE_NAME">
-        <run_script name="'JP_CreateColorString_AT'">
-          <param name="ALPHA" value="$NAME_ALPHA"/>
-          <param name="RED" value="$NAME_RED"/>
-          <param name="GREEN" value="$NAME_GREEN"/>
-          <param name="BLUE" value="$NAME_BLUE"/>
-          <param name="DEBUG" value="$DEBUG"/>
-          <save_retval name="COLOR_STRING" variable="$NameColorString"/>
-        </run_script>
-      </do_if>
+			<!-- Create tag? Colorize it? -->
+			<do_if value="$COLORIZE_TAG">
+				<run_script name="'JP_CreateColorString_AT'">
+					<param name="ALPHA" value="$TAG_ALPHA"/>
+					<param name="RED" value="$TAG_RED"/>
+					<param name="GREEN" value="$TAG_GREEN"/>
+					<param name="BLUE" value="$TAG_BLUE"/>
+					<param name="DEBUG" value="$DEBUG"/>
+					<save_retval name="COLOR_STRING" variable="$_TagColorString"/>
+				</run_script>
+				<set_value name="$Tag" exact="$_TagColorString + $TAG_OBJECT.knownname + '\033X'"/>
+				<remove_value name="$_TagColorString"/>
+			</do_if>
+			<do_else>
+				<set_value name="$Tag" exact="$TAG_OBJECT.knownname"/>
+			</do_else>
 
-      <create_list name="$_ShipsToRename"/>
+			<!-- Colorize name? -->
+			<do_if value="$COLORIZE_NAME">
+				<run_script name="'JP_CreateColorString_AT'">
+					<param name="ALPHA" value="$NAME_ALPHA"/>
+					<param name="RED" value="$NAME_RED"/>
+					<param name="GREEN" value="$NAME_GREEN"/>
+					<param name="BLUE" value="$NAME_BLUE"/>
+					<param name="DEBUG" value="$DEBUG"/>
+					<save_retval name="COLOR_STRING" variable="$NameColorString"/>
+				</run_script>
+			</do_if>
 
-      <!-- Add to Objects name? -->
-      <do_if value="$ADD_TO_OBJECT">
-        <append_to_list name="$_ShipsToRename" exact="$OBJECT"/>
-      </do_if>
+			<create_list name="$_ShipsToRename"/>
 
-      <!-- Add to Objects subordinates names? -->
-      <do_if value="$ADD_TO_SUBORDINATES">
-        <do_for_each name="$_Subordinate" in="$OBJECT.subordinates">
-          <do_if value="not $_Subordinate.isunit">
-            <append_to_list name="$_ShipsToRename" exact="$_Subordinate"/>
-          </do_if>
-        </do_for_each>
-      </do_if>
+			<!-- Add to Objects name? -->
+			<do_if value="$ADD_TO_OBJECT">
+				<append_to_list name="$_ShipsToRename" exact="$OBJECT"/>
+			</do_if>
 
-      <!-- Add to subordinates of Objects subordinates names? -->
-      <do_if value="$ADD_TO_SUBORDINATED_FLEETS">
-        <do_for_each name="$_Subordinate" in="$OBJECT.allsubordinates">
-          <do_if value="$_Subordinate.commander != $OBJECT and not $_Subordinate.isunit">
-            <append_to_list name="$_ShipsToRename" exact="$_Subordinate"/>
-          </do_if>
-        </do_for_each>
-      </do_if>
+			<!-- Add to Objects subordinates names? -->
+			<do_if value="$ADD_TO_SUBORDINATES">
+				<do_for_each name="$_Subordinate" in="$OBJECT.subordinates">
+					<do_if value="not $_Subordinate.isunit">
+						<append_to_list name="$_ShipsToRename" exact="$_Subordinate"/>
+					</do_if>
+				</do_for_each>
+			</do_if>
 
-      <do_if value="$DEBUG">
-        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
-        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'$TAG_POSITION: ' + $TAG_POSITION"/>
-        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
-      </do_if>
+			<!-- Add to subordinates of Objects subordinates names? -->
+			<do_if value="$ADD_TO_SUBORDINATED_FLEETS">
+				<do_for_each name="$_Subordinate" in="$OBJECT.allsubordinates">
+					<do_if value="$_Subordinate.commander != $OBJECT and not $_Subordinate.isunit">
+						<append_to_list name="$_ShipsToRename" exact="$_Subordinate"/>
+					</do_if>
+				</do_for_each>
+			</do_if>
 
-      <!-- Give it the Tag -->
-      <do_if value="$_ShipsToRename.count gt 0">
-        <do_for_each name="$_ShipToRename" in="$_ShipsToRename">
-          <set_object_name object="$_ShipToRename" name="(if ($TAG_POSITION == 0) or ($TAG_POSITION == 1) then ($Tag + ' ') else '') + 
+			<do_if value="$DEBUG">
+				<debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'"/>
+				<debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'$TAG_POSITION: ' + $TAG_POSITION"/>
+				<debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+			</do_if>
+
+			<!-- Give it the Tag -->
+			<do_if value="$_ShipsToRename.count gt 0">
+				<do_for_each name="$_ShipToRename" in="$_ShipsToRename">
+					<set_object_name object="$_ShipToRename" name="(if ($TAG_POSITION == 0) or ($TAG_POSITION == 1) then ($Tag + ' ') else '') + 
                            (if $COLORIZE_NAME then ($NameColorString + $_ShipToRename.knownname + '\033X') else ($_ShipToRename.knownname)) + 
                            (if ($TAG_POSITION == 1) or ($TAG_POSITION == 2) then (' ' + $Tag) else '')"/>
-        </do_for_each>
-      </do_if>
+				</do_for_each>
+			</do_if>
 
-      <remove_value name="$_ShipsToRename"/>
+			<remove_value name="$_ShipsToRename"/>
 
-      <label name="FINISH_LBL"/>
+			<label name="FINISH_LBL"/>
 
-      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <do_if value="$DEBUG">
-        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Finished ~~'"/>
-        <debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
-        <remove_value name="$DebugFileName"/>
-        <remove_value name="$DebugFolderName"/>
-        <remove_value name="$DebugScriptName"/>
-      </do_if>
-      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+			<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+			<do_if value="$DEBUG">
+				<debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'[' + player.systemtime.{'%F - %X'} + '] ' + '~~ ' + $DebugScriptName + '.xml ~ Finished ~~'"/>
+				<debug_to_file directory="$DebugFolderName" name="$DebugFileName" text="'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n'"/>
+				<remove_value name="$DebugFileName"/>
+				<remove_value name="$DebugFolderName"/>
+				<remove_value name="$DebugScriptName"/>
+			</do_if>
+			<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-      <label name="CLEANUP_LBL"/>
-      <remove_value name="$NameColorString"/>
-      <remove_value name="$Tag"/>
-      <remove_value name="$Commander"/>
+			<label name="CLEANUP_LBL"/>
+			<remove_value name="$NameColorString"/>
+			<remove_value name="$Tag"/>
+			<remove_value name="$Commander"/>
 
-      <label name="END_LBL"/>
-      <set_order_syncpoint_reached order="this.ship.order"/>
-      <wait exact="1ms"/>
-      <cancel_order order="this.ship.order" />
+			<label name="END_LBL"/>
+			<set_order_syncpoint_reached order="this.ship.order"/>
+			<wait exact="1ms"/>
+			<cancel_order order="this.ship.order" />
 
-    </actions>
-  </attention>
+		</actions>
+	</attention>
 
-  <on_abort>
-  </on_abort>
+	<on_abort>
+	</on_abort>
 
 </aiscript>
